@@ -1,0 +1,484 @@
+{
+  "format": 1,
+  "restore": {
+    "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Configurations\\AccountingSystem.Configurations.csproj": {}
+  },
+  "projects": {
+    "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj",
+        "projectName": "AccountingSystem.Abstractions",
+        "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj",
+        "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
+        "outputPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Abstractions\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
+                "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.24, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj",
+        "projectName": "AccountingSystem.AppLicationDbContext",
+        "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj",
+        "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
+        "outputPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
+                "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.24, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj",
+        "projectName": "AccountingSystem.BLL",
+        "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj",
+        "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
+        "outputPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.BLL\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj": {
+                "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.24, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Configurations\\AccountingSystem.Configurations.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Configurations\\AccountingSystem.Configurations.csproj",
+        "projectName": "AccountingSystem.Configurations",
+        "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Configurations\\AccountingSystem.Configurations.csproj",
+        "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
+        "outputPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Configurations\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj": {
+                "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj"
+              },
+              "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Repository\\AccountingSystem.Repository.csproj": {
+                "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Repository\\AccountingSystem.Repository.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.24, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Configuration.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.DependencyInjection.Abstractions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.Extensions.Options.ConfigurationExtensions": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
+        "projectName": "AccountingSystem.Models",
+        "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
+        "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
+        "outputPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.24, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Repository\\AccountingSystem.Repository.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Repository\\AccountingSystem.Repository.csproj",
+        "projectName": "AccountingSystem.Repository",
+        "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Repository\\AccountingSystem.Repository.csproj",
+        "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
+        "outputPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Repository\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net8.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net8.0": {
+            "targetAlias": "net8.0",
+            "projectReferences": {
+              "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj": {
+                "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj"
+              },
+              "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj": {
+                "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net8.0": {
+          "targetAlias": "net8.0",
+          "dependencies": {
+            "Dapper": {
+              "target": "Package",
+              "version": "[2.1.24, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.Relational": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[8.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,30 @@
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.deps.json
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.Models.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.Models.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.csproj.AssemblyReference.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.AssemblyInfoInputs.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.AssemblyInfo.cs
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.csproj.CoreCompileInputs.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.csproj.CopyComplete
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\refint\AccountingSystem.AppLicationDbContext.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\ref\AccountingSystem.AppLicationDbContext.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.deps.json
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.Models.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.Models.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.csproj.AssemblyReference.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.GeneratedMSBuildEditorConfig.editorconfig
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.AssemblyInfoInputs.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.AssemblyInfo.cs
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.csproj.CoreCompileInputs.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.csproj.CopyComplete
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\refint\AccountingSystem.AppLicationDbContext.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\ref\AccountingSystem.AppLicationDbContext.dll

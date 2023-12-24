@@ -1,0 +1,30 @@
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Abstractions.deps.json
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Abstractions.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Abstractions.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Models.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Models.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.csproj.AssemblyReference.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.AssemblyInfoInputs.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.AssemblyInfo.cs
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.csproj.CoreCompileInputs.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.csproj.CopyComplete
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\refint\AccountingSystem.Abstractions.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\ref\AccountingSystem.Abstractions.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Abstractions.deps.json
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Abstractions.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Abstractions.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Models.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Models.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.csproj.AssemblyReference.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.GeneratedMSBuildEditorConfig.editorconfig
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.AssemblyInfoInputs.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.AssemblyInfo.cs
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.csproj.CoreCompileInputs.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.csproj.CopyComplete
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\refint\AccountingSystem.Abstractions.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\ref\AccountingSystem.Abstractions.dll

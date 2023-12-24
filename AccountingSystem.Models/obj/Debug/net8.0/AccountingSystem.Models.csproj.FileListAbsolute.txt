@@ -1,0 +1,23 @@
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Models\bin\Debug\net8.0\AccountingSystem.Models.deps.json
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Models\bin\Debug\net8.0\AccountingSystem.Models.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Models\bin\Debug\net8.0\AccountingSystem.Models.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.AssemblyInfoInputs.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.AssemblyInfo.cs
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.csproj.CoreCompileInputs.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\refint\AccountingSystem.Models.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\ref\AccountingSystem.Models.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Models\bin\Debug\net8.0\AccountingSystem.Models.deps.json
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Models\bin\Debug\net8.0\AccountingSystem.Models.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Models\bin\Debug\net8.0\AccountingSystem.Models.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.GeneratedMSBuildEditorConfig.editorconfig
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.AssemblyInfoInputs.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.AssemblyInfo.cs
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.csproj.CoreCompileInputs.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\refint\AccountingSystem.Models.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\ref\AccountingSystem.Models.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.csproj.AssemblyReference.cache

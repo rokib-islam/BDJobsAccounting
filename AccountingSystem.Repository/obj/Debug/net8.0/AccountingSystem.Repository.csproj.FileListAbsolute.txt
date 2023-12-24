@@ -1,0 +1,38 @@
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Repository.deps.json
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Repository.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Repository.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Abstractions.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Models.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Abstractions.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Models.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.csproj.AssemblyReference.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.AssemblyInfoInputs.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.AssemblyInfo.cs
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.csproj.CoreCompileInputs.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.csproj.CopyComplete
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\refint\AccountingSystem.Repository.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\ref\AccountingSystem.Repository.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Repository.deps.json
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Repository.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Repository.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Abstractions.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Models.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Abstractions.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Models.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.csproj.AssemblyReference.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.GeneratedMSBuildEditorConfig.editorconfig
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.AssemblyInfoInputs.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.AssemblyInfo.cs
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.csproj.CoreCompileInputs.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.csproj.CopyComplete
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\refint\AccountingSystem.Repository.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\ref\AccountingSystem.Repository.dll

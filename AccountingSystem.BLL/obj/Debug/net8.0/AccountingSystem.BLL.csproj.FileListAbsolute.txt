@@ -1,0 +1,34 @@
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.BLL.deps.json
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.BLL.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.BLL.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.Abstractions.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.Models.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.Abstractions.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.Models.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.csproj.AssemblyReference.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.AssemblyInfoInputs.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.AssemblyInfo.cs
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.csproj.CoreCompileInputs.cache
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.csproj.CopyComplete
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\refint\AccountingSystem.BLL.dll
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.pdb
+C:\Users\IT-Forid\Downloads\Test_clean\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\ref\AccountingSystem.BLL.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.BLL.deps.json
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.BLL.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.BLL.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.Abstractions.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.Models.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.Abstractions.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.Models.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.csproj.AssemblyReference.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.GeneratedMSBuildEditorConfig.editorconfig
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.AssemblyInfoInputs.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.AssemblyInfo.cs
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.csproj.CoreCompileInputs.cache
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.csproj.CopyComplete
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\refint\AccountingSystem.BLL.dll
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.pdb
+D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\ref\AccountingSystem.BLL.dll
