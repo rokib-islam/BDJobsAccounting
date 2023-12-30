@@ -44,3 +44,19 @@ D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\Accoun
 D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\refint\AccountingSystem.Abstractions.dll
 D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.pdb
 D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Abstractions\obj\Debug\net8.0\ref\AccountingSystem.Abstractions.dll
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Abstractions.deps.json
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Abstractions.dll
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Abstractions.pdb
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Models.dll
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\bin\Debug\net8.0\AccountingSystem.Models.pdb
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.csproj.AssemblyReference.cache
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.GeneratedMSBuildEditorConfig.editorconfig
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.AssemblyInfoInputs.cache
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.AssemblyInfo.cs
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.csproj.CoreCompileInputs.cache
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.sourcelink.json
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.csproj.CopyComplete
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.dll
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\obj\Debug\net8.0\refint\AccountingSystem.Abstractions.dll
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\obj\Debug\net8.0\AccountingSystem.Abstractions.pdb
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Abstractions\obj\Debug\net8.0\ref\AccountingSystem.Abstractions.dll

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj": {}
+    "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj": {}
   },
   "projects": {
-    "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj": {
+    "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj",
+        "projectUniqueName": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj",
         "projectName": "AccountingSystem.AppLicationDbContext",
-        "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj",
+        "projectPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj",
         "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
-        "outputPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\obj\\",
+        "outputPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.AppLicationDbContext\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -28,8 +28,8 @@
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
-                "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj"
+              "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
+                "projectPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj"
               }
             }
           }
@@ -81,14 +81,14 @@
         }
       }
     },
-    "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
+    "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
+        "projectUniqueName": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
         "projectName": "AccountingSystem.Models",
-        "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
+        "projectPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
         "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
-        "outputPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\obj\\",
+        "outputPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",

@@ -2930,11 +2930,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Configurations\\AccountingSystem.Configurations.csproj",
+      "projectUniqueName": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Configurations\\AccountingSystem.Configurations.csproj",
       "projectName": "AccountingSystem.Configurations",
-      "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Configurations\\AccountingSystem.Configurations.csproj",
+      "projectPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Configurations\\AccountingSystem.Configurations.csproj",
       "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
-      "outputPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Configurations\\obj\\",
+      "outputPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Configurations\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -2951,11 +2951,11 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj": {
-              "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj"
+            "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj": {
+              "projectPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj"
             },
-            "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Repository\\AccountingSystem.Repository.csproj": {
-              "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Repository\\AccountingSystem.Repository.csproj"
+            "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Repository\\AccountingSystem.Repository.csproj": {
+              "projectPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Repository\\AccountingSystem.Repository.csproj"
             }
           }
         }

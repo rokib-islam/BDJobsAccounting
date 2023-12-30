@@ -2702,11 +2702,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
+      "projectUniqueName": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
       "projectName": "AccountingSystem.Models",
-      "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
+      "projectPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
       "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
-      "outputPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\obj\\",
+      "outputPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",

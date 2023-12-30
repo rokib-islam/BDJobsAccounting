@@ -2746,11 +2746,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj",
+      "projectUniqueName": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj",
       "projectName": "AccountingSystem.BLL",
-      "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj",
+      "projectPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj",
       "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
-      "outputPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.BLL\\obj\\",
+      "outputPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.BLL\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -2767,8 +2767,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj": {
-              "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj"
+            "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj": {
+              "projectPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj"
             }
           }
         }

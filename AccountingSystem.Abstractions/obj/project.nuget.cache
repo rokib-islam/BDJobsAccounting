@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "IUS34QukYtsll48nwgK51Fd1VAdNlGoPjvPg0Z78QExuWOCN3AhzCm2VjTupvWBbSuXSGofZPM/MdBKg3kupqA==",
+  "dgSpecHash": "11GPOQL/43s47+LM/DjwN3YUTeOpOhxlW/A8XQqmp+u1S4ndZw6hz1a7rHs9bVLo38HUtOLDVtuTXfpdcZIQ/Q==",
   "success": true,
-  "projectFilePath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj",
+  "projectFilePath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rokib\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\rokib\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",

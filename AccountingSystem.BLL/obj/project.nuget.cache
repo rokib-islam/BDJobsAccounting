@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "HVqoM2JMR3rImtXAcCv2jL86cIs1yF0GvCaldJxcZX1S+Y/R3cj08I9gauYBVu52FurBqnx78ciFcyMAicbJVw==",
+  "dgSpecHash": "3FH10ye2UUfY4goULj9YPqaKgnCLCGDQLjJ2GuhTeye5QlLCb11FKXtCWTUgWZUXNzTyDJVEfBytmGJmOOOFXg==",
   "success": true,
-  "projectFilePath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj",
+  "projectFilePath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.BLL\\AccountingSystem.BLL.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\rokib\\.nuget\\packages\\azure.core\\1.25.0\\azure.core.1.25.0.nupkg.sha512",
     "C:\\Users\\rokib\\.nuget\\packages\\azure.identity\\1.7.0\\azure.identity.1.7.0.nupkg.sha512",
