@@ -2724,11 +2724,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj",
+      "projectUniqueName": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj",
       "projectName": "AccountingSystem.AppLicationDbContext",
-      "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj",
+      "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj",
       "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
-      "outputPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\obj\\",
+      "outputPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -2745,8 +2745,8 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
-              "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj"
+            "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
+              "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj"
             }
           }
         }

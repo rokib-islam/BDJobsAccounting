@@ -3590,11 +3590,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Web\\AccountingSystem.Web.csproj",
+      "projectUniqueName": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Web\\AccountingSystem.Web.csproj",
       "projectName": "AccountingSystem.Web",
-      "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Web\\AccountingSystem.Web.csproj",
+      "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Web\\AccountingSystem.Web.csproj",
       "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
-      "outputPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Web\\obj\\",
+      "outputPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Web\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -3611,17 +3611,17 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "projectReferences": {
-            "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj": {
-              "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj"
+            "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj": {
+              "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Abstractions\\AccountingSystem.Abstractions.csproj"
             },
-            "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj": {
-              "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj"
+            "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj": {
+              "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.AppLicationDbContext\\AccountingSystem.AppLicationDbContext.csproj"
             },
-            "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Configurations\\AccountingSystem.Configurations.csproj": {
-              "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Configurations\\AccountingSystem.Configurations.csproj"
+            "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Configurations\\AccountingSystem.Configurations.csproj": {
+              "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Configurations\\AccountingSystem.Configurations.csproj"
             },
-            "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
-              "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj"
+            "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
+              "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj"
             }
           }
         }

@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {}
+    "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {}
   },
   "projects": {
-    "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
+    "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
+        "projectUniqueName": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
         "projectName": "AccountingSystem.Models",
-        "projectPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
+        "projectPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
         "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
-        "outputPath": "D:\\DEVELOPMENT\\layer Architecture 2\\AccountingSystem\\AccountingSystem.Models\\obj\\",
+        "outputPath": "D:\\DEVELOPMENT\\accounting system with layer architecture\\AccountingSystem\\AccountingSystem.Models\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",

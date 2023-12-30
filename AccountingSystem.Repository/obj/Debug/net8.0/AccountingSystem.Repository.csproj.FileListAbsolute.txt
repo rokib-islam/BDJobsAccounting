@@ -36,3 +36,23 @@ D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository
 D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\refint\AccountingSystem.Repository.dll
 D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.pdb
 D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\ref\AccountingSystem.Repository.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Repository.deps.json
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Repository.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Repository.pdb
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Abstractions.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Models.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Abstractions.pdb
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.pdb
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\bin\Debug\net8.0\AccountingSystem.Models.pdb
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.csproj.AssemblyReference.cache
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.GeneratedMSBuildEditorConfig.editorconfig
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.AssemblyInfoInputs.cache
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.AssemblyInfo.cs
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.csproj.CoreCompileInputs.cache
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.sourcelink.json
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.csproj.CopyComplete
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\refint\AccountingSystem.Repository.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\AccountingSystem.Repository.pdb
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Repository\obj\Debug\net8.0\ref\AccountingSystem.Repository.dll

@@ -32,3 +32,21 @@ D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\De
 D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\refint\AccountingSystem.BLL.dll
 D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.pdb
 D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\ref\AccountingSystem.BLL.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.BLL.deps.json
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.BLL.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.BLL.pdb
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.Abstractions.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.Models.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.Abstractions.pdb
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\bin\Debug\net8.0\AccountingSystem.Models.pdb
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.csproj.AssemblyReference.cache
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.GeneratedMSBuildEditorConfig.editorconfig
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.AssemblyInfoInputs.cache
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.AssemblyInfo.cs
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.csproj.CoreCompileInputs.cache
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.sourcelink.json
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.csproj.CopyComplete
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\refint\AccountingSystem.BLL.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\AccountingSystem.BLL.pdb
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.BLL\obj\Debug\net8.0\ref\AccountingSystem.BLL.dll

@@ -28,3 +28,19 @@ D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicatio
 D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\refint\AccountingSystem.AppLicationDbContext.dll
 D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.pdb
 D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\ref\AccountingSystem.AppLicationDbContext.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.deps.json
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.AppLicationDbContext.pdb
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.Models.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\bin\Debug\net8.0\AccountingSystem.Models.pdb
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.csproj.AssemblyReference.cache
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.GeneratedMSBuildEditorConfig.editorconfig
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.AssemblyInfoInputs.cache
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.AssemblyInfo.cs
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.csproj.CoreCompileInputs.cache
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.sourcelink.json
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.csproj.CopyComplete
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\refint\AccountingSystem.AppLicationDbContext.dll
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\AccountingSystem.AppLicationDbContext.pdb
+D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.AppLicationDbContext\obj\Debug\net8.0\ref\AccountingSystem.AppLicationDbContext.dll

@@ -9,43 +9,43 @@ build_property.EnforceExtendedAnalyzerRules =
 build_property._SupportedPlatformList = Linux,macOS,Windows
 build_property.RootNamespace = AccountingSystem.Web
 build_property.RootNamespace = AccountingSystem.Web
-build_property.ProjectDir = D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Web\
+build_property.ProjectDir = D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Web\
 build_property.EnableComHosting = 
 build_property.EnableGeneratedComInterfaceComImportInterop = 
 build_property.RazorLangVersion = 8.0
 build_property.SupportLocalizedComponentNames = 
 build_property.GenerateRazorMetadataSourceChecksumAttributes = true
-build_property.MSBuildProjectDirectory = D:\DEVELOPMENT\layer Architecture 2\AccountingSystem\AccountingSystem.Web
+build_property.MSBuildProjectDirectory = D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Web
 build_property._RazorSourceGeneratorDebug = 
 
-[D:/DEVELOPMENT/layer Architecture 2/AccountingSystem/AccountingSystem.Web/Views/Home/Index.cshtml]
+[D:/DEVELOPMENT/accounting system with layer architecture/AccountingSystem/AccountingSystem.Web/Views/Home/Index.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxJbmRleC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/DEVELOPMENT/layer Architecture 2/AccountingSystem/AccountingSystem.Web/Views/Home/Privacy.cshtml]
+[D:/DEVELOPMENT/accounting system with layer architecture/AccountingSystem/AccountingSystem.Web/Views/Home/Privacy.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSG9tZVxQcml2YWN5LmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/DEVELOPMENT/layer Architecture 2/AccountingSystem/AccountingSystem.Web/Views/Journal/ViewJournal.cshtml]
+[D:/DEVELOPMENT/accounting system with layer architecture/AccountingSystem/AccountingSystem.Web/Views/Journal/ViewJournal.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcSm91cm5hbFxWaWV3Sm91cm5hbC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/DEVELOPMENT/layer Architecture 2/AccountingSystem/AccountingSystem.Web/Views/Shared/Error.cshtml]
+[D:/DEVELOPMENT/accounting system with layer architecture/AccountingSystem/AccountingSystem.Web/Views/Shared/Error.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXEVycm9yLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/DEVELOPMENT/layer Architecture 2/AccountingSystem/AccountingSystem.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
+[D:/DEVELOPMENT/accounting system with layer architecture/AccountingSystem/AccountingSystem.Web/Views/Shared/_ValidationScriptsPartial.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9WYWxpZGF0aW9uU2NyaXB0c1BhcnRpYWwuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/DEVELOPMENT/layer Architecture 2/AccountingSystem/AccountingSystem.Web/Views/_ViewImports.cshtml]
+[D:/DEVELOPMENT/accounting system with layer architecture/AccountingSystem/AccountingSystem.Web/Views/_ViewImports.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdJbXBvcnRzLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/DEVELOPMENT/layer Architecture 2/AccountingSystem/AccountingSystem.Web/Views/_ViewStart.cshtml]
+[D:/DEVELOPMENT/accounting system with layer architecture/AccountingSystem/AccountingSystem.Web/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/DEVELOPMENT/layer Architecture 2/AccountingSystem/AccountingSystem.Web/Views/Shared/_Layout.cshtml]
+[D:/DEVELOPMENT/accounting system with layer architecture/AccountingSystem/AccountingSystem.Web/Views/Shared/_Layout.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = b-9wpi0vtdxa
