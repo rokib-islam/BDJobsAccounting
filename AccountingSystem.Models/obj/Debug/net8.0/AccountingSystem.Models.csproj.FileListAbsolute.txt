@@ -34,3 +34,16 @@ D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\Accoun
 D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\refint\AccountingSystem.Models.dll
 D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.pdb
 D:\DEVELOPMENT\accounting system with layer architecture\AccountingSystem\AccountingSystem.Models\obj\Debug\net8.0\ref\AccountingSystem.Models.dll
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\bin\Debug\net8.0\AccountingSystem.Models.deps.json
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\bin\Debug\net8.0\AccountingSystem.Models.dll
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\bin\Debug\net8.0\AccountingSystem.Models.pdb
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.csproj.AssemblyReference.cache
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.GeneratedMSBuildEditorConfig.editorconfig
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.AssemblyInfoInputs.cache
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.AssemblyInfo.cs
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.csproj.CoreCompileInputs.cache
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.sourcelink.json
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.dll
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\obj\Debug\net8.0\refint\AccountingSystem.Models.dll
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\obj\Debug\net8.0\AccountingSystem.Models.pdb
+D:\DEVELOPMENT\BDJobsAccounting\AccountingSystem.Models\obj\Debug\net8.0\ref\AccountingSystem.Models.dll
