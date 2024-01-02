@@ -1,7 +1,0 @@
-# Visual Studio files
-*.suo
-*.user
-*.suo
-bin/
-obj/
-.vscode/
