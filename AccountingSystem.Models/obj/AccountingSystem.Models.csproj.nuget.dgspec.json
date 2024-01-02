@@ -1,20 +1,23 @@
 {
   "format": 1,
   "restore": {
-    "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {}
+    "F:\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {}
   },
   "projects": {
-    "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
+    "F:\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
+        "projectUniqueName": "F:\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
         "projectName": "AccountingSystem.Models",
-        "projectPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
-        "packagesPath": "C:\\Users\\rokib\\.nuget\\packages\\",
-        "outputPath": "D:\\DEVELOPMENT\\BDJobsAccounting\\AccountingSystem.Models\\obj\\",
+        "projectPath": "F:\\BDJobsAccounting\\AccountingSystem.Models\\AccountingSystem.Models.csproj",
+        "packagesPath": "C:\\Users\\Rokib\\.nuget\\packages\\",
+        "outputPath": "F:\\BDJobsAccounting\\AccountingSystem.Models\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+        ],
         "configFilePaths": [
-          "C:\\Users\\rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Rokib\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -39,24 +42,6 @@
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
-          "dependencies": {
-            "Dapper": {
-              "target": "Package",
-              "version": "[2.1.24, )"
-            },
-            "Microsoft.EntityFrameworkCore": {
-              "target": "Package",
-              "version": "[8.0.0, )"
-            },
-            "Microsoft.EntityFrameworkCore.Relational": {
-              "target": "Package",
-              "version": "[8.0.0, )"
-            },
-            "Microsoft.EntityFrameworkCore.SqlServer": {
-              "target": "Package",
-              "version": "[8.0.0, )"
-            }
-          },
           "imports": [
             "net461",
             "net462",
@@ -68,12 +53,7 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
-          "frameworkReferences": {
-            "Microsoft.NETCore.App": {
-              "privateAssets": "all"
-            }
-          },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.100/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
