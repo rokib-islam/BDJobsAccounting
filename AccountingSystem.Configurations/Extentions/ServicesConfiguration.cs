@@ -11,12 +11,15 @@ namespace AccountingSystem.Configurations.Extentions
     {
         public static IServiceCollection ConfigureServices(this IServiceCollection services)
         {
-            #region Journal
+            #region Account
+            services.AddScoped<IAccountManager, AccountManager>();
+            services.AddScoped<IAccountRepository, AccountRepository>();
+            #endregion 
 
+            #region Journal
             services.AddScoped<IJournalManager, JournalManager>();
             services.AddScoped<IJournalRepository, JournalRepository>();
-
-            #endregion Journal
+            #endregion 
 
             services.AddScoped<DbContext>();
             return services;

@@ -14,12 +14,12 @@ namespace AccountingSystem.Repository
     public class JournalRepository : IJournalRepository
     {
         private readonly AccountingDbContext _context;
-        private readonly IConfiguration _configaration;
+        private readonly IConfiguration _DBCon;
 
-        public JournalRepository(AccountingDbContext context, IConfiguration config) //: base(context)
+        public JournalRepository(AccountingDbContext context, IConfiguration dbcon) //: base(context)
         {
             _context = context;
-            _configaration = config;
+            _DBCon = dbcon;
         }
 
         public async Task<List<Journal>> GetJournalListAsync(DateTime fromDate, DateTime toDate)
@@ -41,7 +41,7 @@ namespace AccountingSystem.Repository
             //    @$"exec GetRecentPostSummariesProc")
             //.ToListAsync();
 
-            using (var _db = new SqlConnection(_configaration.GetConnectionString("DefaultConnection")))
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
                 // Use QueryAsync instead of Query for asynchronous execution
                 var result = await _db.QueryAsync<Journal>("select top 10 * from journal", new { });
