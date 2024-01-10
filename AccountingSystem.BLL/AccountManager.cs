@@ -1,12 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using AccountingSystem.Abstractions.BLL;
 
 namespace AccountingSystem.BLL
 {
-    internal class AccountManager :IAccountManager
+    public class AccountManager : IAccountManager
     {
     }
 }
