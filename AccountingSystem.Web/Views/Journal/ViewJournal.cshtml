@@ -1,0 +1,43 @@
+﻿
+@* @using AccountingSystem.Domain.Entities
+@model IEnumerable<Journal> *@
+
+<h2>View Journal</h2>
+
+<!-- Form for date range selection -->
+<form method="get" action="@Url.Action("get", "Journal")">
+    <label for="fromDate">From Date:</label>
+    <input type="date" id="fromDate" name="fromDate" required>
+
+    <label for="toDate">To Date:</label>
+    <input type="date" id="toDate" name="toDate" required>
+
+    <button type="submit">View</button>
+</form>
+
+<!-- Display table for results -->
+<table>
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <!-- Add other headers based on your m odel properties -->
+        </tr>
+    </thead>
+    <tbody>
+        @* @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.jid</td>
+                <td>@item.SBName</td>
+                <!-- Add other cells based on your model properties -->
+            </tr>
+        } *@
+        <tr>
+            <td>2</td>
+            <td>3</td>
+            <!-- Add other cells based on your model properties -->
+        </tr>
+
+    </tbody>
+</table>
