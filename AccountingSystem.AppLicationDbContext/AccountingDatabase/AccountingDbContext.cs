@@ -1,5 +1,4 @@
 ﻿using AccountingSystem.Models.AccountDbModels;
-using AccountingSystem.Models.AccountViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountingSystem.AppLicationDbContext.AccountingDatabase
@@ -11,6 +10,7 @@ namespace AccountingSystem.AppLicationDbContext.AccountingDatabase
         }
 
         public DbSet<Journal> Journals { get; set; }
-        
+        public DbSet<Users> Users { get; set; }
+
     }
 }

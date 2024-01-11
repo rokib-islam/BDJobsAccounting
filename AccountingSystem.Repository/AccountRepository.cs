@@ -1,5 +1,7 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
+using AccountingSystem.Models.AccountDbModels;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace AccountingSystem.Repository
@@ -14,7 +16,17 @@ namespace AccountingSystem.Repository
             _context = context;
             _configaration = config;
         }
+        public async Task<List<Users>> GetUsers(string userName, string password)
+        {
 
+            var blogs = await _context.Users
+                .Where(b => b.UName == userName && b.PWord == password)
+                .ToListAsync();
+
+            return blogs;
+
+
+        }
 
     }
 }
