@@ -29,6 +29,8 @@
         .error-message {
             color: red;
         }
+
+        
     </style>
 </head>
 
@@ -59,6 +61,7 @@
         <div ng-show="loginCtrl.showErrorMessage" class="mt-3 error-message">
             {{ loginCtrl.errorMessage }}
         </div>
+       
     </div>
 
     <script>
@@ -71,6 +74,7 @@
             vm.rememberMe = false; // Default value for the checkbox
             vm.showErrorMessage = false;
             vm.errorMessage = '';
+           
 
             vm.login = function () {
                 var credentials = {
@@ -78,16 +82,24 @@
                     password: vm.password,
                     rememberMe: vm.rememberMe
                 };
+               
+                $http.post('/Home/Login', JSON.stringify(credentials), { headers: { 'Content-Type': 'application/json' } })
 
-                
-                $http.post('/Home/Login', credentials)
                     .then(function (response) {
-                        // Successful login
-                        alert('Login successful!');
-                        vm.showErrorMessage = false;
+                        if (response.data) {
+                            location.reload();
+                           
+                        }
+                        else {
+                        
+                            vm.showErrorMessage = true;
+                            vm.errorMessage = 'Invalid username or password. Please try again.';
+                        }
+                       
                     })
                     .catch(function (error) {
                         // Failed login
+                        
                         vm.showErrorMessage = true;
                         vm.errorMessage = 'Invalid username or password. Please try again.';
                     });

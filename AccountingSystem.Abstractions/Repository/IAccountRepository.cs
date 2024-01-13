@@ -4,6 +4,7 @@ namespace AccountingSystem.Abstractions.Repository
 {
     public interface IAccountRepository
     {
-        Task<List<Users>> GetUsers(string userName, string password);
+        Users GetUsers(string userName, string password);
+       
     }
 }

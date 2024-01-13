@@ -4,6 +4,6 @@ namespace AccountingSystem.Abstractions.BLL
 {
     public interface IAccountManager
     {
-        Task<List<Users>> GetUsers(string userName, string password);
+        Users GetUsers(string userName, string password);
     }
 }

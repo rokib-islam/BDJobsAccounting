@@ -11,9 +11,9 @@ namespace AccountingSystem.BLL
         {
             _repository = repository;
         }
-        public async Task<List<Users>> GetUsers(string userName, string password)
+        public  Users GetUsers(string userName, string password)
         {
-            return await _repository.GetUsers(userName, password);
+            return  _repository.GetUsers(userName, password);
         }
     }
 }

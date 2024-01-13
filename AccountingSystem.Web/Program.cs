@@ -15,6 +15,13 @@ builder.Services.AddDbContextPool<AccountingDbContext>(x =>
         options.EnableRetryOnFailure(5, TimeSpan.FromSeconds(10), null);
     });
 });
+builder.Services.AddSession(options =>
+{
+    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set your desired session timeout
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
 builder.Services.ConfigureServices();
 var app = builder.Build();
 
@@ -31,6 +38,7 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSession();
 
 app.UseAuthorization();
 

@@ -1,7 +1,9 @@
 using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Diagnostics;
+
 //using System.Web.Mvc;
 
 namespace AccountingSystem.Web.Controllers
@@ -22,57 +24,32 @@ namespace AccountingSystem.Web.Controllers
         {
             return View();
         }
-        [HttpPost]
-        public JsonResult Login(string userName, string password, bool rememberme)
-        {
-            var resultData = new { success = true, message = "Login successful" };
 
-            var user = _AccountManager.GetUsers(userName, password);
+        [HttpPost]
+        public bool Login([FromBody] LoginViewModel credentials)
+        {
+            var resultData = new { success = false, message = "Incorrect User Name or Password" };
+
+            var user = _AccountManager.GetUsers(credentials.username, credentials.password);
 
             if (user != null)
             {
-                //var date = ControllerContext.HttpContext.Request.Cookies["date"];
-                //var shouldRun = false;
-                //if (date == null)
-                //    shouldRun = true;
-                //else
-                //{
-                //    if (DateTime.Parse(date.Value) < DateTime.Today)
-                //        shouldRun = true;
-                //}
-                //if (shouldRun)
-                //{
-                //    //DeleteTempFiles();
-                //    var dateCookie = new HttpCookie("date") { Value = DateTime.Today.ToShortDateString() };
-                //    this.ControllerContext.HttpContext.Response.Cookies.Add(dateCookie);
-                //    dateCookie.Expires = DateTime.Now.AddDays(30);
-                //}
-                //Session["loggedinUser"] = user;
+                HttpContext.Session.SetString("loggedinUser", JsonConvert.SerializeObject(user));
 
-                //var s = rememberme ? "1" : "0";
-                //var remember = new HttpCookie("isSaved") { Value = s };
-                //var useridCookie = new HttpCookie("userid") { Value = user.UserId.ToString() };
-                //this.ControllerContext.HttpContext.Response.Cookies.Add(useridCookie);
-                //var usernameCookie = new HttpCookie("username") { Value = user.UserName };
-                //var passwordCookie = new HttpCookie("password") { Value = user.Password };
-                //this.ControllerContext.HttpContext.Response.Cookies.Add(usernameCookie);
-                //this.ControllerContext.HttpContext.Response.Cookies.Add(passwordCookie);
-                //usernameCookie.Expires = DateTime.Now.AddDays(2);
-                //passwordCookie.Expires = DateTime.Now.AddDays(2);
-                //this.ControllerContext.HttpContext.Response.Cookies.Add(remember);
-                //remember.Expires = DateTime.Now.AddDays(2);
-
-                //useridCookie.Expires = DateTime.Now.AddDays(30);
+                if (credentials.rememberMe)
+                {
+                    // Set username in a cookie
+                    Response.Cookies.Append("username", user.UName, new CookieOptions { Expires = DateTime.Now.AddDays(7) });
+                    Response.Cookies.Append("password", user.PWord, new CookieOptions { Expires = DateTime.Now.AddDays(7) });
+                }
 
 
-
-                return Json(resultData);
+                RedirectToAction("ViewJournal", "Journal");
+                return true;
             }
 
-            resultData = new { success = false, message = "Error User Name or Password" };
-
             // Return the JsonResult
-            return Json(resultData);
+            return false;
 
         }
 

@@ -1,6 +1,10 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
+using Azure;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -9,24 +13,25 @@ namespace AccountingSystem.Repository
     public class AccountRepository : IAccountRepository
     {
         private readonly AccountingDbContext _context;
-        private readonly IConfiguration _configaration;
+        private readonly IConfiguration _DBCon;
 
         public AccountRepository(AccountingDbContext context, IConfiguration config) //: base(context)
         {
             _context = context;
-            _configaration = config;
+            _DBCon = config;
         }
-        public async Task<List<Users>> GetUsers(string userName, string password)
+        public Users GetUsers(string userName, string password)
         {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                // Use QueryFirstOrDefault instead of Query for getting a single result
+                var result = _db.QueryFirstOrDefault<Users>("SELECT * FROM Users WHERE UName = @UName AND PWord = @PWord",
+                    new { UName = userName, PWord = password });
 
-            var blogs = await _context.Users
-                .Where(b => b.UName == userName && b.PWord == password)
-                .ToListAsync();
-
-            return blogs;
-
-
+                return result;
+            }
         }
+
 
     }
 }
