@@ -1,4 +1,5 @@
 using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -51,6 +52,17 @@ namespace AccountingSystem.Web.Controllers
 
             // Return the JsonResult
             return Json(resultData);
+        }
+
+        public IActionResult LogOut()
+        {
+            HttpContext.Session.Remove("Name");
+            HttpContext.Session.Remove("UserID");
+
+            // Clearing the "userid" cookie
+            Response.Cookies.Delete("userid");
+
+            return RedirectToAction("Index", "Home");
         }
 
 
