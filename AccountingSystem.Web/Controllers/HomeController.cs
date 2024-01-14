@@ -1,7 +1,6 @@
 using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
-using Newtonsoft.Json;
 using System.Diagnostics;
 
 //using System.Web.Mvc;
@@ -26,7 +25,7 @@ namespace AccountingSystem.Web.Controllers
         }
 
         [HttpPost]
-        public bool Login([FromBody] LoginViewModel credentials)
+        public IActionResult Login([FromBody] LoginViewModel credentials)
         {
             var resultData = new { success = false, message = "Incorrect User Name or Password" };
 
@@ -34,7 +33,8 @@ namespace AccountingSystem.Web.Controllers
 
             if (user != null)
             {
-                HttpContext.Session.SetString("loggedinUser", JsonConvert.SerializeObject(user));
+                HttpContext.Session.SetString("Name", user.Name);
+                HttpContext.Session.SetInt32("UserID", user.UserID);
 
                 if (credentials.rememberMe)
                 {
@@ -44,17 +44,21 @@ namespace AccountingSystem.Web.Controllers
                 }
 
 
-                RedirectToAction("ViewJournal", "Journal");
-                return true;
+
+                var resul = new { success = true, redirectUrl = Url.Action("AccountingHome", "Home") };
+                return Json(resul);
             }
 
             // Return the JsonResult
-            return false;
-
+            return Json(resultData);
         }
 
-        public IActionResult Privacy()
+
+        public IActionResult AccountingHome()
         {
+            var username = HttpContext.Session.GetString("Name");
+            ViewBag.Username = username;
+
             return View();
         }
 

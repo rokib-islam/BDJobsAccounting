@@ -86,8 +86,9 @@
                 $http.post('/Home/Login', JSON.stringify(credentials), { headers: { 'Content-Type': 'application/json' } })
 
                     .then(function (response) {
-                        if (response.data) {
-                            location.reload();
+                        if (response.data.success) {
+                            vm.showErrorMessage = false;
+                            window.location = response.data.redirectUrl;
                            
                         }
                         else {
