@@ -2,12 +2,10 @@
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
-using AccountingSystem.Repository.EFBase;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System;
 
 namespace AccountingSystem.Repository
 {
@@ -55,9 +53,9 @@ namespace AccountingSystem.Repository
 
         public async Task<List<JouralView>> VireJournal(DateTime fromDate, DateTime toDate)
         {
-            
+
             var page = new SqlParameter("Page", 1);
-            var PageSize= new SqlParameter("PageSize", 20);
+            var PageSize = new SqlParameter("PageSize", 20);
             var preview = new SqlParameter("Preview", 20);
             var dateType = new SqlParameter("DateType", "PostDate");
 
@@ -65,7 +63,7 @@ namespace AccountingSystem.Repository
             var eDate = new SqlParameter("EndDate", "10/01/2023");
 
             var res = await _context.Database
-                .SqlQueryRaw<JouralView>($"EXEC [dbo].[USP_VIEW_JOURNAL_LIST] @Page, @PageSize,@Preview, @DateType, @StartDate, @EndDate", page, PageSize, preview, dateType, sDate,eDate)
+                .SqlQueryRaw<JouralView>($"EXEC [dbo].[USP_VIEW_JOURNAL_LIST] @Page, @PageSize,@Preview, @DateType, @StartDate, @EndDate", page, PageSize, preview, dateType, sDate, eDate)
                 .ToListAsync();
 
 

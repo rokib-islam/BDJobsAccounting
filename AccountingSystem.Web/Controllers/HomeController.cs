@@ -1,5 +1,4 @@
 using AccountingSystem.Abstractions.BLL;
-using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
@@ -68,8 +67,9 @@ namespace AccountingSystem.Web.Controllers
 
         public IActionResult AccountingHome()
         {
-            var username = HttpContext.Session.GetString("Name");
-            ViewBag.Username = username;
+
+            //var username = HttpContext.Session.GetString("Name");
+            //ViewBag.Username = username;
 
             return View();
         }

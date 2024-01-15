@@ -21,7 +21,8 @@ namespace AccountingSystem.Configurations.Extentions
             services.AddScoped<IJournalRepository, JournalRepository>();
             #endregion
 
-         
+
+
 
             services.AddScoped<DbContext>();
             return services;

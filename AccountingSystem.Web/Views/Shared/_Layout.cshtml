@@ -1,4 +1,17 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Http
+@{
+    var username = Context.Session.GetString("Name");
+    
+    // bool accountDep = user.AccountDep;
+
+    
+    // string part = ViewBag.AccordionId;
+
+   
+    // var parts = part.Split(',');
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -13,7 +26,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">AccountingSystem.Web</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="AccountingHome">Home</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -26,15 +39,23 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AccountingHome">Privacy</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Journal" asp-action="ViewJournal">View Journal</a>
+                        <li class="nav-item dropdown">
+                            <!-- Add dropdown class to the list item -->
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Journal
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Journal" asp-action="ViewJournal">View Journal</a>
+                                <a class="dropdown-item" href="#">Submenu Item 2</a>
+                                <!-- Add more submenu items as needed -->
+                            </div>
                         </li>
                     </ul>
 
                     <div class="navbar-text ml-auto">
-                        @if (!string.IsNullOrEmpty(ViewBag.Username))
+                        @if (!string.IsNullOrEmpty(username))
                         {
-                            <text>Welcome, @ViewBag.Username!</text>
+                            <text>Welcome, @username</text>
                         }
                         <ul class="navbar-nav flex-grow-1">
                             <li class="nav-item">
