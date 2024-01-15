@@ -1,6 +1,7 @@
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
-using Microsoft.EntityFrameworkCore;
 using AccountingSystem.Configurations.Extentions;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,10 +18,29 @@ builder.Services.AddDbContextPool<AccountingDbContext>(x =>
 });
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30); // Set your desired session timeout
+    options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
+builder.Services.AddAuthentication(options =>
+{
+    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+    //options.Events = new CookieAuthenticationEvents
+    //{
+    //    OnValidatePrincipal = context =>
+    //    {
+    //        // Log or debug information about the authentication process
+    //        return Task.CompletedTask;
+    //    }
+    //};
+    // Other authentication configurations...
+})
+.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
+{
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Set cookie expiration
+    options.Cookie.HttpOnly = true;
+});
+
 
 builder.Services.ConfigureServices();
 var app = builder.Build();

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingSystem.Web.Controllers
 {
+    //[Authorize]
     public class JournalController : Controller
     {
         private readonly IJournalManager _journalManager;
@@ -14,7 +15,10 @@ namespace AccountingSystem.Web.Controllers
 
         public IActionResult ViewJournal()
         {
-            return View();
+            if (User.Identity.IsAuthenticated)
+                return View();
+            else
+                return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> VireJournal(DateTime fromDate, DateTime toDate)
