@@ -1,5 +1,8 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
+using AccountingSystem.Models.AccountDbModels;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 
 namespace AccountingSystem.Repository
@@ -14,17 +17,14 @@ namespace AccountingSystem.Repository
             _context = context;
             _DBCon = config;
         }
-        //public Users GetUsers(string userName, string password)
-        //{
-        //    using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
-        //    {
-        //        // Use QueryFirstOrDefault instead of Query for getting a single result
-        //        var result = _db.QueryFirstOrDefault<Users>("SELECT * FROM Users WHERE UName = @UName AND PWord = @PWord",
-        //            new { UName = userName, PWord = password });
-
-        //        return result;
-        //    }
-        //}
+        public async Task<List<DistrictList>> GetDistricts()
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = await _db.QueryAsync<DistrictList>("elect DistrictID, DistrictName From DistrictList Order By DistrictName", new { });
+                return result.ToList();
+            }
+        }
 
 
     }
