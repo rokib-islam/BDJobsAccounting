@@ -1,43 +1,94 @@
 ﻿
-@* @using AccountingSystem.Domain.Entities
-@model IEnumerable<Journal> *@
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="col-sm-12">
+            <div class="row">
+                @* <div class="text-center" style="font-size:20px">List of Journal</div> *@
+                <div class="col-sm-5">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="col-form-label-sm">Ledger</label>
+                            <select class="form-control form-control-sm" ng-model="ledger">
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-form-label-sm">Approve By</label>
+                            <select class="form-control form-control-sm" ng-model="approveBy">
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label class="col-form-label-sm">Companies</label>
+                            <select class="form-control form-control-sm" ng-model="companies">
+                            </select>
+                        </div>
+                        <div class="col-sm-6">
+                            <label class="col-form-label-sm">Posted By</label>
+                            <select class="form-control form-control-sm" ng-model="postedBy">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 mt-4">
+                    <div style="border:1px solid lightgray;font-size:14px;padding:10px">
+                        <span style="font-weight:bold">Journal Category</span>
+                        <div class="col-sm-6 mt-3">
+                            <label><input type="radio" name="radio" ng-model="approve" value="1" /> Approve</label>
+                        </div>
+                        <div class="col-sm-6 mt-2">
+                            <label><input type="radio" name="radio" ng-model="nonApprove" value="0" /> Non Approve</label>
+                        </div>
+                    </div>
+                </div>
+                    <div class="col-sm-4 mt-4" style="border:1px solid lightgray;font-size:14px;">
+                        <span style="font-weight:bold">Within Dates By</span>
+                        <div class="col-sm-12 mt-3">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label><input type="radio" name="radio" ng-model="posting" value="PostDate" /> Posting</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label><input type="radio" name="radio" ng-model="value" value="JDate" /> Value</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label><input type="radio" name="radio" ng-model="approval" value="ApprovalDate" /> Approval</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3">From</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3">To</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control form-control-sm" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <div class="text-center mt-3">
+                    <button class="btn btn-success btn-sm" style="padding-left:30px;padding-right:30px">Load</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h2>View Journal</h2>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
-<!-- Form for date range selection -->
-<form method="get" action="@Url.Action("get", "Journal")">
-    <label for="fromDate">From Date:</label>
-    <input type="date" id="fromDate" name="fromDate" required>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
 
-    <label for="toDate">To Date:</label>
-    <input type="date" id="toDate" name="toDate" required>
-
-    <button type="submit">View</button>
-</form>
-
-<!-- Display table for results -->
-<table>
-    <thead>
-        <tr>
-            <th>ID</th>
-            <th>Name</th>
-            <!-- Add other headers based on your m odel properties -->
-        </tr>
-    </thead>
-    <tbody>
-        @* @foreach (var item in Model)
-        {
-            <tr>
-                <td>@item.jid</td>
-                <td>@item.SBName</td>
-                <!-- Add other cells based on your model properties -->
-            </tr>
-        } *@
-        <tr>
-            <td>2</td>
-            <td>3</td>
-            <!-- Add other cells based on your model properties -->
-        </tr>
-
-    </tbody>
-</table>
+    })
+</script>
