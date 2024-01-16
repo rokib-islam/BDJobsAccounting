@@ -18,7 +18,8 @@ namespace AccountingSystem.Web.Controllers
             //if (User.Identity.IsAuthenticated)
             //    return View();
             //else
-            return RedirectToAction("Index", "Home");
+            //return RedirectToAction("Index", "Home");
+            return View();
         }
 
         public async Task<IActionResult> VireJournal(DateTime fromDate, DateTime toDate)
