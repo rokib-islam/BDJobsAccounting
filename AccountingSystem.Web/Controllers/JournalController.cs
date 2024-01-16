@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingSystem.Web.Controllers
@@ -21,21 +22,9 @@ namespace AccountingSystem.Web.Controllers
             //return RedirectToAction("Index", "Home");
             return View();
         }
-
-        public async Task<IActionResult> VireJournal(DateTime fromDate, DateTime toDate)
+        public async Task<IActionResult> GetJournals([FromBody] GetJournalViewModel data)
         {
-            var result = await _journalManager.VireJournal(fromDate, toDate);
-
-            // You can pass the result to the view or process it as needed
-
-            return View(result);
-        }
-
-        public async Task<IActionResult> get(DateTime fromDate, DateTime toDate)
-        {
-            var result = await _journalManager.GetJournalListAsync(fromDate, toDate);
-
-            // You can pass the result to the view or process it as needed
+            var result = await _journalManager.GetJournalListAsync(data.PageNo, data.PageSize, data.IsPreview, data.DateType, data.StartDate, data.EndDate, data.LedgerId, data.LedgerName, data.CompanyId, data.ApprovedBy, data.PostedBy, data.IsApproved);
 
             return View(result);
         }

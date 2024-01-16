@@ -15,5 +15,14 @@ namespace AccountingSystem.Web.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> GetDistricts()
+        {
+            var result = await _CompanyManager.GetDistricts();
+
+            // You can pass the result to the view or process it as needed
+
+            return View(result);
+        }
     }
 }

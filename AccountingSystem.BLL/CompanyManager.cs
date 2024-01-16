@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
+using AccountingSystem.Models.AccountDbModels;
 
 namespace AccountingSystem.BLL
 {
@@ -9,6 +10,11 @@ namespace AccountingSystem.BLL
         public CompanyManager(ICompanyRepository repository) //: base(repository)
         {
             _repository = repository;
+        }
+
+        public async Task<List<DistrictList>> GetDistricts()
+        {
+            return await _repository.GetDistricts();
         }
 
     }
