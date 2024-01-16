@@ -1,11 +1,12 @@
 ﻿using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.Abstractions.Repository;
 
 namespace AccountingSystem.BLL
 {
     public class EmployeeManager : IEmployeeManager
     {
-        private readonly IEmployeeManager _repository;
-        public EmployeeManager(IEmployeeManager repository) //: base(repository)
+        private readonly IEmployeeRepository _repository;
+        public EmployeeManager(IEmployeeRepository repository) //: base(repository)
         {
             _repository = repository;
         }
