@@ -21,6 +21,15 @@ namespace AccountingSystem.Configurations.Extentions
             services.AddScoped<IJournalRepository, JournalRepository>();
             #endregion
 
+            #region Company
+            services.AddScoped<ICompanyManager, CompanyManager>();
+            services.AddScoped<ICompanyRepository, CompanyRepository>();
+            #endregion
+
+            #region Ledger
+            services.AddScoped<ILedgerManager, LedgerManager>();
+            services.AddScoped<ILedgerRepository, LedgerRepository>();
+            #endregion
 
 
 

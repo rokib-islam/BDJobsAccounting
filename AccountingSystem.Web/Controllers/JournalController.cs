@@ -15,10 +15,10 @@ namespace AccountingSystem.Web.Controllers
 
         public IActionResult ViewJournal()
         {
-            if (User.Identity.IsAuthenticated)
-                return View();
-            else
-                return RedirectToAction("Index", "Home");
+            //if (User.Identity.IsAuthenticated)
+            //    return View();
+            //else
+            return RedirectToAction("Index", "Home");
         }
 
         public async Task<IActionResult> VireJournal(DateTime fromDate, DateTime toDate)
