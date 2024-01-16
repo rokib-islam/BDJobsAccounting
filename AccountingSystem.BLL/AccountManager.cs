@@ -11,14 +11,14 @@ namespace AccountingSystem.BLL
         {
             _repository = repository;
         }
-        public Users GetUsers(string userName, string password)
+        public async Task<Users> GetUsers(string userName, string password)
         {
-            return _repository.GetUsers(userName, password);
+            return await _repository.GetUsers(userName, password);
         }
 
-        public List<Users> GetSpecificUser()
+        public async Task<List<Users>> GetSpecificUser()
         {
-            return _repository.GetSpecificUser();
+            return await _repository.GetSpecificUser();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AccountingSystem.Web.Controllers
 {
@@ -16,11 +17,12 @@ namespace AccountingSystem.Web.Controllers
 
         public IActionResult ViewJournal()
         {
-            //if (User.Identity.IsAuthenticated)
-            //    return View();
-            //else
-            //return RedirectToAction("Index", "Home");
-            return View();
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
         }
         public async Task<IActionResult> GetJournals([FromBody] GetJournalViewModel data)
         {

@@ -1,6 +1,7 @@
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Configurations.Extentions;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,27 +22,16 @@ builder.Services.AddSession(options =>
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
-//builder.Services.AddAuthentication(options =>
-//{
-//    options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-//    //options.Events = new CookieAuthenticationEvents
-//    //{
-//    //    OnValidatePrincipal = context =>
-//    //    {
-//    //        // Log or debug information about the authentication process
-//    //        return Task.CompletedTask;
-//    //    }
-//    //};
-//    // Other authentication configurations...
-//})
-//.AddCookie(CookieAuthenticationDefaults.AuthenticationScheme, options =>
-//{
-//    options.ExpireTimeSpan = TimeSpan.FromMinutes(30); // Set cookie expiration
-//    options.Cookie.HttpOnly = true;
-//});
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(
+    option =>
+    {
+        option.LoginPath = "/Home/Index";
+        option.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    });
 
 
 builder.Services.ConfigureServices();
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -57,6 +47,9 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+
+app.UseAuthorization();
+
 app.UseSession();
 
 app.UseAuthorization();

@@ -19,26 +19,28 @@ namespace AccountingSystem.Repository
             _context = context;
             _DBCon = config;
         }
-        public Users GetUsers(string userName, string password)
+        public async Task<Users> GetUsers(string userName, string password)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                var result = _db.QueryFirstOrDefault<Users>("SELECT * FROM Users WHERE UName = @UName AND PWord = @PWord",
+                var result = await _db.QueryFirstOrDefaultAsync<Users>(
+                    "SELECT * FROM Users WHERE UName = @UName AND PWord = @PWord",
                     new { UName = userName, PWord = password });
 
                 return result;
             }
         }
 
-        public List<Users> GetSpecificUser()
+        public async Task<List<Users>> GetSpecificUser()
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                var result = _db.Query<Users>(
+                var result = await _db.QueryAsync<Users>(
                     "Select UserID, Name from Users where CanApprove = 0 and AccessRight like '%1%' order by name;",
                     new { }
-                ).ToList();
-                return result;
+                );
+
+                return result.ToList();
             }
         }
     }

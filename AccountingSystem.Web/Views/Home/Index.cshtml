@@ -61,7 +61,7 @@
             <button type="submit" class="btn btn-primary btn-block">Login</button>
         </form>
 
-        <div ng-show="loginCtrl.showErrorMessage" class="mt-3 error-message">
+        <div ng-hide="loginCtrl.showErrorMessage" class="mt-3 error-message">
             {{ loginCtrl.errorMessage }}
         </div>
        
