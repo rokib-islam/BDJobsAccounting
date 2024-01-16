@@ -31,6 +31,31 @@ namespace AccountingSystem.Configurations.Extentions
             services.AddScoped<ILedgerRepository, LedgerRepository>();
             #endregion
 
+            #region Sale
+            services.AddScoped<ISaleManager, SaleManager>();
+            services.AddScoped<ISaleRepository, SaleRepository>();
+            #endregion
+
+            #region Employee
+            services.AddScoped<IEmployeeManager, EmployeeManager>();
+            services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+            #endregion
+
+            #region Invoice
+            services.AddScoped<IInvoiceManager, InvoiceManager>();
+            services.AddScoped<IInvoiceRepository, InvoiceRepository>();
+            #endregion
+
+            #region Report
+            services.AddScoped<IReportManager, ReportManager>();
+            services.AddScoped<IReportRepository, ReportRepository>();
+            #endregion
+
+            #region Payment
+            services.AddScoped<IPaymentManager, PaymentManager>();
+            services.AddScoped<IPaymentRepository, PaymentRepository>();
+            #endregion
+
 
 
             services.AddScoped<DbContext>();

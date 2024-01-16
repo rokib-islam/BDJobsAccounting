@@ -11,9 +11,9 @@ namespace AccountingSystem.BLL
         {
             _repository = repository;
         }
-        public  Users GetUsers(string userName, string password)
+        public Users GetUsers(string userName, string password)
         {
-            return  _repository.GetUsers(userName, password);
+            return _repository.GetUsers(userName, password);
         }
     }
 }
