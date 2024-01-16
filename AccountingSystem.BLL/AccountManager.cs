@@ -15,5 +15,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetUsers(userName, password);
         }
+
+        public List<Users> GetSpecificUser()
+        {
+            return _repository.GetSpecificUser();
+        }
     }
 }

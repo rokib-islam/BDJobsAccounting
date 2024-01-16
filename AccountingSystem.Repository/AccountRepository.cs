@@ -5,6 +5,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using System.Net.Http.Headers;
 
 namespace AccountingSystem.Repository
 {
@@ -29,6 +30,16 @@ namespace AccountingSystem.Repository
             }
         }
 
-
+        public List<Users> GetSpecificUser()
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = _db.Query<Users>(
+                    "Select UserID, Name from Users where CanApprove = 0 and AccessRight like '%1%' order by name;",
+                    new { }
+                ).ToList();
+                return result;
+            }
+        }
     }
 }
