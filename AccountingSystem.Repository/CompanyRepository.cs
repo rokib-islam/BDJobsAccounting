@@ -46,6 +46,16 @@ namespace AccountingSystem.Repository
             }
 
         }
+        public async Task<List<Company>> GetCompanyListByKey(string Key)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = await _db.QueryAsync<Company>("SELECT Id, Name, BlackListed FROM Company WHERE Name LIKE '%\" + startingKey + \"%' ORDER BY Name", new { });
+                return result.ToList();
+            }
+
+        }
+
     }
 
 }
