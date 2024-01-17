@@ -6,6 +6,7 @@ namespace AccountingSystem.Abstractions.Repository
     {
         // Users GetUsers(string userName, string password);
         Task<List<ServiceViewModel>> GetService(int sTypy);
+        Task<List<ServiceViewModel>> GetAllLedger(string isAdmin, string isAccount);
 
     }
 }
