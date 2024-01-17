@@ -9,12 +9,12 @@
         public string UName { get; set; }
         public string PWord { get; set; }
         public string AccessRight { get; set; }
-        public bool CanApprove { get; set; }
+        public int CanApprove { get; set; }
         public string ApproveRight { get; set; }
-        public bool CanModifyAdmin { get; set; }
+        public int CanModifyAdmin { get; set; }
         public string AccessReports { get; set; }
-        public bool ValidUser { get; set; }
-        public bool AccountDep { get; set; }
+        public int ValidUser { get; set; }
+        public int AccountDep { get; set; }
         public string Email { get; set; }
         public string MobileNo { get; set; }
         public string SignatureImage { get; set; }
