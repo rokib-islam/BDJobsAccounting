@@ -6,6 +6,7 @@ namespace AccountingSystem.Abstractions.Repository
     {
         Task<Users> GetUsers(string userName, string password);
         Task<List<Users>> GetSpecificUser();
+        Task<List<Users>> GetApprovers();
 
     }
 }

@@ -6,16 +6,17 @@
                 @* <div class="text-center" style="font-size:20px">List of Journal</div> *@
                 <div class="col-sm-5">
                     <div class="row">
-                        <div class="col-sm-6" ng-controller="UserController">
+                        <div class="col-sm-6">
                             <label class="col-form-label-sm">Ledger</label>
-                            <select class="form-control form-control-sm" ng-model="selectedUser">
-                                <option value="" disabled selected>Select User</option>
-                                <option ng-repeat="user in users" value="{{user.userID}}">{{user.name}}</option>
+                            <select class="form-control form-control-sm" ng-model="ledger">
+                                <option value="-1" selected>Select User</option>
                             </select>
                         </div>
                         <div class="col-sm-6">
                             <label class="col-form-label-sm">Approve By</label>
                             <select class="form-control form-control-sm" ng-model="approveBy">
+                                <option value="-1" selected>Select</option>
+                                <option ng-repeat="o in getApprovers" value="{{o.userID}}">{{o.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -23,11 +24,15 @@
                         <div class="col-sm-6">
                             <label class="col-form-label-sm">Companies</label>
                             <select class="form-control form-control-sm" ng-model="companies">
+                                <option value="-1" selected>Select</option>
+                                <option value="" ></option>
                             </select>
                         </div>
                         <div class="col-sm-6">
                             <label class="col-form-label-sm">Posted By</label>
                             <select class="form-control form-control-sm" ng-model="postedBy">
+                                <option value="-1" selected>Select</option>
+                                <option ng-repeat="user in users" value="{{user.userID}}">{{user.name}}</option>
                             </select>
                         </div>
                     </div>
@@ -90,21 +95,31 @@
 
 <script>
     var app = angular.module('myApp', []);
-
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-            debugger
-            $scope.users = []; 
-            $scope.selectedUser = '';
+            $scope.postedBy = '-1';
+            $scope.approveBy = '-1';
+            $scope.getUser();
+            $scope.getApprovers();
+        });
 
+        $scope.getUser = function () {
             $http.get('/Home/GetSpecificUser')
                 .then(function (response) {
-                    debugger
                     $scope.users = response.data;
                 }, function (error) {
-                    console.error('Error fetching user data:', error);
+                    console.error(error);
                 });
-        });
+        };
+
+        $scope.getApprovers = function () {
+            $http.get('/Home/GetApprovers')
+                .then(function (response) {
+                    $scope.getApprovers = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+        }      
     });
 
 </script>

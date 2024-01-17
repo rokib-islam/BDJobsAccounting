@@ -25,7 +25,5 @@ namespace AccountingSystem.Repository
                 return result.ToList();
             }
         }
-
-
     }
 }

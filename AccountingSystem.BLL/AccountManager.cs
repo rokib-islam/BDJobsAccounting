@@ -20,5 +20,10 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetSpecificUser();
         }
+
+        public async Task<List<Users>> GetApprovers()
+        {
+            return await _repository.GetApprovers();
+        }
     }
 }

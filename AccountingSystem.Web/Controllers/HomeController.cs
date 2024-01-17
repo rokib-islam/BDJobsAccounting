@@ -125,5 +125,10 @@ namespace AccountingSystem.Web.Controllers
         {
             return await _AccountManager.GetSpecificUser();
         }
+
+        public async Task<List<Users>> GetApprovers()
+        {
+            return await _AccountManager.GetApprovers();
+        }
     }
 }

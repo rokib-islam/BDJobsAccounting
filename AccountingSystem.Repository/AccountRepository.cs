@@ -33,15 +33,45 @@ namespace AccountingSystem.Repository
 
         public async Task<List<Users>> GetSpecificUser()
         {
-            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            try
             {
-                var result = await _db.QueryAsync<Users>(
-                    "Select UserID, Name from Users where CanApprove = 0 and AccessRight like '%1%' order by name;",
-                    new { }
-                );
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<Users>(
+                        "SELECT UserID, Name FROM Users WHERE CanApprove = 0 AND AccessRight LIKE '%1%' ORDER BY Name;",
+                        new { }
+                    );
 
-                return result.ToList();
+                    return result.ToList();
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
+        }
+
+        public async Task<List<Users>> GetApprovers()
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<Users>(
+                        "SELECT UserID, Name FROM Users WHERE CanApprove=1 ORDER BY NAME",
+                        new { }
+                        );
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
         }
     }
 }
