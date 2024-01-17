@@ -6,5 +6,6 @@ namespace AccountingSystem.Abstractions.BLL
     {
         //Users GetUsers(string userName, string password);
         Task<List<DistrictList>> GetDistricts();
+        Task<List<Company>> GetOnlineCompanyList(int radio);
     }
 }

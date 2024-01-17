@@ -16,6 +16,10 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetDistricts();
         }
+        public async Task<List<Company>> GetOnlineCompanyList(int radio)
+        {
+            return await _repository.GetOnlineCompanyList(radio);
+        }
 
     }
 }

@@ -24,5 +24,14 @@ namespace AccountingSystem.Web.Controllers
 
             return View(result);
         }
+        public async Task<IActionResult> GetOnlineCompanyList(int radio)
+        {
+            var result = await _CompanyManager.GetOnlineCompanyList(radio);
+
+            // You can pass the result to the view or process it as needed
+
+            return View(result);
+        }
+
     }
 }
