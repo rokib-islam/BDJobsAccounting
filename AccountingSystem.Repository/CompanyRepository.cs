@@ -4,6 +4,7 @@ using AccountingSystem.Models.AccountDbModels;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace AccountingSystem.Repository
 {
@@ -21,11 +22,30 @@ namespace AccountingSystem.Repository
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                var result = await _db.QueryAsync<DistrictList>("elect DistrictID, DistrictName From DistrictList Order By DistrictName", new { });
+                var result = await _db.QueryAsync<DistrictList>("Select DistrictID, DistrictName From DistrictList Order By DistrictName", new { });
                 return result.ToList();
             }
         }
+        public async Task<List<Company>> GetOnlineCompanyList(int radio)
+        {
+            var radioParam = "";
 
+            if (radio == 0)
+            {
+                radioParam = "All";
 
+            }
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ViewType", radioParam);
+
+                // Execute the stored procedure using Dapper
+                var result = await _db.QueryAsync<Company>("[dbo].[USP_ONLINE_COMPANY_LIST]", parameters, commandType: CommandType.StoredProcedure);
+                return result.ToList();
+            }
+
+        }
     }
+
 }
