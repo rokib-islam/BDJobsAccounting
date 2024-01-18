@@ -70,6 +70,8 @@ namespace AccountingSystem.Web.Controllers
                 HttpContext.Session.SetInt32("UserID", user.UserID);
                 HttpContext.Session.SetString("AccessRight", user.AccessRight);
                 HttpContext.Session.SetString("ApproveRight", user.ApproveRight);
+                HttpContext.Session.SetInt32("AccountDep", user.AccountDep);
+                HttpContext.Session.SetInt32("CanModifyAdmin", user.CanModifyAdmin);
 
                 List<Claim> claims = new List<Claim>() {
 

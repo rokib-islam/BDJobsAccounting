@@ -21,11 +21,18 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-sm-6">
+                        @* <div class="col-sm-6">
                             <label class="col-form-label-sm">Companies</label>
                             <select class="form-control form-control-sm" ng-model="companies">
                                 <option value="-1" selected>Select</option>
                                 <option value="" ></option>
+                            </select>
+                        </div> *@
+                        <div class="col-sm-6">
+                            <label class="col-form-label-sm">Companies</label>
+                            <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
+                            <select size="10" id="companyList" ng-model="comList" style="background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                                <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
                             </select>
                         </div>
                         <div class="col-sm-6">
@@ -119,7 +126,31 @@
                 }, function (error) {
                     console.error(error);
                 })
-        }      
+        }
+
+
+        $scope.companyList = [];
+        $scope.selectedCompany = null; 
+
+        $scope.searchCompany = function (startingKey) {
+            debugger
+            if (startingKey && startingKey.length > 1) {
+                $http.get('/Company/GetCompanyListByKey/' + startingKey)
+                .then(function (response) {
+                    $scope.companyList = response.data;
+                }, function (error) {
+                    console.log(error);
+                });
+            } else {
+                $scope.companyList = [];
+            }
+        };
+
+        $scope.selectCompany = function (company) {
+            $scope.selectedCompany = company;
+            $scope.searchQuery = company.fullName; 
+            $scope.companyList = []; 
+        }
     });
 
 </script>

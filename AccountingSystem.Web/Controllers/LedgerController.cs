@@ -21,9 +21,13 @@ namespace AccountingSystem.Web.Controllers
 
             return View(result);
         }
-        public async Task<IActionResult> GetAllLedger(string isAdmin, string isAccount)
+        public async Task<IActionResult> GetAllLedger()
         {
-            var result = await _LegerManager.GetService(isAdmin, isAccount);
+            var isAccount = HttpContext.Session.GetInt32("AccountDep").ToString();
+            var isAdmin = HttpContext.Session.GetInt32("CanModifyAdmin").ToString();
+
+            var result = await _LegerManager.GetAllLedger(isAdmin, isAccount);
+
 
             return View(result);
         }
