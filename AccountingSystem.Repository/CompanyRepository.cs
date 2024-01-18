@@ -59,6 +59,32 @@ namespace AccountingSystem.Repository
             }
 
         }
+        public async Task<List<Company>> GetOnlineCompanyInfo(int cpId)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@ComId", cpId);
+
+                // Execute the stored procedure using Dapper
+                var result = await _db.QueryAsync<Company>("[dbo].[USP_Acc_Download_ComInfo]", parameters, commandType: CommandType.StoredProcedure);
+                return result.ToList();
+            }
+
+        }
+        public async Task<List<Company>> GetCompanyById(int cpId)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@CompanyId", cpId);
+
+                // Execute the stored procedure using Dapper
+                var result = await _db.QueryAsync<Company>("[dbo].[GetCompanyDetailsById]", parameters, commandType: CommandType.StoredProcedure);
+                return result.ToList();
+            }
+
+        }
 
     }
 

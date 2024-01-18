@@ -24,6 +24,14 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetCompanyListByKey(key);
         }
+        public async Task<List<Company>> GetOnlineCompanyInfo(int cpId)
+        {
+            return await _repository.GetOnlineCompanyInfo(cpId);
+        }
+        public async Task<List<Company>> GetCompanyById(int cpId)
+        {
+            return await _repository.GetCompanyById(cpId);
+        }
 
     }
 }
