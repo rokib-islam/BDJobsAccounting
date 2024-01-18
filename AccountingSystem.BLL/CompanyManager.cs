@@ -20,6 +20,10 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetOnlineCompanyList(radio);
         }
+        public async Task<List<Company>> GetCompanyListByKey(string key)
+        {
+            return await _repository.GetCompanyListByKey(key);
+        }
 
     }
 }

@@ -19,9 +19,14 @@ namespace AccountingSystem.Web.Controllers
         {
             var result = await _LegerManager.GetService(sTypy);
 
-            // You can pass the result to the view or process it as needed
+            return View(result);
+        }
+        public async Task<IActionResult> GetAllLedger(string isAdmin, string isAccount)
+        {
+            var result = await _LegerManager.GetService(isAdmin, isAccount);
 
             return View(result);
         }
+
     }
 }
