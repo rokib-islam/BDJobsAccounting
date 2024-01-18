@@ -133,14 +133,13 @@
         $scope.selectedCompany = null; 
 
         $scope.searchCompany = function (startingKey) {
-            debugger
             if (startingKey && startingKey.length > 1) {
-                $http.get('/Company/GetCompanyListByKey/' + startingKey)
-                .then(function (response) {
-                    $scope.companyList = response.data;
-                }, function (error) {
-                    console.log(error);
-                });
+                $http.get('/Company/GetCompanyListByKey', { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.companyList = response.data;
+                    }, function (error) {
+                        console.log(error);
+                    });
             } else {
                 $scope.companyList = [];
             }

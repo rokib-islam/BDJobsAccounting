@@ -50,7 +50,11 @@ namespace AccountingSystem.Repository
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                var result = await _db.QueryAsync<Company>("SELECT Id, Name, BlackListed FROM Company WHERE Name LIKE '%\" + startingKey + \"%' ORDER BY Name", new { });
+                // Use parameterized query to avoid SQL injection
+                var query = "SELECT TOP 10 Id, Name, BlackListed FROM Company WHERE Name LIKE @Key ORDER BY Name";
+                var parameters = new { Key = "%" + Key + "%" };
+
+                var result = await _db.QueryAsync<Company>(query, parameters);
                 return result.ToList();
             }
 
