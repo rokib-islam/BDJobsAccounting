@@ -34,6 +34,19 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
+        public async Task<IActionResult> GetOnlineCompanyInfo(int cpId)
+        {
+            var result = await _CompanyManager.GetOnlineCompanyInfo(cpId);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> GetCompanyById(int cpId)
+        {
+            var result = await _CompanyManager.GetCompanyById(cpId);
+
+            return Json(result);
+        }
+
 
     }
 }
