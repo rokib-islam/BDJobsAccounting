@@ -84,6 +84,45 @@
                 </div>
             </div>
         </div>
+        <div class="col-sm-12" ng-show="showPagination">
+            <div class="col-sm-5 pull-left text-left" style="margin-left: -15px;">
+                Show
+                <select ng-model="pageSize" ng-change="loadData()">
+                    <option value="20">20</option>
+                    <option value="40">40</option>
+                    <option value="50">50</option>
+                    <option value="60">60</option>
+                    <option value="80">80</option>
+                    <option value="100">100</option>
+                    <option value="0">All</option>
+                </select>
+                entries per page
+            </div>
+            
+        </div>
+        <br />
+        <table ng-show="showTable" class="table table-bordered table-sm" style="font-size:15px">
+            <tr style="background-color:skyblue">
+                <td>Sl#</td>
+                <td>Id</td>
+                <td>Ledger name</td>
+                <td>Description</td>
+                <td>Debt</td>
+                <td>Credit</td>
+                <td>Date</td>
+            </tr>
+            <tbody>
+                <tr ng-repeat="data in journalData">
+                    <td>{{$index + 1}}</td>
+                    <td>{{data.id}}</td>
+                    <td>{{data.sbName}}</td>
+                    <td>{{data.description}}</td>
+                    <td>{{data.debt}}</td>
+                    <td>{{data.credit}}</td>
+                    <td>{{data.jDate}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </div>
 
@@ -94,11 +133,14 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
+            $scope.showTable = false;
+            $scope.showPagination = false;
             $scope.ledger = '0';
             $scope.postedBy = '0';
             $scope.approveBy = '0';
             $scope.dateType = 'PostDate';
             $scope.approve = '0';
+            $scope.pageSize = '20';
             $scope.getUser();
             $scope.getApprovers();
             $scope.getLedger();
@@ -154,11 +196,14 @@
             $scope.companyList = [];
         }
 
-        $scope.loadData = function () {
+        $scope.loadData = function (pageNo) {
             debugger
+            if (pageNo) {
+                $scope.currentPage = pageNo;
+            }
             var requestData = {
-                PageNo: 1,
-                PageSize: 20,
+                PageNo: $scope.currentPage,
+                PageSize: $scope.pageSize,
                 IsPreview: 0,
                 DateType: $scope.dateType,
                 StartDate: $scope.from,
@@ -173,13 +218,19 @@
 
             $http.post('/Journal/GetJournals', requestData)
                 .then(function (response) {
-                    debugger
+                    $scope.showTable = true;
+                    $scope.showPagination = true;
                     console.log(response.data);
-                    $scope.journals = response.data;
+                    $scope.journalData = response.data;
+
+                    $scope.totalItems = response.data.totalPages * $scope.pageSize;
+                    $scope.numPages = response.data.totalPages;
+
                 }, function (error) {
                     console.error(error);
                 })
         };
-    });
 
+
+    });
 </script>
