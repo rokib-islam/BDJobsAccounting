@@ -28,7 +28,7 @@ namespace AccountingSystem.Web.Controllers
         {
             var result = await _journalManager.GetJournalListAsync(data.PageNo, data.PageSize, data.IsPreview, data.DateType, data.StartDate, data.EndDate, data.LedgerId, data.LedgerName, data.CompanyId, data.ApprovedBy, data.PostedBy, data.IsApproved);
 
-            return View(result);
+            return Json(result);
         }
     }
 }

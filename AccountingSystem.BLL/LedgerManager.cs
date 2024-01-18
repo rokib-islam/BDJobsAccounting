@@ -15,7 +15,7 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetService(sTypy);
         }
-        public async Task<List<ServiceViewModel>> GetAllLedger(string isAdmin, string isAccount)
+        public async Task<List<LedgerListViewModel>> GetAllLedger(string isAdmin, string isAccount)
         {
             return await _repository.GetAllLedger(isAdmin, isAccount);
         }

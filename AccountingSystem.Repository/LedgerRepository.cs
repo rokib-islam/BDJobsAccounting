@@ -31,11 +31,11 @@ namespace AccountingSystem.Repository
                 return result.ToList();
             }
         }
-        public async Task<List<ServiceViewModel>> GetAllLedger(string isAdmin, string isAccount)
+        public async Task<List<LedgerListViewModel>> GetAllLedger(string isAdmin, string isAccount)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                var result = await _db.QueryAsync<ServiceViewModel>(
+                var result = await _db.QueryAsync<LedgerListViewModel>(
                     "[dbo].[USP_LedgerList]",
                     new { UserAdmin = isAdmin, AccountsDep = isAccount },
                     commandType: CommandType.StoredProcedure

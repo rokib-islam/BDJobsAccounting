@@ -31,8 +31,7 @@ namespace AccountingSystem.Web.Controllers
         public async Task<IActionResult> GetCompanyListByKey(string startingKey)
         {
             var result = await _CompanyManager.GetCompanyListByKey(startingKey);
-
-            return View(result);
+            return Json(result);
         }
 
 

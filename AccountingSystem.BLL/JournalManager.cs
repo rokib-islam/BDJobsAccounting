@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.BLL
 {
@@ -13,7 +14,7 @@ namespace AccountingSystem.BLL
             _repository = repository;
         }
 
-        public async Task<List<Journal>> GetJournalListAsync(int pageNo, int pageSize, int isPreview, string dateType, string startDate, string endDate, int ledgerId, string ledgerName, int companyId, int approvedBy, int postedBy, int isApproved)
+        public async Task<List<JouralView>> GetJournalListAsync(int pageNo, int pageSize, int isPreview, string dateType, string startDate, string endDate, int ledgerId, string ledgerName, int companyId, int approvedBy, int postedBy, int isApproved)
         {
             return await _repository.GetJournalListAsync(pageNo, pageSize, isPreview, dateType, startDate, endDate, ledgerId, ledgerName, companyId, approvedBy, postedBy, isApproved);
         }

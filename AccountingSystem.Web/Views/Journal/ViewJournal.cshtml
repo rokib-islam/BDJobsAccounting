@@ -3,94 +3,86 @@
     <div ng-controller="myController">
         <div class="col-sm-12">
             <div class="row">
-                @* <div class="text-center" style="font-size:20px">List of Journal</div> *@
+                <div class="text-center alert-info" style="font-size:20px;margin-top:-10px">List of Journal</div>
                 <div class="col-sm-5">
                     <div class="row">
                         <div class="col-sm-6">
                             <label class="col-form-label-sm">Ledger</label>
                             <select class="form-control form-control-sm" ng-model="ledger">
-                                <option value="-1" selected>Select User</option>
+                                <option value="0" selected>Select</option>
+                                <option ng-repeat="o in ledgers" value="{{o.id}}">{{o.ladgerName}}</option>
                             </select>
                         </div>
                         <div class="col-sm-6">
                             <label class="col-form-label-sm">Approve By</label>
                             <select class="form-control form-control-sm" ng-model="approveBy">
-                                <option value="-1" selected>Select</option>
-                                <option ng-repeat="o in getApprovers" value="{{o.userID}}">{{o.name}}</option>
+                                <option value="0" selected>Select</option>
+                                <option ng-repeat="o in approvers" value="{{o.userID}}">{{o.name}}</option>
                             </select>
                         </div>
                     </div>
                     <div class="row">
-                        @* <div class="col-sm-6">
-                            <label class="col-form-label-sm">Companies</label>
-                            <select class="form-control form-control-sm" ng-model="companies">
-                                <option value="-1" selected>Select</option>
-                                <option value="" ></option>
-                            </select>
-                        </div> *@
                         <div class="col-sm-6">
                             <label class="col-form-label-sm">Companies</label>
                             <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
-                            <select size="10" id="companyList" ng-model="comList" style="background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                            <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="width: 200px; overflow:auto ;background: white none repeat scroll 0% 0%" ng-show="companyList.length > 0">
                                 <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
                             </select>
                         </div>
                         <div class="col-sm-6">
                             <label class="col-form-label-sm">Posted By</label>
                             <select class="form-control form-control-sm" ng-model="postedBy">
-                                <option value="-1" selected>Select</option>
+                                <option value="0" selected>Select</option>
                                 <option ng-repeat="user in users" value="{{user.userID}}">{{user.name}}</option>
                             </select>
                         </div>
                     </div>
                 </div>
                 <div class="col-sm-3 mt-4">
-                    <div style="border:1px solid lightgray;font-size:14px;padding:10px">
+                    <div style="border:1px solid lightgray;font-size:14px;">
                         <span style="font-weight:bold">Journal Category</span>
-                        <div class="col-sm-6 mt-3">
-                            <label><input type="radio" name="radio" ng-model="approve" value="1" /> Approve</label>
+                        <br />
+                        <label class="mt-4"><input type="radio" name="radio" ng-model="approve" value="1" /> Approve</label>
+                        <br />
+                        <label class="mt-3"><input type="radio" name="radio" ng-model="approve" value="0" /> Non Approve</label>
+                    </div>
+                </div>
+                <div class="col-sm-4 mt-4" style="border:1px solid lightgray;font-size:14px;">
+                    <span style="font-weight:bold">Within Dates By</span>
+                    <div class="col-sm-12 mt-3">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label><input type="radio" name="radio1" ng-model="dateType" value="PostDate" /> Posting</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label><input type="radio" name="radio1" ng-model="dateType" value="JDate" /> Value</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <label><input type="radio" name="radio1" ng-model="dateType" value="ApprovalDate" /> Approval</label>
+                            </div>
                         </div>
-                        <div class="col-sm-6 mt-2">
-                            <label><input type="radio" name="radio" ng-model="nonApprove" value="0" /> Non Approve</label>
+                    </div>
+                    <div class="row mt-2">
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3">From</label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control form-control-sm" ng-model="from" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3">To</label>
+                                <div class="col-sm-9">
+                                    <input type="date" class="form-control form-control-sm" ng-model="to" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                    <div class="col-sm-4 mt-4" style="border:1px solid lightgray;font-size:14px;">
-                        <span style="font-weight:bold">Within Dates By</span>
-                        <div class="col-sm-12 mt-3">
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <label><input type="radio" name="radio" ng-model="posting" value="PostDate" /> Posting</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label><input type="radio" name="radio" ng-model="value" value="JDate" /> Value</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label><input type="radio" name="radio" ng-model="approval" value="ApprovalDate" /> Approval</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-sm-6">
-                                <div class="form-group row">
-                                    <label class="col-sm-3">From</label>
-                                    <div class="col-sm-9">
-                                        <input type="date" class="form-control form-control-sm" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6">
-                                <div class="form-group row">
-                                    <label class="col-sm-3">To</label>
-                                    <div class="col-sm-9">
-                                        <input type="date" class="form-control form-control-sm" />
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 <div class="text-center mt-3">
-                    <button class="btn btn-success btn-sm" style="padding-left:30px;padding-right:30px">Load</button>
+                    <button class="btn btn-success btn-sm" style="padding-left:30px;padding-right:30px" ng-click="loadData()">Load</button>
                 </div>
             </div>
         </div>
@@ -104,11 +96,24 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-            $scope.postedBy = '-1';
-            $scope.approveBy = '-1';
+            $scope.ledger = '0';
+            $scope.postedBy = '0';
+            $scope.approveBy = '0';
+            $scope.dateType = 'PostDate';
+            $scope.approve = '0';
             $scope.getUser();
             $scope.getApprovers();
+            $scope.getLedger();
         });
+
+        $scope.getLedger = function () {
+            $http.get('/Ledger/GetAllLedger')
+                .then(function (response) {
+                    $scope.ledgers = response.data;
+                }, function (error) {
+                    console.error(error);
+                });
+        };
 
         $scope.getUser = function () {
             $http.get('/Home/GetSpecificUser')
@@ -122,7 +127,7 @@
         $scope.getApprovers = function () {
             $http.get('/Home/GetApprovers')
                 .then(function (response) {
-                    $scope.getApprovers = response.data;
+                    $scope.approvers = response.data;
                 }, function (error) {
                     console.error(error);
                 })
@@ -130,7 +135,7 @@
 
 
         $scope.companyList = [];
-        $scope.selectedCompany = null; 
+        $scope.selectedCompany = null;
 
         $scope.searchCompany = function (startingKey) {
             if (startingKey && startingKey.length > 1) {
@@ -138,8 +143,8 @@
                     .then(function (response) {
                         $scope.companyList = response.data;
                     }, function (error) {
-                        console.log(error);
-                    });
+                        console.error(error);
+                    })
             } else {
                 $scope.companyList = [];
             }
@@ -147,9 +152,36 @@
 
         $scope.selectCompany = function (company) {
             $scope.selectedCompany = company;
-            $scope.searchQuery = company.fullName; 
-            $scope.companyList = []; 
+            $scope.searchQuery = company.name;
+            $scope.companyList = [];
         }
+
+        $scope.loadData = function () {
+            debugger
+            var requestData = {
+                PageNo: 1,
+                PageSize: 20,
+                IsPreview: 0,
+                DateType: $scope.dateType,
+                StartDate: $scope.from,
+                EndDate: $scope.to,
+                LedgerId: $scope.ledger,
+                LedgerName: '',
+                CompanyId: $scope.selectedCompany ? $scope.selectedCompany.id : 0,
+                ApprovedBy: $scope.approveBy,
+                PostedBy: $scope.postedBy,
+                IsApproved: $scope.approve
+            };
+
+            $http.post('/Journal/GetJournals', requestData)
+                .then(function (response) {
+                    debugger
+                    console.log(response.data);
+                    $scope.journals = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+        };
     });
 
 </script>

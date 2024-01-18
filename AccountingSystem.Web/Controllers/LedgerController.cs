@@ -29,7 +29,7 @@ namespace AccountingSystem.Web.Controllers
             var result = await _LegerManager.GetAllLedger(isAdmin, isAccount);
 
 
-            return View(result);
+            return Json(result);
         }
 
     }
