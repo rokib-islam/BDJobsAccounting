@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Web.Models;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -84,6 +85,63 @@ namespace AccountingSystem.Repository
                 return result.ToList();
             }
 
+        }
+        public async Task<List<Company>> CheckCompany(string name)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+
+                var query = "SELECT Id, Name, Address, City, Phone, Email, Fax, Contact_Person, Designation, Balance, BlackListed, CP_ID, AccContactName, VATRegNo, VATRegAdd, DistrictID, UpazilaID, BankID FROM Company WHERE Name = @Name";
+
+                var parameters = new DynamicParameters();
+                parameters.Add("@Name", name);
+
+                var result = await _db.QueryAsync<Company>(query, parameters);
+                return result.ToList();
+            }
+        }
+        public async Task<List<Company>> InsertUpdateOnlineCompany(CompanyInsertUpdateViewModel FromData)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    Action = FromData.Action,
+                    CP_ID = FromData.CpId,
+                    CompanyName = FromData.Name,
+                    Address = FromData.Address,
+                    City = FromData.City,
+                    Phone = FromData.Phone,
+                    Email = FromData.Email,
+                    Contact_Person = FromData.CPerson,
+                    Designation = FromData.Designation,
+                    CompanyID = FromData.CompanyId,
+                    DistrictID = FromData.DistrictId,
+                    Type = FromData.Type
+                };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<Company>("USP_INSERT_UPDATE_ONLINE_COMPANY", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+
+                //Update Company section to online 
+
+                if (FromData.Action == "INSERT")
+                {
+
+                }
+                else
+                {
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
     }

@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingSystem.Web.Controllers
@@ -40,12 +41,26 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
-        public async Task<IActionResult> GetCompanyById(int cpId)
+        public async Task<IActionResult> GetLocalCompanyInfo(int cpId)
         {
             var result = await _CompanyManager.GetCompanyById(cpId);
 
             return Json(result);
         }
+        public async Task<IActionResult> CheckCompany(string name)
+        {
+            var result = await _CompanyManager.CheckCompany(name);
+
+            return Json(result);
+        }
+
+        public async Task<IActionResult> InsertUpdateOnlineCompany([FromBody] CompanyInsertUpdateViewModel FromData)
+        {
+            var result = await _CompanyManager.InsertUpdateOnlineCompany(FromData);
+
+            return Json(result);
+        }
+
 
 
     }

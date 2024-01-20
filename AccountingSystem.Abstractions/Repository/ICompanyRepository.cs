@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Web.Models;
 
 namespace AccountingSystem.Abstractions.Repository
 {
@@ -9,6 +10,8 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<Company>> GetCompanyListByKey(string startingKey);
         Task<List<Company>> GetOnlineCompanyInfo(int cpId);
         Task<List<Company>> GetCompanyById(int cpId);
+        Task<List<Company>> CheckCompany(string name);
+        Task<List<Company>> InsertUpdateOnlineCompany(CompanyInsertUpdateViewModel FromData);
 
     }
 }

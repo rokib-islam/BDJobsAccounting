@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Web.Models;
 
 namespace AccountingSystem.BLL
 {
@@ -32,6 +33,15 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetCompanyById(cpId);
         }
+        public async Task<List<Company>> CheckCompany(string name)
+        {
+            return await _repository.CheckCompany(name);
+        }
+        public async Task<List<Company>> InsertUpdateOnlineCompany(CompanyInsertUpdateViewModel FromData)
+        {
+            return await _repository.InsertUpdateOnlineCompany(FromData);
+        }
+
 
     }
 }
