@@ -12,6 +12,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<Company>> GetCompanyById(int cpId);
         Task<List<Company>> CheckCompany(string name);
         Task<List<Company>> InsertUpdateOnlineCompany(CompanyInsertUpdateViewModel FromData);
-
+        Task UpdateProfile(CompanyInsertUpdateViewModel FromData);
+        Task<Company> CheckOnlineCompany(int id);
     }
 }

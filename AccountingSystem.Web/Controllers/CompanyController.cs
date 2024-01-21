@@ -57,6 +57,13 @@ namespace AccountingSystem.Web.Controllers
         public async Task<IActionResult> InsertUpdateOnlineCompany([FromBody] CompanyInsertUpdateViewModel FromData)
         {
             var result = await _CompanyManager.InsertUpdateOnlineCompany(FromData);
+            await _CompanyManager.UpdateProfile(FromData);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> CheckOnlineCompany(int id)
+        {
+            var result = await _CompanyManager.CheckOnlineCompany(id);
 
             return Json(result);
         }

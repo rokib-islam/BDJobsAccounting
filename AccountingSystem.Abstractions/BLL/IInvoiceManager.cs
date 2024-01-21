@@ -1,7 +1,9 @@
-﻿namespace AccountingSystem.Abstractions.BLL
+﻿using AccountingSystem.Models.AccountViewModels;
+
+namespace AccountingSystem.Abstractions.BLL
 {
     public interface IInvoiceManager
     {
-        //Users GetUsers(string userName, string password);
+        Task<List<InvoiceForOnlineJobViewModel>> GetInvoices(int cpId, string sDate, int ledgerId);
     }
 }

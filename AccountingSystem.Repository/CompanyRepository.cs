@@ -125,22 +125,65 @@ namespace AccountingSystem.Repository
                     var result = await _db.QueryAsync<Company>("USP_INSERT_UPDATE_ONLINE_COMPANY", parameters, commandType: CommandType.StoredProcedure);
                     return result.ToList();
                 }
-
-                //Update Company section to online 
-
-                if (FromData.Action == "INSERT")
-                {
-
-                }
-                else
-                {
-
-                }
-
             }
             catch (Exception ex)
             {
                 throw ex;
+            }
+        }
+
+        public async Task UpdateProfile(CompanyInsertUpdateViewModel FromData)
+        {
+            int cId = 0;
+
+            if (FromData.Action == "INSERT")
+            {
+                try
+                {
+                    using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                    {
+                        cId = await _db.QueryFirstOrDefaultAsync<int>("SELECT id FROM company WHERE name=@Name AND cp_id=@CpId;", FromData);
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+            else
+            {
+                cId = Convert.ToInt32(FromData.CompanyId);
+            }
+
+            var query = "UPDATE dbo_Company_Profiles SET acc_Id=@cId WHERE cp_id=@CpId;";
+
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+            {
+                try
+                {
+                    await _db.ExecuteAsync(query, new { cId, FromData.CpId });
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public async Task<Company> CheckOnlineCompany(int id)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+            {
+                var result = await _db.QueryFirstOrDefaultAsync<Company>(@"
+                SELECT DISTINCT C.Id, C.Name, C.Address, C.City, C.Phone, C.Email, C.Fax,
+                CASE WHEN CP.Name IS NULL THEN C.Contact_Person ELSE CP.Name END As Contact_Person,
+                CASE WHEN CP.Designation IS NULL THEN C.Designation ELSE CP.Designation END As Designation,
+                C.Balance, C.BlackListed, C.CP_ID, C.AccContactName, C.VATRegNo, C.VATRegAdd, C.DistrictID, C.UpazilaID, C.BankID, C.VatChallanName, C.AccPersonMail, C.AccPersonContactNo
+                FROM Company C
+                LEFT JOIN ContactPersons CP ON C.Id = CP.CID AND CP.PType = 'Contact person'
+                WHERE C.Id = @Id", new { Id = id });
+
+                return result;
             }
         }
 

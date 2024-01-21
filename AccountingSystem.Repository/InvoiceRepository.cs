@@ -1,6 +1,10 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
+using AccountingSystem.Models.AccountViewModels;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace AccountingSystem.Repository
 {
@@ -14,17 +18,32 @@ namespace AccountingSystem.Repository
             _context = context;
             _DBCon = config;
         }
-        //public Users GetUsers(string userName, string password)
-        //{
-        //    using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
-        //    {
-        //        // Use QueryFirstOrDefault instead of Query for getting a single result
-        //        var result = _db.QueryFirstOrDefault<Users>("SELECT * FROM Users WHERE UName = @UName AND PWord = @PWord",
-        //            new { UName = userName, PWord = password });
+        public async Task<List<InvoiceForOnlineJobViewModel>> GetInvoices(int cpId, string sDate, int ledgerId)
+        {
+            try
+            {
+                var invoices = new List<InvoiceForOnlineJobViewModel>();
 
-        //        return result;
-        //    }
-        //}
+                var parameters = new
+                {
+                    PCode = ledgerId,
+                    InvoiceSentDate = sDate,
+                    CP_ID = cpId
+                };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    invoices = (await _db.QueryAsync<InvoiceForOnlineJobViewModel>("USP_UPLOAD_INVOICE_ONLINE", parameters, commandType: CommandType.StoredProcedure))
+                                          .AsList();
+                }
+
+                return invoices;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
     }

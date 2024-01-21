@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
+using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.BLL
 {
@@ -10,9 +11,35 @@ namespace AccountingSystem.BLL
         {
             _repository = repository;
         }
-        //public  Users GetUsers(string userName, string password)
-        //{
-        //    return  _repository.GetUsers(userName, password);
-        //}
+
+        public async Task FixDownloadIssue()
+        {
+            await _repository.FixDownloadIssue();
+        }
+        public async Task<List<OnlineJobViewModel>> GetOnlineJobList(string CName, int Verified, int LedgerID)
+        {
+            return await _repository.GetOnlineJobList(CName, Verified, LedgerID);
+        }
+        public async Task<List<JobViewModel>> GetJobs(int cpId, string date, int adType, int adRegion)
+        {
+            return await _repository.GetJobs(cpId, date, adType, adRegion);
+        }
+        public async Task DeleteOnlineJob(int jpId)
+        {
+            await _repository.DeleteOnlineJob(jpId);
+        }
+        public async Task<bool> IsAllUploaded()
+        {
+            return await _repository.IsAllUploaded();
+        }
+        public async Task<int> DownloadJobs(string fromDate, string toDate, int PNPL)
+        {
+            return await _repository.DownloadJobs(fromDate, toDate, PNPL);
+        }
+
+
+
+
+
     }
 }
