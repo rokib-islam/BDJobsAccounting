@@ -5,15 +5,23 @@ namespace AccountingSystem.Web.Controllers
 {
     public class InvoiceController : Controller
     {
-        private readonly ISaleManager _SaleManager;
+        private readonly IInvoiceManager _InvoiceManager;
 
-        public InvoiceController(ISaleManager SaleManager)
+        public InvoiceController(IInvoiceManager InvoiceManagerManager)
         {
-            _SaleManager = SaleManager;
+            _InvoiceManager = InvoiceManagerManager;
         }
         public IActionResult Index()
         {
             return View();
         }
+        public async Task<IActionResult> GetInvoices(int cpId, string sDate, int ledgerId)
+        {
+            var data = await _InvoiceManager.GetInvoices(cpId, sDate, ledgerId);
+
+            return Json(data);
+        }
+
+
     }
 }

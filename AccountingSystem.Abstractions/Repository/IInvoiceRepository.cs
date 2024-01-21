@@ -1,8 +1,10 @@
-﻿namespace AccountingSystem.Abstractions.Repository
+﻿using AccountingSystem.Models.AccountViewModels;
+
+namespace AccountingSystem.Abstractions.Repository
 {
     public interface IInvoiceRepository
     {
-        // Users GetUsers(string userName, string password);
+        Task<List<InvoiceForOnlineJobViewModel>> GetInvoices(int cpId, string sDate, int ledgerId);
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
+using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.BLL
 {
@@ -10,9 +11,9 @@ namespace AccountingSystem.BLL
         {
             _repository = repository;
         }
-        //public  Users GetUsers(string userName, string password)
-        //{
-        //    return  _repository.GetUsers(userName, password);
-        //}
+        public async Task<List<InvoiceForOnlineJobViewModel>> GetInvoices(int cpId, string sDate, int ledgerId)
+        {
+            return await _repository.GetInvoices(cpId, sDate, ledgerId);
+        }
     }
 }

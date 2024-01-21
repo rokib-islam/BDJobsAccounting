@@ -44,6 +44,30 @@ namespace AccountingSystem.Repository
                 return result.ToList();
             }
         }
+        public async Task<int> GetOnlineLedgerId(string onlineProduct)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new
+                    {
+                        OnlineProduct = onlineProduct
+                    };
+
+                    // Assuming SERVICE_LIST is the name of the table
+                    var result = await _db.QueryFirstOrDefaultAsync<int>("SELECT LedgerId FROM SERVICE_LIST WHERE ServiceName = @OnlineProduct", parameters);
+
+                    // If no rows are found, result will be the default value for int, which is 0
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception or log it
+                throw ex;
+            }
+        }
 
 
     }

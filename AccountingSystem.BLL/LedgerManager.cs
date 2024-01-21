@@ -19,6 +19,10 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetAllLedger(isAdmin, isAccount);
         }
+        public async Task<int> GetOnlineLedgerId(string onlineProduct)
+        {
+            return await _repository.GetOnlineLedgerId(onlineProduct);
+        }
 
 
     }
