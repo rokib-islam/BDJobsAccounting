@@ -1,4 +1,11 @@
 ﻿
+<head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+@*     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+ *@</head>
 <div ng-app="myApp">
     <div ng-controller="myController">
         <div class="col-sm-12">
@@ -7,14 +14,14 @@
                 <div class="col-sm-5">
                     <div class="row">
                         <div class="col-sm-6">
-                            <label class="col-form-label-sm">Ledger</label>
+                            <label class="col-form-label">Ledger</label>
                             <select class="form-control form-control-sm" ng-model="ledger">
                                 <option value="0" selected>Select</option>
                                 <option ng-repeat="o in ledgers" value="{{o.id}}">{{o.ladgerName}}</option>
                             </select>
                         </div>
                         <div class="col-sm-6">
-                            <label class="col-form-label-sm">Approve By</label>
+                            <label class="col-form-label">Approve By</label>
                             <select class="form-control form-control-sm" ng-model="approveBy">
                                 <option value="0" selected>Select</option>
                                 <option ng-repeat="o in approvers" value="{{o.userID}}">{{o.name}}</option>
@@ -23,14 +30,14 @@
                     </div>
                     <div class="row">
                         <div class="col-sm-6">
-                            <label class="col-form-label-sm">Companies</label>
+                            <label class="col-form-label">Companies</label>
                             <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
                             <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="width: 200px; overflow:auto ;background: white none repeat scroll 0% 0%" ng-show="companyList.length > 0">
                                 <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
                             </select>
                         </div>
                         <div class="col-sm-6">
-                            <label class="col-form-label-sm">Posted By</label>
+                            <label class="col-form-label">Posted By</label>
                             <select class="form-control form-control-sm" ng-model="postedBy">
                                 <option value="0" selected>Select</option>
                                 <option ng-repeat="user in users" value="{{user.userID}}">{{user.name}}</option>
@@ -38,42 +45,46 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3 mt-4" style="border:1px solid lightgray;font-size:14px;">
-                    <span style="font-weight:bold">Journal Category</span>
-                    <br />
-                    <label class="mt-4"><input type="radio" name="radio" ng-model="approve" value="1" /> Approve</label>
-                    <br />
-                    <label class="mt-3"><input type="radio" name="radio" ng-model="approve" value="0" /> Non Approve</label>
-                </div>
-                <div class="col-sm-4 mt-4" style="border:1px solid lightgray;font-size:14px;">
-                    <span style="font-weight:bold">Within Dates By</span>
-                    <div class="col-sm-12 mt-3">
-                        <div class="row">
-                            <div class="col-sm-4">
-                                <label><input type="radio" name="radio1" ng-model="dateType" value="PostDate" /> Posting</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <label><input type="radio" name="radio1" ng-model="dateType" value="JDate" /> Value</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <label><input type="radio" name="radio1" ng-model="dateType" value="ApprovalDate" /> Approval</label>
-                            </div>
-                        </div>
+                <div class="col-sm-2 mt-4">
+                    <div style="border:1px solid lightgray;font-size:14px;padding:10px">
+                        <span style="font-weight:bold">Journal Category</span>
+                        <br />
+                        <label class="mt-4"><input type="radio" name="radio" ng-model="approve" value="1" /> Approve</label>
+                        <br />
+                        <label class="mt-3"><input type="radio" name="radio" ng-model="approve" value="0" /> Non Approve</label>
                     </div>
-                    <div class="row mt-2">
-                        <div class="col-sm-6">
-                            <div class="form-group row">
-                                <label class="col-sm-3">From</label>
-                                <div class="col-sm-9">
-                                    <input type="date" class="form-control form-control-sm" ng-model="from" />
+                </div>
+                <div class="col-sm-5 mt-4">
+                    <div style="border:1px solid lightgray;font-size:14px;padding:10px">
+                        <span style="font-weight:bold">Within Dates By</span>
+                        <div class="col-sm-12 mt-3">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label><input type="radio" name="radio1" ng-model="dateType" value="PostDate" /> Posting</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label><input type="radio" name="radio1" ng-model="dateType" value="JDate" /> Value</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label><input type="radio" name="radio1" ng-model="dateType" value="ApprovalDate" /> Approval</label>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group row">
-                                <label class="col-sm-3">To</label>
-                                <div class="col-sm-9">
-                                    <input type="date" class="form-control form-control-sm" ng-model="to" />
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3">From</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control form-control-sm" ng-model="from" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3">To</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control form-control-sm" ng-model="to" />
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -84,23 +95,47 @@
                 </div>
             </div>
         </div>
-        <div class="col-sm-12" ng-show="showPagination">
-            <div class="col-sm-5 pull-left text-left" style="margin-left: -15px;">
-                Show
-                <select ng-model="pageSize" ng-change="loadData()">
-                    <option value="20">20</option>
-                    <option value="40">40</option>
-                    <option value="50">50</option>
-                    <option value="60">60</option>
-                    <option value="80">80</option>
-                    <option value="100">100</option>
-                    <option value="0">All</option>
-                </select>
-                entries per page
-            </div>
-            
+        <div class="col-sm-12">
+            <div class="pull-left text-left" style="margin-top:20px;" ng-show="isVisible">
+                    Show
+                    <select id="page" ng-model="pageSize">
+                        <option value="10">10</option>
+                        <option value="20">20</option>
+                        <option value="40">40</option>
+                        <option value="50" selected>50</option>
+                        <option value="60">60</option>
+                        <option value="80">80</option>
+                        <option value="100">100</option>
+                        <option value="500">500</option>
+                        <option value="1000">1000</option>
+                        <option value="3000">3000</option>
+                        <option value="5000">5000</option>
+                        <option value="10000">10000</option>
+                        <option value="10000000">All</option>
+                    </select>
+                    entries per page. (Total:{{totalItems}} data)                
+                <div class="col-sm-12 row">
+                    <div class="col-sm-6" style="margin-top:10px">
+                        <button ng-click="prevSet()">Previous 5 Pages</button>
+                        Page {{ currentPage }}
+                        <button ng-click="nextSet()">Next Page</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination" style="margin-top: 10px">
+                                <li class="page-item" ng-class="{ 'active': currentPage == page }" ng-repeat="page in getPages()">
+                                    <a class="page-link" href="#" ng-click="setPage(page)">{{ page }}</a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+
+
+                </div>
+            </div>            
         </div>
-        <br />
+
+
         <table ng-show="showTable" class="table table-bordered table-sm" style="font-size:15px">
             <tr style="background-color:skyblue">
                 <td>Sl#</td>
@@ -126,25 +161,26 @@
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-
 <script>
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.showTable = false;
-            $scope.showPagination = false;
+            $scope.isVisible = false;
             $scope.ledger = '0';
             $scope.postedBy = '0';
             $scope.approveBy = '0';
             $scope.dateType = 'PostDate';
             $scope.approve = '0';
-            $scope.pageSize = '20';
             $scope.getUser();
             $scope.getApprovers();
             $scope.getLedger();
+            $scope.pageSize = '20';
         });
+
+        $scope.currentPage = 1;
+        $scope.pageSize = 20;
+        $scope.totalItems = 0;
 
         $scope.getLedger = function () {
             $http.get('/Ledger/GetAllLedger')
@@ -196,11 +232,7 @@
             $scope.companyList = [];
         }
 
-        $scope.loadData = function (pageNo) {
-            debugger
-            if (pageNo) {
-                $scope.currentPage = pageNo;
-            }
+        $scope.loadData = function () {
             var requestData = {
                 PageNo: $scope.currentPage,
                 PageSize: $scope.pageSize,
@@ -219,18 +251,69 @@
             $http.post('/Journal/GetJournals', requestData)
                 .then(function (response) {
                     $scope.showTable = true;
-                    $scope.showPagination = true;
+
                     console.log(response.data);
                     $scope.journalData = response.data;
+                    $scope.totalItems = response.data[0].totalRecords;
 
-                    $scope.totalItems = response.data.totalPages * $scope.pageSize;
-                    $scope.numPages = response.data.totalPages;
-
+                    $scope.isVisible = true;
                 }, function (error) {
                     console.error(error);
                 })
         };
 
+        $scope.loadData();
+
+        $scope.nextPage = function () {
+            if ($scope.currentPage < $scope.totalPages()) {
+                $scope.currentPage++;
+                $scope.loadData();
+            }
+        };
+
+        // Function to go to the previous page
+        $scope.prevPage = function () {
+            if ($scope.currentPage > 1) {
+                $scope.currentPage--;
+                $scope.loadData();
+            }
+        };
+
+        // Function to calculate the total number of pages
+        $scope.totalPages = function () {
+            return Math.ceil($scope.totalItems / $scope.pageSize);
+        };
+
+        // Inside your controller
+        $scope.getPages = function () {
+            var pages = [];
+            var totalPages = $scope.totalPages();
+            var startPage = Math.max(1, $scope.currentPage - 2); // Display 5 pages, centered around the current page
+            var endPage = Math.min(totalPages, startPage + 4);
+
+            for (var i = startPage; i <= endPage; i++) {
+                pages.push(i);
+            }
+            return pages;
+        };
+
+        $scope.setPage = function (page) {
+            $scope.currentPage = page;
+            $scope.loadData();
+        };
+
+        $scope.nextSet = function () {
+            var totalPages = $scope.totalPages();
+            var nextStartPage = Math.min(totalPages - 4, $scope.currentPage + 1);
+            $scope.currentPage = nextStartPage;
+            $scope.loadData();
+        };
+
+        $scope.prevSet = function () {
+            var prevStartPage = Math.max(1, $scope.currentPage - 5);
+            $scope.currentPage = prevStartPage;
+            $scope.loadData();
+        };
 
     });
 </script>

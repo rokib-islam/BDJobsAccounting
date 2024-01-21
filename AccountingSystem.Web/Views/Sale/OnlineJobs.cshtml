@@ -1,0 +1,131 @@
+﻿
+@{
+    ViewData["Title"] = "OnlineJobs";
+}
+
+<h3 class="text-center alert-primary">OnlineJobs</h3>
+
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-3">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">From</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control form-control-sm" ng-model="from" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">To</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control form-control-sm" ng-model="to" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-2 text-center">
+                    <label><input type="checkbox" ng-model="PNPL" /> PNPL</label>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-info btn-sm" ng-click="download()">Download Jobs</button>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-info btn-sm" ng-click="">Company Varification</button>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-2">
+                    <label>Search By Companies</label>
+                    <input type="text" class="form-control form-control-sm" ng-model="companies" />
+                </div>
+                <div class="col-sm-2">
+                    <label>Search By Service</label>
+                    <select type="text" class="form-control form-control-sm" ng-model="service">
+                        <option value="0">Select</option>
+                        <option ng-repeat="o in services" value="serviceId">{{o.serviceName}}</option>
+                    </select>
+                </div>
+                <div class="col-sm-2 mt-4">
+                    <label><input type="checkbox" /> Varified</label>
+                    <button class="btn btn-primary btn-sm float-right" ng-click="">GO</button>
+                </div>
+                <div class="col-sm-6 float-right">
+                    <label class="control-label float-right" style="font-weight: normal;">Paid Online</label>
+                    <span style="border: 1px solid gray; background: #FFE6A8; height: 15px; width: 15px; margin: 8px 5px; " class="float-right"></span>
+                    <label class="control-label float-right" style="font-weight: normal;">Standout</label>
+                    <span style="border: 1px solid gray; background: #C5C69D; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                    <label class="control-label float-right" style="font-weight: normal;">Regional</label>
+                    <span style="border: 1px solid gray; background: #F3CCFF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                    <label class="control-label float-right" style="font-weight: normal;">Blue Collar</label>
+                    <span style="border: 1px solid gray; background: #0BB5FF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                    <label class="control-label float-right" style="font-weight: normal;">Verified</label>
+                    <span style="border: 1px solid gray; background: #9C27B0; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                    <label class="control-label float-right" style="font-weight: normal;">Premium</label>
+                    <span style="border: 1px solid gray; background: #D5F5E3; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                    <label class="control-label float-right" style="font-weight: normal;">Uddokta</label>
+                    <span style="border: 1px solid gray; background: #fa6e66; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                    <label class="control-label float-right" style="font-weight: normal;">LN</label>
+                    <span style="border: 1px solid gray; background: #0CFBFF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+            $scope.service = '0';
+            $scope.loadServices();
+        })
+         
+        $scope.loadServices = function () {
+            $http.get('/Ledger/GetService', { params: { sTypy: 1 } })
+            .then(function(response){
+                $scope.services = response.data;
+            }, function(error){
+                console.error(error);
+            })
+        }
+
+        $scope.download = function () {
+            DownLoadOnlineJobs = {
+                FromDate:$scope.from,
+                ToDate:$scope.to,
+                PNPL:$scope.PNPL ? 1 : 0
+            }
+            $http.post('/Sale/DownLoadOnlineJobs', DownLoadOnlineJobs)
+                .then(function (response) {
+                    $("#spinner").hide();
+                    $("#down").hide();
+                    $("#companyDiv").show();
+                    var errorText = "";
+                    if (parseInt(data) == 1) {
+                        errorText = "You made some invoices which had not uploaded. You must upload those Invoices, then you can download new jobs.<br/>To upload invoices, click the '<strong>Refresh</strong>' button. Then find the jobs which has invoice number.<br/>After getting the invoice number, click the '<strong>Send Invoice number to Online</strong>' button.";
+                    } else if (parseInt(data) == 2 || parseInt(data) == 3) {
+                        errorText = "An Online Connection Error has been occured";
+                    } else {
+                        refresh(data);
+                    }
+                    if (errorText !== "") {
+                        alert("Error:\n\n" + errorText);
+                    }
+                }, function (error) {
+                    console.error(error);
+                    alert('No data found');
+                    $("#spinner").hide();
+                    $("#down").hide();
+                })
+        }
+    })
+</script>
+
+
+

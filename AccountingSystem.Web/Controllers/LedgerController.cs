@@ -19,7 +19,7 @@ namespace AccountingSystem.Web.Controllers
         {
             var result = await _LegerManager.GetService(sTypy);
 
-            return View(result);
+            return Json(result);
         }
         public async Task<IActionResult> GetAllLedger()
         {
