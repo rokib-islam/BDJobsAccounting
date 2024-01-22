@@ -107,7 +107,93 @@ namespace AccountingSystem.Repository
 
         public async Task<int> DownloadJobs(string fromDate, string toDate, int PNPL)
         {
-            return 0;
+            int row = 0;
+
+            try
+            {
+                var cmdtext = "usp_Acc_Download_Jobs";
+
+                using (var connection = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+                {
+                    var parameters = new
+                    {
+                        FromDate = fromDate,
+                        ToDate = toDate,
+                        IsPNPL = PNPL
+                    };
+
+                    var data = await connection.QueryAsync<CorpJobViewModel>(cmdtext, parameters, commandType: CommandType.StoredProcedure);
+
+                    if (data.Any())
+                    {
+                        var dataTable = CreateDataTable();
+                        PopulateDataTable(dataTable, data);
+
+                        using (var secondConnection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                        {
+                            await secondConnection.ExecuteAsync("USP_Download_Online_Jobs",
+                                new { SourceDataTable = dataTable.AsTableValuedParameter("dbo.DownloadOnlineJob") },
+                                commandType: CommandType.StoredProcedure);
+                        }
+
+
+                        row = data.Count();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+                row = -1;
+            }
+
+            return row;
+        }
+
+        private DataTable CreateDataTable()
+        {
+            var dataTable = new DataTable();
+            dataTable.Columns.Add("CP_ID", typeof(int));
+            dataTable.Columns.Add("Name", typeof(string));
+            dataTable.Columns.Add("Acc_Id", typeof(int));
+            dataTable.Columns.Add("JP_ID", typeof(int));
+            dataTable.Columns.Add("JobTitle", typeof(string));
+            dataTable.Columns.Add("P", typeof(DateTime));
+            dataTable.Columns.Add("DeadLine", typeof(DateTime));
+            dataTable.Columns.Add("BillingContact", typeof(string));
+            dataTable.Columns.Add("Designation", typeof(string));
+            dataTable.Columns.Add("Count_JP_ID", typeof(int));
+            dataTable.Columns.Add("OPID", typeof(int));
+            dataTable.Columns.Add("AddType", typeof(int));
+            dataTable.Columns.Add("RegionalJob", typeof(int));
+            dataTable.Columns.Add("BlueCollar", typeof(int));
+            dataTable.Columns.Add("VerifiedCompany", typeof(int));
+            // Add other columns as needed
+            return dataTable;
+        }
+
+        private void PopulateDataTable(DataTable dataTable, IEnumerable<CorpJobViewModel> data)
+        {
+            foreach (var item in data)
+            {
+                dataTable.Rows.Add(
+                    item.CP_ID,
+                    item.Name,
+                    item.Acc_ID,
+                    item.JP_ID,
+                    item.JobTitle,
+                    item.P,
+                    item.Deadline,
+                    item.BillingContact,
+                    item.Designation,
+                    item.Count_JP_ID,
+                    item.OPID,
+                    item.AdType,
+                    item.RegionalJob,
+                    item.BlueCollar,
+                    item.VerifiedCompany
+                );
+            }
         }
     }
 }

@@ -41,29 +41,22 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(true);
         }
-        //public async Task<IActionResult> DownLoadOnlineJobs(string fromDate, string toDate, int PNPL)
-        //{
-        //    var returnValue = 0;
-        //    var isUploaded = _SaleManager.IsAllUploaded();
-        //    if (!await isUploaded)
-        //    {
-        //        returnValue = 1;
-        //    }
-        //    else
-        //    {
-        //        bool status;
-        //        returnValue = await _SaleManager.DownloadJobs(fromDate, toDate, out status, PNPL);
-        //        if (!status)
-        //        {
-        //            returnValue = 3;
-        //        }
-        //    }
+        public async Task<IActionResult> DownLoadOnlineJobs(string fromDate, string toDate, int PNPL)
+        {
+            var returnValue = 0;
+            var isUploaded = _SaleManager.IsAllUploaded();
+            if (!await isUploaded)
+            {
+                returnValue = 1;
+            }
+            else
+            {
 
+                returnValue = await _SaleManager.DownloadJobs(fromDate, toDate, PNPL);
 
-
-
-        //    return Json(returnValue);
-        //}
+            }
+            return Json(returnValue);
+        }
 
 
 
