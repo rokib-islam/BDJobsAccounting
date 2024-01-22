@@ -16,7 +16,7 @@ namespace AccountingSystem.BLL
         {
             await _repository.FixDownloadIssue();
         }
-        public async Task<List<OnlineJobViewModel>> GetOnlineJobList(string CName, int Verified, int LedgerID)
+        public async Task<List<JobListV2ViewModel>> GetOnlineJobList(string CName, int Verified, int LedgerID)
         {
             return await _repository.GetOnlineJobList(CName, Verified, LedgerID);
         }
