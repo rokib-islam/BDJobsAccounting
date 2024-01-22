@@ -5,6 +5,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
+using System.Security.Cryptography;
 
 namespace AccountingSystem.Repository
 {
@@ -28,7 +29,7 @@ namespace AccountingSystem.Repository
                 await _db.ExecuteAsync(query);
             }
         }
-        public async Task<List<OnlineJobViewModel>> GetOnlineJobList(string CName, int Verified, int LedgerID)
+        public async Task<List<JobListV2ViewModel>> GetOnlineJobList(string CName, int Verified, int LedgerID)
         {
             try
             {
@@ -41,7 +42,7 @@ namespace AccountingSystem.Repository
 
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    var joblist = await _db.QueryAsync<OnlineJobViewModel>("USP_ONLINE_JOB_LIST_V2", parameters, commandType: CommandType.StoredProcedure);
+                    var joblist = await _db.QueryAsync<JobListV2ViewModel>("USP_ONLINE_JOB_LIST_V2", parameters, commandType: CommandType.StoredProcedure);
 
                     return joblist.ToList();
                 }
@@ -79,7 +80,7 @@ namespace AccountingSystem.Repository
 
         public async Task<bool> IsAllUploaded()
         {
-            bool isUploaded = false;
+            bool isUploaded = true;
 
             try
             {
@@ -87,13 +88,12 @@ namespace AccountingSystem.Repository
 
                 using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    await connection.OpenAsync();
-
-                    using (var command = new SqlCommand(query, connection))
-                    using (var reader = await command.ExecuteReaderAsync())
-                    {
-                        isUploaded = await reader.ReadAsync();
+                   var cId = await connection.QueryFirstOrDefaultAsync<int>(query);
+                    if (cId > 0)
+                    { 
+                        isUploaded = false; 
                     }
+                
                 }
             }
             catch (Exception ex)
@@ -132,7 +132,7 @@ namespace AccountingSystem.Repository
                         using (var secondConnection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                         {
                             await secondConnection.ExecuteAsync("USP_Download_Online_Jobs",
-                                new { SourceDataTable = dataTable.AsTableValuedParameter("dbo.DownloadOnlineJob") },
+                                new { DownloadOnlineJob = dataTable.AsTableValuedParameter("dbo.DownloadOnlineJob") },
                                 commandType: CommandType.StoredProcedure);
                         }
 
