@@ -11,5 +11,8 @@ namespace AccountingSystem.Abstractions.Repository
         Task DeleteOnlineJob(int jpId);
         Task<bool> IsAllUploaded();
         Task<int> DownloadJobs(string fromDate, string toDate, int PNPL);
+        Task<List<SalesPersonViewModel>> GetSalesPersonsAsync(int productID);
+        Task<string> SaveSale(SaveSalesDataViewModel data);
+
     }
 }

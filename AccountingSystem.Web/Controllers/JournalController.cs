@@ -30,5 +30,11 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
+        public async Task<IActionResult> GetClosingDate()
+        {
+            var result = await _journalManager.GetClosingDateAsync();
+
+            return Json(result);
+        }
     }
 }

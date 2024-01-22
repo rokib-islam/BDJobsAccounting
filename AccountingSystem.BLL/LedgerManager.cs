@@ -23,7 +23,10 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetOnlineLedgerId(onlineProduct);
         }
-
+        public async Task<List<Ledger>> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType)
+        {
+            return await _repository.GetProducts(admin, account, groupname, isAll, isI, isVatType);
+        }
 
     }
 }

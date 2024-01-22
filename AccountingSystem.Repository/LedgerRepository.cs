@@ -5,6 +5,7 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Logging;
 using System.Data;
 
 namespace AccountingSystem.Repository
@@ -67,6 +68,36 @@ namespace AccountingSystem.Repository
                 // Handle exception or log it
                 throw ex;
             }
+        }
+        public async Task<List<Ledger>> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType)
+        {
+            var ledgers = new List<Ledger>();
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new
+                    {
+                        Admin = admin,
+                        Account = account,
+                        GroupName = groupname,
+                        IsAll = isAll,
+                        IsI = isI,
+                        IsVatType = isVatType
+                    };
+
+                    var result = await _db.QueryAsync<Ledger>("USP_LedgerList", parameters, commandType: CommandType.StoredProcedure);
+
+                    ledgers = result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return ledgers;
         }
 
 

@@ -52,6 +52,26 @@ namespace AccountingSystem.Repository
                 throw ex;
             }
         }
+        public async Task<string> GetClosingDateAsync()
+        {
+            string date = "";
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    date = await _db.QueryFirstOrDefaultAsync<string>("SELECT ClosingDate FROM CloseingDateInfo");
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return date ?? "";
+        }
 
 
     }

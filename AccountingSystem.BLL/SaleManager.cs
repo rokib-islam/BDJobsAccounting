@@ -36,7 +36,15 @@ namespace AccountingSystem.BLL
         {
             return await _repository.DownloadJobs(fromDate, toDate, PNPL);
         }
+        public async Task<List<SalesPersonViewModel>> GetSalesPersonsAsync(int productID)
+        {
+            return await _repository.GetSalesPersonsAsync(productID);
+        }
 
+        public Task<string> SaveSale(SaveSalesDataViewModel data)
+        {
+            return _repository.SaveSale(data);
+        }
 
 
 

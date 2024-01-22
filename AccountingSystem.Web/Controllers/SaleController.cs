@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -58,9 +59,6 @@ namespace AccountingSystem.Web.Controllers
             return Json(returnValue);
         }
 
-
-
-
         public IActionResult OnlineJobs()
         {
             ClaimsPrincipal claimusers = HttpContext.User;
@@ -69,6 +67,17 @@ namespace AccountingSystem.Web.Controllers
 
             else
                 return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> GetSalesPersons(int productID)
+        {
+            var returnValue = await _SaleManager.GetSalesPersonsAsync(productID);
+            return Json(returnValue);
+        }
+        public async Task<IActionResult> Save([FromBody] SaveSalesDataViewModel Data)
+        {
+
+            var result = await _SaleManager.SaveSale(Data);
+            return Json(result);
         }
     }
 }

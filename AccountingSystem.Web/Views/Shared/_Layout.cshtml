@@ -64,20 +64,21 @@
                     <div class="navbar-text ml-auto">
                         @if (!string.IsNullOrEmpty(username))
                         {
-                            <text>Welcome, @username</text>
+                            <text>Welcome, @username !</text>
                         }
-                        <ul class="navbar-nav flex-grow-1">
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LogOut">Log Out</a>
-                            </li>
-                           
-                        </ul>
+                        
                     </div>
+                    <ul class="navbar-nav">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="LogOut">[Log Out]</a>
+                        </li>
+
+                    </ul>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
+    <div class="container-fluid">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

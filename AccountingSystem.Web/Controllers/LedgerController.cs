@@ -37,6 +37,12 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(data);
         }
+        public async Task<IActionResult> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType)
+        {
+            var data = await _LegerManager.GetProducts(admin, account, groupname, isAll, isI, isVatType);
+
+            return Json(data);
+        }
 
     }
 }

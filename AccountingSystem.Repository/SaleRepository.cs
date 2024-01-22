@@ -49,7 +49,7 @@ namespace AccountingSystem.Repository
             }
             catch (Exception ex)
             {
-                throw;
+                throw ex;
             }
         }
         public async Task<List<JobViewModel>> GetJobs(int cpId, string date, int adType, int adRegion)
@@ -141,9 +141,9 @@ namespace AccountingSystem.Repository
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-
+                
                 row = -1;
             }
 
@@ -194,6 +194,68 @@ namespace AccountingSystem.Repository
                     item.VerifiedCompany
                 );
             }
+        }
+        public async Task<List<SalesPersonViewModel>> GetSalesPersonsAsync(int productID)
+        {
+            var salesPersons = new List<SalesPersonViewModel>();
+
+            try
+            {
+                using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new { DepartmentID = productID };
+
+                    salesPersons = (await connection.QueryAsync<SalesPersonViewModel>("USP_GET_Sales_Person", parameters, commandType: CommandType.StoredProcedure)).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return salesPersons;
+        }
+        public async Task<string> SaveSale(SaveSalesDataViewModel data)
+        {
+            var result = "Success";
+            try
+            {
+
+                var parameters = new
+                {
+                    UserID = data.UserId,
+                    CID = data.CId,
+                    PCODE = data.PCode,
+                    SDate = data.FromDate,
+                    EDate = data.ToDate,
+                    JDate = data.JournalDate,
+                    SalesPrice = data.SalesPrice,
+                    BillingPerson = data.BillingPerson.Replace("'", "`"),
+                    Designation = data.Designation.Replace("'", "`"),
+                    Comments = data.Comment.Replace("'", "`"),
+                    Duration = data.Duration,
+                    NumberOfInvoices = data.NoOfInvoice,
+                    RefNo = data.RefNo,
+                    TaxId = data.TypeId,
+                    Tax = data.Vat,
+                    JP_ID = data.JpId,
+                    Title = data.JobTitle.Replace("'", "`"),
+                    WorkshopDate = data.WorkshopDate,
+                    SalesPerson = data.SPerson
+                };
+
+                using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    await connection.ExecuteAsync("USP_INSERT_SALE", parameters, commandType: CommandType.StoredProcedure);
+                }
+
+
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
         }
 
 

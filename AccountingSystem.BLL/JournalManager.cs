@@ -18,5 +18,9 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetJournalListAsync(pageNo, pageSize, isPreview, dateType, startDate, endDate, ledgerId, ledgerName, companyId, approvedBy, postedBy, isApproved);
         }
+        public async Task<string> GetClosingDateAsync()
+        {
+            return await _repository.GetClosingDateAsync();
+        }
     }
 }
