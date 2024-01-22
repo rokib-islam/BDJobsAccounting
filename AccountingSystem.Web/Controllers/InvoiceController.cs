@@ -21,6 +21,22 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(data);
         }
+        public async Task<IActionResult> UploadInvoicesOnline(int? cpId, string invoiceNo, int serviceNo, string billingContact, string price, string opId, string jpIdList, int serviceID, int companyID, string companyName, string saleDate)
+        {
+            var invSendDt = await _InvoiceManager.GetInvSendDt(invoiceNo);
+            var cid = cpId ?? 0;
+            var results = await _InvoiceManager.UploadInvoiceOnline(cid, invoiceNo, serviceNo, invSendDt, billingContact, price, opId, jpIdList, serviceID, companyID, companyName, saleDate);
+
+            return Json(results);
+        }
+        public async Task<IActionResult> UpdateInvoice(string invoiceNo)
+        {
+            var results = await _InvoiceManager.UpdateInvoice(invoiceNo);
+
+            return Json(results);
+        }
+
+
 
 
     }

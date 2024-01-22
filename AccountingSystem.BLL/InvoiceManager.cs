@@ -15,5 +15,19 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetInvoices(cpId, sDate, ledgerId);
         }
+        public async Task<string> GetInvSendDt(string invoiceNo)
+        {
+            return await _repository.GetInvSendDt(invoiceNo);
+        }
+        public async Task<string> UpdateInvoice(string invoiceNo)
+        {
+            return await _repository.UpdateInvoice(invoiceNo);
+        }
+
+        public async Task<object> UploadInvoiceOnline(int cpId, string invoiceNo, int serviceNo, string invSendDt, string billingContact, string price, string opId, string jpIdList, int serviceID, int companyID, string companyName, string saleDate)
+        {
+            return await _repository.UploadInvoiceOnline(cpId, invoiceNo, serviceNo, invSendDt, billingContact, price, opId, jpIdList, serviceID, companyID, companyName, saleDate);
+        }
+
     }
 }
