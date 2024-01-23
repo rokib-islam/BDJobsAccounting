@@ -7,107 +7,97 @@
 <div ng-app="myApp">
     <div ng-controller="myController">
         <div class="col-sm-12">
-            <div class="row">
-                <div class="col-sm-3">
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">From</label>
-                        <div class="col-sm-9">
+            <div class="row" style="margin-top:-10px">
+                <div class="col-sm-7">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label class="col-form-label">From</label>
                             <input type="date" class="form-control form-control-sm" ng-model="from" />
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-3">
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">To</label>
-                        <div class="col-sm-9">
+                        <div class="col-sm-3">
+                            <label class="col-form-label">To</label>
                             <input type="date" class="form-control form-control-sm" ng-model="to" />
+                        </div>
+                        <div class="col-sm-3 text-center mt-5">
+                            <label><input type="checkbox" ng-model="PNPL" /> PNPL</label>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-info btn-sm mt-5" ng-click="download()">Download Jobs</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <label>Search By Companies</label>
+                            <input type="text" class="form-control form-control-sm" ng-model="cname" />
+                        </div>
+                        <div class="col-sm-3">
+                            <label>Search By Service</label>
+                            <select type="text" class="form-control form-control-sm" ng-model="service">
+                                <option value="0">Select</option>
+                                <option ng-repeat="o in services" value="{{o.serviceId}}" data-ledgerid="{{o.ledgerId}}">{{o.serviceName}}</option>
+                            </select>
+                        </div>
+                        <div class="col-sm-3 text-center mt-4">
+                            <label><input type="checkbox" ng-model="verified" /> Varified</label>
+                        </div>
+                        <div class="col-sm-3 mt-4">
+                            <button class="btn btn-primary btn-sm" ng-click="search()" style="padding-left:45px;padding-right:45px">GO</button>
+                        </div>
+                        <div class="col-sm-3 mt-4">
+                            <button class="btn btn-primary btn-sm" ng-click="refresh()" style="padding-left:45px;padding-right:45px">Refresh</button>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-2 text-center">
-                    <label><input type="checkbox" ng-model="PNPL" /> PNPL</label>
-                </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-info btn-sm" ng-click="download()">Download Jobs</button>
-                </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-info btn-sm" ng-click="">Company Varification</button>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-2">
-                    <label>Search By Companies</label>
-                    <input type="text" class="form-control form-control-sm" ng-model="cname" />
-                </div>
-                <div class="col-sm-2">
-                    <label>Search By Service</label>
-                    <select type="text" class="form-control form-control-sm" ng-model="service">
-                        <option value="0">Select</option>
-                        <option ng-repeat="o in services" value="{{o.serviceId}}" data-ledgerid="{{o.ledgerId}}">{{o.serviceName}}</option>
-                    </select>
-                </div>
-                <div class="col-sm-2 mt-4">
-                    <label><input type="checkbox" ng-model="verified" /> Varified</label>
-                    <button class="btn btn-primary btn-sm float-right" ng-click="search()">GO</button>
-                </div>
-                <div class="col-sm-6 float-right">
-                    <label class="control-label float-right" style="font-weight: normal;">Paid Online</label>
-                    <span style="border: 1px solid gray; background: #FFE6A8; height: 15px; width: 15px; margin: 8px 5px; " class="float-right"></span>
-                    <label class="control-label float-right" style="font-weight: normal;">Standout</label>
-                    <span style="border: 1px solid gray; background: #C5C69D; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                    <label class="control-label float-right" style="font-weight: normal;">Regional</label>
-                    <span style="border: 1px solid gray; background: #F3CCFF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                    <label class="control-label float-right" style="font-weight: normal;">Blue Collar</label>
-                    <span style="border: 1px solid gray; background: #0BB5FF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                    <label class="control-label float-right" style="font-weight: normal;">Verified</label>
-                    <span style="border: 1px solid gray; background: #9C27B0; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                    <label class="control-label float-right" style="font-weight: normal;">Premium</label>
-                    <span style="border: 1px solid gray; background: #D5F5E3; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                    <label class="control-label float-right" style="font-weight: normal;">Uddokta</label>
-                    <span style="border: 1px solid gray; background: #fa6e66; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                    <label class="control-label float-right" style="font-weight: normal;">LN</label>
-                    <span style="border: 1px solid gray; background: #0CFBFF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                <div class="col-sm-5 mt-4">
+                    <button class="btn btn-info btn-sm float-right" ng-click="">Company Varification</button>
+                    <div class="float-right mt-3">
+                        <label class="control-label float-right" style="font-weight: normal;">Paid Online</label>
+                        <span style="border: 1px solid gray; background: #FFE6A8; height: 15px; width: 15px; margin: 8px 5px; " class="float-right"></span>
+                        <label class="control-label float-right" style="font-weight: normal;">Standout</label>
+                        <span style="border: 1px solid gray; background: #C5C69D; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                        <label class="control-label float-right" style="font-weight: normal;">Regional</label>
+                        <span style="border: 1px solid gray; background: #F3CCFF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                        <label class="control-label float-right" style="font-weight: normal;">Blue Collar</label>
+                        <span style="border: 1px solid gray; background: #0BB5FF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                        <label class="control-label float-right" style="font-weight: normal;">Verified</label>
+                        <span style="border: 1px solid gray; background: #9C27B0; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                        <label class="control-label float-right" style="font-weight: normal;">Premium</label>
+                        <span style="border: 1px solid gray; background: #D5F5E3; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                        <label class="control-label float-right" style="font-weight: normal;">Uddokta</label>
+                        <span style="border: 1px solid gray; background: #fa6e66; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                        <label class="control-label float-right" style="font-weight: normal;">LN</label>
+                        <span style="border: 1px solid gray; background: #0CFBFF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                    </div>
                 </div>
             </div>
-            <center>
-                <div id="spinner" hidden style="margin-top: 50px; margin-bottom: 50px;">
-                    <i class="fa fa-spinner fa-pulse fa-5x"></i>
-                </div>
+            <center>               
+                <button class="btn btn-primary" type="button" disabled ng-show="spinner">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    Loading...
+                </button>
             </center>
             <div class="row mt-2">
-                <table class="table table-bordered table-responsive table-sm" style="white-space:nowrap" ng-show="downloadTable">
+                <table class="table table-bordered table-sm" style="white-space:nowrap" ng-show="downloadTable">
                     <tr style="background-color:lightgray">
                         <th>Sl#</th>
                         <th>CP Id</th>
-                        <th>Acc Id</th>
                         <th class="acenter">Name Of Company</th>
                         <th>Job Posted</th>
                         <th>Total Job Posted</th>
-                        <th>OP ID</th>
-                        <th>Add Type</th>
                         <th>Company Status</th>
-                        <th>Posting Date</th>
-                        <th>Region</th>
-                        <th>Verified</th>
                     </tr>
                     <tr ng-repeat="o in companyData" ng-style="getRowStyle(o)">
                         <td>{{$index+1}}</td>
                         <td>{{o.cP_ID}}</td>
-                        <td>{{o.acc_Id}}</td>
                         <td>{{o.cName}}</td>
                         <td>{{o.jobPosted}}</td>
                         <td>{{o.totalJobPosted}}</td>
-                        <td>{{o.oPID}}</td>
-                        <td>{{o.addType}}</td>
                         <td>{{o.companyStatus}}</td>
-                        <td>{{o.postingDate}}</td>
-                        <td>{{o.region}}</td>
-                        <td>{{o.verifiedCompany}}</td>
                     </tr>
                 </table>
-
             </div>
         </div>
+        
     </div>
 </div>
 
@@ -118,37 +108,40 @@
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.downloadTable = false;
+            $scope.spinner = false;
             $scope.service = '0';
             $scope.loadServices();
         })
 
-        // $scope.getRowStyle = function (o) {
-        //     var rowStyle = {};
-        //     if (o.verifiedCompany === "Verified" && !$scope.verified) {
-        //         rowStyle = {
-        //             "font-weight": "bold",
-        //             "color": "#9C27B0"
-        //         };
-        //     }
+        $scope.getRowStyle = function (o) {
+            var rowStyle = {};
+            if (o.verifiedCompany === "Verified" && !$scope.verified) {
+                rowStyle = {
+                    "font-weight": "bold",
+                    "color": "#9C27B0"
+                };
+            }
+            if (o.opid > 0 || o.addType > 0 || o.region > 0) {
+                if (o.addType == 1) {
+                    rowStyle["background"] = "#C5C69D"; // Stand-out
+                }
+                else if (o.region > 0) {
+                    rowStyle["background"] = "#F3CCFF"; // Regional
+                }
+                else if (o.addType == 2) {
+                    rowStyle["background"] = "#D5F5E3"; // Premium
+                } else if (o.addType == 11) {
+                    rowStyle["background"] = "#0CFBFF"; // Only LN
+                } else if (o.opid > 0) {
+                    rowStyle["background"] = "#FFE6A8"; // Paid Online
 
-        //     if (o.totalJobPosted > 0 || o.addType > 0 || o.region > 0) {
-        //         if (o.addType === 1) {
-        //             rowStyle["background"] = "#C5C69D"; // Stand-out
-        //         } else if (o.addType === 2) {
-        //             rowStyle["background"] = "#D5F5E3"; // Premium
-        //         } else if (o.addType === 11) {
-        //             rowStyle["background"] = "#0CFBFF"; // Only LN
-        //         } else if (o.totalJobPosted > 0) {
-        //             rowStyle["background"] = "#FFE6A8"; // Paid Online
-        //         } else if (o.region > 0) {
-        //             rowStyle["background"] = "#F3CCFF"; // Regional
-        //         } else if (o.addType === 10) {
-        //             rowStyle["background"] = "#fa6e66"; // Uddokta
-        //         }
-        //     }
+                } else if (o.addType == 10) {
+                    rowStyle["background"] = "#fa6e66"; // Uddokta
+                }
+            }
 
-        //     return rowStyle;
-        // };
+            return rowStyle;
+        };
 
         $scope.loadServices = function () {
             $http.get('/Ledger/GetService', { params: { sTypy: 1 } })
@@ -160,13 +153,13 @@
         }
 
         $scope.download = function () {
+            $scope.spinner = true;
             var fromDate = $scope.from;
             var toDate = $scope.to;
             var PNPL = $scope.PNPL ? 1 : 0;
 
             $http.get('/Sale/DownLoadOnlineJobs', { params: { fromDate: fromDate, toDate: toDate, PNPL: PNPL } })
                 .then(function (response) {
-                    $("#spinner").hide();
                     $("#companyDiv").show();
                     var errorText = "";
                     if (parseInt(response.data) == 1) {
@@ -179,16 +172,18 @@
                     if (errorText !== "") {
                         alert("Error:\n\n" + errorText);
                     }
+                    $scope.spinner = false;
                 }, function (error) {
                     console.error(error);
                     alert('No data found');
-                    $("#spinner").hide();
+                    $scope.spinner = false;
                 })
         }
 
         $scope.companyData = [];
 
         $scope.refreshData = function () {
+            $scope.spinner = true;
             var selectedService = $scope.services.find(function (s) {
                 return s.serviceId == $scope.service;
             });
@@ -201,13 +196,18 @@
                 .then(function (response) {
                     $scope.companyData = response.data;
                     $scope.downloadTable = true;
+                    $scope.spinner = false;
                 }, function (error) {
                     console.error(error);
                     alert('Error fetching data');
+                    $scope.spinner = false;
                 })
         };
 
         $scope.search = function () {
+            $scope.refreshData();
+        }
+        $scope.refresh = function () {
             $scope.refreshData();
         }
     })
