@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -283,7 +284,31 @@ namespace AccountingSystem.Repository
 
             return data;
         }
+        public async Task<IEnumerable<Sale>> GetSalesInfoAsync(string invoiceNo)
+        {
+            var sales = new List<Sale>();
 
+            try
+            {
+                using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    var query = @"SELECT s.TNO, l.SBName, i1.Amount, i1.Id, i1.comments
+                          FROM sales AS s, ledger AS l, InvoiceSceduler AS i1, InvoiceList AS i
+                          WHERE i.Id = i1.invoice_id AND i1.TNO = s.tno AND s.PCode = l.id AND i.Invoice_No = @InvoiceNo";
+
+                    var result = await connection.QueryAsync<Sale>(query, new { InvoiceNo = invoiceNo });
+
+                    sales.AddRange(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return sales;
+        }
 
 
 

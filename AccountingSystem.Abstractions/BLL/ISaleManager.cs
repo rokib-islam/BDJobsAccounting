@@ -1,4 +1,5 @@
-﻿using AccountingSystem.Models.AccountViewModels;
+﻿using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.Abstractions.BLL
 {
@@ -14,6 +15,7 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<SalesPersonViewModel>> GetSalesPersonsAsync(int productID);
         Task<string> SaveSale(SaveSalesDataViewModel data);
         Task<int[]> CheckOnlineJobsAsync(string tnolist, string cId);
+        Task<IEnumerable<Sale>> GetSalesInfoAsync(string invoiceNo);
 
     }
 }

@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.BLL
@@ -49,6 +50,11 @@ namespace AccountingSystem.BLL
         public Task<int[]> CheckOnlineJobsAsync(string tnolist, string cId)
         {
             return _repository.CheckOnlineJobsAsync(tnolist, cId);
+        }
+
+        public Task<IEnumerable<Sale>> GetSalesInfoAsync(string invoiceNo)
+        {
+            return _repository.GetSalesInfoAsync(invoiceNo);
         }
     }
 }

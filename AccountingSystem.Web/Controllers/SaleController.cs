@@ -83,6 +83,12 @@ namespace AccountingSystem.Web.Controllers
             var result = await _SaleManager.CheckOnlineJobsAsync(tnolist, cId);
             return Json(new { Online = result[0], Total = result[1] });
         }
+        public async Task<IActionResult> GetSalesInfo(string InvoiceNo)
+        {
+            var result = await _SaleManager.GetSalesInfoAsync(InvoiceNo);
+
+            return Json(result);
+        }
 
     }
 }
