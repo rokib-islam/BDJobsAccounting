@@ -2,6 +2,7 @@
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
@@ -159,6 +160,35 @@ namespace AccountingSystem.Repository
             return message;
         }
 
+        public async Task<string> SaveInvoice([FromBody] SaveInvoiceViewModel data)
+        {
+            var result = "";
 
+            var parameters = new
+            {
+                userId = data.UserId,
+                ActionType = data.Action,
+                CompanyID = data.CId,
+                Invoice_No = data.Invoice,
+                InvSendDt = data.IssueDate,
+                InvAmount = data.TotalPrice,
+                InvSchdIDs = data.IdList,
+                Invoice_ID = data.InvoiceId
+            };
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    await _db.ExecuteAsync("USP_INSERT_INVOICE", parameters);
+                }
+                result = "Insert Successfully!";
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
+        }
     }
 }

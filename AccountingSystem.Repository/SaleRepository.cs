@@ -5,7 +5,6 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
-using System.Security.Cryptography;
 
 namespace AccountingSystem.Repository
 {
@@ -88,12 +87,12 @@ namespace AccountingSystem.Repository
 
                 using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                   var cId = await connection.QueryFirstOrDefaultAsync<int>(query);
+                    var cId = await connection.QueryFirstOrDefaultAsync<int>(query);
                     if (cId > 0)
-                    { 
-                        isUploaded = false; 
+                    {
+                        isUploaded = false;
                     }
-                
+
                 }
             }
             catch (Exception ex)
@@ -143,7 +142,7 @@ namespace AccountingSystem.Repository
             }
             catch (Exception)
             {
-                
+
                 row = -1;
             }
 
@@ -257,6 +256,36 @@ namespace AccountingSystem.Repository
             }
             return result;
         }
+        public async Task<int[]> CheckOnlineJobsAsync(string tnolist, string cId)
+        {
+            var data = new int[2];
+            try
+            {
+                using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await connection.QueryFirstOrDefaultAsync<dynamic>(
+                        "USP_CHECK_ONLINE_JOBS",
+                        new { C_ID = cId, TNO = tnolist },
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    if (result != null)
+                    {
+                        data[0] = Convert.ToInt32(result.OnlineJobs);
+                        data[1] = Convert.ToInt32(result.TotalJobs);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return data;
+        }
+
+
+
 
 
     }

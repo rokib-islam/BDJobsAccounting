@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.Models.AccountViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingSystem.BLL
 {
@@ -19,6 +20,12 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetInvSendDt(invoiceNo);
         }
+
+        public Task<string> SaveInvoice([FromBody] SaveInvoiceViewModel data)
+        {
+            return _repository.SaveInvoice(data);
+        }
+
         public async Task<string> UpdateInvoice(string invoiceNo)
         {
             return await _repository.UpdateInvoice(invoiceNo);

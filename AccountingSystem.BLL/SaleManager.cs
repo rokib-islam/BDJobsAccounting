@@ -46,8 +46,9 @@ namespace AccountingSystem.BLL
             return _repository.SaveSale(data);
         }
 
-
-
-
+        public Task<int[]> CheckOnlineJobsAsync(string tnolist, string cId)
+        {
+            return _repository.CheckOnlineJobsAsync(tnolist, cId);
+        }
     }
 }

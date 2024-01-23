@@ -13,6 +13,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task<int> DownloadJobs(string fromDate, string toDate, int PNPL);
         Task<List<SalesPersonViewModel>> GetSalesPersonsAsync(int productID);
         Task<string> SaveSale(SaveSalesDataViewModel data);
+        Task<int[]> CheckOnlineJobsAsync(string tnolist, string cId);
 
     }
 }

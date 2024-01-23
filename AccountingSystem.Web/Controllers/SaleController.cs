@@ -75,9 +75,14 @@ namespace AccountingSystem.Web.Controllers
         }
         public async Task<IActionResult> Save([FromBody] SaveSalesDataViewModel Data)
         {
-
             var result = await _SaleManager.SaveSale(Data);
             return Json(result);
         }
+        public async Task<IActionResult> CheckOnlineJobs(string tnolist, string cId)
+        {
+            var result = await _SaleManager.CheckOnlineJobsAsync(tnolist, cId);
+            return Json(new { Online = result[0], Total = result[1] });
+        }
+
     }
 }

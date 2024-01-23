@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingSystem.Web.Controllers
@@ -32,6 +33,12 @@ namespace AccountingSystem.Web.Controllers
         public async Task<IActionResult> UpdateInvoice(string invoiceNo)
         {
             var results = await _InvoiceManager.UpdateInvoice(invoiceNo);
+
+            return Json(results);
+        }
+        public async Task<IActionResult> SaveInvoice([FromBody] SaveInvoiceViewModel data)
+        {
+            var results = await _InvoiceManager.SaveInvoice(data);
 
             return Json(results);
         }
