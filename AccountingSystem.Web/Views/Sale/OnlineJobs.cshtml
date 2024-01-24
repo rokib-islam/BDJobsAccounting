@@ -2,12 +2,12 @@
     ViewData["Title"] = "OnlineJobs";
 }
 
-<h3 class="text-center alert-primary">OnlineJobs</h3>
+<h3 class="text-center alert-primary" style="margin-top:-10px">OnlineJobs</h3>
 
 <div ng-app="myApp">
     <div ng-controller="myController">
         <div class="col-sm-12">
-            <div class="row" style="margin-top:-10px">
+            <div class="row" style="margin-top:-15px">
                 <div class="col-sm-7">
                     <div class="row">
                         <div class="col-sm-3">
@@ -25,7 +25,7 @@
                             <button class="btn btn-info btn-sm mt-5" ng-click="download()">Download Jobs</button>
                         </div>
                     </div>
-                    <div class="row">
+                    <div class="row" style="margin-top:-10px">
                         <div class="col-sm-3">
                             <label>Search By Companies</label>
                             <input type="text" class="form-control form-control-sm" ng-model="cname" />
@@ -43,14 +43,11 @@
                         <div class="col-sm-3 mt-4">
                             <button class="btn btn-primary btn-sm" ng-click="search()" style="padding-left:45px;padding-right:45px">GO</button>
                         </div>
-                        <div class="col-sm-3 mt-4">
-                            <button class="btn btn-primary btn-sm" ng-click="refresh()" style="padding-left:45px;padding-right:45px">Refresh</button>
-                        </div>
                     </div>
                 </div>
-                <div class="col-sm-5 mt-4">
+                <div class="col-sm-5 mt-3">
                     <button class="btn btn-info btn-sm float-right" ng-click="">Company Varification</button>
-                    <div class="float-right mt-3">
+                    <div class="float-right">
                         <label class="control-label float-right" style="font-weight: normal;">Paid Online</label>
                         <span style="border: 1px solid gray; background: #FFE6A8; height: 15px; width: 15px; margin: 8px 5px; " class="float-right"></span>
                         <label class="control-label float-right" style="font-weight: normal;">Standout</label>
@@ -70,34 +67,143 @@
                     </div>
                 </div>
             </div>
-            <center>               
+            <center>
                 <button class="btn btn-primary" type="button" disabled ng-show="spinner">
                     <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                     Loading...
                 </button>
             </center>
-            <div class="row mt-2">
-                <table class="table table-bordered table-sm" style="white-space:nowrap" ng-show="downloadTable">
-                    <tr style="background-color:lightgray">
-                        <th>Sl#</th>
-                        <th>CP Id</th>
-                        <th class="acenter">Name Of Company</th>
-                        <th>Job Posted</th>
-                        <th>Total Job Posted</th>
-                        <th>Company Status</th>
-                    </tr>
-                    <tr ng-repeat="o in companyData" ng-style="getRowStyle(o)">
-                        <td>{{$index+1}}</td>
-                        <td>{{o.cP_ID}}</td>
-                        <td>{{o.cName}}</td>
-                        <td>{{o.jobPosted}}</td>
-                        <td>{{o.totalJobPosted}}</td>
-                        <td>{{o.companyStatus}}</td>
-                    </tr>
+            <div class="row mt-2" style="height: 200px; overflow-y: auto;border:1px solid darkgray">
+                <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="border">Sl#</th>
+                            <th class="border">CP Id</th>
+                            <th class="border acenter">Name Of Company</th>
+                            <th class="border">Job Posted</th>
+                            <th class="border">Total Job Posted</th>
+                            <th class="border">Company Status</th>
+                        </tr>
+                   </thead>
+                    <tbody>
+                        <tr ng-repeat="o in companyData" ng-style="getRowStyle(o)" ng-click="showJobData(o.cP_ID, o.postingDate, o.addType, o.region)">
+                            <td class="border">{{$index + 1}}</td>
+                            <td class="border">{{o.cP_ID}}</td>
+                            <td class="border">{{o.cName}}</td>
+                            <td class="border">{{o.jobPosted}}</td>
+                            <td class="border">{{o.totalJobPosted}}</td>
+                            <td class="border">{{o.companyStatus}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="row mt-2">
+            <div class="col-sm-7">
+                <label class="fw-bold">Job titles of</label>
+            </div>
+            <div class="col-sm-5">
+                <div class="form-group row">
+                    <label class="col-sm-5 table-hover fw-bold">Invoices to Upload</label>
+                    <div class="col-sm-6">
+                        <select class="form-control form-control-sm" ng-model="invoice">
+                            <option value="0">Select</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-7" style="height: 150px; overflow-y: auto; margin-top:-10px;">
+                <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
+                    <thead class="thead-light">
+                        <tr>
+                            <th>Sl#</th>
+                            <th class="acenter">Job title</th>
+                            <th>Type</th>
+                            <th>Posted</th>
+                            <th>ValidDate</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="o in jobData" ng-click="showbutton()">
+                            <td>{{$index+1}}</td>
+                            <td>{{o.title}}</td>
+                            <td>{{o.addType}}</td>
+                            <td>{{o.postingDate}}</td>
+                            <td>{{o.validDate}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="col-sm-5 row ml-2" style="height: 150px; overflow-y: auto;margin-top:-10px;">
+                <table class="table table-bordered table-sm" style="white-space:nowrap;">
+                    <thead class="thead-light">
+                        <tr>
+                            <th class="acenter">Sl#</th>
+                            <th class="acenter">Invoice No</th>
+                            <th class="acenter">Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="o in invoiceData">
+                            <td>{{$index+1}}</td>
+                            <td>{{}}</td>
+                            <td>{{}}</td>
+                        </tr>
+                    </tbody>
                 </table>
             </div>
         </div>
-        
+
+
+        <div class="col-sm-12 mt-2">
+            <div class="row">
+                <div class="col-sm-4">
+                    <div class="form-group row">
+                        <label class="col-sm-4">Invoice No</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" ng-model="invoiceNo" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group row">
+                        <label class="col-sm-4">Billing To</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" ng-model="billingTo" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group row">
+                        <label class="col-sm-4">Invoice Price</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" ng-model="invoicePrice" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-12">
+            <div class="row" style=" margin-top: 10px; margin-bottom: 10px; padding-left: 0;padding-right: 0;">
+                <div class="col-sm-2">
+                    <button class="btn btn-primary btn-sm" ng-click="refresh()" style="padding-left:45px;padding-right:45px">Refresh</button>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-primary btn-sm" ng-click="makeSale()" style="padding-left:45px;padding-right:45px" ng-disabled="makeBtn">Make Sale</button>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-primary btn-sm" ng-click="delete()" style="padding-left:45px;padding-right:45px" ng-disabled="deleteBtn">Delete</button>
+                </div>
+                <div class="col-sm-2">
+                    <button class="btn btn-primary btn-sm" ng-click="uploadInvoice()" style="padding-left:45px;padding-right:45px" ng-disabled="uploadBtn">Upload Invoice</button>
+                </div>
+                <div class="col-sm-4 text-right">
+                    <button class="btn btn-primary btn-sm" ng-click="refresh()" style="padding-left:45px;padding-right:45px">Exit</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -107,8 +213,12 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-            $scope.downloadTable = false;
             $scope.spinner = false;
+
+            $scope.makeBtn = true;
+            $scope.deleteBtn = true;
+            $scope.uploadBtn = true;
+
             $scope.service = '0';
             $scope.loadServices();
         })
@@ -181,6 +291,7 @@
         }
 
         $scope.companyData = [];
+        $scope.jobData = [];
 
         $scope.refreshData = function () {
             $scope.spinner = true;
@@ -195,7 +306,6 @@
             $http.get('/Sale/GetOnlineJobList', { params: { CName: CName, Verified: Verified, LedgerID: LedgerID } })
                 .then(function (response) {
                     $scope.companyData = response.data;
-                    $scope.downloadTable = true;
                     $scope.spinner = false;
                 }, function (error) {
                     console.error(error);
@@ -204,12 +314,70 @@
                 })
         };
 
+        $scope.showJobData = function (cpId, date, adType, adRegion) {
+            $http.get('/Sale/GetJobs', { params: { cpId: cpId, date: date, adType: adType, adRegion: adRegion } })
+                .then(function (response) {
+                    $scope.jobData = response.data;
+                }, function (error) {
+                    console.error(error);
+                    alert('Error fetching job data');
+                });
+        };
+
+
         $scope.search = function () {
             $scope.refreshData();
         }
+
         $scope.refresh = function () {
             $scope.refreshData();
         }
+
+        $scope.showbutton = function () {
+            $scope.makeBtn = false;
+            $scope.deleteBtn = false;
+            $scope.uploadBtn = false;
+        };
+
+       
+
+        // $scope.delete = function () {
+        //     debugger
+        //     var selectedJob = $scope.jobData.find(function (job) {
+        //         return job.selected;
+        //     });
+
+        //     if (!selectedJob) {
+        //         alert('Please select a job to delete.');
+        //         return;
+        //     }
+
+        //     var confirmDelete = confirm('Are you sure to delete the selected job?');
+
+        //     if (confirmDelete) {
+        //         var jsonData = { jpId: selectedJob.id };
+
+        //         $http({
+        //             method: 'POST',
+        //             url: '/Sale/DeleteOnlineJob',
+        //             data: jsonData,
+        //             headers: { 'Content-Type': 'application/json; charset=utf-8' }
+        //         }).then(function successCallback(response) {
+        //             if (response.data === true) {
+        //                 alert('Delete operation completed successfully.');
+        //                 $scope.jobData = $scope.jobData.filter(function (job) {
+        //                     return job.id !== selectedJob.id;
+        //                 });
+        //                 $scope.makeBtn = true;
+        //                 $scope.deleteBtn = true;
+        //                 $scope.uploadBtn = true;
+        //             }
+        //         }, function errorCallback(response) {
+        //             console.error("Error deleting job");
+        //         });
+        //     }
+        // };
+
     })
 </script>
 
