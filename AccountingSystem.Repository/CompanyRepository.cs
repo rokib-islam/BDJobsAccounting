@@ -186,7 +186,64 @@ namespace AccountingSystem.Repository
                 return result;
             }
         }
+        public async Task<Company> SMSAlertGetOnlineCompanyInfoAsync(int cpId)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                try
+                {
+                    var parameters = new
+                    {
+                        CP_ID = cpId
+                    };
+
+                    var result = await _db.QueryFirstOrDefaultAsync<Company>("USP_SMSAlert_Get_OnLine_Company_Info", parameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
+
+        public async Task<IEnumerable<Company>> SMSAlertGetOnlineCompanyListAsync(int radio)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                try
+                {
+                    var parameters = new
+                    {
+                        Type = radio == 0 ? "New" : ""
+                    };
+
+                    // Using Dapper's QueryAsync to get a list of results
+                    var result = await _db.QueryAsync<Company>(
+                        "USP_SMSAlert_Get_OnLine_Company_Info",
+                        parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    // Handle exceptions or log them as needed
+                    throw ex;
+                }
+            }
+        }
+
+
+
+
 
     }
 
+
 }
+
+

@@ -50,6 +50,14 @@ namespace AccountingSystem.BLL
             return await _repository.CheckOnlineCompany(id);
         }
 
+        public async Task<Company> SMSAlertGetOnlineCompanyInfoAsync(int cpId)
+        {
+            return await _repository.SMSAlertGetOnlineCompanyInfoAsync(cpId);
+        }
 
+        public async Task<IEnumerable<Company>> SMSAlertGetOnlineCompanyListAsync(int radio)
+        {
+            return await _repository.SMSAlertGetOnlineCompanyListAsync(radio);
+        }
     }
 }

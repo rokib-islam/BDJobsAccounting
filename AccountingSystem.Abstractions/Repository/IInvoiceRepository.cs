@@ -1,4 +1,5 @@
-﻿using AccountingSystem.Models.AccountViewModels;
+﻿using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingSystem.Abstractions.Repository
@@ -10,6 +11,10 @@ namespace AccountingSystem.Abstractions.Repository
         Task<string> GetInvSendDt(string invoiceNo);
         Task<string> UpdateInvoice(string invoiceNo);
         Task<string> SaveInvoice([FromBody] SaveInvoiceViewModel data);
+        Task<bool> CheckInvoiceNo(string invoiceNo);
+        Task<string> UpdateDeleteComments(UpdateCommentViewModel data);
+        Task<IEnumerable<Invoice>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid);
+        Task<string> PostToOnlineAsync(string postType, string invoiceNo, string invoiceId);
     }
 
 

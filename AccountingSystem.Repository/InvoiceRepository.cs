@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
@@ -190,5 +191,150 @@ namespace AccountingSystem.Repository
             }
             return result;
         }
+        public async Task<bool> CheckInvoiceNo(string invoiceNo)
+        {
+            bool isFound = false;
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryFirstOrDefaultAsync<int>(
+                        "SELECT COUNT(*) FROM dbo.InvoiceList WHERE Invoice_No = @InvoiceNo",
+                        new { InvoiceNo = invoiceNo }
+                    );
+
+                    isFound = result > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return isFound;
+        }
+        public async Task<string> UpdateDeleteComments(UpdateCommentViewModel data)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    Action = data.Action,
+                    InvSchId = data.InvSchId,
+                    InvoiceId = data.InvoiceId,
+                    Amount = data.Amount,
+                    Comments = data.Comments,
+                    InvDate = data.SendDate
+                };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    await _db.ExecuteAsync("USP_UPDATE_INVOICE", parameters, commandType: CommandType.StoredProcedure);
+                    return "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+                return ex.ToString();
+            }
+        }
+        public async Task<IEnumerable<Invoice>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid)
+        {
+            var invoices = new List<Invoice>();
+
+            var parameters = new
+            {
+                CompanyId = CompanyId,
+                FullPayment = FullPayment,
+                Invalid = Invalid
+            };
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<Invoice>("usp_GetInvoiceList", parameters, commandType: CommandType.StoredProcedure);
+
+                    invoices.AddRange(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return invoices;
+        }
+
+        public async Task<string> PostToOnlineAsync(string postType, string invoiceNo, string invoiceId)
+        {
+            var message = "";
+            var recordCount = 0;
+
+
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            using (var _Onlinedb = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+            {
+
+                var onlineTransaction = _Onlinedb.BeginTransaction();
+                var localTransaction = _db.BeginTransaction();
+
+                try
+                {
+                    if (postType == "All")
+                    {
+                        var invoices = await _db.QueryAsync("Select Invoice_No, UploadedPaymentStatus from InvoiceList where UploadedPaymentStatus='No'");
+
+                        foreach (var invoice in invoices)
+                        {
+                            recordCount++;
+
+                            await _Onlinedb.ExecuteAsync("usp_Acc_UpdatePayStatus", new { StatusType = 1, InvoiceNo = invoice.Invoice_No.ToString() }, commandType: CommandType.StoredProcedure, transaction: onlineTransaction);
+                        }
+
+                        await _db.ExecuteAsync("UPDATE InvoiceList SET UploadedPaymentStatus='Yes' where UploadedPaymentStatus='No'", transaction: localTransaction);
+
+                        message = $"Total found {recordCount}. All are uploaded successfully.";
+                    }
+                    else
+                    {
+                        await _Onlinedb.ExecuteAsync("usp_Acc_UpdatePayStatus", new { StatusType = 1, InvoiceNo = invoiceNo }, commandType: CommandType.StoredProcedure, transaction: onlineTransaction);
+
+                        await _db.ExecuteAsync(
+                            $"UPDATE InvoiceList SET UploadedPaymentStatus='Yes' where id={invoiceId}",
+                            transaction: localTransaction
+                        );
+
+                        message = "Upload online successful.";
+                    }
+
+                    onlineTransaction.Commit();
+                    localTransaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    onlineTransaction.Rollback();
+                    localTransaction.Rollback();
+
+                    if (postType != "All")
+                    {
+                        await _db.ExecuteAsync($"UPDATE InvoiceList SET UploadedPaymentStatus='No' where id={invoiceId}", transaction: localTransaction);
+                    }
+
+                    message = "Sorry, Payment status cannot be uploaded now.Internet connection is not available.You can upload these Payment statuses later.";
+
+                }
+
+                return message;
+            }
+        }
+
+
+
+
+
     }
 }
+
+

@@ -83,6 +83,42 @@ namespace AccountingSystem.Web.Controllers
             var result = await _SaleManager.CheckOnlineJobsAsync(tnolist, cId);
             return Json(new { Online = result[0], Total = result[1] });
         }
+        public async Task<IActionResult> GetSalesInfo(string InvoiceNo)
+        {
+            var result = await _SaleManager.GetSalesInfoAsync(InvoiceNo);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> DownloadSMSAlert(int serviceId, string fDate, string tDate)
+        {
+            var result = await _SaleManager.DownloadSMSAlertAsync(serviceId, fDate, tDate);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> PostSMSAlertApplyLimitSalePosting([FromBody] PostSMSAlertApplyLimitSale Data)
+        {
+            var result = await _SaleManager.PostSMSAlertApplyLimitSalePosting(Data);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> GetSMSAlertApplyLimitForOnlinePost(string OPIDs)
+        {
+            var result = await _SaleManager.GetSMSAlertApplyLimitForOnlinePost(OPIDs);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> PostSMSAlertApplyLimitToOnline(string OPIDs, int CMorJS, int Type)
+        {
+            var result = await _SaleManager.PostSMSAlertApplyLimitToOnline(OPIDs, CMorJS, Type);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> GetSMSAlertApplyLimit(GetSMSApplyLimit Data)
+        {
+            var result = await _SaleManager.GetSMSAlertApplyLimit(Data);
+
+            return Json(result);
+        }
 
     }
 }

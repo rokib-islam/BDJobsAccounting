@@ -15,6 +15,8 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<Company>> InsertUpdateOnlineCompany(CompanyInsertUpdateViewModel FromData);
         Task UpdateProfile(CompanyInsertUpdateViewModel FromData);
         Task<Company> CheckOnlineCompany(int id);
+        Task<Company> SMSAlertGetOnlineCompanyInfoAsync(int cpId);
+        Task<IEnumerable<Company>> SMSAlertGetOnlineCompanyListAsync(int radio);
 
     }
 }

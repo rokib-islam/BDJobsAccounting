@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -85,9 +86,9 @@ namespace AccountingSystem.Repository
             {
                 string query = "SELECT id FROM tmpJobs WHERE Invoice_no != '' AND Submitted = 0";
 
-                using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    var cId = await connection.QueryFirstOrDefaultAsync<int>(query);
+                    var cId = await _db.QueryFirstOrDefaultAsync<int>(query);
                     if (cId > 0)
                     {
                         isUploaded = false;
@@ -104,6 +105,7 @@ namespace AccountingSystem.Repository
             return isUploaded;
         }
 
+        #region download online jobs
         public async Task<int> DownloadJobs(string fromDate, string toDate, int PNPL)
         {
             int row = 0;
@@ -112,7 +114,7 @@ namespace AccountingSystem.Repository
             {
                 var cmdtext = "usp_Acc_Download_Jobs";
 
-                using (var connection = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+                using (var OnlineConn = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
                 {
                     var parameters = new
                     {
@@ -121,16 +123,16 @@ namespace AccountingSystem.Repository
                         IsPNPL = PNPL
                     };
 
-                    var data = await connection.QueryAsync<CorpJobViewModel>(cmdtext, parameters, commandType: CommandType.StoredProcedure);
+                    var data = await OnlineConn.QueryAsync<CorpJobViewModel>(cmdtext, parameters, commandType: CommandType.StoredProcedure);
 
                     if (data.Any())
                     {
                         var dataTable = CreateDataTable();
                         PopulateDataTable(dataTable, data);
 
-                        using (var secondConnection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                        using (var Connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                         {
-                            await secondConnection.ExecuteAsync("USP_Download_Online_Jobs",
+                            await Connection.ExecuteAsync("USP_Download_Online_Jobs",
                                 new { DownloadOnlineJob = dataTable.AsTableValuedParameter("dbo.DownloadOnlineJob") },
                                 commandType: CommandType.StoredProcedure);
                         }
@@ -194,17 +196,19 @@ namespace AccountingSystem.Repository
                 );
             }
         }
+        #endregion download online jobs
+
         public async Task<List<SalesPersonViewModel>> GetSalesPersonsAsync(int productID)
         {
             var salesPersons = new List<SalesPersonViewModel>();
 
             try
             {
-                using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
                     var parameters = new { DepartmentID = productID };
 
-                    salesPersons = (await connection.QueryAsync<SalesPersonViewModel>("USP_GET_Sales_Person", parameters, commandType: CommandType.StoredProcedure)).ToList();
+                    salesPersons = (await _db.QueryAsync<SalesPersonViewModel>("USP_GET_Sales_Person", parameters, commandType: CommandType.StoredProcedure)).ToList();
                 }
             }
             catch (Exception ex)
@@ -243,9 +247,9 @@ namespace AccountingSystem.Repository
                     SalesPerson = data.SPerson
                 };
 
-                using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    await connection.ExecuteAsync("USP_INSERT_SALE", parameters, commandType: CommandType.StoredProcedure);
+                    await _db.ExecuteAsync("USP_INSERT_SALE", parameters, commandType: CommandType.StoredProcedure);
                 }
 
 
@@ -261,9 +265,9 @@ namespace AccountingSystem.Repository
             var data = new int[2];
             try
             {
-                using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    var result = await connection.QueryFirstOrDefaultAsync<dynamic>(
+                    var result = await _db.QueryFirstOrDefaultAsync<dynamic>(
                         "USP_CHECK_ONLINE_JOBS",
                         new { C_ID = cId, TNO = tnolist },
                         commandType: CommandType.StoredProcedure
@@ -283,8 +287,205 @@ namespace AccountingSystem.Repository
 
             return data;
         }
+        public async Task<IEnumerable<Sale>> GetSalesInfoAsync(string invoiceNo)
+        {
+            var sales = new List<Sale>();
 
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
 
+                    var query = @"SELECT s.TNO, l.SBName, i1.Amount, i1.Id, i1.comments
+                          FROM sales AS s, ledger AS l, InvoiceSceduler AS i1, InvoiceList AS i
+                          WHERE i.Id = i1.invoice_id AND i1.TNO = s.tno AND s.PCode = l.id AND i.Invoice_No = @InvoiceNo";
+
+                    var result = await _db.QueryAsync<Sale>(query, new { InvoiceNo = invoiceNo });
+
+                    sales.AddRange(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+
+            return sales;
+        }
+
+        #region download sms alert
+        public async Task<int> DownloadSMSAlertAsync(int serviceId, string fDate, string tDate)
+        {
+            int row = 0;
+
+            try
+            {
+                var parameters = new
+                {
+                    ServiceID = serviceId,
+                    FromDate = fDate,
+                    ToDate = tDate
+                };
+
+                using (var _Onlinedb = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+                {
+                    var result = await _Onlinedb.QueryAsync<SMSAlertApplyLimit>("Accounting.USP_ACC_SMSAlert_ApplyLimit_Download_New", parameters, commandType: CommandType.StoredProcedure);
+
+                    if (result.Any())
+                    {
+                        var dataTable = CreateSMSAlertDataTable();
+                        PopulateSMSAlertDataTable(dataTable, result);
+
+                        using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                        {
+                            await _db.ExecuteAsync("USP_SMSAlert_ApplyLimit_Download",
+                                new { SMSAlertApplyLimt = dataTable.AsTableValuedParameter("dbo.SMSAlertApplyLimt") },
+                                commandType: CommandType.StoredProcedure);
+                        }
+
+                        row = result.Count();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                row = -1;
+            }
+
+            return row;
+        }
+
+        private DataTable CreateSMSAlertDataTable()
+        {
+            var dataTable = new DataTable();
+            dataTable.Columns.Add("ServiceGroup", typeof(int));
+            dataTable.Columns.Add("OPID", typeof(int));
+            dataTable.Columns.Add("ServiceName", typeof(string));
+            dataTable.Columns.Add("P_ID", typeof(int));
+            dataTable.Columns.Add("Quantity", typeof(int));
+            dataTable.Columns.Add("PaidAmount", typeof(decimal));
+            dataTable.Columns.Add("TransID", typeof(string));
+            dataTable.Columns.Add("TransDate", typeof(string)); // Assuming string for simplicity, use DateTime if applicable
+            dataTable.Columns.Add("PaidBy", typeof(string));
+            dataTable.Columns.Add("ServiceID", typeof(int));
+            dataTable.Columns.Add("Amount", typeof(decimal));
+            dataTable.Columns.Add("DetailInfo", typeof(string));
+
+            return dataTable;
+        }
+
+        private void PopulateSMSAlertDataTable(DataTable dataTable, IEnumerable<SMSAlertApplyLimit> data)
+        {
+            foreach (var item in data)
+            {
+                dataTable.Rows.Add(
+                    item.ServiceGroup,
+                    item.OPID,
+                    item.ServiceName,
+                    item.P_ID,
+                    item.Quantity,
+                    item.PaidAmount,
+                    item.TransID,
+                    item.TransDate,
+                    item.PaidBy,
+                    item.ServiceID,
+                    item.Amount,
+                    item.DetailInfo
+                );
+            }
+        }
+        #endregion  download sms alert
+
+        public async Task<List<PostingOPIDs>> PostSMSAlertApplyLimitSalePosting(PostSMSAlertApplyLimitSale Data)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new
+                    {
+                        OPIDs = Data.OPIDs,
+                        UserID = Data.UserID,
+                        CPID = Data.ComID,
+                        ServiceGroup = Data.ServiceGroup,
+                        ServiceID = Data.ServiceID,
+                        ReceivedDate = Data.JournalDate
+                    };
+
+                    var result = (await _db.QueryAsync<PostingOPIDs>("USP_SMSAlert_ApplyLimit_Sale_Postings", parameters,
+                        commandType: CommandType.StoredProcedure)).ToList();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+        public async Task<List<PostingOPIDs>> GetSMSAlertApplyLimitForOnlinePost(string OPIDs)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new
+                    {
+                        UpdateSubmit = OPIDs
+                    };
+
+                    var result = await _db.QueryAsync<PostingOPIDs>("USP_SMSAlert_ApplyLimit_PostToOnline", parameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+        public async Task<List<PostingOPIDs>> PostSMSAlertApplyLimitToOnline(string OPIDs, int CMorJS, int Type)
+        {
+            using (var _Onlinedb = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+            {
+                var parameters = new
+                {
+                    OPIDs = OPIDs,
+                    CMorJS = CMorJS,
+                    Type = Type
+                };
+
+                var result = await _Onlinedb.QueryAsync<PostingOPIDs>("USP_ACC_SMSAlert_ApplyLimit_PostStatus", parameters,
+                    commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
+        public async Task<List<PostingOPIDs>> GetSMSAlertApplyLimit(GetSMSApplyLimit Data)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var parameters = new
+                {
+                    ServiceGroup = Data.ServiceGroup,
+                    ServiceID = Data.ServiceID,
+                    PaymentMethod = Data.PaymentMethod,
+                    FromDate = Data.FromDate,
+                    ToDate = Data.ToDate,
+                    PageNo = Data.PageNo,
+                    PageSize = Data.PageSize
+                };
+
+                var result = await _db.QueryAsync<PostingOPIDs>("USP_SMSAlert_ApplyLimit", parameters,
+                    commandType: CommandType.StoredProcedure);
+
+                return result.ToList();
+            }
+        }
 
 
 

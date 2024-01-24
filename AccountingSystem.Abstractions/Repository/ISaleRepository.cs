@@ -1,4 +1,5 @@
-﻿using AccountingSystem.Models.AccountViewModels;
+﻿using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.Abstractions.Repository
 {
@@ -14,6 +15,12 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<SalesPersonViewModel>> GetSalesPersonsAsync(int productID);
         Task<string> SaveSale(SaveSalesDataViewModel data);
         Task<int[]> CheckOnlineJobsAsync(string tnolist, string cId);
+        Task<IEnumerable<Sale>> GetSalesInfoAsync(string invoiceNo);
+        Task<int> DownloadSMSAlertAsync(int serviceId, string fDate, string tDate);
+        Task<List<PostingOPIDs>> PostSMSAlertApplyLimitSalePosting(PostSMSAlertApplyLimitSale Data);
+        Task<List<PostingOPIDs>> GetSMSAlertApplyLimitForOnlinePost(string OPIDs);
+        Task<List<PostingOPIDs>> PostSMSAlertApplyLimitToOnline(string OPIDs, int CMorJS, int Type);
+        Task<List<PostingOPIDs>> GetSMSAlertApplyLimit(GetSMSApplyLimit Data);
 
     }
 }

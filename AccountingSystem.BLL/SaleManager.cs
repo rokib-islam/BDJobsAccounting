@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.BLL
@@ -49,6 +50,37 @@ namespace AccountingSystem.BLL
         public Task<int[]> CheckOnlineJobsAsync(string tnolist, string cId)
         {
             return _repository.CheckOnlineJobsAsync(tnolist, cId);
+        }
+
+        public Task<IEnumerable<Sale>> GetSalesInfoAsync(string invoiceNo)
+        {
+            return _repository.GetSalesInfoAsync(invoiceNo);
+        }
+
+        public Task<int> DownloadSMSAlertAsync(int serviceId, string fDate, string tDate)
+        {
+            return _repository.DownloadSMSAlertAsync(serviceId, fDate, tDate);
+        }
+
+        public Task<List<PostingOPIDs>> PostSMSAlertApplyLimitSalePosting(PostSMSAlertApplyLimitSale Data)
+        {
+            return _repository.PostSMSAlertApplyLimitSalePosting(Data);
+
+        }
+
+        public Task<List<PostingOPIDs>> GetSMSAlertApplyLimitForOnlinePost(string OPIDs)
+        {
+            return _repository.GetSMSAlertApplyLimitForOnlinePost(OPIDs);
+        }
+
+        public Task<List<PostingOPIDs>> PostSMSAlertApplyLimitToOnline(string OPIDs, int CMorJS, int Type)
+        {
+            return _repository.PostSMSAlertApplyLimitToOnline(OPIDs, CMorJS, Type);
+        }
+
+        public Task<List<PostingOPIDs>> GetSMSAlertApplyLimit(GetSMSApplyLimit Data)
+        {
+            return _repository.GetSMSAlertApplyLimit(Data);
         }
     }
 }

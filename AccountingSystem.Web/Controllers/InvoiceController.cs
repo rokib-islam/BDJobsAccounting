@@ -42,6 +42,24 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(results);
         }
+        public async Task<IActionResult> UpdateDeleteComments([FromBody] UpdateCommentViewModel data)
+        {
+            var results = await _InvoiceManager.UpdateDeleteComments(data);
+
+            return Json(results);
+        }
+        public async Task<IActionResult> GetInvoicesForCashCollection(int CompanyId, int FullPayment, int Invalid)
+        {
+            var results = await _InvoiceManager.GetInvoicesForCashCollectionAsync(CompanyId, FullPayment, Invalid);
+
+            return Json(results);
+        }
+        public async Task<IActionResult> PostToOnline(string postType, string invoiceNo, string invoiceId)
+        {
+            var results = await _InvoiceManager.PostToOnlineAsync(postType, invoiceNo, invoiceId);
+
+            return Json(results);
+        }
 
 
 
