@@ -4,6 +4,7 @@ using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Web.Models;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
@@ -51,7 +52,6 @@ namespace AccountingSystem.Repository
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                // Use parameterized query to avoid SQL injection
                 var query = "SELECT TOP 10 Id, Name, BlackListed FROM Company WHERE Name LIKE @Key ORDER BY Name";
                 var parameters = new { Key = "%" + Key + "%" };
 
@@ -60,6 +60,7 @@ namespace AccountingSystem.Repository
             }
 
         }
+        
         public async Task<List<Company>> GetOnlineCompanyInfo(int cpId)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
