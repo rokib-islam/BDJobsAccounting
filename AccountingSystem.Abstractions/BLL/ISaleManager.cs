@@ -16,6 +16,10 @@ namespace AccountingSystem.Abstractions.BLL
         Task<string> SaveSale(SaveSalesDataViewModel data);
         Task<int[]> CheckOnlineJobsAsync(string tnolist, string cId);
         Task<IEnumerable<Sale>> GetSalesInfoAsync(string invoiceNo);
-
+        Task<int> DownloadSMSAlertAsync(int serviceId, string fDate, string tDate);
+        Task<List<PostingOPIDs>> PostSMSAlertApplyLimitSalePosting(PostSMSAlertApplyLimitSale Data);
+        Task<List<PostingOPIDs>> GetSMSAlertApplyLimitForOnlinePost(string OPIDs);
+        Task<List<PostingOPIDs>> PostSMSAlertApplyLimitToOnline(string OPIDs, int CMorJS, int Type);
+        Task<List<PostingOPIDs>> GetSMSAlertApplyLimit(GetSMSApplyLimit Data);
     }
 }

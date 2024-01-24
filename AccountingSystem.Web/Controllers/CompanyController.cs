@@ -67,6 +67,18 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
+        public async Task<IActionResult> SMSAlertGetOnlineCompanyInfo(int cpId)
+        {
+            var result = await _CompanyManager.SMSAlertGetOnlineCompanyInfoAsync(cpId);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> SMSAlertGetOnlineCompany(int radio)
+        {
+            var result = await _CompanyManager.SMSAlertGetOnlineCompanyListAsync(radio);
+
+            return Json(result);
+        }
 
 
 

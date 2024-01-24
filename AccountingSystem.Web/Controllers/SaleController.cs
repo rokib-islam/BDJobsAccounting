@@ -89,6 +89,36 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
+        public async Task<IActionResult> DownloadSMSAlert(int serviceId, string fDate, string tDate)
+        {
+            var result = await _SaleManager.DownloadSMSAlertAsync(serviceId, fDate, tDate);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> PostSMSAlertApplyLimitSalePosting([FromBody] PostSMSAlertApplyLimitSale Data)
+        {
+            var result = await _SaleManager.PostSMSAlertApplyLimitSalePosting(Data);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> GetSMSAlertApplyLimitForOnlinePost(string OPIDs)
+        {
+            var result = await _SaleManager.GetSMSAlertApplyLimitForOnlinePost(OPIDs);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> PostSMSAlertApplyLimitToOnline(string OPIDs, int CMorJS, int Type)
+        {
+            var result = await _SaleManager.PostSMSAlertApplyLimitToOnline(OPIDs, CMorJS, Type);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> GetSMSAlertApplyLimit(GetSMSApplyLimit Data)
+        {
+            var result = await _SaleManager.GetSMSAlertApplyLimit(Data);
+
+            return Json(result);
+        }
 
     }
 }
