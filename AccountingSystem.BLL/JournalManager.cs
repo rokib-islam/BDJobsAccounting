@@ -1,6 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
-using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.BLL
@@ -21,6 +20,10 @@ namespace AccountingSystem.BLL
         public async Task<string> GetClosingDateAsync()
         {
             return await _repository.GetClosingDateAsync();
+        }
+        public Task<string> UpdateSalesJournalAsync(UpdateSalesJournal updateInfo)
+        {
+            return _repository.UpdateSalesJournalAsync(updateInfo);
         }
     }
 }

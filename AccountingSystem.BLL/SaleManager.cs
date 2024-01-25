@@ -87,5 +87,49 @@ namespace AccountingSystem.BLL
         {
             return _repository.CheckJobTitle(productId);
         }
+
+        public Task<object> GetSales(string pageNo, string pageSize, int cId, int tno)
+        {
+            return _repository.GetSales(pageNo, pageSize, cId, tno);
+        }
+
+        public Task<IEnumerable<DeletedSalesViewModel>> GetDeletedSales(string pageNo, string pageSize, int cId)
+        {
+            return _repository.GetDeletedSales(pageNo, pageSize, cId);
+        }
+
+        public Task<string> UpdateSaleProduct(string oldSid, string tno, string newSid)
+        {
+            return _repository.UpdateSaleProduct(oldSid, tno, newSid);
+        }
+
+        public Task<string> DeleteSale(int tno, string deleteReason, int creditNote, DateTime deleteDate)
+        {
+            return _repository.DeleteSale(tno, deleteReason, creditNote, deleteDate);
+        }
+        public Task<string> MakeJournalOfSale(MakeJournalOfSales saleInfo)
+        {
+            return _repository.MakeJournalOfSale(saleInfo);
+        }
+
+        public Task<object> GetNumberOfId(string tno)
+        {
+            return _repository.GetNumberOfId(tno);
+        }
+
+        public Task<string> UpdateSaleInfoAsync(UpdateSalesInfo salesInfo)
+        {
+            return _repository.UpdateSaleInfoAsync(salesInfo);
+        }
+
+        public Task<string> UpdateSalePosted(MakeJournalOfSales saleInfo)
+        {
+            return _repository.UpdateSalePosted(saleInfo);
+        }
+
+        public Task<string> UpdateSaleContactPersonAndRefNo(string personId, string refNo, int salesPerson, string tno)
+        {
+            return _repository.UpdateSaleContactPersonAndRefNo(personId, refNo, salesPerson, tno);
+        }
     }
 }

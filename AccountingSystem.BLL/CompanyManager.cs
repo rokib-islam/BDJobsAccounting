@@ -64,5 +64,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetContactPersonsOrJobTitle(type, cId);
         }
+
+        public Task<List<ContactPerson>> GetContactPersonsByCompanyId(int companyId)
+        {
+            return _repository.GetContactPersonsByCompanyId(companyId);
+        }
     }
 }

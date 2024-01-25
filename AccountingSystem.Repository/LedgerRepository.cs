@@ -98,6 +98,60 @@ namespace AccountingSystem.Repository
 
             return ledgers;
         }
+        public async Task<List<Ledger>> GetLedgersWithBalance()
+        {
+            var ledgers = new List<Ledger>();
+
+            try
+            {
+                string sqlQuery = "SELECT id, sbname as GroupName, FORMAT(balance, '##,##0.00 '+account) As Account FROM Ledger WHERE (LedgerAcc = 1 or under like '3,1075%') ORDER BY sbname";
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<Ledger>(sqlQuery);
+                    ledgers.AddRange(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return ledgers;
+        }
+        public async Task<string> UpdateSalesJournalAsync(UpdateSalesJournal updateInfo)
+        {
+            var result = "";
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new
+                    {
+                        SID = updateInfo.Sid,
+                        VATID = updateInfo.VatId,
+                        TNO = updateInfo.Tno,
+                        ODuration = updateInfo.OldDuration,
+                        CDuration = updateInfo.NewDuration,
+                        OAmount = updateInfo.OldAmount,
+                        CAmount = updateInfo.NewAmount,
+                        OAmountVAT = updateInfo.OldAmount,
+                        CAmountVAT = updateInfo.NewAmount,
+                        JDate = updateInfo.FromDate,
+                        Description = updateInfo.Description,
+                        UserID = updateInfo.UserId
+                    };
+
+                    await _db.ExecuteAsync("USP_SALES_JOURNAL_UPDATE_D", parameters, commandType: CommandType.StoredProcedure);
+                    result = "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
+        }
 
 
     }

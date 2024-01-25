@@ -282,6 +282,29 @@ namespace AccountingSystem.Repository
             }
         }
 
+        public async Task<List<ContactPerson>> GetContactPersonsByCompanyId(int companyId)
+        {
+            var contactPersons = new List<ContactPerson>();
+
+            try
+            {
+                string sqlQuery = "SELECT Id, CID, Name, Designation, PType, Email, Phone FROM ContactPersons WHERE CID = @CompanyId";
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<ContactPerson>(sqlQuery, new { CompanyId = companyId });
+
+                    contactPersons.AddRange(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception as needed.
+                throw ex;
+            }
+
+            return contactPersons;
+        }
 
 
 

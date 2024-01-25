@@ -85,6 +85,12 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
+        public async Task<IActionResult> GetContactPersonsByCompanyId(int companyId)
+        {
+            var result = await _CompanyManager.GetContactPersonsByCompanyId(companyId);
+
+            return Json(result);
+        }
 
 
 

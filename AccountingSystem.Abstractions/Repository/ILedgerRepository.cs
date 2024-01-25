@@ -9,5 +9,6 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<LedgerListViewModel>> GetAllLedger(string isAdmin, string isAccount);
         Task<int> GetOnlineLedgerId(string onlineProduct);
         Task<List<Ledger>> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType);
+        Task<List<Ledger>> GetLedgersWithBalance();
     }
 }
