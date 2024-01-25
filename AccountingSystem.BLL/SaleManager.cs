@@ -37,9 +37,9 @@ namespace AccountingSystem.BLL
         {
             return await _repository.DownloadJobs(fromDate, toDate, PNPL);
         }
-        public async Task<List<SalesPersonViewModel>> GetSalesPersonsAsync(int productID)
+        public async Task<List<SalesPersonViewModel>> GetSalesPersons(int productID)
         {
-            return await _repository.GetSalesPersonsAsync(productID);
+            return await _repository.GetSalesPersons(productID);
         }
 
         public Task<string> SaveSale(SaveSalesDataViewModel data)
@@ -81,6 +81,11 @@ namespace AccountingSystem.BLL
         public Task<List<PostingOPIDs>> GetSMSAlertApplyLimit(GetSMSApplyLimit Data)
         {
             return _repository.GetSMSAlertApplyLimit(Data);
+        }
+
+        public Task<List<Ledger>> CheckJobTitle(int productId)
+        {
+            return _repository.CheckJobTitle(productId);
         }
     }
 }

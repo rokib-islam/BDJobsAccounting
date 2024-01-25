@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
 using AccountingSystem.Web.Models;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -60,7 +61,7 @@ namespace AccountingSystem.Repository
             }
 
         }
-        
+
         public async Task<List<Company>> GetOnlineCompanyInfo(int cpId)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
@@ -237,7 +238,49 @@ namespace AccountingSystem.Repository
                 }
             }
         }
+        public async Task<object> GetContactPersonsOrJobTitle(string type, int? cId)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
 
+                    var parameters = new { Type = type, CompanyID = cId };
+
+                    var result = await _db.QueryAsync("USP_ONLINE_SALE_INFO", parameters, commandType: CommandType.StoredProcedure);
+
+                    if (type == "C")
+                    {
+                        var contactPersons = result.Select(r => new ContactPerson
+                        {
+                            Id = r.id,
+                            Name = r.name,
+                            Designation = r.Designation
+                        }).ToList();
+
+                        return contactPersons;
+                    }
+                    else
+                    {
+                        var jobList = result.Select(r => new JobViewModel
+                        {
+                            JpId = r.jp_id,
+                            CompanyName = r.BillingContact,
+                            PostingDate = Convert.ToDateTime(r.postingDate).ToShortDateString(),
+                            ValidDate = Convert.ToDateTime(r.ValidDate).ToShortDateString(),
+                            Title = r.title,
+                            Type = r.Designation
+                        }).ToList();
+
+                        return jobList;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
 

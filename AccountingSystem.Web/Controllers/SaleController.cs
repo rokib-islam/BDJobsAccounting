@@ -68,9 +68,9 @@ namespace AccountingSystem.Web.Controllers
             else
                 return RedirectToAction("Index", "Home");
         }
-        public async Task<IActionResult> GetSalesPersons(int productID)
+        public async Task<IActionResult> GetSalesPersonsByProductID(int productID)
         {
-            var returnValue = await _SaleManager.GetSalesPersonsAsync(productID);
+            var returnValue = await _SaleManager.GetSalesPersons(productID);
             return Json(returnValue);
         }
         public async Task<IActionResult> Save([FromBody] SaveSalesDataViewModel Data)
@@ -116,6 +116,12 @@ namespace AccountingSystem.Web.Controllers
         public async Task<IActionResult> GetSMSAlertApplyLimit(GetSMSApplyLimit Data)
         {
             var result = await _SaleManager.GetSMSAlertApplyLimit(Data);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> CheckJobTitle(int productId)
+        {
+            var result = await _SaleManager.CheckJobTitle(productId);
 
             return Json(result);
         }

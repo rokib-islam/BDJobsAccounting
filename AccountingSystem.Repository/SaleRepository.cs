@@ -198,7 +198,7 @@ namespace AccountingSystem.Repository
         }
         #endregion download online jobs
 
-        public async Task<List<SalesPersonViewModel>> GetSalesPersonsAsync(int productID)
+        public async Task<List<SalesPersonViewModel>> GetSalesPersons(int productID)
         {
             var salesPersons = new List<SalesPersonViewModel>();
 
@@ -487,7 +487,24 @@ namespace AccountingSystem.Repository
             }
         }
 
+        public async Task<List<Ledger>> CheckJobTitle(int productId)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new { ProductID = productId };
 
+                    var result = await _db.QueryAsync<Ledger>("USP_CheckJobTitle", parameters, commandType: CommandType.StoredProcedure);
+
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
     }
 }

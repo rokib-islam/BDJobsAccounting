@@ -60,6 +60,24 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(results);
         }
+        public async Task<IActionResult> GetProductsForInvoice(string cId, int type)
+        {
+            var results = await _InvoiceManager.Getproducts(cId, type);
+
+            return Json(results);
+        }
+        public async Task<IActionResult> GenerateInvoiceNumber(string cId, string issueDate)
+        {
+            var results = await _InvoiceManager.GenerateInvoiceNumberAsync(cId, issueDate);
+
+            return Json(results);
+        }
+        public async Task<IActionResult> GetProductsDetails(string id)
+        {
+            var results = await _InvoiceManager.GetProductsDetails(id);
+
+            return Json(results);
+        }
 
 
 

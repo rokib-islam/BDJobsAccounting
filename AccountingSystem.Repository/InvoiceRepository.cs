@@ -329,9 +329,104 @@ namespace AccountingSystem.Repository
                 return message;
             }
         }
+        public async Task<List<ProductForInvoice>> Getproducts(string cId, int type)
+        {
+            var products = new List<ProductForInvoice>();
 
 
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new { MakeView = type, CID = cId };
+                    var result = await _db.QueryAsync("USP_GET_INVOICE_INVSCHEDULE", parameters, commandType: CommandType.StoredProcedure);
 
+                    if (result.Any())
+                    {
+                        foreach (var item in result)
+                        {
+                            var product = new ProductForInvoice
+                            {
+                                Id = item.id,
+                                ListItem = item.ListItem,
+                                //SbName = item.SbName
+                            };
+
+                            if (type == 0)
+                            {
+                                product.Comments = item.Comments;
+                                product.Amount = Convert.ToDouble(item.Amount);
+                                product.SbName = item.SbName;
+                                product.EDate = Convert.ToDateTime(item.EDate).ToShortDateString();
+                                product.Product = item.Product;
+                                product.LedgerId = item.LedgerId;
+                                product.SDate = Convert.ToDateTime(item.SDate).ToShortDateString();
+                                product.TNO = item.TNO;
+                            }
+                            else
+                            {
+                                product.SDate = Convert.ToDateTime(item.InvSendDt).ToShortDateString();
+                                product.Amount = Convert.ToDouble(item.TAmount);
+                                product.SbName = item.invoice_no;
+                            }
+
+                            products.Add(product);
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return products;
+        }
+        public async Task<string> GenerateInvoiceNumberAsync(string cId, string issueDate)
+        {
+            var invoiceNumber = "";
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new
+                    {
+                        CID = cId,
+                        IssueDate = issueDate
+                    };
+
+                    invoiceNumber = await _db.QueryFirstOrDefaultAsync<string>("USP_SET_INVOICE_NUMBER_V1", parameters, commandType: CommandType.StoredProcedure);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions appropriately
+                throw ex;
+            }
+
+            return invoiceNumber;
+        }
+        public async Task<List<Invoice>> GetProductsDetails(string id)
+        {
+            var invoices = new List<Invoice>();
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new { InvoiceID = id };
+                    invoices = (await _db.QueryAsync<Invoice>("USP_GET_INVOICE_DETAIL", parameters, commandType: CommandType.StoredProcedure)).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions appropriately
+                throw ex;
+            }
+
+            return invoices;
+        }
 
 
     }

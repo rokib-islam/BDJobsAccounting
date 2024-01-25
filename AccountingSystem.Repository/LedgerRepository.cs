@@ -5,7 +5,6 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Logging;
 using System.Data;
 
 namespace AccountingSystem.Repository
@@ -79,12 +78,12 @@ namespace AccountingSystem.Repository
                 {
                     var parameters = new
                     {
-                        Admin = admin,
-                        Account = account,
-                        GroupName = groupname,
-                        IsAll = isAll,
-                        IsI = isI,
-                        IsVatType = isVatType
+                        UserAdmin = admin,
+                        AccountsDep = account,
+                        MGroup = groupname,
+                        All = isAll,
+                        InvoiceLedger = isI,
+                        Tax = isVatType
                     };
 
                     var result = await _db.QueryAsync<Ledger>("USP_LedgerList", parameters, commandType: CommandType.StoredProcedure);

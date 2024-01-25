@@ -12,7 +12,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task DeleteOnlineJob(int jpId);
         Task<bool> IsAllUploaded();
         Task<int> DownloadJobs(string fromDate, string toDate, int PNPL);
-        Task<List<SalesPersonViewModel>> GetSalesPersonsAsync(int productID);
+        Task<List<SalesPersonViewModel>> GetSalesPersons(int productID);
         Task<string> SaveSale(SaveSalesDataViewModel data);
         Task<int[]> CheckOnlineJobsAsync(string tnolist, string cId);
         Task<IEnumerable<Sale>> GetSalesInfoAsync(string invoiceNo);
@@ -21,6 +21,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<PostingOPIDs>> GetSMSAlertApplyLimitForOnlinePost(string OPIDs);
         Task<List<PostingOPIDs>> PostSMSAlertApplyLimitToOnline(string OPIDs, int CMorJS, int Type);
         Task<List<PostingOPIDs>> GetSMSAlertApplyLimit(GetSMSApplyLimit Data);
+        Task<List<Ledger>> CheckJobTitle(int productId);
 
     }
 }
