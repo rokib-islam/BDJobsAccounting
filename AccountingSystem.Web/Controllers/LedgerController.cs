@@ -43,6 +43,12 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(data);
         }
+        public async Task<IActionResult> GetLedgersWithBalance()
+        {
+            var data = await _LegerManager.GetLedgersWithBalance();
+
+            return Json(data);
+        }
 
     }
 }

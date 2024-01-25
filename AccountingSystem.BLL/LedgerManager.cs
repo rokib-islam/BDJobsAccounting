@@ -28,5 +28,9 @@ namespace AccountingSystem.BLL
             return await _repository.GetProducts(admin, account, groupname, isAll, isI, isVatType);
         }
 
+        public Task<List<Ledger>> GetLedgersWithBalance()
+        {
+            return _repository.GetLedgersWithBalance();
+        }
     }
 }

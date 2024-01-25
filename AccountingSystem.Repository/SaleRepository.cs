@@ -198,7 +198,7 @@ namespace AccountingSystem.Repository
         }
         #endregion download online jobs
 
-        public async Task<List<SalesPersonViewModel>> GetSalesPersonsAsync(int productID)
+        public async Task<List<SalesPersonViewModel>> GetSalesPersons(int productID)
         {
             var salesPersons = new List<SalesPersonViewModel>();
 
@@ -486,6 +486,304 @@ namespace AccountingSystem.Repository
                 return result.ToList();
             }
         }
+
+        public async Task<List<Ledger>> CheckJobTitle(int productId)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new { ProductID = productId };
+
+                    var result = await _db.QueryAsync<Ledger>("USP_CheckJobTitle", parameters, commandType: CommandType.StoredProcedure);
+
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task<object> GetSales(string pageNo, string pageSize, int cId, int tno)
+        {
+            var sales = new List<Sale>();
+            var totalAmount = 0.00;
+            var totalDues = 0.00;
+
+            try
+            {
+
+                var parameters = new
+                {
+                    PageNo = pageNo,
+                    PageSize = pageSize,
+                    CID = cId,
+                    TNO = tno
+                };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<Sale>("USP_VIEW_SALES", parameters, commandType: CommandType.StoredProcedure);
+
+                    foreach (var item in result)
+                    {
+                        if (cId != 0 && tno == 0)
+                        {
+                            totalAmount = item.totalAmount;
+                            totalDues = item.DuesAmount;
+                        }
+                        sales.Add(item);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception as needed.
+                throw ex;
+            }
+
+            if (cId == 0)
+                return sales;
+
+            return new { Sales = sales, TotalAmount = totalAmount, DuesAmount = totalDues };
+        }
+        public async Task<IEnumerable<DeletedSalesViewModel>> GetDeletedSales(string pageNo, string pageSize, int cId)
+        {
+            var sales = new List<DeletedSalesViewModel>();
+
+            try
+            {
+                var parameters = new
+                {
+                    PageNo = pageNo,
+                    PageSize = pageSize,
+                    CID = cId,
+
+                };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    sales = (await _db.QueryAsync<DeletedSalesViewModel>(
+                        sql: "USP_VIEW_DELETED_SALES",
+                        param: parameters,
+                        commandType: CommandType.StoredProcedure
+                    )).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return sales;
+        }
+        public async Task<string> UpdateSaleProduct(string oldSid, string tno, string newSid)
+        {
+            var result = "";
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var sqlQuery = @"UPDATE sales SET pcode = @NewSid WHERE tno = @Tno;
+                             UPDATE journal SET sid = @NewSid WHERE tno = @Tno AND sid = @OldSid AND notify IS NOT NULL";
+
+                    await _db.ExecuteAsync(sqlQuery, new { NewSid = newSid, Tno = tno, OldSid = oldSid });
+                    result = "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.Message;
+            }
+
+
+            return result;
+        }
+        public async Task<string> DeleteSale(int tno, string deleteReason, int creditNote, DateTime deleteDate)
+        {
+            string data = "";
+
+            try
+            {
+                var parameters = new
+                {
+                    TNO = tno,
+                    COMMENT = deleteReason,
+                    CreditNote = creditNote,
+                    DeleteDate = deleteDate
+                };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    var result = await _db.QueryAsync<string>(
+                        sql: "USP_DELETE_SALE_INFO",
+                        param: parameters,
+                        commandType: CommandType.StoredProcedure
+                    );
+
+                    data = result.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return data;
+        }
+        public async Task<string> MakeJournalOfSale(MakeJournalOfSales saleInfo)
+        {
+            var result = "";
+            try
+            {
+                var parameters = new
+                {
+                    SID = int.Parse(saleInfo.SId),
+                    Amount = float.Parse(saleInfo.Amount),
+                    JDate = DateTime.Parse(saleInfo.JDate),
+                    SalesDuration = int.Parse(saleInfo.Duration),
+                    TNO = int.Parse(saleInfo.TNO),
+                    Description = saleInfo.Description.Replace("'", "`"),
+                    SalesDate = DateTime.Parse(saleInfo.SalesDate),
+                    VATID = int.Parse(saleInfo.TaxId),
+                    AmountVAT = float.Parse(saleInfo.Tax),
+                    UserID = int.Parse(saleInfo.UserId)
+                };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    await _db.ExecuteAsync("USP_SALES_JOURNAL", parameters, commandType: CommandType.StoredProcedure);
+                    result = "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
+        }
+        public async Task<string> UpdateSalePosted(MakeJournalOfSales saleInfo)
+        {
+            var result = "";
+            try
+            {
+                var parameters = new
+                {
+                    SID = int.Parse(saleInfo.SId),
+                    Amount = float.Parse(saleInfo.Amount),
+                    JDate = DateTime.Parse(saleInfo.JDate),
+                    SalesDuration = int.Parse(saleInfo.Duration),
+                    TNO = int.Parse(saleInfo.TNO),
+                    Description = saleInfo.Description.Replace("'", "`"),
+                    SalesDate = DateTime.Parse(saleInfo.SalesDate),
+                    VATID = int.Parse(saleInfo.TaxId),
+                    AmountVAT = float.Parse(saleInfo.Tax),
+                    UserID = int.Parse(saleInfo.UserId)
+                };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    await _db.ExecuteAsync("USP_SALES_JOURNAL", parameters, commandType: CommandType.StoredProcedure);
+                    await _db.ExecuteAsync(@"UPDATE Sales SET posted=1 WHERE tno=@TNO", new { TNO = saleInfo.TNO });
+                    result = "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
+        }
+
+        public async Task<object> GetNumberOfId(string tno)
+        {
+            var totalCounts = await Task.WhenAll(
+                GetCountAsync("select COUNT(tno) TotalCount from Cash_Collection where tno = @Tno;", tno),
+                GetCountAsync("select COUNT(tno) TotalCount from journal where ApprovedBy > 0 And tno = @Tno;", tno)
+            );
+
+            return new
+            {
+                First = totalCounts[0],
+                Second = totalCounts[1]
+            };
+        }
+
+        private async Task<int> GetCountAsync(string query, string tno)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    var count = await _db.QueryFirstOrDefaultAsync<int>(query, new { Tno = tno });
+
+                    return count;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw;
+            }
+        }
+        public async Task<string> UpdateSaleInfoAsync(UpdateSalesInfo salesInfo)
+        {
+            var result = "";
+            string sqlQuery = @"UPDATE sales 
+                        SET SalesPrice = @SalesPrice, 
+                            AccReceivable = @AccReceivable,
+                            Duration = @Duration,
+                            Tax = @Tax,
+                            Sdate = @StartDate,
+                            Edate = @EndDate,
+                            BillContactID = @ContactId,
+                            RefNo = @RefNo,
+                            SalesPerson = @SalesPerson 
+                        WHERE Tno = @Tno";
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    await _db.ExecuteAsync(sqlQuery, salesInfo);
+                    result = "Success";
+                }
+
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
+        }
+        public async Task<string> UpdateSaleContactPersonAndRefNo(string personId, string refNo, int salesPerson, string tno)
+        {
+            try
+            {
+                string sqlQuery = "UPDATE sales SET BillContactID = @PersonId, RefNo = @RefNo, SalesPerson = @SalesPerson WHERE tno = @Tno";
+
+                var parameters = new { PersonId = personId, RefNo = refNo, SalesPerson = salesPerson, Tno = tno };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    await _db.ExecuteAsync(sqlQuery, parameters);
+
+                    // Return a success message or any relevant information
+                    return "Update successful";
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception or log if needed
+                return $"Error updating data: {ex.Message}";
+            }
+        }
+
+
 
 
 

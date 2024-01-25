@@ -12,3 +12,4 @@
         public int BlueCollar { get; set; }
     }
 }
+

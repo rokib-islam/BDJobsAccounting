@@ -15,6 +15,9 @@ namespace AccountingSystem.Abstractions.Repository
         Task<string> UpdateDeleteComments(UpdateCommentViewModel data);
         Task<IEnumerable<Invoice>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid);
         Task<string> PostToOnlineAsync(string postType, string invoiceNo, string invoiceId);
+        Task<List<ProductForInvoice>> Getproducts(string cId, int type);
+        Task<string> GenerateInvoiceNumberAsync(string cId, string issueDate);
+        Task<List<Invoice>> GetProductsDetails(string id);
     }
 
 

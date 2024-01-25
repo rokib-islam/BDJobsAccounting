@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.Models.AccountViewModels;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -34,6 +35,11 @@ namespace AccountingSystem.Web.Controllers
         {
             var result = await _journalManager.GetClosingDateAsync();
 
+            return Json(result);
+        }
+        public async Task<IActionResult> UpdateSalesJournal(UpdateSalesJournal updateInfo)
+        {
+            var result = await _SaleManager.UpdateSalesJournalAsync(updateInfo);
             return Json(result);
         }
     }

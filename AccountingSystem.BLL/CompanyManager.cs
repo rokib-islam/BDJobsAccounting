@@ -59,5 +59,15 @@ namespace AccountingSystem.BLL
         {
             return await _repository.SMSAlertGetOnlineCompanyListAsync(radio);
         }
+
+        public Task<object> GetContactPersonsOrJobTitle(string type, int? cId)
+        {
+            return _repository.GetContactPersonsOrJobTitle(type, cId);
+        }
+
+        public Task<List<ContactPerson>> GetContactPersonsByCompanyId(int companyId)
+        {
+            return _repository.GetContactPersonsByCompanyId(companyId);
+        }
     }
 }

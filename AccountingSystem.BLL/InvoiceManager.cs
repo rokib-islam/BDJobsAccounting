@@ -19,6 +19,11 @@ namespace AccountingSystem.BLL
             return _repository.CheckInvoiceNo(invoiceNo);
         }
 
+        public Task<string> GenerateInvoiceNumberAsync(string cId, string issueDate)
+        {
+            return _repository.GenerateInvoiceNumberAsync(cId, issueDate);
+        }
+
         public async Task<List<InvoiceForOnlineJobViewModel>> GetInvoices(int cpId, string sDate, int ledgerId)
         {
             return await _repository.GetInvoices(cpId, sDate, ledgerId);
@@ -32,6 +37,16 @@ namespace AccountingSystem.BLL
         public async Task<string> GetInvSendDt(string invoiceNo)
         {
             return await _repository.GetInvSendDt(invoiceNo);
+        }
+
+        public Task<List<ProductForInvoice>> Getproducts(string cId, int type)
+        {
+            return _repository.Getproducts(cId, type);
+        }
+
+        public Task<List<Invoice>> GetProductsDetails(string id)
+        {
+            return _repository.GetProductsDetails(id);
         }
 
         public Task<string> PostToOnlineAsync(string postType, string invoiceNo, string invoiceId)
@@ -58,6 +73,8 @@ namespace AccountingSystem.BLL
         {
             return await _repository.UploadInvoiceOnline(cpId, invoiceNo, serviceNo, invSendDt, billingContact, price, opId, jpIdList, serviceID, companyID, companyName, saleDate);
         }
+
+
 
     }
 }

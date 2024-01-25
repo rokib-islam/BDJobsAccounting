@@ -79,6 +79,18 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
+        public async Task<IActionResult> GetContactPersonsOrJobTitle(string type, int? cId)
+        {
+            var result = await _CompanyManager.GetContactPersonsOrJobTitle(type, cId);
+
+            return Json(result);
+        }
+        public async Task<IActionResult> GetContactPersonsByCompanyId(int companyId)
+        {
+            var result = await _CompanyManager.GetContactPersonsByCompanyId(companyId);
+
+            return Json(result);
+        }
 
 
 

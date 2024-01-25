@@ -16,6 +16,8 @@ namespace AccountingSystem.Abstractions.Repository
         Task<Company> CheckOnlineCompany(int id);
         Task<Company> SMSAlertGetOnlineCompanyInfoAsync(int cpId);
         Task<IEnumerable<Company>> SMSAlertGetOnlineCompanyListAsync(int radio);
+        Task<object> GetContactPersonsOrJobTitle(string type, int? cId);
+
 
     }
 }

@@ -1,9 +1,11 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
 using AccountingSystem.Web.Models;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
@@ -51,7 +53,6 @@ namespace AccountingSystem.Repository
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                // Use parameterized query to avoid SQL injection
                 var query = "SELECT TOP 10 Id, Name, BlackListed FROM Company WHERE Name LIKE @Key ORDER BY Name";
                 var parameters = new { Key = "%" + Key + "%" };
 
@@ -60,6 +61,7 @@ namespace AccountingSystem.Repository
             }
 
         }
+
         public async Task<List<Company>> GetOnlineCompanyInfo(int cpId)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
@@ -236,8 +238,73 @@ namespace AccountingSystem.Repository
                 }
             }
         }
+        public async Task<object> GetContactPersonsOrJobTitle(string type, int? cId)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
 
+                    var parameters = new { Type = type, CompanyID = cId };
 
+                    var result = await _db.QueryAsync("USP_ONLINE_SALE_INFO", parameters, commandType: CommandType.StoredProcedure);
+
+                    if (type == "C")
+                    {
+                        var contactPersons = result.Select(r => new ContactPerson
+                        {
+                            Id = r.id,
+                            Name = r.name,
+                            Designation = r.Designation
+                        }).ToList();
+
+                        return contactPersons;
+                    }
+                    else
+                    {
+                        var jobList = result.Select(r => new JobViewModel
+                        {
+                            JpId = r.jp_id,
+                            CompanyName = r.BillingContact,
+                            PostingDate = Convert.ToDateTime(r.postingDate).ToShortDateString(),
+                            ValidDate = Convert.ToDateTime(r.ValidDate).ToShortDateString(),
+                            Title = r.title,
+                            Type = r.Designation
+                        }).ToList();
+
+                        return jobList;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<List<ContactPerson>> GetContactPersonsByCompanyId(int companyId)
+        {
+            var contactPersons = new List<ContactPerson>();
+
+            try
+            {
+                string sqlQuery = "SELECT Id, CID, Name, Designation, PType, Email, Phone FROM ContactPersons WHERE CID = @CompanyId";
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<ContactPerson>(sqlQuery, new { CompanyId = companyId });
+
+                    contactPersons.AddRange(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle the exception as needed.
+                throw ex;
+            }
+
+            return contactPersons;
+        }
 
 
 
