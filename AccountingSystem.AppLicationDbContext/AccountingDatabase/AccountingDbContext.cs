@@ -10,8 +10,7 @@ namespace AccountingSystem.AppLicationDbContext.AccountingDatabase
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Users>().HasKey(u => u.UserID); // Replace UserId with the actual property representing the primary key
-                                                                // Other configurations...
+            modelBuilder.Entity<Users>().HasKey(u => u.UserID);
 
             base.OnModelCreating(modelBuilder);
         }
