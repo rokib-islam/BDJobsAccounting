@@ -1,7 +1,23 @@
 ﻿@{
     ViewData["Title"] = "OnlineJobs";
 }
+<style>
+    .selected-row {
+        border: 2px solid black !important;
+    }
 
+    .selected-row td {
+        padding: 8px !important;
+    }
+
+    .selected-job-row {
+        border: 2px solid #007bff;
+    }
+
+    .selected-job-row td {
+        padding: 8px;
+    }
+</style>
 <h3 class="text-center alert-primary" style="margin-top:-10px">OnlineJobs</h3>
 
 <div ng-app="myApp">
@@ -57,7 +73,7 @@
                         <label class="control-label float-right" style="font-weight: normal;">Blue Collar</label>
                         <span style="border: 1px solid gray; background: #0BB5FF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
                         <label class="control-label float-right" style="font-weight: normal;">Verified</label>
-                        <span style="border: 1px solid gray; background: #9C27B0; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                        <span style="border: 1px solid gray; background: #9C27B0; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span><br />
                         <label class="control-label float-right" style="font-weight: normal;">Premium</label>
                         <span style="border: 1px solid gray; background: #D5F5E3; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
                         <label class="control-label float-right" style="font-weight: normal;">Uddokta</label>
@@ -84,9 +100,9 @@
                             <th class="border">Total Job Posted</th>
                             <th class="border">Company Status</th>
                         </tr>
-                   </thead>
+                    </thead>
                     <tbody>
-                        <tr ng-repeat="o in companyData" ng-style="getRowStyle(o)" ng-click="showJobData(o.cP_ID, o.postingDate, o.addType, o.region)">
+                        <tr ng-repeat="o in companyData" ng-style="getRowStyle(o)" ng-click="selectRow(o)" ng-class="{ 'selected-row': o === selectedRow }">
                             <td class="border">{{$index + 1}}</td>
                             <td class="border">{{o.cP_ID}}</td>
                             <td class="border">{{o.cName}}</td>
@@ -125,7 +141,7 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="o in jobData" ng-click="showbutton()">
+                        <tr ng-repeat="o in jobData" ng-click="selectJob(o)" ng-class="{ 'selected-row': o === selectedJob }">
                             <td>{{$index+1}}</td>
                             <td>{{o.title}}</td>
                             <td>{{o.addType}}</td>
@@ -187,20 +203,17 @@
 
         <div class="col-sm-12">
             <div class="row" style=" margin-top: 10px; margin-bottom: 10px; padding-left: 0;padding-right: 0;">
-                <div class="col-sm-2">
+                <div class="col-sm-3">
                     <button class="btn btn-primary btn-sm" ng-click="refresh()" style="padding-left:45px;padding-right:45px">Refresh</button>
                 </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-primary btn-sm" ng-click="makeSale()" style="padding-left:45px;padding-right:45px" ng-disabled="makeBtn">Make Sale</button>
+                <div class="col-sm-3">
+                    <button class="btn btn-primary btn-sm" ng-click="makeSale()" style="padding-left:45px;padding-right:45px" ng-disabled="!makeBtn">Make Sale</button>
                 </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-primary btn-sm" ng-click="delete()" style="padding-left:45px;padding-right:45px" ng-disabled="deleteBtn">Delete</button>
+                <div class="col-sm-3">
+                    <button class="btn btn-primary btn-sm" ng-click="delete()" style="padding-left:45px;padding-right:45px" ng-disabled="!deleteBtn">Delete</button>
                 </div>
-                <div class="col-sm-2">
-                    <button class="btn btn-primary btn-sm" ng-click="uploadInvoice()" style="padding-left:45px;padding-right:45px" ng-disabled="uploadBtn">Upload Invoice</button>
-                </div>
-                <div class="col-sm-4 text-right">
-                    <button class="btn btn-primary btn-sm" ng-click="refresh()" style="padding-left:45px;padding-right:45px">Exit</button>
+                <div class="col-sm-3">
+                    <button class="btn btn-primary btn-sm" ng-click="uploadInvoice()" style="padding-left:45px;padding-right:45px" ng-disabled="!uploadBtn">Upload Invoice</button>
                 </div>
             </div>
         </div>
@@ -214,11 +227,6 @@
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.spinner = false;
-
-            $scope.makeBtn = true;
-            $scope.deleteBtn = true;
-            $scope.uploadBtn = true;
-
             $scope.service = '0';
             $scope.loadServices();
         })
@@ -317,6 +325,7 @@
         $scope.showJobData = function (cpId, date, adType, adRegion) {
             $http.get('/Sale/GetJobs', { params: { cpId: cpId, date: date, adType: adType, adRegion: adRegion } })
                 .then(function (response) {
+                    debugger
                     $scope.jobData = response.data;
                 }, function (error) {
                     console.error(error);
@@ -324,59 +333,108 @@
                 });
         };
 
+        $scope.selectedRow = null;
+        $scope.selectRow = function (row) {
+            if ($scope.selectedRow === row) {
+                // If the same row is clicked again, deselect it
+                $scope.selectedRow = null;
+            } else {
+                $scope.selectedRow = row;
+                // Call your showJobData function or perform other actions here
+                $scope.showJobData(row.cP_ID, row.postingDate, row.addType, row.region);
+            }
+        };
+
+        $scope.selectJob = null;
+        $scope.selectJob = function (job) {
+            if ($scope.selectedJob === job) {
+                // If the same job is clicked again, deselect it
+                $scope.selectedJob = null;
+            } else {
+                $scope.selectedJob = job;
+                // Call your showbutton function or perform other actions here
+                $scope.showbutton();
+
+            }
+        };
+
+        $scope.showbutton = function () {
+            if ($scope.selectedJob) {
+                $scope.makeBtn = true;
+                $scope.deleteBtn = true;
+                $scope.uploadBtn = true;
+            } else {
+                $scope.makeBtn = false;
+                $scope.deleteBtn = false;
+                $scope.uploadBtn = false;
+            }
+        };
 
         $scope.search = function () {
             $scope.refreshData();
+            $scope.showJobData()
         }
 
         $scope.refresh = function () {
             $scope.refreshData();
+            $scope.showJobData();
         }
 
-        $scope.showbutton = function () {
-            $scope.makeBtn = false;
-            $scope.deleteBtn = false;
-            $scope.uploadBtn = false;
+
+        $scope.delete = function () {
+            debugger
+            var confirmDelete = window.confirm('Are you sure to delete the selected job?');
+
+            if (confirmDelete) {
+                var jpId = $scope.selectedJob.jp_Id; // Adjust this based on your data structure
+                $http.get('/Sale/DeleteOnlineJob', { params: { jpId: jpId } })
+                    .then(function (response) {
+                        if (response.data === true) {
+                            alert("Delete operation completed successfully.");
+                            //$scope.jobData.splice($scope.jobData.indexOf($scope.selectedJob), 1);
+                            $scope.removeSelectedJobAndUpdateRows();
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error('Error deleting job:', error);
+                        alert('An error occurred while deleting the job. Please try again later.');
+                    });
+            }
+        };
+        $scope.removeSelectedJobAndUpdateRows = function () {
+            var selectedJobIndex = $scope.jobData.findIndex(function (job) {
+                return job === $scope.selectedJob;
+            });
+
+            if (selectedJobIndex !== -1) {
+                $scope.jobData.splice(selectedJobIndex, 1);
+
+                if ($scope.jobData.length === 0) {
+                    // If jobData is empty, remove the corresponding company row
+                    $scope.removeSelectedCompany();
+                } else {
+                    // Update row numbers
+                    var cnt = 0;
+                    angular.forEach($scope.jobData, function (job, index) {
+                        if (job.title !== "") {
+                            cnt++;
+                            job.$index = cnt;
+                        }
+                    });
+                }
+            }
         };
 
-       
+        // Function to remove selected company
+        $scope.removeSelectedCompany = function () {
+            var selectedCompanyIndex = $scope.companyData.findIndex(function (company) {
+                return company === $scope.selectedRow;
+            });
 
-        // $scope.delete = function () {
-        //     debugger
-        //     var selectedJob = $scope.jobData.find(function (job) {
-        //         return job.selected;
-        //     });
-
-        //     if (!selectedJob) {
-        //         alert('Please select a job to delete.');
-        //         return;
-        //     }
-
-        //     var confirmDelete = confirm('Are you sure to delete the selected job?');
-
-        //     if (confirmDelete) {
-        //         var jsonData = { jpId: selectedJob.id };
-
-        //         $http({
-        //             method: 'POST',
-        //             url: '/Sale/DeleteOnlineJob',
-        //             data: jsonData,
-        //             headers: { 'Content-Type': 'application/json; charset=utf-8' }
-        //         }).then(function successCallback(response) {
-        //             if (response.data === true) {
-        //                 alert('Delete operation completed successfully.');
-        //                 $scope.jobData = $scope.jobData.filter(function (job) {
-        //                     return job.id !== selectedJob.id;
-        //                 });
-        //                 $scope.makeBtn = true;
-        //                 $scope.deleteBtn = true;
-        //                 $scope.uploadBtn = true;
-        //             }
-        //         }, function errorCallback(response) {
-        //             console.error("Error deleting job");
-        //         });
-        //     }
-        // };
+            if (selectedCompanyIndex !== -1) {
+                $scope.companyData.splice(selectedCompanyIndex, 1);
+            }
+        };
 
     })
 </script>
