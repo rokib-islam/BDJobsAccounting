@@ -784,8 +784,5 @@ namespace AccountingSystem.Repository
         }
 
 
-
-
-
     }
 }

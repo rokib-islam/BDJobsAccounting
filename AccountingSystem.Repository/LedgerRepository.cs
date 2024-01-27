@@ -119,39 +119,7 @@ namespace AccountingSystem.Repository
 
             return ledgers;
         }
-        public async Task<string> UpdateSalesJournalAsync(UpdateSalesJournal updateInfo)
-        {
-            var result = "";
-            try
-            {
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
-                {
-                    var parameters = new
-                    {
-                        SID = updateInfo.Sid,
-                        VATID = updateInfo.VatId,
-                        TNO = updateInfo.Tno,
-                        ODuration = updateInfo.OldDuration,
-                        CDuration = updateInfo.NewDuration,
-                        OAmount = updateInfo.OldAmount,
-                        CAmount = updateInfo.NewAmount,
-                        OAmountVAT = updateInfo.OldAmount,
-                        CAmountVAT = updateInfo.NewAmount,
-                        JDate = updateInfo.FromDate,
-                        Description = updateInfo.Description,
-                        UserID = updateInfo.UserId
-                    };
 
-                    await _db.ExecuteAsync("USP_SALES_JOURNAL_UPDATE_D", parameters, commandType: CommandType.StoredProcedure);
-                    result = "Success";
-                }
-            }
-            catch (Exception ex)
-            {
-                result = ex.ToString();
-            }
-            return result;
-        }
 
 
     }

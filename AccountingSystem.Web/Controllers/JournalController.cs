@@ -39,7 +39,7 @@ namespace AccountingSystem.Web.Controllers
         }
         public async Task<IActionResult> UpdateSalesJournal(UpdateSalesJournal updateInfo)
         {
-            var result = await _SaleManager.UpdateSalesJournalAsync(updateInfo);
+            var result = await _journalManager.UpdateSalesJournalAsync(updateInfo);
             return Json(result);
         }
     }

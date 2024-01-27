@@ -29,7 +29,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task<string> MakeJournalOfSale(MakeJournalOfSales saleInfo);
         Task<object> GetNumberOfId(string tno);
         Task<string> UpdateSaleInfoAsync(UpdateSalesInfo salesInfo);
-        Task<string> UpdateSalesJournalAsync(UpdateSalesJournal updateInfo);
+
         Task<string> UpdateSalePosted(MakeJournalOfSales saleInfo);
         Task<string> UpdateSaleContactPersonAndRefNo(string personId, string refNo, int salesPerson, string tno);
     }
