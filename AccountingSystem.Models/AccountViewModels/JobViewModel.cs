@@ -2,7 +2,7 @@
 {
     public class JobViewModel
     {
-        public int JpId { get; set; }
+        public int Jp_Id { get; set; }
         public string CompanyName { get; set; }
         public string Title { get; set; }
         public string Type { get; set; }
