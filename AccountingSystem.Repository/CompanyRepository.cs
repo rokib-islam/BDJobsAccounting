@@ -264,7 +264,7 @@ namespace AccountingSystem.Repository
                     {
                         var jobList = result.Select(r => new JobViewModel
                         {
-                            JpId = r.jp_id,
+                            Jp_Id = r.jp_id,
                             CompanyName = r.BillingContact,
                             PostingDate = Convert.ToDateTime(r.postingDate).ToShortDateString(),
                             ValidDate = Convert.ToDateTime(r.ValidDate).ToShortDateString(),
