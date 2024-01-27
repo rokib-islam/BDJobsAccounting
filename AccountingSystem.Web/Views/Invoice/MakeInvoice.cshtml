@@ -1,0 +1,200 @@
+﻿@{
+    ViewData["Title"] = "MakeInvoice";
+}
+<head>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+
+<h3 class="text-center alert-primary" style="margin-top:-10px">MakeInvoice</h3>
+
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-4">
+                    <label><input type="radio" name="radio" value="0" ng-model=""/>Make New Invoice</label><br />
+                    <label><input type="radio" name="radio" value="1" ng-model=""/>View Existing Invoice</label>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group row">
+                        <label class="col-sm-4">Invoice Number</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="form-control form-control-sm" ng-model="invoiceNo" />
+                        </div>
+                    </div>
+                    <div class="text-center">
+                        <button class="btn btn-primary btn-sm" ng-click="">Generate Invoice Number</button>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="form-group row">
+                        <label class="col-sm-4">Issue Date</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control form-control-sm" ng-model="issueDate" />
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-4">Invoice Price</label>
+                        <div class="col-sm-8">
+                            <input type="number" class="form-control form-control-sm" ng-model="invoicePrice" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label class="col-sm-4">Companies</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
+                            <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="width: 200px; overflow:auto ;background: white none repeat scroll 0% 0%" ng-show="companyList.length > 0">
+                                <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:300px">
+                            <thead>
+                                <tr>
+                                    <th>Products</th>
+                                    
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Labels of Companies</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="d-flex justify-content-end"><input type="checkbox"/> Delivery Tiger</label>
+                                <button class="btn btn-info btn-sm float-right" ng-click="">Preview Label</button>
+                            </div>                            
+                        </div>
+                        <div class="col-sm-12 row">
+                            <div class="col-sm-6">
+                                <label><input type="checkbox" ng-model="request" /> Request Comment</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <label><input type="checkbox" ng-model="print" /> Print on color pad</label>
+                            </div>                           
+                        </div>
+                        <div class="col-sm-12 row">
+                            <div class="col-sm-4">
+                                <label>Challan Report</label>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <select ng-model="CopyType" class="form-control form-control-sm">
+                                    <option value="First Copy">First Copy</option>
+                                    <option value="Second Copy">Second Copy</option>
+                                </select>
+                            </div>
+
+                            <div class="col-sm-4">
+                                <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="">Show Challan</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-12 row">
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="">Save</button>
+                            </div>
+
+                            <div class="col-sm-6">
+                                <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="">Show Invoice</button>
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+
+                    </div>
+                    <div class="col-sm-5">
+                        <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:250px">
+                            <thead>
+                                <tr>
+                                    <th>Product</th>
+
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="form-group row">
+                            <label class="col-sm-4">Total Price</label>
+                            <div class="col-sm-8">
+                                <input type="number" class="form-control form-control-sm" ng-model="totalPrice" />
+                            </div>
+                        </div>
+                        <label>Comments of invoice item</label>
+                        <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:250px">
+                            <thead>
+                                <tr>
+                                    <th>Comments</th>
+                                    <th>Amount</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <input type="checkbox" ng-click="" /><label>Send Invoice</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="checkbox" ng-click="" /><label>Send Challan</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-primary btn-sm" ng-click="">Send Mail</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+
+        $scope.companyList = [];
+        $scope.selectedCompany = null;
+
+        $scope.searchCompany = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                $http.get('/Company/GetCompanyListByKey', { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.companyList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.companyList = [];
+            }
+        };
+
+        $scope.selectCompany = function (company) {
+            $scope.selectedCompany = company;
+            $scope.searchQuery = company.name;
+            $scope.companyList = [];
+        }
+    });
+</script>
+
+

@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AccountingSystem.Web.Controllers
 {
@@ -80,7 +81,14 @@ namespace AccountingSystem.Web.Controllers
         }
 
 
-
+        public IActionResult MakeInvoice()
+        {
+            ClaimsPrincipal claimsPrincipal = HttpContext.User;
+            if (claimsPrincipal.Identity.IsAuthenticated)
+                return View();
+            else
+                return RedirectToAction("Index", "Home");
+        }
 
     }
 }
