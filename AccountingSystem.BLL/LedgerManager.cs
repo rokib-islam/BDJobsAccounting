@@ -32,5 +32,15 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetLedgersWithBalance();
         }
+
+        public Task<List<Ledger>> GetAllLedgers()
+        {
+            return _repository.GetAllLedgers();
+        }
+
+        public Task SaveLedgerAsync(Ledger aLedger)
+        {
+            return _repository.SaveLedgerAsync(aLedger);
+        }
     }
 }

@@ -119,6 +119,46 @@ namespace AccountingSystem.Repository
 
             return ledgers;
         }
+        public async Task<List<Ledger>> GetAllLedgers()
+        {
+            var ledgers = new List<Ledger>();
+            try
+            {
+                string sqlQuery = "SELECT Id, SBName AS GroupName, Under, MGroup AS MaingroupName, LevelNo, " +
+                    "OpeningBalance, LedgerAcc AS IsLedgerAccount, Balance, Account, OpeningDate, ServiceID FROM Ledger";
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    ledgers = (await _db.QueryAsync<Ledger>(sqlQuery)).AsList();
+                }
+
+                return ledgers;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public async Task SaveLedgerAsync(Ledger aLedger)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                await _db.ExecuteAsync(
+                "INSERT INTO dbo.Ledger(SBName, Under, MGroup, LevelNo, LedgerAcc, ServiceID) " +
+                "VALUES(@GroupName, @Under, @MaingroupName, @LevelNo, @IsLedgerAccount, @ServiceID)",
+                new
+                {
+                    aLedger.GroupName,
+                    aLedger.Under,
+                    aLedger.MaingroupName,
+                    aLedger.LevelNo,
+                    aLedger.IsLedgerAccount,
+                    aLedger.ServiceID
+                });
+            }
+
+        }
 
 
 
