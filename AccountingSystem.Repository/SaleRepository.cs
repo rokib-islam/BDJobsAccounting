@@ -782,6 +782,25 @@ namespace AccountingSystem.Repository
                 return $"Error updating data: {ex.Message}";
             }
         }
+        public async Task<List<SalesPerson>> GetSalesPersonListByKey(string startingKey)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    await _db.OpenAsync();
+
+                    var salesPersons = await _db.QueryAsync<SalesPerson>("USP_GET_Sales_Person_Keyword", new { startingKey },
+                        commandType: System.Data.CommandType.StoredProcedure);
+
+                    return salesPersons.AsList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
 
     }

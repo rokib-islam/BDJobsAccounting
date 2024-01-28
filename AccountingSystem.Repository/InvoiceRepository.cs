@@ -427,6 +427,93 @@ namespace AccountingSystem.Repository
 
             return invoices;
         }
+        public async Task<string> DeleteUndeleteInvoice(int invoiceId, bool invalid)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    var rowsAffected = await _db.ExecuteAsync("UPDATE InvoiceList SET Invalid = @Invalid WHERE Id = @InvoiceId",
+                        new { Invalid = invalid, InvoiceId = invoiceId });
+
+                    if (rowsAffected > 0)
+                    {
+                        return "Invoice updated successfully.";
+                    }
+                    else
+                    {
+                        return "Invoice not found or no changes made.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error updating invoice: {ex.Message}";
+            }
+        }
+        public async Task<string> UpdateAmount(string invoiceNo, decimal amount)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    var rowsAffected = await _db.ExecuteAsync("UPDATE InvoiceList SET TAmount = @Amount WHERE Invoice_No = @InvoiceNo",
+                        new { Amount = amount, InvoiceNo = invoiceNo });
+
+                    if (rowsAffected > 0)
+                    {
+                        return "Amount updated successfully.";
+                    }
+                    else
+                    {
+                        return "Invoice not found or no changes made.";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error updating amount: {ex.Message}";
+            }
+        }
+        public async Task<List<Invoice>> GetInvoicesAsync(GetInvoiceListParam parameters)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var dynamicParameters = new DynamicParameters();
+                    dynamicParameters.Add("@PageNo", parameters.PageNo);
+                    dynamicParameters.Add("@PageSize", parameters.PageSize);
+                    dynamicParameters.Add("@ProductID", parameters.ProductId);
+                    dynamicParameters.Add("@Validity", parameters.Validity);
+                    dynamicParameters.Add("@Operator", parameters.Operator);
+                    dynamicParameters.Add("@FDuration", parameters.FromDuration);
+                    dynamicParameters.Add("@TDuration", parameters.ToDuration);
+                    dynamicParameters.Add("@FullPayment", parameters.FullPayment);
+                    dynamicParameters.Add("@BlackListed", parameters.Blacklisted);
+                    dynamicParameters.Add("@Order", parameters.Order);
+                    dynamicParameters.Add("@Location", parameters.Location);
+                    dynamicParameters.Add("@SalesPersonID", parameters.Salesperson);
+                    dynamicParameters.Add("@FromRange", parameters.FromRange);
+                    dynamicParameters.Add("@ToRange", parameters.ToRange);
+
+
+                    var invoices = await _db.QueryAsync<Invoice>(
+                        "USP_LIST_OF_INVOICE_V1",
+                        dynamicParameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return invoices.AsList();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions accordingly
+                throw new Exception("Error retrieving invoices.", ex);
+            }
+        }
 
 
     }

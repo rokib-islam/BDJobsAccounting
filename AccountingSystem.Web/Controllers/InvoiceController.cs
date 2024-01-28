@@ -80,7 +80,6 @@ namespace AccountingSystem.Web.Controllers
             return Json(results);
         }
 
-
         public IActionResult MakeInvoice()
         {
             ClaimsPrincipal claimsPrincipal = HttpContext.User;
@@ -88,6 +87,25 @@ namespace AccountingSystem.Web.Controllers
                 return View();
             else
                 return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> DeleteUndeleteInvoice(int invoiceId, bool invalid)
+        {
+            var results = await _InvoiceManager.DeleteUndeleteInvoice(invoiceId, invalid);
+
+            return Json(results);
+        }
+        public async Task<IActionResult> UpdateAmount(string invoiceNo, decimal amount)
+        {
+            var results = await _InvoiceManager.UpdateAmount(invoiceNo, amount);
+
+            return Json(results);
+        }
+        public async Task<IActionResult> GetInvoiceList(GetInvoiceListParam parameters)
+        {
+            var results = await _InvoiceManager.GetInvoicesAsync(parameters);
+
+            return Json(results);
         }
 
     }

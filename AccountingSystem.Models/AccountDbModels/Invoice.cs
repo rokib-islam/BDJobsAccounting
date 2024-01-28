@@ -5,6 +5,7 @@
         public int Id { get; set; }
         public int Cid { get; set; }
         public string InvoiceNo { get; set; }
+        public string invoice_no { get; set; }
         public double TAmount { get; set; }
         public string Comments { get; set; }
         public string InvSendDt { get; set; }
@@ -21,9 +22,10 @@
         public string CompanyName { get; set; }
         public string CompanyAddress { get; set; }
         public string SalesPerson { get; set; }
-        public Int64 TotalInvoices { get; set; }
+        public int TotalInvoices { get; set; }
         public string TaxVatCollectionStatus { get; set; }
         public string AccPersonMail { get; set; }
+        public string SalesPersonName { get; set; }
         public int CompanyId { get; set; }
     }
 }

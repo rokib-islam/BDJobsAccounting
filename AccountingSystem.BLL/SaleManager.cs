@@ -131,5 +131,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.UpdateSaleContactPersonAndRefNo(personId, refNo, salesPerson, tno);
         }
+
+        public Task<List<SalesPerson>> GetSalesPersonListByKey(string startingKey)
+        {
+            return _repository.GetSalesPersonListByKey(startingKey);
+        }
     }
 }

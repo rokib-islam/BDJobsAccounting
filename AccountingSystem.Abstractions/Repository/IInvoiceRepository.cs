@@ -18,6 +18,9 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<ProductForInvoice>> Getproducts(string cId, int type);
         Task<string> GenerateInvoiceNumberAsync(string cId, string issueDate);
         Task<List<Invoice>> GetProductsDetails(string id);
+        Task<string> DeleteUndeleteInvoice(int invoiceId, bool invalid);
+        Task<string> UpdateAmount(string invoiceNo, decimal amount);
+        Task<List<Invoice>> GetInvoicesAsync(GetInvoiceListParam parameters);
     }
 
 

@@ -174,14 +174,19 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
-
         public IActionResult NewSale()
         {
             ClaimsPrincipal claimsPrincipal = HttpContext.User;
             if (claimsPrincipal.Identity.IsAuthenticated)
                 return View();
             else
-                return RedirectToAction("Index","Home");
+                return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> GetSalesPersonListByKey(string startingKey)
+        {
+            var result = await _SaleManager.GetSalesPersonListByKey(startingKey);
+            return Json(result);
         }
 
     }

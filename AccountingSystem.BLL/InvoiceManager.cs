@@ -19,6 +19,11 @@ namespace AccountingSystem.BLL
             return _repository.CheckInvoiceNo(invoiceNo);
         }
 
+        public Task<string> DeleteUndeleteInvoice(int invoiceId, bool invalid)
+        {
+            return _repository.DeleteUndeleteInvoice(invoiceId, invalid);
+        }
+
         public Task<string> GenerateInvoiceNumberAsync(string cId, string issueDate)
         {
             return _repository.GenerateInvoiceNumberAsync(cId, issueDate);
@@ -27,6 +32,11 @@ namespace AccountingSystem.BLL
         public async Task<List<InvoiceForOnlineJobViewModel>> GetInvoices(int cpId, string sDate, int ledgerId)
         {
             return await _repository.GetInvoices(cpId, sDate, ledgerId);
+        }
+
+        public Task<List<Invoice>> GetInvoicesAsync(GetInvoiceListParam parameters)
+        {
+            return _repository.GetInvoicesAsync(parameters);
         }
 
         public Task<IEnumerable<Invoice>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid)
@@ -57,6 +67,11 @@ namespace AccountingSystem.BLL
         public Task<string> SaveInvoice([FromBody] SaveInvoiceViewModel data)
         {
             return _repository.SaveInvoice(data);
+        }
+
+        public Task<string> UpdateAmount(string invoiceNo, decimal amount)
+        {
+            return _repository.UpdateAmount(invoiceNo, amount);
         }
 
         public Task<string> UpdateDeleteComments(UpdateCommentViewModel data)
