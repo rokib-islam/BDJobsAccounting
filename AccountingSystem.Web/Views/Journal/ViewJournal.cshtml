@@ -185,10 +185,12 @@
             $scope.currentPage = 1;
             $scope.totalItems = 0;
         });
-
+        $scope.from = new Date();
+        $scope.to = new Date();
         
 
         $scope.getLedger = function () {
+            debugger
             $http.get('/Ledger/GetAllLedger')
                 .then(function (response) {
                     $scope.ledgers = response.data;

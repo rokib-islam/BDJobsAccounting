@@ -15,7 +15,7 @@
             <div class="row">
                 <div class="col-sm-4">
                     <label><input type="radio" name="radio" value="0" ng-model=""/>Make New Invoice</label><br />
-                    <label><input type="radio" name="radio" value="1" ng-model=""/>View Existing Invoice</label>
+                    <label class="mt-2"><input type="radio" name="radio" value="1" ng-model=""/>View Existing Invoice</label>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group row">
@@ -56,7 +56,7 @@
                 <div class="row">
                     <div class="col-sm-5">
                         <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:300px">
-                            <thead>
+                            <thead class="thead-light">
                                 <tr>
                                     <th>Products</th>
                                     
@@ -73,19 +73,34 @@
                                 <label>Labels of Companies</label>
                             </div>
                             <div class="col-sm-6">
-                                <label class="d-flex justify-content-end"><input type="checkbox"/> Delivery Tiger</label>
+                                <label class="d-flex justify-content-end"><input type="checkbox"/>&nbsp; Delivery Tiger</label>
                                 <button class="btn btn-info btn-sm float-right" ng-click="">Preview Label</button>
                             </div>                            
                         </div>
-                        <div class="col-sm-12 row">
+                        <div class="row mt-2">
+                            <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:100px;">
+                                <thead class="thead-light">
+                                    <tr>
+                                     
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="row">
                             <div class="col-sm-6">
-                                <label><input type="checkbox" ng-model="request" /> Request Comment</label>
+                                <label><input type="checkbox" ng-model="request" />&nbsp; Request Comment</label>
                             </div>
                             <div class="col-sm-6">
-                                <label><input type="checkbox" ng-model="print" /> Print on color pad</label>
+                                <label><input type="checkbox" ng-model="print" />&nbsp; Print on color pad</label>
                             </div>                           
                         </div>
-                        <div class="col-sm-12 row">
+                        <div class="row mt-2">
                             <div class="col-sm-4">
                                 <label>Challan Report</label>
                             </div>
@@ -101,13 +116,13 @@
                                 <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="">Show Challan</button>
                             </div>
                         </div>
-                        <div class="col-sm-12 row">
+                        <div class="row mt-2">
                             <div class="col-sm-6">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="">Save</button>
+                                <button type="button" class="btn btn-block btn-success btn-sm" ng-click="">Save</button>
                             </div>
 
                             <div class="col-sm-6">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="">Show Invoice</button>
+                                <button type="button" class="btn btn-block btn-info btn-sm" ng-click="">Show Invoice</button>
                             </div>
 
                         </div>
@@ -117,7 +132,7 @@
                     </div>
                     <div class="col-sm-5">
                         <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:250px">
-                            <thead>
+                            <thead class="thead-light">
                                 <tr>
                                     <th>Product</th>
 
@@ -137,7 +152,7 @@
                         </div>
                         <label>Comments of invoice item</label>
                         <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:250px">
-                            <thead>
+                            <thead class="thead-light">
                                 <tr>
                                     <th>Comments</th>
                                     <th>Amount</th>
@@ -152,10 +167,10 @@
                         </table>
                         <div class="row">
                             <div class="col-sm-4">
-                                <input type="checkbox" ng-click="" /><label>Send Invoice</label>
+                                <input type="checkbox" ng-click="" /><label>&nbsp; Send Invoice</label>
                             </div>
                             <div class="col-sm-4">
-                                <input type="checkbox" ng-click="" /><label>Send Challan</label>
+                                <input type="checkbox" ng-click="" /><label>&nbsp; Send Challan</label>
                             </div>
                             <div class="col-sm-4">
                                 <button class="btn btn-primary btn-sm" ng-click="">Send Mail</button>

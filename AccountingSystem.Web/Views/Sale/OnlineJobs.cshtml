@@ -230,6 +230,8 @@
             $scope.service = '0';
             $scope.loadServices();
         })
+        $scope.from = new Date();
+        $scope.to = new Date();
 
         $scope.getRowStyle = function (o) {
             var rowStyle = {};
