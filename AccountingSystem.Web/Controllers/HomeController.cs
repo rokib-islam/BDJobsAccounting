@@ -3,7 +3,6 @@ using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Security.Claims;
@@ -31,7 +30,7 @@ namespace AccountingSystem.Web.Controllers
             if (claimusers.Identity.IsAuthenticated)
                 return RedirectToAction("AccountingHome", "Home");
             else
-            return View();
+                return View();
         }
 
         [HttpPost]
@@ -63,8 +62,8 @@ namespace AccountingSystem.Web.Controllers
             //return Json(resultData);
 
 
-            var user =await _AccountManager.GetUsers(credentials.username, credentials.password);
-            if (user != null) 
+            var user = await _AccountManager.GetUsers(credentials.username, credentials.password);
+            if (user != null)
             {
                 HttpContext.Session.SetString("Name", user.Name);
                 HttpContext.Session.SetInt32("UserID", user.UserID);
@@ -81,10 +80,11 @@ namespace AccountingSystem.Web.Controllers
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
 
-                AuthenticationProperties properties=new AuthenticationProperties() { 
-                
+                AuthenticationProperties properties = new AuthenticationProperties()
+                {
+
                     AllowRefresh = false,
-                    IsPersistent= credentials.rememberMe
+                    IsPersistent = credentials.rememberMe
                 };
                 await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, new ClaimsPrincipal(claimsIdentity), properties);
 
@@ -98,7 +98,7 @@ namespace AccountingSystem.Web.Controllers
         public async Task<IActionResult> LogOut()
         {
             HttpContext.Session.Clear();
-           
+
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToAction("Index", "Home");
 
@@ -111,7 +111,7 @@ namespace AccountingSystem.Web.Controllers
             ClaimsPrincipal claimusers = HttpContext.User;
             if (claimusers.Identity.IsAuthenticated)
                 return View();
-            
+
             else
                 return RedirectToAction("Index", "Home");
 

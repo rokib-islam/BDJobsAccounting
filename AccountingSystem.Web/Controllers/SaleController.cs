@@ -174,11 +174,15 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
-        public IActionResult NewSale()
+        public IActionResult NewSale(int? onlinejobId, int? onlineLedgerId, int? companyid)
         {
             ClaimsPrincipal claimsPrincipal = HttpContext.User;
             if (claimsPrincipal.Identity.IsAuthenticated)
+            {
+                ViewBag.Online = new[] { onlineLedgerId, onlinejobId, companyid };
                 return View();
+            }
+
             else
                 return RedirectToAction("Index", "Home");
         }

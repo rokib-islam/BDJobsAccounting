@@ -80,11 +80,15 @@ namespace AccountingSystem.Web.Controllers
             return Json(results);
         }
 
-        public IActionResult MakeInvoice()
+        public IActionResult MakeInvoice(string companyId)
         {
             ClaimsPrincipal claimsPrincipal = HttpContext.User;
             if (claimsPrincipal.Identity.IsAuthenticated)
+            {
+                ViewBag.OnlineCompanyId = companyId;
                 return View();
+            }
+
             else
                 return RedirectToAction("Index", "Home");
         }
