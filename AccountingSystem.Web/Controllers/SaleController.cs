@@ -73,6 +73,7 @@ namespace AccountingSystem.Web.Controllers
             var returnValue = await _SaleManager.GetSalesPersons(productID);
             return Json(returnValue);
         }
+        [HttpPost]
         public async Task<IActionResult> Save([FromBody] SaveSalesDataViewModel Data)
         {
             var result = await _SaleManager.SaveSale(Data);
