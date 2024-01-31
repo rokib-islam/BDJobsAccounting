@@ -1,7 +1,7 @@
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Configurations.Extentions;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 

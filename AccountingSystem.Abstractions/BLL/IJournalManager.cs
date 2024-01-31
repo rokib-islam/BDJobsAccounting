@@ -1,4 +1,5 @@
-﻿using AccountingSystem.Models.AccountViewModels;
+﻿using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.Abstractions.BLL
 {
@@ -8,5 +9,6 @@ namespace AccountingSystem.Abstractions.BLL
 
         Task<string> GetClosingDateAsync();
         Task<string> UpdateSalesJournalAsync(UpdateSalesJournal updateInfo);
+        Task<Journal> GetJournalBySIdAsync(int sId);
     }
 }

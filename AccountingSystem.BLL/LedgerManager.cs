@@ -42,5 +42,15 @@ namespace AccountingSystem.BLL
         {
             return _repository.SaveLedgerAsync(aLedger);
         }
+
+        public Task<int> UpdateLedgerAsync(Ledger aLedger)
+        {
+            return _repository.UpdateLedgerAsync(aLedger);
+        }
+
+        public Task<string> DeleteLedgerAsync(int ledgerId)
+        {
+            return _repository.DeleteLedgerAsync(ledgerId);
+        }
     }
 }

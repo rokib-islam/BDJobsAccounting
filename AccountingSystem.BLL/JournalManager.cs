@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.BLL
@@ -24,6 +25,11 @@ namespace AccountingSystem.BLL
         public Task<string> UpdateSalesJournalAsync(UpdateSalesJournal updateInfo)
         {
             return _repository.UpdateSalesJournalAsync(updateInfo);
+        }
+
+        public Task<Journal> GetJournalBySIdAsync(int sId)
+        {
+            return _repository.GetJournalBySIdAsync(sId);
         }
     }
 }

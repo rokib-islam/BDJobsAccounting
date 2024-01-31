@@ -146,21 +146,70 @@ namespace AccountingSystem.Repository
             {
                 await _db.ExecuteAsync(
                 "INSERT INTO dbo.Ledger(SBName, Under, MGroup, LevelNo, LedgerAcc, ServiceID) " +
-                "VALUES(@GroupName, @Under, @MaingroupName, @LevelNo, @IsLedgerAccount, @ServiceID)",
+                "VALUES(@GroupName, @Under, @MaingroupName, @LevelNo, @LedgerAcc, @ServiceID)",
                 new
                 {
                     aLedger.GroupName,
                     aLedger.Under,
                     aLedger.MaingroupName,
                     aLedger.LevelNo,
-                    aLedger.IsLedgerAccount,
+                    aLedger.LedgerAcc,
                     aLedger.ServiceID
                 });
             }
 
         }
+        public async Task<int> UpdateLedgerAsync(Ledger aLedger)
+        {
+            var sqlQuery = @"
+                            UPDATE dbo.Ledger 
+                            SET SBName = @SBName, 
+                                Under = @Under, 
+                                MGroup = @MGroup, 
+                                LevelNo = @LevelNo, 
+                                LedgerAcc = @LedgerAcc, 
+                                ServiceID = @ServiceID 
+                            WHERE Id = @Id";
 
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = await _db.ExecuteAsync(sqlQuery, new
+                {
+                    SBName = aLedger.SBName, // corrected property name
+                    Under = aLedger.Under,
+                    MGroup = aLedger.MGroup, // corrected property name
+                    LevelNo = aLedger.LevelNo,
+                    LedgerAcc = aLedger.LedgerAcc,
+                    ServiceID = aLedger.ServiceID,
+                    Id = aLedger.Id
+                });
+
+                return result; // Return the number of rows affected
+            }
+        }
+        public async Task<string> DeleteLedgerAsync(int ledgerId)
+        {
+            var sql = "DELETE FROM dbo.Ledger WHERE Id = @LedgerId";
+
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    await _db.ExecuteAsync(sql, new { LedgerId = ledgerId });
+                    return "Ledger deleted successfully.";
+                }
+            }
+            catch (Exception ex)
+            {
+                return $"Error deleting ledger: {ex.Message}";
+            }
+        }
 
 
     }
+
+
+
+
 }

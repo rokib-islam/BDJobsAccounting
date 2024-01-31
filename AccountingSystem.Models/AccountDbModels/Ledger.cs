@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace AccountingSystem.Models.AccountViewModels
 {
@@ -18,16 +13,15 @@ namespace AccountingSystem.Models.AccountViewModels
         public int LevelNo { get; set; }
         public double OpeningBalance { get; set; }
         public DateTime OpeningDate { get; set; }
-        public bool IsLedgerAccount { get; set; }
+        public bool LedgerAcc { get; set; }
         public double Balance { get; set; }
         public string Account { get; set; }
 
-        public string sbname { get; set; }
-        public string mgroup { get; set; }
+        public string SBName { get; set; }
+        public string MGroup { get; set; }
 
         public double Total { get; set; }
         public int ServiceID { get; set; }
         public string Title { get; set; }
-        public string LadgerName { get; set; }
     }
 }

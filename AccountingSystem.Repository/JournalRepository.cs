@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -103,6 +104,23 @@ namespace AccountingSystem.Repository
                 result = ex.ToString();
             }
             return result;
+        }
+        public async Task<Journal> GetJournalBySIdAsync(int sId)
+        {
+            var sql = "SELECT Id, Jid, Sid, Description, Debt, Credit, AccType, JDate, Tno, Notify, PostDate, Lock, UserID, ApprovedBy, ApprovalDate, UpdatedDate, UpdatedBy FROM Journal WHERE Sid = @Sid";
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QuerySingleOrDefaultAsync<Journal>(sql, new { Sid = sId });
+                    return result;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
     }

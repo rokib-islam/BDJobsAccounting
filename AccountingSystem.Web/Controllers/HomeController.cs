@@ -26,7 +26,9 @@ namespace AccountingSystem.Web.Controllers
 
         public IActionResult Index()
         {
+
             ClaimsPrincipal claimusers = HttpContext.User;
+
             if (claimusers.Identity.IsAuthenticated)
                 return RedirectToAction("AccountingHome", "Home");
             else
@@ -109,6 +111,7 @@ namespace AccountingSystem.Web.Controllers
         public IActionResult AccountingHome()
         {
             ClaimsPrincipal claimusers = HttpContext.User;
+            var userNameClaim = claimusers.FindFirst(ClaimTypes.Name) ?? claimusers.FindFirst("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/name");
             if (claimusers.Identity.IsAuthenticated)
                 return View();
 

@@ -1,4 +1,5 @@
-﻿using AccountingSystem.Models.AccountViewModels;
+﻿using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.Abstractions.Repository
 {
@@ -8,5 +9,6 @@ namespace AccountingSystem.Abstractions.Repository
 
         Task<string> GetClosingDateAsync();
         Task<string> UpdateSalesJournalAsync(UpdateSalesJournal updateInfo);
+        Task<Journal> GetJournalBySIdAsync(int sId);
     }
 }

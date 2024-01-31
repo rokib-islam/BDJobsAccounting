@@ -12,5 +12,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<Ledger>> GetLedgersWithBalance();
         Task<List<Ledger>> GetAllLedgers();
         Task SaveLedgerAsync(Ledger aLedger);
+        Task<int> UpdateLedgerAsync(Ledger aLedger);
+        Task<string> DeleteLedgerAsync(int ledgerId);
     }
 }
