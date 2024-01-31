@@ -4,7 +4,20 @@
     ViewData["Title"] = "NewSale";
     var userId = Context.Session.GetInt32("UserID");
     var accessRight = Context.Session.GetString("AccessRight");
-    var accessRights = accessRight.Split(',');
+    //var accessRights = accessRight.Split(',');
+
+    var accessRights = new string[0];
+
+    if (string.IsNullOrEmpty(accessRight))
+    {
+            <script type="text/javascript">
+                window.location.href = '@Url.Action("Index", "Home")';
+            </script>
+    }
+    else
+    {
+        accessRights = accessRight.Split(',');
+    }
     
 }
 
@@ -43,7 +56,7 @@
                             <div class="col-sm-8">
                                 <select class="form-control form-control-sm" ng-model="taxType" ng-change="taxTypeAmountDisable()">
                                     <option value="0">Select</option>
-                                    <option ng-repeat="o in taxTypes" value="{{o.id}}">{{o.sbname}}</option>
+                                    <option ng-repeat="o in taxTypes" value="{{o.id}}">{{o.sbName}}</option>
                                 </select>
                             </div>
                         </div>
@@ -103,7 +116,7 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-sm-6 d-flex justify-content-end">
-                                <button class="btn btn-success btn-sm px-5" ng-disabled="disableSaveButton" ng-click="save()">Save</button>
+                                <button class="btn btn-success btn-sm px-5" ng-disabled="saveButtonDisabled" ng-click="save()">Save</button>
                             </div>
                             <div class="col-sm-6">
                                 <button class="btn btn-primary btn-sm px-4">Make Invoice</button>
@@ -128,7 +141,7 @@
                         <div class="row mt-4">
                             <div class="col-sm-6">
                                 <label>
-                                    <label><input name="duration" ng-model="radioValue" ng-change="updateDuration()" value="1" type="radio" checked>&nbsp; One/less than one month</label>
+                                    <label><input ng-model="radioValue" ng-change="updateDuration()" value="1" type="radio" checked>&nbsp; One/less than one month</label>
                                 </label>
                             </div>
                             <div class="col-sm-6">
@@ -143,7 +156,7 @@
                         <div class="row">
                             <div class="col-sm-6">
                                 <label>
-                                    <input name="duration" ng-model="radioValue" ng-change="updateDuration()" value="2" type="radio">&nbsp; more than one month
+                                    <input ng-model="radioValue" ng-change="updateDuration()" value="2" type="radio">&nbsp; more than one month
                                 </label><br />
                                 Duration
                                 <input ng-model="month" maxlength="2" size="2" readonly style="text-align: center;" ng-disabled="radioValue !== '2'"> months
@@ -236,10 +249,11 @@
             $scope.getSalesPerson();
             $scope.getTaxType();
             $scope.getProducts();
-            $scope.disableSaveButton = true;
+            $scope.saveButtonDisabled = true;
         });
         $scope.dateFrom = new Date();
         $scope.dateTo = new Date();
+        $scope.journalDate = new Date();
 
         $scope.taxTypeAmountDisable = function () {
             if ($scope.taxType == '0') {
@@ -249,7 +263,7 @@
             }
         };
 
-        $scope.radioValue = "1";
+        $scope.radioValue = "1"; 
         $scope.updateDuration = function () {
             var date1 = new Date($scope.dateFrom);
             var date2 = new Date($scope.dateTo);
@@ -290,7 +304,7 @@
             $scope.companyList = [];
 
             $scope.setOption();
-            $scope.disableSaveButton = false;
+            $scope.saveButtonDisabled = false;
         }
 
         $scope.getSalesPerson = function () {
@@ -340,8 +354,9 @@
         $scope.getTaxType = function () {
             $http.get('/Ledger/GetProducts', { params: { admin: 0, account: 0, groupname: " ", isAll: " ", isI: " ", isVatType: 1 } })
                 .then(function (response) {
+                    debugger
                     $scope.taxTypes = response.data.filter(function (item) {
-                        return item.id === 672 && item.sbname === 'VAT (AP)'
+                        return item.id === 672 && item.sbName === 'VAT (AP)'
                     });
                 }, function (error) {
                     console.error(error);
@@ -351,6 +366,7 @@
         $scope.getProducts = function () {
             $http.get('/Ledger/GetProducts', { params: { admin: 0, account: 0, groupname: "Revenue", isAll: "", isI: "I", isVatType: 0 } })
                 .then(function (response) {
+                    debugger
                     $scope.products = response.data;
                 }, function (error) {
                     console.error(error);
@@ -408,9 +424,12 @@
                 else if ($scope.radioValue == '2' && $scope.dateFrom >= $scope.dateTo) {
                     alert("'From date' should not be greater than or equal to 'To date'");
                 }
-                else if ($scope.rows.length <= 0) {
-                    alert("You must fulfill Schedule of Invoice first, then save this sales information.");
+                else if ($scope.salesPrice == "" || $scope.salesPrice == undefined) {
+                    alert("You must give the name of 'Sales Price'.");
                 }
+                // else if ($scope.rows.length <= 0) {
+                //     alert("You must fulfill Schedule of Invoice first, then save this sales information.");
+                // }
                 // else if (parseFloat($scope.total) !== parseFloat(parseFloat($scope.salesPrice) + $scope.taxAmount)) {
                 //     alert("The total amount of the invoice scheduler is not equal to the sales price.");
                 // }
@@ -419,6 +438,9 @@
                 }
                 else if ($scope.salesPerson == 0 || $scope.salesPerson == "") {
                     alert("You must select a 'Sales Person'.");
+                }
+                else if ($scope.productName == 0 || $scope.salesPerson == "" || $scope.salesPerson == undefined) {
+                    alert("You must select a 'Product Name'.");
                 }
                 // else if ($scope.taxType != '0' && parseFloat($scope.rows[0].taxAmount) === 0 || $scope.rows[0].taxAmount == undefined) {
                 //     alert("You must give the 'VAT Amount'.");
@@ -431,35 +453,38 @@
         };
 
         $scope.ok = function () {
-            debugger            
+            debugger
+
+            $scope.formattedFromDate = $scope.dateFrom.toISOString().split('T')[0];
+            $scope.formattedToDate = $scope.dateTo.toISOString().split('T')[0];
+            $scope.formattedJournalDate = $scope.journalDate.toISOString().split('T')[0];
             let requestBodyModel = {
                 UserId: @userId,
-                CId: $scope.searchQuery || 0,
-                PCode: $scope.productName,
-                // FromDate: $scope.dateFrom,
-                // ToDate: $scope.dateTo ? $scope.dateTo : "",
-                // JournalDate: $scope.journalDate,
+                CId: $scope.selectedCompany.id,
+                PCode: parseInt($scope.productName) || 0,
+                FromDate: $scope.formattedFromDate ? $scope.formattedFromDate : "",
+                ToDate: $scope.formattedToDate ? $scope.formattedToDate : "",
+                JournalDate: $scope.formattedJournalDate ? $scope.formattedJournalDate : "",
                 SalesPrice: $scope.salesPrice,
                 BillingPerson: $scope.billingPerson,
                 Designation: $scope.designation,
-                Comment: $scope.comments,
+                Comment: $scope.comments || "",
                 Duration: $scope.month,
                 NoOfInvoice: $scope.invoiceNo,
-                RefNo: $scope.referenceNo,
-                TypeId: $scope.taxType,
-                Vat: $scope.amount,
-                // jpId: $scope.jobId ? $scope.jobId : 0,
-                // jobTitle: $scope.jobTitle,
+                RefNo: $scope.referenceNo || "",
+                TypeId: $scope.taxType ? $scope.taxType.toString() : "",
+                Vat: $scope.amount || 0,
+                JpId: 0, 
+                JobTitle: $scope.jobTitle ? $scope.jobTitle.toString() : "",
                 // workshopDate: $scope.workshopdateDiv ? $scope.workshopdate : "",
                 SPerson: $scope.salesPerson
             };
             $http.post('/Sale/Save', JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
                     debugger
-                    if (response.data === "success") {
+                    if (response.data === "Success") {
                         alert('All information has been saved successfully.');
-                    } else {
-                        alert(response.data);
+                        $("#closejournal").modal('hide');
                     }
                 }, function (error) {
                     console.error(error);

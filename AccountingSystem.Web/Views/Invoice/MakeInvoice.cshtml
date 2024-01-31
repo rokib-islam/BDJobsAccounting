@@ -14,9 +14,9 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-4">
-                    <label><input type="radio" name="radio" value="0" ng-model=""/>Make New Invoice</label><br />
-                    <label class="mt-2"><input type="radio" name="radio" value="1" ng-model=""/>View Existing Invoice</label>
-                </div>
+                    <label><input type="radio" ng-model="invoiceType" value="0" />&nbsp; Make New Invoice</label><br />
+                    <label class="mt-2"><input type="radio" ng-model="invoiceType" value="1" ng-checked="invoiceType===1" />&nbsp; View Existing Invoice</label>
+                </div>               
                 <div class="col-sm-4">
                     <div class="form-group row">
                         <label class="col-sm-4">Invoice Number</label>
@@ -46,8 +46,8 @@
                     <div class="form-group row">
                         <label class="col-sm-4">Companies</label>
                         <div class="col-sm-8">
-                            <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
-                            <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="width: 200px; overflow:auto ;background: white none repeat scroll 0% 0%" ng-show="companyList.length > 0">
+                            <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
+                            <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 200px; overflow:auto ;background: white none repeat scroll 0% 0%" ng-show="companyList.length > 0">
                                 <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
                             </select>
                         </div>
@@ -55,20 +55,22 @@
                 </div>
                 <div class="row">
                     <div class="col-sm-5">
-                        <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:300px">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Products</th>
-                                    
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
-                        <div class="row">
+                        <div style="height: 300px; overflow-y: auto;border:2px solid gray">
+                            <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Products</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="o in products" ng-click="bindOtherTable(o)">
+                                        <td>{{o.listItem}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </div>
+                        <div class="row mt-3">
                             <div class="col-sm-6">
                                 <label>Labels of Companies</label>
                             </div>
@@ -77,7 +79,7 @@
                                 <button class="btn btn-info btn-sm float-right" ng-click="">Preview Label</button>
                             </div>                            
                         </div>
-                        <div class="row mt-2">
+                        <div class="row mt-2" style="border:2px solid gray">
                             <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:100px;">
                                 <thead class="thead-light">
                                     <tr>
@@ -86,8 +88,8 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td></td>
+                                    <tr ng-repeat="o in bindData">
+
                                     </tr>
                                 </tbody>
                             </table>
@@ -131,7 +133,7 @@
 
                     </div>
                     <div class="col-sm-5">
-                        <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:250px">
+                        <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:250px;border:2px solid gray">
                             <thead class="thead-light">
                                 <tr>
                                     <th>Product</th>
@@ -151,20 +153,22 @@
                             </div>
                         </div>
                         <label>Comments of invoice item</label>
-                        <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:250px">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Comments</th>
-                                    <th>Amount</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                </tr>
-                            </tbody>
-                        </table>
+                        <div style="height: 300px; overflow-y: auto;">
+                            <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:250px;border:2px solid gray">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Comments</th>
+                                        <th>Amount</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="o in bindData">
+                                        <td>{{o.comments}}</td>
+                                        <td>{{o.schAmount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
                         <div class="row">
                             <div class="col-sm-4">
                                 <input type="checkbox" ng-click="" /><label>&nbsp; Send Invoice</label>
@@ -187,7 +191,12 @@
 <script>
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
-
+        angular.element(document).ready(function () {
+            
+            
+        });
+        $scope.invoiceType = 1;
+        //$scope.issueDate = new Date();
         $scope.companyList = [];
         $scope.selectedCompany = null;
 
@@ -208,7 +217,53 @@
             $scope.selectedCompany = company;
             $scope.searchQuery = company.name;
             $scope.companyList = [];
+            $scope.loadProducts();
         }
+
+        $scope.loadProducts = function () {
+            debugger;
+            var params = {
+                cId: $scope.selectedCompany.id,
+                type: $scope.invoiceType
+            };
+            $http.get('/Invoice/GetProductsForInvoice', { params: params })
+                .then(function (response) {
+                    debugger;
+                    $scope.products = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        };
+
+        $scope.selectedRow = null;
+        $scope.bindOtherTable = function (row) {
+            debugger
+            if ($scope.selectedRow === row) {
+                // If the same row is clicked again, deselect it
+                $scope.selectedRow = null;
+            } else {
+                $scope.selectedRow = row;
+                // Call your showJobData function or perform other actions here
+                $scope.bindAllData(row.id);
+            }
+        };
+
+        $scope.bindAllData = function (id) {
+            debugger
+            $http.get('/Invoice/GetProductsDetails', { params: { Id: id } })
+                .then(function (response) {
+                    debugger
+                    $scope.bindData = response.data;
+                    $scope.invoicePrice = response.data[0].totalAmount;
+                    $scope.totalPrice = response.data[0].totalAmount;
+                    //$scope.issueDate = response.data[0].invSendDt;
+                }, function (error) {
+                    console.error(error);
+                    alert('Error fetching job data');
+                });
+        };
+
     });
 </script>
 

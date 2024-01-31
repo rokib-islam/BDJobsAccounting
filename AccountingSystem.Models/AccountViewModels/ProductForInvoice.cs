@@ -15,6 +15,5 @@
 
         public string Company { get; set; }
         public double TD { get; set; }
-        public DateTime sdate { set; get; }
     }
 }

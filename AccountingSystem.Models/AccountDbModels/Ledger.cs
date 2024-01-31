@@ -18,6 +18,7 @@ namespace AccountingSystem.Models.AccountViewModels
         public string Account { get; set; }
 
         public string SBName { get; set; }
+        public string LadgerName { get; set; }
         public string MGroup { get; set; }
 
         public double Total { get; set; }
