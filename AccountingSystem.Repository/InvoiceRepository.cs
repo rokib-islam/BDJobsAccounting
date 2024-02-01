@@ -359,7 +359,7 @@ namespace AccountingSystem.Repository
                                 product.SbName = item.SbName;
                                 product.EDate = Convert.ToDateTime(item.EDate).ToShortDateString();
                                 product.Product = item.Product;
-                                product.LedgerId = item.LedgerId;
+                                product.LedgerId = item.LedgerID;
                                 product.SDate = Convert.ToDateTime(item.SDate).ToShortDateString();
                                 product.TNO = item.TNO;
                             }

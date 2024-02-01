@@ -5,6 +5,9 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+
 </head>
 
 <h3 class="text-center alert-primary" style="margin-top:-10px">MakeInvoice</h3>
@@ -14,9 +17,9 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-4">
-                    <label><input type="radio" ng-model="invoiceType" value="0" />&nbsp; Make New Invoice</label><br />
-                    <label class="mt-2"><input type="radio" ng-model="invoiceType" value="1" ng-checked="invoiceType===1" />&nbsp; View Existing Invoice</label>
-                </div>               
+                    <label><input type="radio" ng-model="invoiceType" value="0" ng-checked="invoiceType==0" />&nbsp; Make New Invoice</label><br />
+                    <label class="mt-2"><input type="radio" ng-model="invoiceType" value="1" />&nbsp; View Existing Invoice</label>
+                </div>
                 <div class="col-sm-4">
                     <div class="form-group row">
                         <label class="col-sm-4">Invoice Number</label>
@@ -75,24 +78,12 @@
                                 <label>Labels of Companies</label>
                             </div>
                             <div class="col-sm-6">
-                                <label class="d-flex justify-content-end"><input type="checkbox"/>&nbsp; Delivery Tiger</label>
+                                <label class="d-flex justify-content-end"><input type="checkbox" />&nbsp; Delivery Tiger</label>
                                 <button class="btn btn-info btn-sm float-right" ng-click="">Preview Label</button>
-                            </div>                            
+                            </div>
                         </div>
-                        <div class="row mt-2" style="border:2px solid gray">
-                            <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:100px;">
-                                <thead class="thead-light">
-                                    <tr>
-                                     
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="o in bindData">
-
-                                    </tr>
-                                </tbody>
-                            </table>
+                        <div class="row mt-2" style="border:1px solid gray;height:120px">
+                            <textarea ng-model="label"></textarea>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
@@ -100,7 +91,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label><input type="checkbox" ng-model="print" />&nbsp; Print on color pad</label>
-                            </div>                           
+                            </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-sm-4">
@@ -130,10 +121,18 @@
                         </div>
                     </div>
                     <div class="col-sm-2">
-
+                        <div class="col-sm-12 mt-5">
+                            <button class="btn btn-block btn-sm btn-outline-secondary" ng-click="go()" value="1"><i class="bi bi-arrow-right"></i></button>
+                        </div>
+                        <div class="col-sm-12 mt-5">
+                            <button class="btn btn-block btn-sm btn-outline-secondary" ng-click="back()" value="2"><i class="bi bi-arrow-left"></i></button>
+                        </div>
                     </div>
+
+
                     <div class="col-sm-5">
-                        <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:250px;border:2px solid gray">
+                        <div style="height: 250px; overflow-y: auto;border:2px solid gray">
+                        <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
                             <thead class="thead-light">
                                 <tr>
                                     <th>Product</th>
@@ -142,19 +141,21 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td></td>
+                                <tr ng-repeat="shiftedProduct in shiftData" ng-click="passAnother(shiftedProduct)">
+                                    <td>{{ shiftedProduct.product }}</td>
                                 </tr>
                             </tbody>
                         </table>
-                        <div class="form-group row">
+                        </div>
+                        <div class="form-group row mt-3">
                             <label class="col-sm-4">Total Price</label>
                             <div class="col-sm-8">
                                 <input type="number" class="form-control form-control-sm" ng-model="totalPrice" />
                             </div>
                         </div>
                         <label>Comments of invoice item</label>
-                        <div style="height: 300px; overflow-y: auto;">
-                            <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;height:250px;border:2px solid gray">
+                        <div style="height: 200px; overflow-y: auto;border:2px solid gray">
+                            <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
                                 <thead class="thead-light">
                                     <tr>
                                         <th>Comments</th>
@@ -169,7 +170,10 @@
                                 </tbody>
                             </table>
                         </div>
-                        <div class="row">
+                        @* <div class="row" style="height:100px;border:1px solid gray">
+                            <textarea ng-model="comments"></textarea>
+                        </div> *@
+                        <div class="row mt-2">
                             <div class="col-sm-4">
                                 <input type="checkbox" ng-click="" /><label>&nbsp; Send Invoice</label>
                             </div>
@@ -183,7 +187,7 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
     </div>
 </div>
@@ -192,11 +196,11 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-            
-            
+
+
         });
-        $scope.invoiceType = 1;
-        //$scope.issueDate = new Date();
+        $scope.invoiceType = 0;
+        $scope.issueDate = new Date();
         $scope.companyList = [];
         $scope.selectedCompany = null;
 
@@ -218,17 +222,18 @@
             $scope.searchQuery = company.name;
             $scope.companyList = [];
             $scope.loadProducts();
+            if ($scope.invoiceType == 0) {
+                $scope.setInvoiceNo();
+            }
         }
 
         $scope.loadProducts = function () {
-            debugger;
             var params = {
                 cId: $scope.selectedCompany.id,
                 type: $scope.invoiceType
             };
             $http.get('/Invoice/GetProductsForInvoice', { params: params })
                 .then(function (response) {
-                    debugger;
                     $scope.products = response.data;
                 })
                 .catch(function (error) {
@@ -238,7 +243,6 @@
 
         $scope.selectedRow = null;
         $scope.bindOtherTable = function (row) {
-            debugger
             if ($scope.selectedRow === row) {
                 // If the same row is clicked again, deselect it
                 $scope.selectedRow = null;
@@ -249,20 +253,132 @@
             }
         };
 
+        $scope.selectedAnotherRow = null;
+        $scope.passAnother = function (row) {
+            if ($scope.selectedAnotherRow === row) {
+                // If the same row is clicked again, deselect it
+                $scope.selectedAnotherRow = null;
+            } else {
+                $scope.selectedAnotherRow = row;
+                $scope.comments = $scope.shiftData[0].comments;
+            }
+        };
+
         $scope.bindAllData = function (id) {
-            debugger
-            $http.get('/Invoice/GetProductsDetails', { params: { Id: id } })
+            if ($scope.invoiceType == 0) {
+
+            }
+            else {
+                $http.get('/Invoice/GetProductsDetails', { params: { Id: id } })
+                    .then(function (response) {
+                        $scope.bindData = response.data;
+                        $scope.invoicePrice = response.data[0].totalAmount;
+                        $scope.totalPrice = response.data[0].totalAmount;
+                        $scope.label = response.data[0].label;
+                        $scope.issueDate = response.data[0].invSendDt;
+                        $scope.invoiceNo = response.data[0].invoice_No;
+                    }, function (error) {
+                        console.error(error);
+                        alert('Error fetching job data');
+                    });
+            }
+
+        };
+
+        $scope.setInvoiceNo = function () {
+            var params = {
+                cId: $scope.selectedCompany.id,
+                issueDate: $scope.issueDate
+            };
+            $http.get('/Invoice/GenerateInvoiceNumber', { params: params })
                 .then(function (response) {
-                    debugger
-                    $scope.bindData = response.data;
-                    $scope.invoicePrice = response.data[0].totalAmount;
-                    $scope.totalPrice = response.data[0].totalAmount;
-                    //$scope.issueDate = response.data[0].invSendDt;
-                }, function (error) {
-                    console.error(error);
-                    alert('Error fetching job data');
+                    $scope.invoiceNo = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
                 });
         };
+
+        $scope.shiftData = [];
+        $scope.go = function () {
+            if ($scope.selectedRow) {
+                // Check if shiftData is defined
+                if (!$scope.shiftData) {
+                    $scope.shiftData = [];
+                }
+                // Push the selected row into shiftData
+                $scope.shiftData.push($scope.selectedRow);
+                // Remove the selected row from the original data array (products)
+                var indexToRemove = $scope.products.indexOf($scope.selectedRow);
+                if (indexToRemove !== -1) {
+                    $scope.products.splice(indexToRemove, 1);
+                }
+                $scope.selectedRow = null;
+            } else {
+                console.log('Please select a row before clicking Go.');
+            }
+        };
+
+
+        $scope.products = [];
+        $scope.back = function () {
+            if ($scope.selectedAnotherRow) {
+                // Check if products is defined
+                if (!$scope.products) {
+                    $scope.products = [];
+                }
+                // Unshift the selected row into products
+                $scope.products.unshift($scope.selectedAnotherRow);
+                // Remove the selected row from the original data array (shiftData)
+                var indexToRemove = $scope.shiftData.indexOf($scope.selectedAnotherRow);
+                if (indexToRemove !== -1) {
+                    $scope.shiftData.splice(indexToRemove, 1);
+                }
+                $scope.selectedAnotherRow = null;
+            } else {
+                console.log('Please select a row before clicking back.');
+            }
+        };
+
+
+
+
+
+
+        // $scope.confirmUpdateComment = function () {
+        //     debugger
+        //     var confirmation = window.confirm('Are you sure to update comments?');
+        //     if (confirmation) {
+        //         $scope.updateDeleteComments('C', $scope.selectedRow.id, 0, 0, $scope.comments);
+        //     }
+        // };
+
+        // $scope.setInvoiceNo = function () {
+        //     debugger
+        //     var jsonData = { action: action, 
+        //         invSchId: invSchId, 
+        //         invoiceId: invoiceId, 
+        //         amount: amount, 
+        //         comments: comments, 
+        //         sendDate: $scope.issueDate };
+
+        //     $http.post('/Invoice/UpdateDeleteComments', { params: jsonData })
+        //         .then(function (response) {
+        //             debugger;
+        //             var str = "";
+        //             if (action == 'U')
+        //                 str = "Comment is updated successfully.";
+        //             else if (action == 'D')
+        //                 str = "Comment is deleted successfully.";
+        //             else
+        //                 str = "Comment is updated successfully.";
+
+        //             alert(str);
+        //         })
+        //         .catch(function (error) {
+        //             console.log(error);
+        //         });
+        // };        
 
     });
 </script>
