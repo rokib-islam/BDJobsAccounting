@@ -69,5 +69,35 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetContactPersonsByCompanyId(companyId);
         }
+
+        public Task<ContactPerson> GetContactPersonByIdAsync(int id)
+        {
+            return _repository.GetContactPersonByIdAsync(id);
+        }
+
+        public Task InsertOrUpdateCPAsync(ContactPerson aContact, string actionType)
+        {
+            return _repository.InsertOrUpdateCPAsync(aContact, actionType);
+        }
+
+        public Task DeletePersonAsync(int id)
+        {
+            return _repository.DeletePersonAsync(id);
+        }
+
+        public Task<Company> GetCompanyByNameAsync(string name, int id)
+        {
+            return _repository.GetCompanyByNameAsync(name, id);
+        }
+
+        public Task<string> InsertOrUpdateCompanyAsync(Company aCompany)
+        {
+            return _repository.InsertOrUpdateCompanyAsync(aCompany);
+        }
+
+        public Task DeleteCompanyAsync(int id)
+        {
+            return _repository.DeleteCompanyAsync(id);
+        }
     }
 }

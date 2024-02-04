@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 
@@ -85,14 +86,63 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
-        public async Task<IActionResult> GetContactPersonsByCompanyId(int companyId)
+        public async Task<IActionResult> GetContactPersonByCompanyId(int companyId)
         {
             var result = await _CompanyManager.GetContactPersonsByCompanyId(companyId);
 
             return Json(result);
         }
+        public async Task<IActionResult> GetContactPersonById(int id)
+        {
+            var result = await _CompanyManager.GetContactPersonByIdAsync(id);
 
+            return Json(result);
+        }
+        public async Task<IActionResult> AddOrUpdatePerson(ContactPerson aPerson)
+        {
+            if (aPerson.Id == 0)
+            {
+                await _CompanyManager.InsertOrUpdateCPAsync(aPerson, "I");
+            }
+            else
+            {
+                await _CompanyManager.InsertOrUpdateCPAsync(aPerson, "U");
+            }
 
+            var returnValue = await _CompanyManager.GetContactPersonsByCompanyId(aPerson.CId);
+            returnValue = returnValue.OrderBy(x => x.Name).ToList(); // Ensure the result is ordered.
 
+            return Json(returnValue);
+        }
+        public async Task<IActionResult> DeletePerson(int Id, int CId)
+        {
+            await _CompanyManager.DeletePersonAsync(Id);
+
+            var returnValue = await _CompanyManager.GetContactPersonsByCompanyId(CId);
+            returnValue = returnValue.OrderBy(x => x.Name).ToList();
+
+            return Json(returnValue);
+        }
+        public async Task<IActionResult> CheckCompanyNameWithId(string name, int id)
+        {
+            var resp = await _CompanyManager.GetCompanyByNameAsync(name, id) == null;
+            return Json(resp);
+        }
+        public async Task<IActionResult> Index(Company aCompany)
+        {
+            var resp = await _CompanyManager.InsertOrUpdateCompanyAsync(aCompany);
+            return Json(resp);
+        }
+        public async Task<IActionResult> Delete(int companyId)
+        {
+            await _CompanyManager.DeleteCompanyAsync(companyId);
+
+            return Json(true);
+        }
+        public async Task<IActionResult> GetCompanyById(int companyId)
+        {
+            var resp = await _CompanyManager.GetCompanyById(companyId);
+            return Json(resp);
+        }
     }
 }
