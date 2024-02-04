@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AccountingSystem.Models.AccountViewModels
+﻿namespace AccountingSystem.Models.AccountViewModels
 {
     public class SaveSalesDataViewModel
     {
@@ -18,7 +12,7 @@ namespace AccountingSystem.Models.AccountViewModels
         public string BillingPerson { get; set; }
         public string Designation { get; set; }
         public string Comment { get; set; }
-        public int Duration { get; set; }
+        public string Duration { get; set; }
         public int NoOfInvoice { get; set; }
         public string RefNo { get; set; }
         public string TypeId { get; set; }
@@ -26,6 +20,6 @@ namespace AccountingSystem.Models.AccountViewModels
         public int JpId { get; set; }
         public string JobTitle { get; set; }
         public string WorkshopDate { get; set; }
-        public int SPerson { get; set; }
+        public string SPerson { get; set; }
     }
 }
