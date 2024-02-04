@@ -10,9 +10,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-            <script type="text/javascript">
-                window.location.href = '@Url.Action("Index", "Home")';
-            </script>
+                <script type="text/javascript">
+                    window.location.href = '@Url.Action("Index", "Home")';
+                </script>
     }
     else
     {
@@ -70,7 +70,7 @@
                             <label class="col-sm-4 col-form-label">Job Title</label>
                             <div class="col-sm-8">
                                 <select class="form-control form-control-sm" ng-model="jobTitle">
-                                    <option>Select</option>
+                                    <option value="" selected>Select</option>
                                 </select>
                             </div>
                         </div>
@@ -481,8 +481,10 @@
                         alert('All information has been saved successfully.');
                         $("#closejournal").modal('hide');
                     }
-                }, function (error) {
-                    console.error(error);
+                    else {
+                        alert(response.data);
+                        $("#closejournal").modal('hide');
+                    }
                 })
         };
 
