@@ -354,7 +354,6 @@
         $scope.getTaxType = function () {
             $http.get('/Ledger/GetProducts', { params: { admin: 0, account: 0, groupname: " ", isAll: " ", isI: " ", isVatType: 1 } })
                 .then(function (response) {
-                    debugger
                     $scope.taxTypes = response.data.filter(function (item) {
                         return item.id === 672 && item.sbName === 'VAT (AP)'
                     });
@@ -366,7 +365,6 @@
         $scope.getProducts = function () {
             $http.get('/Ledger/GetProducts', { params: { admin: 0, account: 0, groupname: "Revenue", isAll: "", isI: "I", isVatType: 0 } })
                 .then(function (response) {
-                    debugger
                     $scope.products = response.data;
                 }, function (error) {
                     console.error(error);
@@ -403,7 +401,6 @@
         };
 
         $scope.save = function () {
-            debugger
             var enteredCompanyName = $scope.searchQuery.trim();
             if (enteredCompanyName !== $scope.selectedCompany.name.trim()) {
                 confirm("The Entered Company doesn't exist. Do you want to continue?");
@@ -453,7 +450,6 @@
         };
 
         $scope.ok = function () {
-            debugger
 
             $scope.formattedFromDate = $scope.dateFrom.toISOString().split('T')[0];
             $scope.formattedToDate = $scope.dateTo.toISOString().split('T')[0];
@@ -481,7 +477,6 @@
             };
             $http.post('/Sale/Save', JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
-                    debugger
                     if (response.data === "Success") {
                         alert('All information has been saved successfully.');
                         $("#closejournal").modal('hide');
