@@ -1,13 +1,28 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@{
     ViewData["Title"] = "MakeInvoice";
+
+    var userId = Context.Session.GetInt32("UserID");
+    var accessRight = Context.Session.GetString("AccessRight");
+
+    var accessRights = new string[0];
+
+    if (string.IsNullOrEmpty(accessRight))
+    {
+                                                                            <script type="text/javascript">
+                                                                                window.location.href = '@Url.Action("Index", "Home")';
+                                                                            </script>
+    }
+    else
+    {
+        accessRights = accessRight.Split(',');
+    }
 }
 <head>
     <style>
         .selected-row {
             border: 3px solid black !important;
         }
-
-        
 
     </style>
 
@@ -119,7 +134,7 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-sm-6">
-                                <button type="button" class="btn btn-block btn-success btn-sm" ng-click="">Save</button>
+                                <button type="button" class="btn btn-block btn-success btn-sm" ng-click="save()">Save</button>
                             </div>
 
                             <div class="col-sm-6">
@@ -298,7 +313,7 @@
                     $scope.comments = '';
                 } else {
                     $scope.selectedAnotherRow = shiftedProduct;
-
+                    $scope.totalPrice = $scope.selectedAnotherRow.amount;
                     var comments = "";
                     var ledgerId = shiftedProduct.ledgerId;
 
@@ -418,6 +433,7 @@
             }
         };
 
+        
 
         $scope.products = [];
         $scope.back = function () {
@@ -438,10 +454,6 @@
                 console.log('Please select a row before clicking back.');
             }            
         };
-
-
-
-
 
 
         $scope.updateComment = function () {
@@ -476,7 +488,142 @@
                 .catch(function (error) {
                     console.log(error);
                 });
-        };        
+        }; 
+        
+
+        $scope.save = function () {
+            var access = '@accessRights.Contains("1")';
+            if (access === 'False') {
+                alert("Sorry, You have no permission to save a record.");
+            } else {
+                var isConfirmed = confirm('Did you update the comments?');
+                if (isConfirmed) {
+                    if (!$scope.invoiceNo || $scope.invoiceNo.substr(0, 4) === "0000" || $scope.invoiceNo === "") {
+                        alert("You must give a valid invoice number. It must follow the format:\n\n'yymm-company code(4 digit)-company invoice no(4 digit)-total invoice no(6 digit)'.");
+                    } else if ($scope.invoiceNo.length < 23) {
+                        alert("You must give a valid invoice number which must follow the format:\n\n'yymm-company code(4 digit)-company invoice no(4 digit)-total invoice no(6 digit)'.");
+                    } else if ($scope.invoiceType === 0) {
+                        var tno = "";
+                        for (var i = 0; i < $scope.shiftData.length; i++) {
+                            if ($scope.shiftData[i].tno !== "") {
+                                tno += "," + $scope.shiftData[i].tno
+                            }
+                        }
+
+                        var tnolist = tno.substring(1, tno.length);
+
+                        if (tnolist === "") {
+                            alert("There are no products to save.");
+                            return false;
+                        }
+
+                        
+                        var requestBodyModel = {
+                            cId: $scope.selectedCompany.id.toString(),
+                            tnolist: tnolist
+                        };
+
+                        $http.post('/Sale/CheckOnlineJobs', requestBodyModel)
+                            .then(function (response) {
+                                $scope.data = response.data;
+
+                                if ($scope.data.online < $scope.data.total) {
+                                    var shouldProceed = confirm(
+                                        "Total Online job posted " + $scope.data.total + ".\n" +
+                                        "You select for making invoice " + $scope.data.online + " jobs.\n" +
+                                        "You need another " + ($scope.data.total - $scope.data.online) + " job(s).\n\n" +
+                                        "Do you want to make invoice without adding remaining job(s)?"
+                                    );
+
+                                    if (shouldProceed) {
+                                        $scope.checkInvoice();
+                                    }
+                                } else {
+                                    $scope.checkInvoice();
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+
+
+                    }
+                }
+            }
+        };
+
+
+        $scope.checkInvoice = function () {
+            $http.get('/Invoice/CheckInvoiceNo', { params: $scope.invoiceNo })
+                .then(function (response) {
+                    if (response.data == true) {
+                        var userConfirmed = confirm("The invoice Number is already exist. Do you want to make invoice with this existing invoice Number?");
+
+                        if (userConfirmed) {
+                            $scope.finalCheck();
+                        }
+                    } else {
+                        $scope.finalCheck();
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+
+        };
+
+        $scope.finalCheck=function(){
+            var id = "";
+            for (var i = 0; i < $scope.shiftData.length; i++) {
+                if ($scope.shiftData[i].id != "")
+                    id += "," + $scope.shiftData[i].id;
+            }
+            var idList = id;
+            var confirmation = confirm("Do you finally want to proceed with invoice number " + $scope.invoiceNo + " ?");
+            if (confirmation) { 
+                var action;
+                if ($scope.invoiceType == 0 )
+                    action = 'Make';
+                else
+                    action = 'View';
+
+                $scope.cpId = $scope.selectedCompany.id.toString();
+                $scope.formattedFromDate = $scope.issueDate.toISOString().split('T')[0];
+                $scope.invoiceId = $scope.selectedAnotherRow.id.toString();
+                //$("#save").prop('disabled', true);
+                let requestBodyModel = {
+                    userId: @userId,
+                    action: action,
+                    cId: $scope.cpId == null ? 0 : $scope.cpId,
+                    invoice: $scope.invoiceNo,
+                    issueDate: $scope.formattedFromDate,
+                    totalprice: $scope.totalPrice.toString(),
+                    idList: idList,
+                    InvoiceId: $scope.invoiceId
+                }
+                $http.post('/Invoice/SaveInvoice', requestBodyModel)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (data == "Insert Successfully!") {
+                            alert("Invoice information is successfully saved.");
+
+                            // $("#save").prop('disabled', false);
+                            // $("#existing_radio").prop('checked', true);
+                            // $("#make").hide();
+                            // $("#view").show();
+                            // $("#makeProducts, #go, #back").prop('disabled', true);
+                            // $("#show,#previewLabel").prop('disabled', true);
+                            // $(document).fillProducts();
+                            // $("#issueDate").val(toDate);
+                        } else {
+                            alert("Error: " + data);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            }
+        }
 
     });
 </script>

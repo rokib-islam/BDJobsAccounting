@@ -93,6 +93,14 @@ namespace AccountingSystem.Web.Controllers
                 return RedirectToAction("Index", "Home");
         }
 
+       
+        public Task<bool> CheckInvoiceNo(string invoiceNo)
+        {
+            var results = _InvoiceManager.CheckInvoiceNo(invoiceNo);
+
+            return results;
+        }
+
         public async Task<IActionResult> DeleteUndeleteInvoice(int invoiceId, bool invalid)
         {
             var results = await _InvoiceManager.DeleteUndeleteInvoice(invoiceId, invalid);
