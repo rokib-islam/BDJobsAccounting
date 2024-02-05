@@ -5,14 +5,17 @@
     var userId = Context.Session.GetInt32("UserID");
     var accessRight = Context.Session.GetString("AccessRight");
     //var accessRights = accessRight.Split(',');
+    var onlineJobId = ViewBag.OnlineJobId;
+    var onlineLedgerId = ViewBag.OnlineLedgerId;
+    var onlineCompanyId = ViewBag.OnlineCompanyId;
 
     var accessRights = new string[0];
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                <script type="text/javascript">
-                    window.location.href = '@Url.Action("Index", "Home")';
-                </script>
+                                    <script type="text/javascript">
+                                        window.location.href = '@Url.Action("Index", "Home")';
+                                    </script>
     }
     else
     {
@@ -250,6 +253,7 @@
             $scope.getTaxType();
             $scope.getProducts();
             $scope.saveButtonDisabled = true;
+            $scope.getCompanyInfo();
         });
         $scope.dateFrom = new Date();
         $scope.dateTo = new Date();
@@ -488,7 +492,22 @@
                 })
         };
 
+        // $scope.getCompanies = function () {
+        //     if (@onlineCompanyId != 0) {
 
+        //     }
+        // }
+
+        $scope.getCompanyInfo = function () {
+            $scope.cpId = @onlineCompanyId;
+            $http.get('/Company/GetLocalCompanyInfo', { params: { cpId: $scope.cpId } })
+                .then(function (response) {
+                    $scope.companyInfo = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
 
     });
 </script>

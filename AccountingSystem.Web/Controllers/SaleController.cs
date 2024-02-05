@@ -180,7 +180,9 @@ namespace AccountingSystem.Web.Controllers
             ClaimsPrincipal claimsPrincipal = HttpContext.User;
             if (claimsPrincipal.Identity.IsAuthenticated)
             {
-                ViewBag.Online = new[] { onlineLedgerId, onlinejobId, companyid };
+                ViewBag.OnlineJobId = onlinejobId;
+                ViewBag.OnlineLedgerId = onlineLedgerId;
+                ViewBag.OnlineCompanyId = companyid;
                 return View();
             }
 

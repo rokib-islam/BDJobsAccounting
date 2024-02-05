@@ -9,9 +9,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                                                            <script type="text/javascript">
-                                                                                window.location.href = '@Url.Action("Index", "Home")';
-                                                                            </script>
+                <script type="text/javascript">
+                    window.location.href = '@Url.Action("Index", "Home")';
+                </script>
     }
     else
     {
@@ -40,8 +40,8 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-4">
-                    <label><input type="radio" ng-model="invoiceType" value="0" ng-checked="invoiceType==0" />&nbsp; Make New Invoice</label><br />
-                    <label class="mt-2"><input type="radio" ng-model="invoiceType" value="1" />&nbsp; View Existing Invoice</label>
+                    <label><input type="radio" ng-model="invoiceType" value="0" ng-checked="invoiceType==0" ng-change="blankForNew()"/>&nbsp; Make New Invoice</label><br />
+                    <label class="mt-2"><input type="radio" ng-model="invoiceType" value="1" ng-change="blankForOld()" />&nbsp; View Existing Invoice</label>
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group row">
@@ -129,16 +129,16 @@
                             </div>
 
                             <div class="col-sm-4">
-                                <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="">Show Challan</button>
+                                <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="" ng-disabled="showChallanButton">Show Challan</button>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-sm-6">
-                                <button type="button" class="btn btn-block btn-success btn-sm" ng-click="save()">Save</button>
+                                <button type="button" class="btn btn-block btn-success btn-sm" ng-click="save()" ng-disabled="saveDisabled">Save</button>
                             </div>
 
                             <div class="col-sm-6">
-                                <button type="button" class="btn btn-block btn-info btn-sm" ng-click="">Show Invoice</button>
+                                <button type="button" class="btn btn-block btn-info btn-sm" ng-click="" ng-disabled="showInvoiceButton">Show Invoice</button>
                             </div>
 
                         </div>
@@ -155,7 +155,7 @@
 
                     <div class="col-sm-5">
                         <div style="height: 250px; overflow-y: auto;border:2px solid gray">
-                        <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
+                            <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
                             <thead class="thead-light">
                                 <tr>
                                     <th>Product</th>
@@ -225,9 +225,9 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-
-
+           
         });
+        
         $scope.disabledCommentsTable = true;
         $scope.disabledComments = false;
         $scope.rightArrow = true;
@@ -236,7 +236,45 @@
         $scope.issueDate = new Date();
         $scope.companyList = [];
         $scope.selectedCompany = null;
+        $scope.saveDisabled = true;
+        $scope.showChallanButton = true;
+        $scope.showInvoiceButton = true;
 
+        $scope.blankForOld = function () {
+            $scope.blankPrice();
+            $scope.loadProducts();
+            $scope.tableEmpty();
+            $scope.comments = '';
+            $scope.disabledCommentsTable = false;
+            $scope.disabledComments = true;
+            $scope.saveDisabled = true;
+            $scope.showChallanButton = false;
+            $scope.showInvoiceButton = false;
+        };
+
+        $scope.blankForNew = function () {
+            $scope.blankPrice();
+            $scope.loadProducts();
+            $scope.label = '';
+            $scope.disabledCommentsTable = true;
+            $scope.disabledComments = false;
+            $scope.saveDisabled = false;
+            $scope.showChallanButton = true;
+            $scope.showInvoiceButton = true;
+        };
+
+        $scope.blankPrice = function () {
+            $scope.totalPrice = '';
+            $scope.invoicePrice = '';
+        };
+
+        $scope.tableEmpty = function () {
+            return $scope.shiftData=[];
+        };
+
+        
+
+        
         $scope.searchCompany = function (startingKey) {
             if (startingKey && startingKey.length > 1) {
                 $http.get('/Company/GetCompanyListByKey', { params: { startingKey: startingKey } })
@@ -247,7 +285,7 @@
                     })
             } else {
                 $scope.companyList = [];
-            }
+            }     
         };
 
         $scope.selectCompany = function (company) {
@@ -261,12 +299,16 @@
                 $scope.disabledComments = false;
                 $scope.rightArrow = false;
                 $scope.leftArrow = false;
+                $scope.saveDisabled = false;
+                
             }
             else {
                 $scope.disabledCommentsTable = false;
                 $scope.disabledComments = true;
                 $scope.rightArrow = true;
                 $scope.leftArrow = true;
+                $scope.saveDisabled = true;
+                
             }
         }
 
@@ -297,10 +339,10 @@
                     $scope.rightArrow = false;
                     $scope.leftArrow = true;
                 }
-                
-
             }
         };
+
+        
 
 
         $scope.selectedAnotherRow = null;
@@ -492,6 +534,11 @@
         
 
         $scope.save = function () {
+            debugger
+            if ($scope.searchQuery == "" || $scope.searchQuery == null || $scope.searchQuery == undefined) {
+                alert('Company is required.');
+                return false;
+            }
             var access = '@accessRights.Contains("1")';
             if (access === 'False') {
                 alert("Sorry, You have no permission to save a record.");
@@ -538,7 +585,8 @@
                                     if (shouldProceed) {
                                         $scope.checkInvoice();
                                     }
-                                } else {
+                                }
+                                else {
                                     $scope.checkInvoice();
                                 }
                             })
@@ -548,6 +596,9 @@
 
 
                     }
+                    // else {
+                    //     $scope.checkInvoice();
+                    // }
                 }
             }
         };
@@ -590,7 +641,6 @@
                 $scope.cpId = $scope.selectedCompany.id.toString();
                 $scope.formattedFromDate = $scope.issueDate.toISOString().split('T')[0];
                 $scope.invoiceId = $scope.selectedAnotherRow.id.toString();
-                //$("#save").prop('disabled', true);
                 let requestBodyModel = {
                     userId: @userId,
                     action: action,
@@ -606,15 +656,7 @@
                         var data = response.data;
                         if (data == "Insert Successfully!") {
                             alert("Invoice information is successfully saved.");
-
-                            // $("#save").prop('disabled', false);
-                            // $("#existing_radio").prop('checked', true);
-                            // $("#make").hide();
-                            // $("#view").show();
-                            // $("#makeProducts, #go, #back").prop('disabled', true);
-                            // $("#show,#previewLabel").prop('disabled', true);
-                            // $(document).fillProducts();
-                            // $("#issueDate").val(toDate);
+                            $scope.saveDisabled = true;                            
                         } else {
                             alert("Error: " + data);
                         }

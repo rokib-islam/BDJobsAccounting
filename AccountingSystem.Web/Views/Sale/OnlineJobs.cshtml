@@ -3,7 +3,7 @@
 }
 <style>
     .selected-row {
-        border: 2px solid black !important;
+        border: 3px solid black !important;
     }
 
     .selected-row td {
@@ -11,7 +11,7 @@
     }
 
     .selected-job-row {
-        border: 2px solid #007bff;
+        border: 3px solid #007bff;
     }
 
     .selected-job-row td {
@@ -327,7 +327,6 @@
         $scope.showJobData = function (cpId, date, adType, adRegion) {
             $http.get('/Sale/GetJobs', { params: { cpId: cpId, date: date, adType: adType, adRegion: adRegion } })
                 .then(function (response) {
-                    debugger
                     $scope.jobData = response.data;
                 }, function (error) {
                     console.error(error);
@@ -384,7 +383,6 @@
 
 
         $scope.delete = function () {
-            debugger
             var confirmDelete = window.confirm('Are you sure to delete the selected job?');
 
             if (confirmDelete) {
@@ -437,6 +435,70 @@
                 $scope.companyData.splice(selectedCompanyIndex, 1);
             }
         };
+
+        $scope.makeSale = function () {
+            var accId = $scope.selectedRow.acc_Id;
+            if (accId > 0) {
+                var onlinejobId = $scope.selectedJob.jp_Id;
+                var type = $scope.selectedJob.type;
+                var onlineProduct = "";
+                if (type == "Stand-out") {
+                    if ($scope.selectedJob.blueCollar > 0) {
+                        onlineProduct = "Online Job Posting-Stand-out (Blue Color)";
+                    } else {
+                        onlineProduct = "Online Job Posting (Stand-out)";
+                    }
+                }
+                else if (type == "Premium") {
+                    if ($scope.selectedJob.blueCollar > 0) {
+                        onlineProduct = "Online Job Posting-Stand-out (BCP)";
+                    } else {
+                        onlineProduct = "Online Job Posting (Stand-out Premium)";
+                    }
+                }
+                else if (type == "Uddokta") {
+                    if ($scope.selectedJob.blueCollar > 0) {
+                        onlineProduct = "Online Job Posting-Basic (Uddokta BC)";
+                    } else {
+                        onlineProduct = "Online Job Posting-Basic (Uddokta)";
+                    }
+                }
+                else if ($scope.selectedRow.region > 0) {
+                    if ($scope.selectedRow.region == 5) {
+                        onlineProduct = "Online Job Posting (PNPL)";
+                    } else {
+                        if ($scope.selectedJob.blueCollar > 0) {
+                            onlineProduct = "Online Job Posting-Basic-Regional (Blue Color)";
+                        } else {
+                            onlineProduct = "Online Job Posting (Basic) Regional";
+                        }
+                    }
+                }
+                else if ($scope.selectedRow.addType == 11) {
+                    onlineProduct = "JobPosting to LinkedIn";
+                }
+                else {
+                    if ($scope.selectedJob.blueCollar > 0) {
+                        onlineProduct = "Online Job Posting-Basic (Blue Color)";
+                    } else {
+                        onlineProduct = "Online Job Posting (Basic)";
+                    }
+                }
+                
+                $http.get('/Ledger/GetOnlineLedgerId', { params: { onlineProduct: onlineProduct } })
+                .then(function(response){
+                        $scope.data = response.data;
+                        window.open('.././Sale/NewSale?onlinejobId=' + onlinejobId + '&onlineLedgerId=' + $scope.data + '&companyid=' + accId);
+                })
+                .catch (function(error) {
+                    console.log(error);
+                })
+            }
+            else {
+                alert("The company '" + $scope.selectedRow.cName + "' is new for the local database.\nYou must add the information of this company to the local database from another form by clicking 'Check companies & set company ID' button.\nThen click 'OK' to proceed with making sales or 'Cancel' to cancel the operation.");
+                return false;
+            }
+        }
 
     })
 </script>
