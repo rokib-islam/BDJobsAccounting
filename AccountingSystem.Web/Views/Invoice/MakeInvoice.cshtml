@@ -1,7 +1,30 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@{
     ViewData["Title"] = "MakeInvoice";
+
+    var userId = Context.Session.GetInt32("UserID");
+    var accessRight = Context.Session.GetString("AccessRight");
+
+    var accessRights = new string[0];
+
+    if (string.IsNullOrEmpty(accessRight))
+    {
+                                                                            <script type="text/javascript">
+                                                                                window.location.href = '@Url.Action("Index", "Home")';
+                                                                            </script>
+    }
+    else
+    {
+        accessRights = accessRight.Split(',');
+    }
 }
 <head>
+    <style>
+        .selected-row {
+            border: 3px solid black !important;
+        }
+
+    </style>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -66,7 +89,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr ng-repeat="o in products" ng-click="bindOtherTable(o)">
+                                    <tr ng-repeat="o in products" ng-click="bindOtherTable(o)" ng-class="{ 'selected-row': o === selectedRow }">
                                         <td>{{o.listItem}}</td>
                                     </tr>
                                 </tbody>
@@ -111,7 +134,7 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-sm-6">
-                                <button type="button" class="btn btn-block btn-success btn-sm" ng-click="">Save</button>
+                                <button type="button" class="btn btn-block btn-success btn-sm" ng-click="save()">Save</button>
                             </div>
 
                             <div class="col-sm-6">
@@ -122,10 +145,10 @@
                     </div>
                     <div class="col-sm-2">
                         <div class="col-sm-12 mt-5">
-                            <button class="btn btn-block btn-sm btn-outline-secondary" ng-click="go()" value="1"><i class="bi bi-arrow-right"></i></button>
+                            <button class="btn btn-block btn-sm btn-outline-secondary" ng-click="go()" value="1" ng-disabled="rightArrow"><i class="bi bi-arrow-right"></i></button>
                         </div>
                         <div class="col-sm-12 mt-5">
-                            <button class="btn btn-block btn-sm btn-outline-secondary" ng-click="back()" value="2"><i class="bi bi-arrow-left"></i></button>
+                            <button class="btn btn-block btn-sm btn-outline-secondary" ng-click="back()" value="2" ng-disabled="leftArrow"><i class="bi bi-arrow-left"></i></button>
                         </div>
                     </div>
 
@@ -140,8 +163,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                <tr ng-repeat="shiftedProduct in shiftData" ng-click="passAnother(shiftedProduct)">
+                                <tr ng-repeat="shiftedProduct in shiftData" ng-click="passAnother(shiftedProduct)" ng-class="{ 'selected-row': shiftedProduct === selectedAnotherRow }">
                                     <td>{{ shiftedProduct.product }}</td>
                                 </tr>
                             </tbody>
@@ -153,8 +175,15 @@
                                 <input type="number" class="form-control form-control-sm" ng-model="totalPrice" />
                             </div>
                         </div>
-                        <label>Comments of invoice item</label>
-                        <div style="height: 200px; overflow-y: auto;border:2px solid gray">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Comments of invoice item</label>
+                            </div>
+                            <div class="col-sm-6 d-flex justify-content-end mb-2">
+                                <button class="btn btn-primary btn-sm" ng-click="updateComment()">Update Comment</button>
+                            </div>
+                        </div>
+                        <div style="height: 200px; overflow-y: auto;border:2px solid gray" ng-hide="disabledCommentsTable">
                             <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
                                 <thead class="thead-light">
                                     <tr>
@@ -170,9 +199,9 @@
                                 </tbody>
                             </table>
                         </div>
-                        @* <div class="row" style="height:100px;border:1px solid gray">
+                        <div class="row" style="height:200px;border:1px solid gray" ng-hide="disabledComments">
                             <textarea ng-model="comments"></textarea>
-                        </div> *@
+                        </div>
                         <div class="row mt-2">
                             <div class="col-sm-4">
                                 <input type="checkbox" ng-click="" /><label>&nbsp; Send Invoice</label>
@@ -199,6 +228,10 @@
 
 
         });
+        $scope.disabledCommentsTable = true;
+        $scope.disabledComments = false;
+        $scope.rightArrow = true;
+        $scope.leftArrow = true;
         $scope.invoiceType = 0;
         $scope.issueDate = new Date();
         $scope.companyList = [];
@@ -224,6 +257,16 @@
             $scope.loadProducts();
             if ($scope.invoiceType == 0) {
                 $scope.setInvoiceNo();
+                $scope.disabledCommentsTable = true;
+                $scope.disabledComments = false;
+                $scope.rightArrow = false;
+                $scope.leftArrow = false;
+            }
+            else {
+                $scope.disabledCommentsTable = false;
+                $scope.disabledComments = true;
+                $scope.rightArrow = true;
+                $scope.leftArrow = true;
             }
         }
 
@@ -250,19 +293,90 @@
                 $scope.selectedRow = row;
                 // Call your showJobData function or perform other actions here
                 $scope.bindAllData(row.id);
+                if ($scope.invoiceType == 0) {
+                    $scope.rightArrow = false;
+                    $scope.leftArrow = true;
+                }
+                
+
             }
         };
 
+
         $scope.selectedAnotherRow = null;
-        $scope.passAnother = function (row) {
-            if ($scope.selectedAnotherRow === row) {
-                // If the same row is clicked again, deselect it
-                $scope.selectedAnotherRow = null;
-            } else {
-                $scope.selectedAnotherRow = row;
-                $scope.comments = $scope.shiftData[0].comments;
+        $scope.comments = '';
+
+        $scope.passAnother = function (shiftedProduct) {
+            if (shiftedProduct.product !== "") {
+                if ($scope.selectedAnotherRow === shiftedProduct) {
+                    $scope.selectedAnotherRow = null;
+                    $scope.comments = '';
+                } else {
+                    $scope.selectedAnotherRow = shiftedProduct;
+                    $scope.totalPrice = $scope.selectedAnotherRow.amount;
+                    var comments = "";
+                    var ledgerId = shiftedProduct.ledgerId;
+
+                    if (shiftedProduct.comments == "" || shiftedProduct.comments == null || shiftedProduct.comments.length < 110) {
+                        if (
+                            ledgerId == 44 ||
+                            ledgerId == 1165 ||
+                            ledgerId == 2253 ||
+                            ledgerId == 2270 ||
+                            ledgerId == 8388 ||
+                            ledgerId == 18979 ||
+                            ledgerId == 18981 ||
+                            ledgerId == 18980 ||
+                            ledgerId == 22254 ||
+                            ledgerId == 22255 ||
+                            ledgerId == 22257 ||
+                            ledgerId == 26422
+                        ) {
+                            comments =
+                                "Payment for '" +
+                                shiftedProduct.sbName +
+                                "' at the classified section of Bdjobs.com from " +
+                                shiftedProduct.sDate +
+                                " to " +
+                                shiftedProduct.eDate +
+                                " for the following job position(s):\n\n" +
+                                shiftedProduct.product;
+                        } else if (ledgerId == 18) {
+                            comments =
+                                "Payment for 'Job Announcement Display' at the Home Page of Bdjobs.com from " +
+                                shiftedProduct.sDate +
+                                " to " +
+                                shiftedProduct.eDate +
+                                " for the following position(s):\n\n" +
+                                shiftedProduct.product;
+                        } else if (shiftedProduct.product.trim() == "VAT (AP)") {
+                            comments = "VAT";
+                        } else {
+                            comments =
+                                "Payment for Web Listing (" +
+                                shiftedProduct.product +
+                                ") at the classified section of www.bdjobs.com from " +
+                                shiftedProduct.sDate +
+                                " to " +
+                                shiftedProduct.eDate +
+                                " for the following position:\n\n" +
+                                shiftedProduct.product;
+                        }
+                    } else {
+                        comments = shiftedProduct.comments;
+                    }
+
+                    $scope.comments = comments;
+                }
+                if ($scope.invoiceType == 0) {
+                    $scope.rightArrow = true;
+                    $scope.leftArrow = false;
+                }
+                
             }
         };
+
+
 
         $scope.bindAllData = function (id) {
             if ($scope.invoiceType == 0) {
@@ -319,6 +433,7 @@
             }
         };
 
+        
 
         $scope.products = [];
         $scope.back = function () {
@@ -337,48 +452,178 @@
                 $scope.selectedAnotherRow = null;
             } else {
                 console.log('Please select a row before clicking back.');
+            }            
+        };
+
+
+        $scope.updateComment = function () {
+            var confirmation = window.confirm('Are you sure to update comments?');
+            if (confirmation) {
+                $scope.updateDeleteComments('C', $scope.selectedAnotherRow.id, 0, 0, $scope.comments);
+            }
+        };
+        $scope.formattedFromDate = $scope.issueDate.toISOString().split('T')[0];
+        $scope.updateDeleteComments = function (action, id, invoiceId,amount,comments) {
+            let requestBodyModel = {
+                action: action,
+                invSchId: id.toString(), 
+                invoiceId: invoiceId.toString(), 
+                amount: amount.toString(), 
+                comments: comments, 
+                sendDate: $scope.formattedFromDate
+            };
+
+            $http.post('/Invoice/UpdateDeleteComments', requestBodyModel)
+                .then(function (response) {
+                    var str = "";
+                    if (action == 'U')
+                        str = "Comment is updated successfully.";
+                    else if (action == 'D')
+                        str = "Comment is deleted successfully.";
+                    else
+                        str = "Comment is updated successfully.";
+
+                    alert(str);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }; 
+        
+
+        $scope.save = function () {
+            var access = '@accessRights.Contains("1")';
+            if (access === 'False') {
+                alert("Sorry, You have no permission to save a record.");
+            } else {
+                var isConfirmed = confirm('Did you update the comments?');
+                if (isConfirmed) {
+                    if (!$scope.invoiceNo || $scope.invoiceNo.substr(0, 4) === "0000" || $scope.invoiceNo === "") {
+                        alert("You must give a valid invoice number. It must follow the format:\n\n'yymm-company code(4 digit)-company invoice no(4 digit)-total invoice no(6 digit)'.");
+                    } else if ($scope.invoiceNo.length < 23) {
+                        alert("You must give a valid invoice number which must follow the format:\n\n'yymm-company code(4 digit)-company invoice no(4 digit)-total invoice no(6 digit)'.");
+                    } else if ($scope.invoiceType === 0) {
+                        var tno = "";
+                        for (var i = 0; i < $scope.shiftData.length; i++) {
+                            if ($scope.shiftData[i].tno !== "") {
+                                tno += "," + $scope.shiftData[i].tno
+                            }
+                        }
+
+                        var tnolist = tno.substring(1, tno.length);
+
+                        if (tnolist === "") {
+                            alert("There are no products to save.");
+                            return false;
+                        }
+
+                        
+                        var requestBodyModel = {
+                            cId: $scope.selectedCompany.id.toString(),
+                            tnolist: tnolist
+                        };
+
+                        $http.post('/Sale/CheckOnlineJobs', requestBodyModel)
+                            .then(function (response) {
+                                $scope.data = response.data;
+
+                                if ($scope.data.online < $scope.data.total) {
+                                    var shouldProceed = confirm(
+                                        "Total Online job posted " + $scope.data.total + ".\n" +
+                                        "You select for making invoice " + $scope.data.online + " jobs.\n" +
+                                        "You need another " + ($scope.data.total - $scope.data.online) + " job(s).\n\n" +
+                                        "Do you want to make invoice without adding remaining job(s)?"
+                                    );
+
+                                    if (shouldProceed) {
+                                        $scope.checkInvoice();
+                                    }
+                                } else {
+                                    $scope.checkInvoice();
+                                }
+                            })
+                            .catch(function (error) {
+                                console.log(error);
+                            });
+
+
+                    }
+                }
             }
         };
 
 
+        $scope.checkInvoice = function () {
+            $http.get('/Invoice/CheckInvoiceNo', { params: $scope.invoiceNo })
+                .then(function (response) {
+                    if (response.data == true) {
+                        var userConfirmed = confirm("The invoice Number is already exist. Do you want to make invoice with this existing invoice Number?");
 
+                        if (userConfirmed) {
+                            $scope.finalCheck();
+                        }
+                    } else {
+                        $scope.finalCheck();
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
 
+        };
 
+        $scope.finalCheck=function(){
+            var id = "";
+            for (var i = 0; i < $scope.shiftData.length; i++) {
+                if ($scope.shiftData[i].id != "")
+                    id += "," + $scope.shiftData[i].id;
+            }
+            var idList = id;
+            var confirmation = confirm("Do you finally want to proceed with invoice number " + $scope.invoiceNo + " ?");
+            if (confirmation) { 
+                var action;
+                if ($scope.invoiceType == 0 )
+                    action = 'Make';
+                else
+                    action = 'View';
 
-        // $scope.confirmUpdateComment = function () {
-        //     debugger
-        //     var confirmation = window.confirm('Are you sure to update comments?');
-        //     if (confirmation) {
-        //         $scope.updateDeleteComments('C', $scope.selectedRow.id, 0, 0, $scope.comments);
-        //     }
-        // };
+                $scope.cpId = $scope.selectedCompany.id.toString();
+                $scope.formattedFromDate = $scope.issueDate.toISOString().split('T')[0];
+                $scope.invoiceId = $scope.selectedAnotherRow.id.toString();
+                //$("#save").prop('disabled', true);
+                let requestBodyModel = {
+                    userId: @userId,
+                    action: action,
+                    cId: $scope.cpId == null ? 0 : $scope.cpId,
+                    invoice: $scope.invoiceNo,
+                    issueDate: $scope.formattedFromDate,
+                    totalprice: $scope.totalPrice.toString(),
+                    idList: idList,
+                    InvoiceId: $scope.invoiceId
+                }
+                $http.post('/Invoice/SaveInvoice', requestBodyModel)
+                    .then(function (response) {
+                        var data = response.data;
+                        if (data == "Insert Successfully!") {
+                            alert("Invoice information is successfully saved.");
 
-        // $scope.setInvoiceNo = function () {
-        //     debugger
-        //     var jsonData = { action: action, 
-        //         invSchId: invSchId, 
-        //         invoiceId: invoiceId, 
-        //         amount: amount, 
-        //         comments: comments, 
-        //         sendDate: $scope.issueDate };
-
-        //     $http.post('/Invoice/UpdateDeleteComments', { params: jsonData })
-        //         .then(function (response) {
-        //             debugger;
-        //             var str = "";
-        //             if (action == 'U')
-        //                 str = "Comment is updated successfully.";
-        //             else if (action == 'D')
-        //                 str = "Comment is deleted successfully.";
-        //             else
-        //                 str = "Comment is updated successfully.";
-
-        //             alert(str);
-        //         })
-        //         .catch(function (error) {
-        //             console.log(error);
-        //         });
-        // };        
+                            // $("#save").prop('disabled', false);
+                            // $("#existing_radio").prop('checked', true);
+                            // $("#make").hide();
+                            // $("#view").show();
+                            // $("#makeProducts, #go, #back").prop('disabled', true);
+                            // $("#show,#previewLabel").prop('disabled', true);
+                            // $(document).fillProducts();
+                            // $("#issueDate").val(toDate);
+                        } else {
+                            alert("Error: " + data);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
+            }
+        }
 
     });
 </script>
