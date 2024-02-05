@@ -1,6 +1,10 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
+using AccountingSystem.Models.AccountViewModels;
+using Dapper;
+using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
+using System.Data;
 
 namespace AccountingSystem.Repository
 {
@@ -14,17 +18,19 @@ namespace AccountingSystem.Repository
             _context = context;
             _DBCon = config;
         }
-        //public Users GetUsers(string userName, string password)
-        //{
-        //    using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
-        //    {
-        //        // Use QueryFirstOrDefault instead of Query for getting a single result
-        //        var result = _db.QueryFirstOrDefault<Users>("SELECT * FROM Users WHERE UName = @UName AND PWord = @PWord",
-        //            new { UName = userName, PWord = password });
+        public async Task<List<InvoiceReport>> GetInvoiceReportAsync(string invoiceNo)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@InvoiceNo", invoiceNo);
 
-        //        return result;
-        //    }
-        //}
+                var invoices = await _db.QueryAsync<InvoiceReport>("USP_Show_Invoice", parameters,
+                    commandType: CommandType.StoredProcedure);
+
+                return invoices.AsList();
+            }
+        }
 
 
     }
