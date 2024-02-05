@@ -10,5 +10,6 @@ namespace AccountingSystem.Abstractions.Repository
         Task<string> GetClosingDateAsync();
         Task<string> UpdateSalesJournalAsync(UpdateSalesJournal updateInfo);
         Task<Journal> GetJournalBySIdAsync(int sId);
+        Task<List<Invoice>> GetVoucherListAsync(int year, int month);
     }
 }

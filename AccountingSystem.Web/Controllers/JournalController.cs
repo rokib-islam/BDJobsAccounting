@@ -42,5 +42,11 @@ namespace AccountingSystem.Web.Controllers
             var result = await _journalManager.UpdateSalesJournalAsync(updateInfo);
             return Json(result);
         }
+        public async Task<IActionResult> GetVouchers(int year, int month)
+        {
+            var result = await _journalManager.GetVoucherListAsync(year, month);
+            return Json(result);
+        }
+
     }
 }

@@ -305,8 +305,112 @@ namespace AccountingSystem.Repository
 
             return contactPersons;
         }
+        public async Task<ContactPerson> GetContactPersonByIdAsync(int id)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
 
+                var result = await _db.QueryFirstOrDefaultAsync<ContactPerson>("SELECT Id, CID, Name, Designation, PType, Email, Phone FROM ContactPersons WHERE Id = @Id", new { Id = id });
 
+                return result;
+            }
+        }
+        public async Task InsertOrUpdateCPAsync(ContactPerson aContact, string actionType)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@Action", actionType);
+                parameters.Add("@Id", aContact.Id);
+                parameters.Add("@CID", aContact.CId);
+                parameters.Add("@Contact_Person", aContact.Name);
+                parameters.Add("@Designation", aContact.Designation);
+                parameters.Add("@Email", aContact.Email);
+                parameters.Add("@Phone", aContact.Phone);
+                parameters.Add("@PType", aContact.PType);
+
+                await _db.ExecuteAsync("USP_IUD_ContactPerson", parameters, commandType: CommandType.StoredProcedure);
+            }
+        }
+        public async Task DeletePersonAsync(int id)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var sqlQuery = "DELETE FROM dbo.ContactPersons WHERE Id = @Id";
+
+                await _db.ExecuteAsync(sqlQuery, new { Id = id });
+            }
+        }
+        public async Task<Company> GetCompanyByNameAsync(string name, int id)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+
+                var sqlQuery = "SELECT Id, Name, Address, City, Phone, Email, Fax, Contact_Person, Designation, Balance, BlackListed, CP_ID, AccContactName, VATRegNo, VATRegAdd, DistrictID, UpazilaID, BankID FROM Company WHERE Name = @Name AND Id <> @Id";
+
+                var result = await _db.QueryFirstOrDefaultAsync<Company>(sqlQuery, new { Name = name, Id = id });
+
+                return result;
+            }
+        }
+        public async Task<string> InsertOrUpdateCompanyAsync(Company aCompany)
+        {
+            var res = "";
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@Name", aCompany.Name);
+                    parameters.Add("@Address", aCompany.Address);
+                    parameters.Add("@City", aCompany.City);
+                    parameters.Add("@Phone", aCompany.Phone);
+                    parameters.Add("@Email", aCompany.Email);
+                    parameters.Add("@Fax", aCompany.Fax);
+                    parameters.Add("@Contact_Person", aCompany.ContactPerson);
+                    parameters.Add("@Designation", aCompany.Designation);
+                    parameters.Add("@BlackListed", aCompany.BlackListed);
+                    parameters.Add("@CP_ID", aCompany.CP_Id);
+                    parameters.Add("@AccContactName", aCompany.AccContactName);
+                    parameters.Add("@VATRegNo", aCompany.VatRegNo);
+                    parameters.Add("@VATRegAdd", aCompany.VatRegAdd);
+                    parameters.Add("@Id", aCompany.Id);
+                    parameters.Add("@DistrictID", aCompany.DistrictId);
+                    parameters.Add("@BankID", aCompany.BankId);
+                    parameters.Add("@VatChallanName", aCompany.VatChallanName);
+                    parameters.Add("@AccPersonMail", aCompany.AccPersonMail);
+                    parameters.Add("@AccPersonContactNo", aCompany.AccPersonContactNo);
+
+                    await _db.ExecuteAsync(
+                        "INSERT_UPDATE_COMPANY",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+                    res = "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+                res = ex.ToString();
+            }
+            return res;
+        }
+        public async Task DeleteCompanyAsync(int id)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    string sqlQuery = @"DELETE FROM dbo.Company WHERE Id = @Id;
+                                        DELETE FROM dbo.ContactPersons WHERE CID = @Id;";
+
+                    await _db.ExecuteAsync(sqlQuery, new { Id = id });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
     }
 

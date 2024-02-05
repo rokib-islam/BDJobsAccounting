@@ -31,5 +31,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetJournalBySIdAsync(sId);
         }
+
+        public Task<List<Invoice>> GetVoucherListAsync(int year, int month)
+        {
+            return _repository.GetVoucherListAsync(year, month);
+        }
     }
 }

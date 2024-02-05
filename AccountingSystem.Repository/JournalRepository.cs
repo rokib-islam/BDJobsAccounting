@@ -122,6 +122,26 @@ namespace AccountingSystem.Repository
                 throw ex;
             }
         }
+        public async Task<List<Invoice>> GetVoucherListAsync(int year, int month)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var parameters = new
+                {
+                    Year = year,
+                    MonthNo = month
+
+                };
+
+                var vouchers = await _db.QueryAsync<Invoice>(
+                    "USP_GET_JOURNAL_VOUCHER",
+                    parameters,
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return vouchers.AsList();
+            }
+        }
 
     }
 }
