@@ -13,9 +13,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                    <script type="text/javascript">
-                                        window.location.href = '@Url.Action("Index", "Home")';
-                                    </script>
+                                                    <script type="text/javascript">
+                                                        window.location.href = '@Url.Action("Index", "Home")';
+                                                    </script>
     }
     else
     {
@@ -73,7 +73,7 @@
                             <label class="col-sm-4 col-form-label">Job Title</label>
                             <div class="col-sm-8">
                                 <select class="form-control form-control-sm" ng-model="jobTitle">
-                                    <option value="" selected>Select</option>
+                                    <option ng-repeat="o in jobTitleData" value="{{o.title}}">{{o.title}}</option>
                                 </select>
                             </div>
                         </div>
@@ -82,7 +82,7 @@
                             <div class="col-sm-8">
                                 <select class="form-control form-control-sm" ng-model="billingPerson" ng-change="loadDesignation()">
                                     <option value="0" selected>Select</option>
-                                    <option ng-repeat="o in getBillingPerson" value="{{o.id}}">{{o.name}}</option>
+                                    <option ng-repeat="o in getBillingPersonData" value="{{o.id}}">{{o.name}}</option>
                                 </select>
                             </div>
                         </div>
@@ -134,7 +134,7 @@
                         <div class="col-sm-9">
                             <select class="form-control form-control-sm" ng-model="productName">
                                 <option value="0" selected>List of Products</option>
-                                <option ng-repeat="o in products" value="{{o.id}}">{{o.ladgerName}}</option>
+                                <option ng-repeat="o in products" value="{{o.ladgerName}}">{{o.ladgerName}}</option>
                             </select>
                         </div>
                     </div>
@@ -242,6 +242,15 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
+            
+            var onlineCompanyId = @Json.Serialize(onlineCompanyId); // Serialize to handle potential JSON-related issues
+            if (onlineCompanyId !== null) {
+                $scope.getBillingPerson('C', onlineCompanyId);
+                $scope.getJobTitle('T', onlineCompanyId);
+                $scope.getIdWiseCompany(onlineCompanyId);
+                $scope.getProducts();
+            }
+
             $scope.salesPerson = '0';
             $scope.productName = '0';
             $scope.billingPerson = '0';
@@ -253,8 +262,9 @@
             $scope.getTaxType();
             $scope.getProducts();
             $scope.saveButtonDisabled = true;
-            $scope.getCompanyInfo();
+            
         });
+
         $scope.dateFrom = new Date();
         $scope.dateTo = new Date();
         $scope.journalDate = new Date();
@@ -320,22 +330,35 @@
                 });
         };
 
+        $scope.getIdWiseCompany = function (id) {
+            $http.get('/Company/GetCompanyById', { params: { companyId: id } })
+                .then(function (response) {
+                    $scope.idWiseCompany = response.data;
+                    $scope.searchQuery = $scope.idWiseCompany[0].name;
+                    $scope.idWiseCompanyId = $scope.idWiseCompany[0].id;
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
         $scope.setOption = function () {
-            $scope.getBillingPerson();
-            $scope.getJobTitle();
+            $scope.getBillingPerson('C', $scope.comList);
+            $scope.getJobTitle('T', $scope.comList);
         }
 
-        $scope.getBillingPerson = function () {
-            $http.get('/Company/GetContactPersonsOrJobTitle', { params: { type: 'C', cId: $scope.comList } })
+        $scope.getBillingPerson = function (type, cId) {
+            $http.get('/Company/GetContactPersonsOrJobTitle', { params: { type: type, cId: cId } })
                 .then(function (response) {
-                    $scope.getBillingPerson = response.data;
+                    $scope.getBillingPersonData = response.data;
+                    $scope.designation = $scope.getBillingPersonData[0].designation;
+                    $scope.billingPerson = $scope.getBillingPersonData[0].name;
                 }, function (error) {
                     console.error(error);
                 })
         }
 
         $scope.loadDesignation = function () {
-            var selectedBillingPerson = $scope.getBillingPerson.find(function (person) {
+            var selectedBillingPerson = $scope.getBillingPersonData.find(function (person) {
                 return person.id == $scope.billingPerson;
             });
 
@@ -346,10 +369,15 @@
             }
         };
 
-        $scope.getJobTitle = function () {
-            $http.get('/Company/GetContactPersonsOrJobTitle', { params: { type: 'T', cId: $scope.comList } })
+        $scope.getJobTitle = function (type, cId) {
+            $http.get('/Company/GetContactPersonsOrJobTitle', { params: { type: type, cId: cId } })
                 .then(function (response) {
-                    $scope.jobTitle = response.data;
+                    $scope.jobTitleData = response.data;
+                    $scope.jobTitle = $scope.jobTitleData[0].title;
+                    $scope.dateFrom = new Date($scope.jobTitleData[0].postingDate);
+
+                    $scope.dateTo = new Date($scope.jobTitleData[0].validDate);
+
                 }, function (error) {
                     console.error(error);
                 })
@@ -370,6 +398,17 @@
             $http.get('/Ledger/GetProducts', { params: { admin: 0, account: 0, groupname: "Revenue", isAll: "", isI: "I", isVatType: 0 } })
                 .then(function (response) {
                     $scope.products = response.data;
+                    $scope.onlineLedgerId = onlineLedgerId
+
+                    if ($scope.onlineLedgerId) {
+                        $scope.selectedProduct = $scope.products.find(function (product) {
+                            return product.id === $scope.onlineLedgerId;
+                        });
+                        $scope.productName = $scope.selectedProduct ? $scope.selectedProduct.ladgerName : 'List of Products';
+
+                    } else {
+                        $scope.productName = 'List of Products';
+                    }
                 }, function (error) {
                     console.error(error);
                 })
@@ -494,12 +533,18 @@
 
         // $scope.getCompanies = function () {
         //     if (@onlineCompanyId != 0) {
+        //         //$scope.searchQuery = $scope.companyInfo.name;
 
+        //         $http.get()
+        //             .then(function () {
+
+        //             })
+        //             .
         //     }
         // }
 
         $scope.getCompanyInfo = function () {
-            $scope.cpId = @onlineCompanyId;
+            $scope.cpId = @onlineCompanyId
             $http.get('/Company/GetLocalCompanyInfo', { params: { cpId: $scope.cpId } })
                 .then(function (response) {
                     $scope.companyInfo = response.data;
@@ -507,7 +552,7 @@
                 .catch(function (error) {
                     console.log(error);
                 })
-        }
+        };
 
     });
 </script>
