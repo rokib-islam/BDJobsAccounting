@@ -9,9 +9,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                <script type="text/javascript">
-                    window.location.href = '@Url.Action("Index", "Home")';
-                </script>
+        <script type="text/javascript">
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
     }
     else
     {
@@ -40,7 +40,7 @@
         <div class="col-sm-12">
             <div class="row">
                 <div class="col-sm-4">
-                    <label><input type="radio" ng-model="invoiceType" value="0" ng-checked="invoiceType==0" ng-change="blankForNew()"/>&nbsp; Make New Invoice</label><br />
+                    <label><input type="radio" ng-model="invoiceType" value="0" ng-checked="invoiceType==0" ng-change="blankForNew()" />&nbsp; Make New Invoice</label><br />
                     <label class="mt-2"><input type="radio" ng-model="invoiceType" value="1" ng-change="blankForOld()" />&nbsp; View Existing Invoice</label>
                 </div>
                 <div class="col-sm-4">
@@ -138,7 +138,8 @@
                             </div>
 
                             <div class="col-sm-6">
-                                <button type="button" class="btn btn-block btn-info btn-sm" ng-click="" ng-disabled="showInvoiceButton">Show Invoice</button>
+                                @*  <button type="button" class="btn btn-block btn-info btn-sm" ng-click="" ng-disabled="showInvoiceButton">Show Invoice</button> *@
+                                <button type="button" class="btn btn-block btn-info btn-sm" ng-click="downloadReport('pdf')">Show Invoice</button>
                             </div>
 
                         </div>
@@ -156,18 +157,18 @@
                     <div class="col-sm-5">
                         <div style="height: 250px; overflow-y: auto;border:2px solid gray">
                             <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
-                            <thead class="thead-light">
-                                <tr>
-                                    <th>Product</th>
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>Product</th>
 
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr ng-repeat="shiftedProduct in shiftData" ng-click="passAnother(shiftedProduct)" ng-class="{ 'selected-row': shiftedProduct === selectedAnotherRow }">
-                                    <td>{{ shiftedProduct.product }}</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="shiftedProduct in shiftData" ng-click="passAnother(shiftedProduct)" ng-class="{ 'selected-row': shiftedProduct === selectedAnotherRow }">
+                                        <td>{{ shiftedProduct.product }}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
                         </div>
                         <div class="form-group row mt-3">
                             <label class="col-sm-4">Total Price</label>
@@ -225,9 +226,9 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-           
+
         });
-        
+
         $scope.disabledCommentsTable = true;
         $scope.disabledComments = false;
         $scope.rightArrow = true;
@@ -269,12 +270,12 @@
         };
 
         $scope.tableEmpty = function () {
-            return $scope.shiftData=[];
+            return $scope.shiftData = [];
         };
 
-        
 
-        
+
+
         $scope.searchCompany = function (startingKey) {
             if (startingKey && startingKey.length > 1) {
                 $http.get('/Company/GetCompanyListByKey', { params: { startingKey: startingKey } })
@@ -285,7 +286,7 @@
                     })
             } else {
                 $scope.companyList = [];
-            }     
+            }
         };
 
         $scope.selectCompany = function (company) {
@@ -300,7 +301,7 @@
                 $scope.rightArrow = false;
                 $scope.leftArrow = false;
                 $scope.saveDisabled = false;
-                
+
             }
             else {
                 $scope.disabledCommentsTable = false;
@@ -308,7 +309,7 @@
                 $scope.rightArrow = true;
                 $scope.leftArrow = true;
                 $scope.saveDisabled = true;
-                
+
             }
         }
 
@@ -342,7 +343,7 @@
             }
         };
 
-        
+
 
 
         $scope.selectedAnotherRow = null;
@@ -414,7 +415,7 @@
                     $scope.rightArrow = true;
                     $scope.leftArrow = false;
                 }
-                
+
             }
         };
 
@@ -475,7 +476,7 @@
             }
         };
 
-        
+
 
         $scope.products = [];
         $scope.back = function () {
@@ -494,7 +495,7 @@
                 $scope.selectedAnotherRow = null;
             } else {
                 console.log('Please select a row before clicking back.');
-            }            
+            }
         };
 
 
@@ -505,13 +506,13 @@
             }
         };
         $scope.formattedFromDate = $scope.issueDate.toISOString().split('T')[0];
-        $scope.updateDeleteComments = function (action, id, invoiceId,amount,comments) {
+        $scope.updateDeleteComments = function (action, id, invoiceId, amount, comments) {
             let requestBodyModel = {
                 action: action,
-                invSchId: id.toString(), 
-                invoiceId: invoiceId.toString(), 
-                amount: amount.toString(), 
-                comments: comments, 
+                invSchId: id.toString(),
+                invoiceId: invoiceId.toString(),
+                amount: amount.toString(),
+                comments: comments,
                 sendDate: $scope.formattedFromDate
             };
 
@@ -530,8 +531,8 @@
                 .catch(function (error) {
                     console.log(error);
                 });
-        }; 
-        
+        };
+
 
         $scope.save = function () {
             debugger
@@ -564,7 +565,7 @@
                             return false;
                         }
 
-                        
+
                         var requestBodyModel = {
                             cId: $scope.selectedCompany.id.toString(),
                             tnolist: tnolist
@@ -623,7 +624,7 @@
 
         };
 
-        $scope.finalCheck=function(){
+        $scope.finalCheck = function () {
             var id = "";
             for (var i = 0; i < $scope.shiftData.length; i++) {
                 if ($scope.shiftData[i].id != "")
@@ -631,9 +632,9 @@
             }
             var idList = id;
             var confirmation = confirm("Do you finally want to proceed with invoice number " + $scope.invoiceNo + " ?");
-            if (confirmation) { 
+            if (confirmation) {
                 var action;
-                if ($scope.invoiceType == 0 )
+                if ($scope.invoiceType == 0)
                     action = 'Make';
                 else
                     action = 'View';
@@ -656,7 +657,7 @@
                         var data = response.data;
                         if (data == "Insert Successfully!") {
                             alert("Invoice information is successfully saved.");
-                            $scope.saveDisabled = true;                            
+                            $scope.saveDisabled = true;
                         } else {
                             alert("Error: " + data);
                         }
@@ -665,7 +666,53 @@
                         console.log(error);
                     })
             }
-        }
+        };
+
+        // $scope.Show = function () {
+        //     $http.get('/Report/Show', { params: { InvoiceNo: '2402-003466-2175-318342' }, responseType: 'arraybuffer' })
+        //         .then(function (response) {
+        //             // Create a Blob from the PDF Stream
+        //             var file = new Blob([response.data], { type: 'application/pdf' });
+
+        //             // Create URL for the Blob
+        //             var fileURL = URL.createObjectURL(file);
+
+        //             // Open the URL in a new window
+        //             window.open(fileURL);
+        //         })
+        //         .catch(function (error) {
+        //             console.error(error);
+        //             alert('Error fetching job data');
+        //         });
+        // };
+        $scope.downloadReport = function (format) {
+            var params = { InvoiceNo: '2312-001560-0297-315436', format: format };
+            var responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
+
+            $http.get('/Report/Show', { params: params, responseType: responseType })
+                .then(function (response) {
+                    var contentType = (format === 'pdf') ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
+                    var file;
+
+                    if (format === 'pdf') {
+                        file = new Blob([response.data], { type: contentType });
+                        var fileURL = URL.createObjectURL(file);
+                        window.open(fileURL);
+                    } else {
+                        file = new Blob([response.data], { type: contentType });
+                        var a = document.createElement('a');
+                        a.href = URL.createObjectURL(file);
+                        a.download = 'invoice_report.xlsx';
+                        document.body.appendChild(a);
+                        a.click();
+                        document.body.removeChild(a);
+                    }
+                })
+                .catch(function (error) {
+                    console.error(error);
+                    alert('Error fetching report data');
+                });
+        };
 
     });
 </script>
