@@ -1,8 +1,10 @@
-﻿namespace AccountingSystem.Abstractions.Repository
+﻿using AccountingSystem.Models.AccountViewModels;
+
+namespace AccountingSystem.Abstractions.Repository
 {
     public interface IReportRepository
     {
-        // Users GetUsers(string userName, string password);
+        Task<List<InvoiceReport>> GetInvoiceReportAsync(string invoiceNo);
 
     }
 }
