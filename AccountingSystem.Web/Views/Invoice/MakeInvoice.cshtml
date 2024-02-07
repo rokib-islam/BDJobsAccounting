@@ -139,7 +139,7 @@
 
                             <div class="col-sm-6">
                                 @*  <button type="button" class="btn btn-block btn-info btn-sm" ng-click="" ng-disabled="showInvoiceButton">Show Invoice</button> *@
-                                <button type="button" class="btn btn-block btn-info btn-sm" ng-click="downloadReport('pdf')">Show Invoice</button>
+                                <button type="button" class="btn btn-block btn-info btn-sm" ng-click="downloadReport()">Show Invoice</button>
                             </div>
 
                         </div>
@@ -685,8 +685,8 @@
         //             alert('Error fetching job data');
         //         });
         // };
-        $scope.downloadReport = function (format) {
-            var params = { InvoiceNo: '2312-001560-0297-315436', format: format };
+        $scope.downloadReport = function () {
+            var params = { InvoiceNo: '2312-003466-2159-314420', format: 'pdf' };
             var responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
 
             $http.get('/Report/Show', { params: params, responseType: responseType })
