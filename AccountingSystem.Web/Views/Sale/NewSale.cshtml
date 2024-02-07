@@ -13,15 +13,15 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                                    <script type="text/javascript">
-                                                        window.location.href = '@Url.Action("Index", "Home")';
-                                                    </script>
+            <script type="text/javascript">
+                window.location.href = '@Url.Action("Index", "Home")';
+            </script>
     }
     else
     {
         accessRights = accessRight.Split(',');
     }
-    
+
 }
 
 <style>
@@ -54,21 +54,29 @@
                                 <input type="number" class="form-control form-control-sm" ng-model="salesPrice" ng-change="updateTableValues()" />
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Tax Type</label>
-                            <div class="col-sm-8">
-                                <select class="form-control form-control-sm" ng-model="taxType" ng-change="taxTypeAmountDisable()">
-                                    <option value="0">Select</option>
-                                    <option ng-repeat="o in taxTypes" value="{{o.id}}">{{o.sbName}}</option>
-                                </select>
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Tax Type</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-control form-control-sm" ng-model="taxType" ng-change="taxTypeAmountDisable()">
+                                            <option value="0">Select</option>
+                                            <option ng-repeat="o in taxTypes" value="{{o.id}}">{{o.sbName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Amount</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control form-control-sm" ng-model="amount" ng-change="updateTableValues()" ng-disabled="amountDisable" />
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Amount</label>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control form-control-sm" ng-model="amount" ng-change="updateTableValues()" ng-disabled="amountDisable" />
-                            </div>
-                        </div>
+                       
+                       
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Job Title</label>
                             <div class="col-sm-8">
@@ -132,9 +140,9 @@
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Product Name</label>
                         <div class="col-sm-9">
-                            <select class="form-control form-control-sm" ng-model="productName">
-                                <option value="0" selected>List of Products</option>
-                                <option ng-repeat="o in products" value="{{o.ladgerName}}">{{o.ladgerName}}</option>
+                            <input class="form-control form-control-sm" placeholder="Search Product Here" autocomplete="off" ng-model="searchQueryProduct" ng-keyup="searchProduct(searchQueryProduct)">
+                            <select class="form-control form-control-sm" size="10" ng-model="proList" style="position:absolute;z-index:999;width: 400px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="getProductList.length > 0">
+                                <option ng-repeat="product in getProductList" value="{{product.id}}" ng-click="selectProduct(product)">{{product.ladgerName}}</option>
                             </select>
                         </div>
                     </div>
@@ -242,27 +250,34 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-            
+
             var onlineCompanyId = @Json.Serialize(onlineCompanyId); // Serialize to handle potential JSON-related issues
-            if (onlineCompanyId !== null) {
+            var onlineLedgerId = @Json.Serialize(onlineLedgerId); // Serialize to handle potential JSON-related issues
+            if (onlineCompanyId !== null || onlineLedgerId !== null) {
                 $scope.getBillingPerson('C', onlineCompanyId);
                 $scope.getJobTitle('T', onlineCompanyId);
                 $scope.getIdWiseCompany(onlineCompanyId);
-                $scope.getProducts();
+                $scope.getIdWiseProduct(onlineLedgerId);
+                $scope.getTaxType();
+                $scope.taxType = '672';
+                $scope.updateDuration();
+                $scope.getSalesPerson();
+                $scope.taxTypeAmountDisable();
+                $scope.saveButtonDisabled = false;
+            } else {
+
+                $scope.salesPerson = '0';
+                $scope.billingPerson = '0';
+                $scope.taxType = '0';
+                $scope.month = '1';
+                $scope.invoiceNo = 0;
+                $scope.amountDisable = true;
+                $scope.getSalesPerson();
+                $scope.getTaxType();
+                $scope.saveButtonDisabled = true;
             }
 
-            $scope.salesPerson = '0';
-            $scope.productName = '0';
-            $scope.billingPerson = '0';
-            $scope.taxType = '0';
-            $scope.month = '1';
-            $scope.invoiceNo = 0;
-            $scope.amountDisable = true;
-            $scope.getSalesPerson();
-            $scope.getTaxType();
-            $scope.getProducts();
-            $scope.saveButtonDisabled = true;
-            
+
         });
 
         $scope.dateFrom = new Date();
@@ -277,7 +292,7 @@
             }
         };
 
-        $scope.radioValue = "1"; 
+        $scope.radioValue = "1";
         $scope.updateDuration = function () {
             var date1 = new Date($scope.dateFrom);
             var date2 = new Date($scope.dateTo);
@@ -321,6 +336,30 @@
             $scope.saveButtonDisabled = false;
         }
 
+        $scope.getProductList = [];
+        $scope.selectedProduct = null;
+
+        $scope.searchProduct = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                $http.get('/Ledger/GetProductListByKey', { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.getProductList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.getProductList = [];
+            }
+        };
+
+        $scope.selectProduct = function (product) {
+            $scope.selectedProduct = product;
+            $scope.searchQueryProduct = product.ladgerName;
+            $scope.getProductList = [];
+
+        }
+
+
         $scope.getSalesPerson = function () {
             $http.get('/Sale/GetSalesPersonsByProductID', { params: { productID: 2 } })
                 .then(function (response) {
@@ -334,12 +373,46 @@
             $http.get('/Company/GetCompanyById', { params: { companyId: id } })
                 .then(function (response) {
                     $scope.idWiseCompany = response.data;
-                    $scope.searchQuery = $scope.idWiseCompany[0].name;
-                    $scope.idWiseCompanyId = $scope.idWiseCompany[0].id;
+                    $scope.onlineCompanyId = @onlineCompanyId
+                    // Find the selected company based on onlineCompanyId
+                    $scope.selectedCompany = $scope.idWiseCompany.find(function (company) {
+                        return company.id === $scope.onlineCompanyId;
+                    });
+
+                    // Set the searchQuery and other related variables
+                    if ($scope.selectedCompany) {
+                        $scope.searchQuery = $scope.selectedCompany.name;
+                    } else {
+                        $scope.searchQuery = 'Select';
+                    }
                 }, function (error) {
                     console.error(error);
                 });
         };
+
+        $scope.getIdWiseProduct = function (id) {
+            $http.get('/Ledger/GetProductById', { params: { pId: id } })
+                .then(function (response) {
+                    $scope.products = response.data;
+                    $scope.onlineLedgerId = @onlineLedgerId
+
+                        $scope.selectedProduct = $scope.products.find(function (o) {
+                            return o.id === $scope.onlineLedgerId;
+                        });
+
+                    // Set the searchQuery and other related variables
+                    if ($scope.selectedProduct) {
+                        $scope.searchQueryProduct = $scope.selectedProduct.sbName;
+                    } else {
+                        $scope.searchQueryProduct = 'Select';
+                    }
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+
+
 
         $scope.setOption = function () {
             $scope.getBillingPerson('C', $scope.comList);
@@ -394,25 +467,7 @@
                 })
         }
 
-        $scope.getProducts = function () {
-            $http.get('/Ledger/GetProducts', { params: { admin: 0, account: 0, groupname: "Revenue", isAll: "", isI: "I", isVatType: 0 } })
-                .then(function (response) {
-                    $scope.products = response.data;
-                    $scope.onlineLedgerId = onlineLedgerId
-
-                    if ($scope.onlineLedgerId) {
-                        $scope.selectedProduct = $scope.products.find(function (product) {
-                            return product.id === $scope.onlineLedgerId;
-                        });
-                        $scope.productName = $scope.selectedProduct ? $scope.selectedProduct.ladgerName : 'List of Products';
-
-                    } else {
-                        $scope.productName = 'List of Products';
-                    }
-                }, function (error) {
-                    console.error(error);
-                })
-        }
+        
 
         $scope.rows = [];
 
@@ -493,14 +548,14 @@
         };
 
         $scope.ok = function () {
-
+            
             $scope.formattedFromDate = $scope.dateFrom.toISOString().split('T')[0];
             $scope.formattedToDate = $scope.dateTo.toISOString().split('T')[0];
             $scope.formattedJournalDate = $scope.journalDate.toISOString().split('T')[0];
             let requestBodyModel = {
                 UserId: @userId,
                 CId: $scope.selectedCompany.id,
-                PCode: parseInt($scope.productName) || 0,
+                PCode: parseInt($scope.selectedProduct.id) || 0,
                 FromDate: $scope.formattedFromDate ? $scope.formattedFromDate : "",
                 ToDate: $scope.formattedToDate ? $scope.formattedToDate : "",
                 JournalDate: $scope.formattedJournalDate ? $scope.formattedJournalDate : "",
@@ -513,7 +568,7 @@
                 RefNo: $scope.referenceNo || "",
                 TypeId: $scope.taxType ? $scope.taxType.toString() : "",
                 Vat: $scope.amount || 0,
-                JpId: 0, 
+                JpId: 0,
                 JobTitle: $scope.jobTitle ? $scope.jobTitle.toString() : "",
                 // workshopDate: $scope.workshopdateDiv ? $scope.workshopdate : "",
                 SPerson: $scope.salesPerson
@@ -545,13 +600,13 @@
 
         $scope.getCompanyInfo = function () {
             $scope.cpId = @onlineCompanyId
-            $http.get('/Company/GetLocalCompanyInfo', { params: { cpId: $scope.cpId } })
-                .then(function (response) {
-                    $scope.companyInfo = response.data;
-                })
-                .catch(function (error) {
-                    console.log(error);
-                })
+                $http.get('/Company/GetLocalCompanyInfo', { params: { cpId: $scope.cpId } })
+                    .then(function (response) {
+                        $scope.companyInfo = response.data;
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
         };
 
     });

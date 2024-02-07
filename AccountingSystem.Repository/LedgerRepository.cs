@@ -1,9 +1,11 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
@@ -207,6 +209,31 @@ namespace AccountingSystem.Repository
         }
 
 
+        public async Task<List<Ledger>> GetProductListByKey(string Key)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var query = "SELECT id, SBName As LadgerName FROM ledger WHERE ledgerAcc=1 and MGroup='Revenue' and SBName LIKE @Key ORDER BY SBName";
+                var parameters = new { Key = "%" + Key + "%" };
+
+                var result = await _db.QueryAsync<Ledger>(query, parameters);
+                return result.ToList();
+            }
+
+        }
+
+        public async Task<List<Ledger>> GetProductById(int pId)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var query = "SELECT Id, SBName FROM Ledger WHERE Id=@PId";
+                var parameters = new { PId = pId };
+
+                var result = await _db.QueryAsync<Ledger>(query, parameters);
+                return result.ToList();
+            }
+
+        }
     }
 
 

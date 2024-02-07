@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.BLL;
 using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -162,6 +163,18 @@ namespace AccountingSystem.Web.Controllers
             {
                 return StatusCode(500, $"An error occurred while deleting the ledger: {ex.Message}");
             }
+        }
+
+        public async Task<IActionResult> GetProductListByKey(string startingKey)
+        {
+            var result = await _LedgerManager.GetProductListByKey(startingKey);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> GetProductById(int pId)
+        {
+            var resp = await _LedgerManager.GetProductById(pId);
+            return Json(resp);
         }
 
 
