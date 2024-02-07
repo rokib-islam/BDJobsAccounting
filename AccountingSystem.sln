@@ -5,17 +5,17 @@ VisualStudioVersion = 17.8.34322.80
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountingSystem.Web", "AccountingSystem.Web\AccountingSystem.Web.csproj", "{78C21A28-3D3F-4024-9CB4-2882C98DD600}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountingSystem.Abstractions", "AccountingSystem.Abstractions\AccountingSystem.Abstractions.csproj", "{8592588D-A5F0-4458-8967-FFC70F380F08}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountingSystem.Abstractions", "AccountingSystem.Abstractions\AccountingSystem.Abstractions.csproj", "{8592588D-A5F0-4458-8967-FFC70F380F08}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountingSystem.BLL", "AccountingSystem.BLL\AccountingSystem.BLL.csproj", "{4983D34B-7A2B-4162-B57A-8BA76D954F7F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountingSystem.BLL", "AccountingSystem.BLL\AccountingSystem.BLL.csproj", "{4983D34B-7A2B-4162-B57A-8BA76D954F7F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountingSystem.Repository", "AccountingSystem.Repository\AccountingSystem.Repository.csproj", "{2D7A2B36-4322-481D-9EC3-DA7E40B06ADB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountingSystem.Repository", "AccountingSystem.Repository\AccountingSystem.Repository.csproj", "{2D7A2B36-4322-481D-9EC3-DA7E40B06ADB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountingSystem.Models", "AccountingSystem.Models\AccountingSystem.Models.csproj", "{ED93D132-0EBA-4C5C-9977-90F7A3D116D2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountingSystem.Models", "AccountingSystem.Models\AccountingSystem.Models.csproj", "{ED93D132-0EBA-4C5C-9977-90F7A3D116D2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountingSystem.AppLicationDbContext", "AccountingSystem.AppLicationDbContext\AccountingSystem.AppLicationDbContext.csproj", "{64AF72E8-4E61-465C-A3A8-282F03D2FE4F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountingSystem.AppLicationDbContext", "AccountingSystem.AppLicationDbContext\AccountingSystem.AppLicationDbContext.csproj", "{64AF72E8-4E61-465C-A3A8-282F03D2FE4F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AccountingSystem.Configurations", "AccountingSystem.Configurations\AccountingSystem.Configurations.csproj", "{38A8E770-DFEB-4B09-8DB3-3C3D2119BEEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AccountingSystem.Configurations", "AccountingSystem.Configurations\AccountingSystem.Configurations.csproj", "{38A8E770-DFEB-4B09-8DB3-3C3D2119BEEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

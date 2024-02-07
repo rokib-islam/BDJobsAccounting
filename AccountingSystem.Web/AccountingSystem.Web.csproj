@@ -8,9 +8,21 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Remove="wwwroot\Reports\rptShowChallan.rdlc" />
+    <Content Remove="wwwroot\Reports\rptViewInvoice.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="wwwroot\Reports\rptShowChallan.rdlc" />
+    <EmbeddedResource Include="wwwroot\Reports\rptViewInvoice.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AspNetCore.Reporting" Version="2.1.0" />
     <PackageReference Include="Dapper" Version="2.1.28" />
     <PackageReference Include="Microsoft.AspNetCore.Components.QuickGrid.EntityFrameworkAdapter" Version="8.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation" Version="8.0.1" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="5.1.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="8.0.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.1" />
@@ -24,6 +36,22 @@
     <ProjectReference Include="..\AccountingSystem.AppLicationDbContext\AccountingSystem.AppLicationDbContext.csproj" />
     <ProjectReference Include="..\AccountingSystem.Configurations\AccountingSystem.Configurations.csproj" />
     <ProjectReference Include="..\AccountingSystem.Models\AccountingSystem.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Update="DataSet\dsAccounting.Designer.cs">
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+      <DependentUpon>dsAccounting.xsd</DependentUpon>
+    </Compile>
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="DataSet\dsAccounting.xsd">
+      <SubType>Designer</SubType>
+      <LastGenOutput>dsAccounting.Designer.cs</LastGenOutput>
+      <Generator>MSDataSetGenerator</Generator>
+    </None>
   </ItemGroup>
 
 </Project>

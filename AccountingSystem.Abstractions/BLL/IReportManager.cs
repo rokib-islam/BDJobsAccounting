@@ -1,7 +1,9 @@
-﻿namespace AccountingSystem.Abstractions.BLL
+﻿using AccountingSystem.Models.AccountViewModels;
+
+namespace AccountingSystem.Abstractions.BLL
 {
     public interface IReportManager
     {
-        //Users GetUsers(string userName, string password);
+        Task<List<InvoiceReport>> GetInvoiceReportAsync(string invoiceNo);
     }
 }

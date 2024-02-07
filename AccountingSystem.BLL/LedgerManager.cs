@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.BLL
@@ -51,6 +52,16 @@ namespace AccountingSystem.BLL
         public Task<string> DeleteLedgerAsync(int ledgerId)
         {
             return _repository.DeleteLedgerAsync(ledgerId);
+        }
+
+        public async Task<List<Ledger>> GetProductListByKey(string Key)
+        {
+            return await _repository.GetProductListByKey(Key);
+        }
+
+        public async Task<List<Ledger>> GetProductById(int pId)
+        {
+            return await _repository.GetProductById(pId);
         }
     }
 }

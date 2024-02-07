@@ -14,5 +14,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task SaveLedgerAsync(Ledger aLedger);
         Task<int> UpdateLedgerAsync(Ledger aLedger);
         Task<string> DeleteLedgerAsync(int ledgerId);
+        Task<List<Ledger>> GetProductListByKey(string Key);
+        Task<List<Ledger>> GetProductById(int pId);
     }
 }
