@@ -72,7 +72,7 @@ namespace AccountingSystem.Web.Controllers
 
             return words;
         }
-        public async Task<IActionResult> Show(string InvoiceNo, string format)
+        public async Task<IActionResult> ShowInvoice(string InvoiceNo, string format)
         {
             double totalAmount = 0;
             try
@@ -110,6 +110,61 @@ namespace AccountingSystem.Web.Controllers
                     var res = localReport.Execute(RenderType.Excel, 1, parameters, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
                     reportBytes = res.MainStream;
                     return File(reportBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "invoice_report.xlsx");
+                }
+                else
+                {
+                    return BadRequest("Invalid format specified.");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while generating the report.");
+            }
+        }
+        public async Task<IActionResult> ShowChallanReportNew(string InvoiceNo, string format,string CopyType)
+        {
+            double sumTotalVat = 0;
+            double sumPriceWithVat = 0;
+            double sumTotalPrice = 0;
+            try
+            {
+                var reportData = await _ReportManager.GetChalanReportNew(InvoiceNo);
+                foreach (var report in reportData)
+                {
+                    sumTotalVat += report.TotalVat;
+                    sumPriceWithVat += report.priceWithVat;
+                    sumTotalPrice += report.TotalPrice;
+                }
+                
+
+                string reportPath = Path.Combine(_WebHostEnvironment.WebRootPath, "Reports", "rptShowChallan.rdlc");
+                var datatable = Helpers.ListiToDataTable(reportData);
+                var localReport = new LocalReport(reportPath);
+                localReport.AddDataSource("ShowChallan", datatable);
+
+
+                var parameters = new Dictionary<string, string>
+                {
+                    { "sumTotalVat", sumTotalVat.ToString() },
+                    { "sumPriceWithVat", sumPriceWithVat.ToString()  },
+                    { "sumTotalPrice", sumTotalPrice.ToString() },
+                    { "CopyType", CopyType }
+                };
+
+
+                byte[] reportBytes;
+
+                if (format == "pdf")
+                {
+                    var res = localReport.Execute(RenderType.Pdf, 1, parameters, "application/pdf");
+                    reportBytes = res.MainStream;
+                    return File(reportBytes, "application/pdf", "Challan_report.pdf");
+                }
+                else if (format == "excel")
+                {
+                    var res = localReport.Execute(RenderType.Excel, 1, parameters, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                    reportBytes = res.MainStream;
+                    return File(reportBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "Challan_report.xlsx");
                 }
                 else
                 {

@@ -131,7 +131,6 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox3</rd:DefaultName>
-            <Top>0.125in</Top>
             <Left>2.93625in</Left>
             <Height>0.20833in</Height>
             <Width>1in</Width>
@@ -160,7 +159,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>0.5625in</Top>
+            <Top>0.3125in</Top>
             <Left>0.81125in</Left>
             <Height>0.20833in</Height>
             <Width>0.96875in</Width>
@@ -190,7 +189,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Invoice_No</rd:DefaultName>
-            <Top>0.5625in</Top>
+            <Top>0.3125in</Top>
             <Left>1.9675in</Left>
             <Height>0.20833in</Height>
             <Width>2.54167in</Width>
@@ -220,7 +219,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>0.84027in</Top>
+            <Top>0.59027in</Top>
             <Left>0.81125in</Left>
             <Height>0.20833in</Height>
             <Width>0.96875in</Width>
@@ -250,10 +249,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>CName</rd:DefaultName>
-            <Top>0.84027in</Top>
+            <Top>0.59027in</Top>
             <Left>1.9675in</Left>
             <Height>0.20833in</Height>
-            <Width>4.19792in</Width>
+            <Width>4.82292in</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -586,7 +585,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>1.11805in</Top>
+            <Top>0.86805in</Top>
             <Left>0.81125in</Left>
             <Height>0.20833in</Height>
             <Width>0.96875in</Width>
@@ -616,7 +615,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>VATRegNo</rd:DefaultName>
-            <Top>1.11805in</Top>
+            <Top>0.86805in</Top>
             <Left>1.9675in</Left>
             <Height>0.20833in</Height>
             <Width>2.54167in</Width>
@@ -646,7 +645,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>1.39582in</Top>
+            <Top>1.14582in</Top>
             <Left>0.81125in</Left>
             <Height>0.20833in</Height>
             <Width>0.96875in</Width>
@@ -678,7 +677,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>VATRegNo</rd:DefaultName>
-            <Top>1.39582in</Top>
+            <Top>1.14582in</Top>
             <Left>1.9675in</Left>
             <Height>0.20833in</Height>
             <Width>2.54167in</Width>
@@ -708,7 +707,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>1.6736in</Top>
+            <Top>1.4236in</Top>
             <Left>0.81125in</Left>
             <Height>0.20833in</Height>
             <Width>0.96875in</Width>
@@ -738,7 +737,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>RefNo</rd:DefaultName>
-            <Top>1.6736in</Top>
+            <Top>1.4236in</Top>
             <Left>1.9675in</Left>
             <Height>0.20833in</Height>
             <Width>4.19792in</Width>
@@ -768,7 +767,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>1.95137in</Top>
+            <Top>1.70137in</Top>
             <Left>0.81125in</Left>
             <Height>0.20833in</Height>
             <Width>0.96875in</Width>
@@ -798,10 +797,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>RefNo</rd:DefaultName>
-            <Top>1.95137in</Top>
+            <Top>1.70137in</Top>
             <Left>1.9525in</Left>
             <Height>0.20833in</Height>
-            <Width>4.21292in</Width>
+            <Width>4.83792in</Width>
             <ZIndex>15</ZIndex>
             <Style>
               <Border>
@@ -828,10 +827,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>RefNo</rd:DefaultName>
-            <Top>2.22915in</Top>
+            <Top>1.97915in</Top>
             <Left>1.9675in</Left>
-            <Height>0.22571in</Height>
-            <Width>4.19791in</Width>
+            <Height>0.42015in</Height>
+            <Width>4.82292in</Width>
             <ZIndex>16</ZIndex>
             <Style>
               <Border>
@@ -854,7 +853,9 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
-                <Style />
+                <Style>
+                  <TextAlign>Left</TextAlign>
+                </Style>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>AmountInWord</rd:DefaultName>
