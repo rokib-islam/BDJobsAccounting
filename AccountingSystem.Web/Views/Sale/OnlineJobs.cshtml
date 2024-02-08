@@ -6,17 +6,10 @@
         border: 3px solid black !important;
     }
 
-    .selected-row td {
-        padding: 8px !important;
-    }
+        .selected-row td {
+            padding: 8px !important;
+        }
 
-    .selected-job-row {
-        border: 3px solid #007bff;
-    }
-
-    .selected-job-row td {
-        padding: 8px;
-    }
 </style>
 <h3 class="text-center alert-primary" style="margin-top:-10px">OnlineJobs</h3>
 
@@ -123,8 +116,9 @@
                 <div class="form-group row">
                     <label class="col-sm-5 table-hover fw-bold">Invoices to Upload</label>
                     <div class="col-sm-6">
-                        <select class="form-control form-control-sm" ng-model="invoice">
-                            <option value="0">Select</option>
+                        <select class="form-control form-control-sm" ng-model="invoice" ng-change="serviceChange()">
+                            <option value="0" selected>Select</option>
+                            <option ng-repeat="o in uploadToInviceData" value="{{o.ledgerId}}">{{o.serviceName}}</option>
                         </select>
                     </div>
                 </div>
@@ -152,23 +146,26 @@
                 </table>
             </div>
             <div class="col-sm-5 row ml-2" style="height: 150px; overflow-y: auto;margin-top:-10px;">
-                <table class="table table-bordered table-sm" style="white-space:nowrap;">
+                <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
                     <thead class="thead-light">
                         <tr>
                             <th class="acenter">Sl#</th>
+                            <th class="acenter">Job Title</th>
                             <th class="acenter">Invoice No</th>
                             <th class="acenter">Price</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="o in invoiceData">
+                        <tr ng-repeat="o in invoiceData" ng-click="dataLoadInInvoicePrice(o)" ng-class="{ 'selected-row': o === selectInvoice }">
                             <td>{{$index+1}}</td>
-                            <td>{{}}</td>
-                            <td>{{}}</td>
+                            <td>{{o.title}}</td>
+                            <td ng-if="o.companyID == 0">{{o.invoice_No}}</td>
+                            <td>{{o.tAmount}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
         </div>
 
 
@@ -227,8 +224,11 @@
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.spinner = false;
+            $scope.invoiceTd = true;
             $scope.service = '0';
+            $scope.invoice = '0';
             $scope.loadServices();
+            $scope.loadUploadToInvoice();
         })
         $scope.from = new Date();
         $scope.to = new Date();
@@ -267,6 +267,15 @@
             $http.get('/Ledger/GetService', { params: { sTypy: 1 } })
                 .then(function (response) {
                     $scope.services = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+        }
+
+        $scope.loadUploadToInvoice = function () {
+            $http.get('/Ledger/GetService', { params: { sTypy: 0 } })
+                .then(function (response) {
+                    $scope.uploadToInviceData = response.data;
                 }, function (error) {
                     console.error(error);
                 })
@@ -343,6 +352,7 @@
                 $scope.selectedRow = row;
                 // Call your showJobData function or perform other actions here
                 $scope.showJobData(row.cP_ID, row.postingDate, row.addType, row.region);
+                $scope.fillInvoiceTable(row.cP_ID, "", 0);
             }
         };
 
@@ -358,6 +368,8 @@
 
             }
         };
+
+
 
         $scope.showbutton = function () {
             if ($scope.selectedJob) {
@@ -484,22 +496,133 @@
                         onlineProduct = "Online Job Posting (Basic)";
                     }
                 }
-                
+
                 $http.get('/Ledger/GetOnlineLedgerId', { params: { onlineProduct: onlineProduct } })
-                .then(function(response){
+                    .then(function (response) {
                         $scope.data = response.data;
                         window.open('.././Sale/NewSale?onlinejobId=' + onlinejobId + '&onlineLedgerId=' + $scope.data + '&companyid=' + accId);
-                })
-                .catch (function(error) {
-                    console.log(error);
-                })
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
             }
             else {
                 alert("The company '" + $scope.selectedRow.cName + "' is new for the local database.\nYou must add the information of this company to the local database from another form by clicking 'Check companies & set company ID' button.\nThen click 'OK' to proceed with making sales or 'Cancel' to cancel the operation.");
                 return false;
             }
         }
+        $scope.fillInvoiceTable = function (cpId, sDate, ledgerId) {
+            $http.get('/Invoice/GetInvoices', { params: { cpId: cpId, sDate: sDate, ledgerId: ledgerId } })
+                .then(function (response) {
+                    $scope.invoiceData = response.data;
+                })
+                .catch(function () {
+                    console.log(error);
+                    alert('Error fetching job data');
+                })
+        };
 
+
+
+        $scope.selectInvoice = null;
+        $scope.dataLoadInInvoicePrice = function (o) {
+            if ($scope.selectInvoice === o) {
+                // If the same job is clicked again, deselect it
+                $scope.selectInvoice = null;
+            } else {
+                $scope.selectInvoice = o;
+                $scope.invoicePrice = $scope.selectInvoice.tAmount;
+                $scope.invoiceNo = $scope.selectInvoice.invoice_No;
+                $scope.billingTo = $scope.selectInvoice.billingContact;
+                $scope.uploadBtn = true;
+            }
+        };
+
+        $scope.serviceChange = function () {
+            if ($scope.invoice !== "0") {
+                var sDate = "";
+                if ($scope.invoice == 18 || $scope.invoice == 44)
+                    sDate = "01/01/2010";
+                else
+                    sDate = "01/01/2011";
+
+                $scope.fillInvoiceTable(0, sDate, $scope.invoice);
+
+            }
+        };
+
+        // $scope.uploadInvoice = function () {
+        //     debugger
+        //     $scope.cpId = $scope.selectedRow ? $scope.selectedRow.cP_ID : 0;
+        //     $scope.invoiceNo = $scope.invoiceNo;
+        //     $scope.serviceNo = $scope.serviceId;
+        //     $scope.billingContact = $scope.billingTo;
+        //     $scope.price = $scope.invoicePrice;
+        //     $scope.opId = $scope.selectInvoice.opId;
+        //     $scope.jpIdList = [];
+        //     $scope.serviceID = $scope.selectInvoice.serviceID;
+        //     $scope.companyID = $scope.selectInvoice.companyID;
+        //     $scope.companyName = $scope.selectInvoice.companyName;
+        //     $scope.saleDate = $scope.selectInvoice.sdate;
+
+        //     angular.forEach($scope.invoiceData, function (item) {
+        //         if (item !== null && item !== undefined && item.jpId !== "") {
+        //             $scope.jpIdList.push(item.jpId);
+        //         }
+        //     });
+
+        //     $scope.strJpId = $scope.jpIdList.join(",");
+
+        //     var jsonData = {
+        //         cpId: cpId,
+        //         invoiceNo: invoiceNo,
+        //         serviceNo: serviceNo,
+        //         billingContact: billingContact,
+        //         price: price,
+        //         opId: opId,
+        //         jpIdList: strJpId,
+        //         serviceID: serviceID,
+        //         companyID: companyID,
+        //         companyName: companyName,
+        //         saleDate: saleDate,
+        //     };
+
+        //     $http.post('/Sale/', jsonData)
+        //         .then(function (response) {
+        //             var val = response.data;
+        //             if (val.Connection === false) {
+
+        //             } else if (val.Duplicate === true) {
+
+        //                 var confirmUpdate = confirm('This invoice already uploaded before.\n\nDo you want to update that invoice?');
+        //                 if (confirmUpdate) {
+
+        //                     $http.post('/Sale/', { invoiceNo: invoiceNo })
+        //                         .then(function (val1) {
+
+        //                             var sDate = "";
+        //                             if ($scope.selectedRow.serviceList === 18 || $scope.selectedRow.serviceList === 44) {
+        //                                 sDate = "01/01/2010";
+        //                             } else {
+        //                                 sDate = "01/01/2011";
+        //                             }
+        //                             $scope.fillInvoiceTable(0, sDate, $scope.selectedRow.serviceList);
+
+        //                         })
+        //                         .catch(function (error) {
+
+        //                             console.log(error);
+        //                         });
+        //                 }
+        //             } else {
+
+        //             }
+        //         })
+        //         .catch(function (error) {
+
+        //             console.log(error);
+        //         });
+        // }
     })
 </script>
 
