@@ -2128,7 +2128,7 @@
             <Top>2.36458in</Top>
             <Left>0.20139in</Left>
             <Height>1.26042in</Height>
-            <Width>7.70361in</Width>
+            <Width>7.7036in</Width>
             <ZIndex>23</ZIndex>
             <Style>
               <Border>
@@ -2596,7 +2596,7 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>6.03125in</Height>
+        <Height>6.21875in</Height>
         <Style />
       </Body>
       <Width>8.12375in</Width>
@@ -2867,7 +2867,7 @@
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>0.4132in</Height>
+          <Height>0.2882in</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <Style>
