@@ -16,6 +16,9 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetInvoiceReportAsync(invoiceNo);
         }
-       
+        public Task<List<ChalanReport>> GetChalanReportNew(string invoiceNo)
+        {
+            return _repository.GetChalanReportNew(invoiceNo);
+        }
     }
 }

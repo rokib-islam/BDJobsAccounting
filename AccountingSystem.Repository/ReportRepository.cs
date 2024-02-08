@@ -31,6 +31,29 @@ namespace AccountingSystem.Repository
                 return invoices.AsList();
             }
         }
+        public async Task<List<ChalanReport>> GetChalanReportNew(string invoiceNo)
+        {
+            var chalans = new List<ChalanReport>();
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var query = "USP_Show_Challan_New";
+                    var parameters = new { InvoiceNo = invoiceNo };
+
+                    var result = await _db.QueryAsync<ChalanReport>(query, parameters, commandType: System.Data.CommandType.StoredProcedure);
+
+                    chalans.AddRange(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return chalans;
+        }
 
 
     }

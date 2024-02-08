@@ -5,7 +5,6 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
-using System.Net.Http.Headers;
 
 namespace AccountingSystem.Repository
 {
@@ -21,14 +20,23 @@ namespace AccountingSystem.Repository
         }
         public async Task<Users> GetUsers(string userName, string password)
         {
-            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            try
             {
-                var result = await _db.QueryFirstOrDefaultAsync<Users>(
-                    "SELECT * FROM Users WHERE UName = @UName AND PWord = @PWord",
-                    new { UName = userName, PWord = password });
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryFirstOrDefaultAsync<Users>(
+                        "SELECT * FROM Users WHERE UName = @UName AND PWord = @PWord",
+                        new { UName = userName, PWord = password });
 
-                return result;
+                    return result;
+                }
+
             }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
 
         public async Task<List<Users>> GetSpecificUser()
@@ -50,7 +58,7 @@ namespace AccountingSystem.Repository
 
                 throw ex;
             }
-            
+
         }
 
         public async Task<List<Users>> GetApprovers()
@@ -71,7 +79,7 @@ namespace AccountingSystem.Repository
 
                 throw ex;
             }
-            
+
         }
     }
 }
