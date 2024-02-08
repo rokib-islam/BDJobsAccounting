@@ -366,6 +366,7 @@
             $http.get('/Sale/GetSalesPersonsByProductID', { params: { productID: 2 } })
                 .then(function (response) {
                     $scope.salesPersons = response.data;
+                    $scope.salesPerson = "0";
                 }, function (error) {
                     console.error(error);
                 });
@@ -425,8 +426,8 @@
             $http.get('/Company/GetContactPersonsOrJobTitle', { params: { type: type, cId: cId } })
                 .then(function (response) {
                     $scope.getBillingPersonData = response.data;
+                    $scope.billingPerson = $scope.getBillingPersonData[0].id.toString();
                     $scope.designation = $scope.getBillingPersonData[0].designation;
-                    $scope.billingPerson = $scope.getBillingPersonData[0].name;
                 }, function (error) {
                     console.error(error);
                 })
