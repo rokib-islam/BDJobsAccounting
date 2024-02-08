@@ -718,7 +718,8 @@
         // };
         $scope.downloadReport = function () {
             var format = 'pdf'
-            var params = { InvoiceNo: '2311-003466-2136-311864', format: format };
+            var invoiceid = $scope.selectedRow.sbName;
+            var params = { InvoiceNo: invoiceid, format: format };
             var responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
 
             $http.get('/Report/ShowInvoice', { params: params, responseType: responseType })
@@ -746,8 +747,9 @@
                 });
         };
         $scope.downloadReportChallan = function () {
-            var format = 'pdf'
-            var params = { InvoiceNo: '2311-003466-2136-311864', format: format, CopyType: '1st Copy' };
+            var format = 'pdf';
+            var invoiceid = $scope.selectedRow.sbName;
+            var params = { InvoiceNo: invoiceid, format: format, CopyType: '1st Copy' };
             var responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
 
             $http.get('/Report/ShowChallanReportNew', { params: params, responseType: responseType })
