@@ -10,9 +10,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                <script type="text/javascript">
-                    window.location.href = '@Url.Action("Index", "Home")';
-                </script>
+                    <script type="text/javascript">
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    </script>
     }
     else
     {
@@ -225,16 +225,19 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-            $scope.invoiceType = 0;
+            
+            
             var onlineCompanyId = @Json.Serialize(onlineCompanyId);
             if (onlineCompanyId !== null) {
                 $scope.getIdWiseCompany(onlineCompanyId);
                 $scope.loadProducts(onlineCompanyId,0);
                 $scope.setInvoiceNo(onlineCompanyId, $scope.issueDate);
+                
             }
             
             
         });
+        $scope.CopyType = 'First Copy';
         $scope.invoiceType = 0;
         $scope.issueDate = new Date();
         $scope.disabledCommentsTable = true;
