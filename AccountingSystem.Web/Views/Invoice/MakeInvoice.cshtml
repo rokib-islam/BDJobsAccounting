@@ -4,14 +4,15 @@
 
     var userId = Context.Session.GetInt32("UserID");
     var accessRight = Context.Session.GetString("AccessRight");
+    var onlineCompanyId = ViewBag.OnlineCompanyId;
 
     var accessRights = new string[0];
 
     if (string.IsNullOrEmpty(accessRight))
     {
-        <script type="text/javascript">
-            window.location.href = '@Url.Action("Index", "Home")';
-        </script>
+                <script type="text/javascript">
+                    window.location.href = '@Url.Action("Index", "Home")';
+                </script>
     }
     else
     {
@@ -43,16 +44,12 @@
                     <label><input type="radio" ng-model="invoiceType" value="0" ng-checked="invoiceType==0" ng-change="blankForNew()" />&nbsp; Make New Invoice</label><br />
                     <label class="mt-2"><input type="radio" ng-model="invoiceType" value="1" ng-change="blankForOld()" />&nbsp; View Existing Invoice</label>
                 </div>
-                <div class="col-sm-4">
-                    <div class="form-group row">
-                        <label class="col-sm-4">Invoice Number</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" ng-model="invoiceNo" />
-                        </div>
-                    </div>
-                    <div class="text-center">
+                <div class="col-sm-4 text-center">
+                        <label>Invoice Number</label>
+                        <input type="text" class="form-control form-control-sm text-center fw-bold" style="background-color:lightblue;border:2px solid" ng-model="invoiceNo" disabled/>
+                    @* <div class="text-center">
                         <button class="btn btn-primary btn-sm" ng-click="">Generate Invoice Number</button>
-                    </div>
+                    </div> *@
                 </div>
                 <div class="col-sm-4">
                     <div class="form-group row">
@@ -69,17 +66,18 @@
                     </div>
                 </div>
                 <div class="col-sm-6">
+                    
+                </div>
+                <div class="row">
                     <div class="form-group row">
-                        <label class="col-sm-4">Companies</label>
-                        <div class="col-sm-8">
+                        <label class="col-sm-1">Companies</label>
+                        <div class="col-sm-4">
                             <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
                             <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 200px; overflow:auto ;background: white none repeat scroll 0% 0%" ng-show="companyList.length > 0">
                                 <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
                             </select>
                         </div>
                     </div>
-                </div>
-                <div class="row">
                     <div class="col-sm-5">
                         <div style="height: 300px; overflow-y: auto;border:2px solid gray">
                             <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
@@ -102,7 +100,7 @@
                             </div>
                             <div class="col-sm-6">
                                 <label class="d-flex justify-content-end"><input type="checkbox" />&nbsp; Delivery Tiger</label>
-                                <button class="btn btn-info btn-sm float-right" ng-click="">Preview Label</button>
+                                <button class="btn btn-info btn-sm float-right" ng-click="" disabled>Preview Label</button>
                             </div>
                         </div>
                         <div class="row mt-2" style="border:1px solid gray;height:120px">
@@ -212,7 +210,7 @@
                                 <input type="checkbox" ng-click="" /><label>&nbsp; Send Challan</label>
                             </div>
                             <div class="col-sm-4">
-                                <button class="btn btn-primary btn-sm" ng-click="">Send Mail</button>
+                                <button class="btn btn-primary btn-sm" ng-click="" disabled>Send Mail</button>
                             </div>
                         </div>
                     </div>
@@ -227,24 +225,55 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-
+            $scope.invoiceType = 0;
+            var onlineCompanyId = @Json.Serialize(onlineCompanyId);
+            if (onlineCompanyId !== null) {
+                $scope.getIdWiseCompany(onlineCompanyId);
+                $scope.loadProducts(onlineCompanyId,0);
+                $scope.setInvoiceNo(onlineCompanyId, $scope.issueDate);
+            }
+            
+            
         });
-
+        $scope.invoiceType = 0;
+        $scope.issueDate = new Date();
         $scope.disabledCommentsTable = true;
         $scope.disabledComments = false;
         $scope.rightArrow = true;
         $scope.leftArrow = true;
-        $scope.invoiceType = 0;
-        $scope.issueDate = new Date();
         $scope.companyList = [];
         $scope.selectedCompany = null;
         $scope.saveDisabled = true;
         $scope.showChallanButton = true;
         $scope.showInvoiceButton = true;
 
+        $scope.getIdWiseCompany = function (id) {
+            $http.get('/Company/GetCompanyById', { params: { companyId: id } })
+                .then(function (response) {
+                    $scope.idWiseCompany = response.data;
+                    $scope.onlineCompanyId = @onlineCompanyId
+                        // Find the selected company based on onlineCompanyId
+                        $scope.selectedCompany = $scope.idWiseCompany.find(function (company) {
+                            return company.id === $scope.onlineCompanyId;
+                        });
+
+                    // Set the searchQuery and other related variables
+                    if ($scope.selectedCompany) {
+                        $scope.searchQuery = $scope.selectedCompany.name;
+                    } else {
+                        $scope.searchQuery = 'Select';
+                    }
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+
+       
+
         $scope.blankForOld = function () {
             $scope.blankPrice();
-            $scope.loadProducts();
+            $scope.loadProducts($scope.selectedCompany.id, $scope.invoiceType);
             $scope.tableEmpty();
             $scope.comments = '';
             $scope.disabledCommentsTable = false;
@@ -256,7 +285,7 @@
 
         $scope.blankForNew = function () {
             $scope.blankPrice();
-            $scope.loadProducts();
+            $scope.loadProducts($scope.selectedCompany.id, $scope.invoiceType);
             $scope.label = '';
             $scope.disabledCommentsTable = true;
             $scope.disabledComments = false;
@@ -294,9 +323,9 @@
             $scope.selectedCompany = company;
             $scope.searchQuery = company.name;
             $scope.companyList = [];
-            $scope.loadProducts();
+            $scope.loadProducts($scope.selectedCompany.id, $scope.invoiceType);
             if ($scope.invoiceType == 0) {
-                $scope.setInvoiceNo();
+                $scope.setInvoiceNo($scope.selectedCompany.id, $scope.issueDate);
                 $scope.disabledCommentsTable = true;
                 $scope.disabledComments = false;
                 $scope.rightArrow = false;
@@ -314,10 +343,10 @@
             }
         }
 
-        $scope.loadProducts = function () {
+        $scope.loadProducts = function (cId,type) {
             var params = {
-                cId: $scope.selectedCompany.id,
-                type: $scope.invoiceType
+                cId: cId,
+                type: type
             };
             $http.get('/Invoice/GetProductsForInvoice', { params: params })
                 .then(function (response) {
@@ -443,10 +472,10 @@
 
         };
 
-        $scope.setInvoiceNo = function () {
+        $scope.setInvoiceNo = function (id, issueDate) {
             var params = {
-                cId: $scope.selectedCompany.id,
-                issueDate: $scope.issueDate
+                cId: id,
+                issueDate: issueDate
             };
             $http.get('/Invoice/GenerateInvoiceNumber', { params: params })
                 .then(function (response) {
@@ -455,7 +484,7 @@
                 .catch(function (error) {
                     console.log(error);
                 });
-        };
+        };        
 
         $scope.shiftData = [];
         $scope.go = function () {
@@ -507,6 +536,7 @@
             }
         };
         $scope.formattedFromDate = $scope.issueDate.toISOString().split('T')[0];
+        //$scope.formattedFromDate = $scope.issueDate;
         $scope.updateDeleteComments = function (action, id, invoiceId, amount, comments) {
             let requestBodyModel = {
                 action: action,
@@ -536,7 +566,6 @@
 
 
         $scope.save = function () {
-            debugger
             if ($scope.searchQuery == "" || $scope.searchQuery == null || $scope.searchQuery == undefined) {
                 alert('Company is required.');
                 return false;
@@ -642,6 +671,7 @@
 
                 $scope.cpId = $scope.selectedCompany.id.toString();
                 $scope.formattedFromDate = $scope.issueDate.toISOString().split('T')[0];
+                //$scope.formattedFromDate = $scope.issueDate;
                 $scope.invoiceId = $scope.selectedAnotherRow.id.toString();
                 let requestBodyModel = {
                     userId: @userId,
