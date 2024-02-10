@@ -118,7 +118,7 @@
                     <div class="col-sm-6">
                         <select class="form-control form-control-sm" ng-model="invoice" ng-change="serviceChange()">
                             <option value="0" selected>Select</option>
-                            <option ng-repeat="o in uploadToInviceData" value="{{o.ledgerId}}">{{o.serviceName}}</option>
+                            <option ng-repeat="o in uploadToInviceData" value="{{o.ledgerId}}" data-serviceid="{{o.serviceId}}">{{o.serviceName}}</option>
                         </select>
                     </div>
                 </div>
@@ -264,7 +264,13 @@
         };
 
         $scope.loadServices = function () {
-            $http.get('/Ledger/GetService', { params: { sTypy: 1 } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Ledger/GetService';
+            else
+                Url = '/AccountingNew/Ledger/GetService';
+
+            $http.get(Url, { params: { sTypy: 1 } })
                 .then(function (response) {
                     $scope.services = response.data;
                 }, function (error) {
@@ -273,7 +279,13 @@
         }
 
         $scope.loadUploadToInvoice = function () {
-            $http.get('/Ledger/GetService', { params: { sTypy: 0 } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Ledger/GetService';
+            else
+                Url = '/AccountingNew/Ledger/GetService';
+
+            $http.get(Url, { params: { sTypy: 0 } })
                 .then(function (response) {
                     $scope.uploadToInviceData = response.data;
                 }, function (error) {
@@ -287,7 +299,13 @@
             var toDate = $scope.to;
             var PNPL = $scope.PNPL ? 1 : 0;
 
-            $http.get('/Sale/DownLoadOnlineJobs', { params: { fromDate: fromDate, toDate: toDate, PNPL: PNPL } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/DownLoadOnlineJobs';
+            else
+                Url = '/AccountingNew/Sale/DownLoadOnlineJobs';
+
+            $http.get(Url, { params: { fromDate: fromDate, toDate: toDate, PNPL: PNPL } })
                 .then(function (response) {
                     $("#companyDiv").show();
                     var errorText = "";
@@ -322,7 +340,13 @@
             var CName = $scope.cname == "" || $scope.cname == undefined ? "" : $scope.cname;
             var Verified = $scope.verified == "" || $scope.verified == undefined ? 0 : $scope.verified;
 
-            $http.get('/Sale/GetOnlineJobList', { params: { CName: CName, Verified: Verified, LedgerID: LedgerID } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/GetOnlineJobList';
+            else
+                Url = '/AccountingNew/Sale/GetOnlineJobList';
+
+            $http.get(Url, { params: { CName: CName, Verified: Verified, LedgerID: LedgerID } })
                 .then(function (response) {
                     $scope.companyData = response.data;
                     $scope.spinner = false;
@@ -334,7 +358,14 @@
         };
 
         $scope.showJobData = function (cpId, date, adType, adRegion) {
-            $http.get('/Sale/GetJobs', { params: { cpId: cpId, date: date, adType: adType, adRegion: adRegion } })
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/GetJobs';
+            else
+                Url = '/AccountingNew/Sale/GetJobs';
+
+            $http.get(Url, { params: { cpId: cpId, date: date, adType: adType, adRegion: adRegion } })
                 .then(function (response) {
                     $scope.jobData = response.data;
                 }, function (error) {
@@ -399,7 +430,14 @@
 
             if (confirmDelete) {
                 var jpId = $scope.selectedJob.jp_Id; // Adjust this based on your data structure
-                $http.get('/Sale/DeleteOnlineJob', { params: { jpId: jpId } })
+
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Sale/DeleteOnlineJob';
+                else
+                    Url = '/AccountingNew/Sale/DeleteOnlineJob';
+
+                $http.get(Url, { params: { jpId: jpId } })
                     .then(function (response) {
                         if (response.data === true) {
                             alert("Delete operation completed successfully.");
@@ -497,7 +535,13 @@
                     }
                 }
 
-                $http.get('/Ledger/GetOnlineLedgerId', { params: { onlineProduct: onlineProduct } })
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Ledger/GetOnlineLedgerId';
+                else
+                    Url = '/AccountingNew/Ledger/GetOnlineLedgerId';
+
+                $http.get(Url, { params: { onlineProduct: onlineProduct } })
                     .then(function (response) {
                         $scope.data = response.data;
                         window.open('.././Sale/NewSale?onlinejobId=' + onlinejobId + '&onlineLedgerId=' + $scope.data + '&companyid=' + accId);
@@ -512,7 +556,14 @@
             }
         }
         $scope.fillInvoiceTable = function (cpId, sDate, ledgerId) {
-            $http.get('/Invoice/GetInvoices', { params: { cpId: cpId, sDate: sDate, ledgerId: ledgerId } })
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/GetInvoices';
+            else
+                Url = '/AccountingNew/Invoice/GetInvoices';
+
+            $http.get(Url, { params: { cpId: cpId, sDate: sDate, ledgerId: ledgerId } })
                 .then(function (response) {
                     $scope.invoiceData = response.data;
                 })
@@ -551,78 +602,94 @@
             }
         };
 
-        // $scope.uploadInvoice = function () {
-        //     debugger
-        //     $scope.cpId = $scope.selectedRow ? $scope.selectedRow.cP_ID : 0;
-        //     $scope.invoiceNo = $scope.invoiceNo;
-        //     $scope.serviceNo = $scope.serviceId;
-        //     $scope.billingContact = $scope.billingTo;
-        //     $scope.price = $scope.invoicePrice;
-        //     $scope.opId = $scope.selectInvoice.opId;
-        //     $scope.jpIdList = [];
-        //     $scope.serviceID = $scope.selectInvoice.serviceID;
-        //     $scope.companyID = $scope.selectInvoice.companyID;
-        //     $scope.companyName = $scope.selectInvoice.companyName;
-        //     $scope.saleDate = $scope.selectInvoice.sdate;
+        $scope.uploadInvoice = function () {
+            var selectedLedger = $scope.uploadToInviceData.find(function (s) {
+                return s.ledgerId == $scope.invoice;
+            });
 
-        //     angular.forEach($scope.invoiceData, function (item) {
-        //         if (item !== null && item !== undefined && item.jpId !== "") {
-        //             $scope.jpIdList.push(item.jpId);
-        //         }
-        //     });
+            $scope.cpId = $scope.selectedRow ? $scope.selectedRow.cP_ID : 0;
+            $scope.invoiceNo = $scope.invoiceNo;
+            $scope.serviceNo = selectedLedger ? selectedLedger.serviceId : 0;
+            $scope.billingContact = $scope.billingTo ? $scope.billingTo : "";
+            $scope.price = $scope.invoicePrice.toString();
+            $scope.opId = $scope.selectInvoice.opId.toString();
+            $scope.jpIdList = [];
+            $scope.serviceID = $scope.selectInvoice.serviceID;
+            $scope.companyID = $scope.selectInvoice.cP_ID;
+            $scope.companyName = $scope.selectInvoice.name;
+            $scope.saleDate = $scope.selectInvoice.sdate;
 
-        //     $scope.strJpId = $scope.jpIdList.join(",");
+            angular.forEach($scope.invoiceData, function (item) {
+                if (item !== null && item !== undefined && item.jpId !== "") {
+                    $scope.jpIdList.push(item.jpId);
+                }
+            });
 
-        //     var jsonData = {
-        //         cpId: cpId,
-        //         invoiceNo: invoiceNo,
-        //         serviceNo: serviceNo,
-        //         billingContact: billingContact,
-        //         price: price,
-        //         opId: opId,
-        //         jpIdList: strJpId,
-        //         serviceID: serviceID,
-        //         companyID: companyID,
-        //         companyName: companyName,
-        //         saleDate: saleDate,
-        //     };
+            $scope.strJpId = $scope.jpIdList.join(",");
 
-        //     $http.post('/Sale/', jsonData)
-        //         .then(function (response) {
-        //             var val = response.data;
-        //             if (val.Connection === false) {
+            var requestBodyModel = {
+                CpId: $scope.cpId,
+                InvoiceNo: $scope.invoiceNo,
+                ServiceNo: $scope.serviceNo,
+                BillingContact: $scope.billingContact,
+                Price: $scope.price,
+                OpId: $scope.opId,
+                JpIdList: $scope.strJpId,
+                ServiceID: $scope.serviceID,
+                CompanyID: $scope.companyID,
+                CompanyName: $scope.companyName,
+                SaleDate: $scope.saleDate,
+            };
 
-        //             } else if (val.Duplicate === true) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/UploadInvoicesOnline';
+            else
+                Url = '/AccountingNew/Invoice/UploadInvoicesOnline';
 
-        //                 var confirmUpdate = confirm('This invoice already uploaded before.\n\nDo you want to update that invoice?');
-        //                 if (confirmUpdate) {
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    var val = response.data;
+                    if (val.connection === false) {
+                        confirm(val.message);
+                    } 
+                    else if (val.duplicate === true) {
 
-        //                     $http.post('/Sale/', { invoiceNo: invoiceNo })
-        //                         .then(function (val1) {
+                        var confirmUpdate = confirm('This invoice already uploaded before.\n\nDo you want to update that invoice?');
+                        if (confirmUpdate) {
 
-        //                             var sDate = "";
-        //                             if ($scope.selectedRow.serviceList === 18 || $scope.selectedRow.serviceList === 44) {
-        //                                 sDate = "01/01/2010";
-        //                             } else {
-        //                                 sDate = "01/01/2011";
-        //                             }
-        //                             $scope.fillInvoiceTable(0, sDate, $scope.selectedRow.serviceList);
+                            let Url = '';
+                            if (window.location.hostname == 'localhost')
+                                Url = '/Invoice/UpdateInvoice';
+                            else
+                                Url = '/AccountingNew/Invoice/UpdateInvoice';
 
-        //                         })
-        //                         .catch(function (error) {
+                            $http.post(Url, { invoiceNo: InvoiceNo })
+                                .then(function (val1) {
 
-        //                             console.log(error);
-        //                         });
-        //                 }
-        //             } else {
+                                    var sDate = "";
+                                    if (selectedLedger.serviceId === 18 || selectedLedger.serviceId === 44) {
+                                        sDate = "01/01/2010";
+                                    } else {
+                                        sDate = "01/01/2011";
+                                    }
+                                    $scope.fillInvoiceTable(0, sDate, $scope.invoice);
 
-        //             }
-        //         })
-        //         .catch(function (error) {
+                                })
+                                .catch(function (error) {
 
-        //             console.log(error);
-        //         });
-        // }
+                                    console.log(error);
+                                });
+                        }
+                    } else {
+                        confirm(val.message);
+                    }
+                })
+                .catch(function (error) {
+
+                    console.log(error);
+                });
+        }
     })
 </script>
 

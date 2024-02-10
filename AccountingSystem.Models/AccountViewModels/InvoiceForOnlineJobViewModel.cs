@@ -17,7 +17,9 @@
         public double TAmount { get; set; }
         public int ServiceID { get; set; }
         public int CompanyID { get; set; }
+        public int CP_ID { get; set; }
         public string CompanyName { get; set; }
+        public string Name { get; set; }
         public string Sdate { get; set; }
     }
 }
