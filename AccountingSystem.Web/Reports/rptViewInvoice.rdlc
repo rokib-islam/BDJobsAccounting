@@ -160,7 +160,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
             <Top>0.3125in</Top>
-            <Left>0.81125in</Left>
+            <Left>0.67583in</Left>
             <Height>0.20833in</Height>
             <Width>0.96875in</Width>
             <ZIndex>1</ZIndex>
@@ -190,7 +190,7 @@
             </Paragraphs>
             <rd:DefaultName>Invoice_No</rd:DefaultName>
             <Top>0.3125in</Top>
-            <Left>1.9675in</Left>
+            <Left>1.83208in</Left>
             <Height>0.20833in</Height>
             <Width>2.54167in</Width>
             <ZIndex>2</ZIndex>
@@ -220,7 +220,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
             <Top>0.59027in</Top>
-            <Left>0.81125in</Left>
+            <Left>0.67583in</Left>
             <Height>0.20833in</Height>
             <Width>0.96875in</Width>
             <ZIndex>3</ZIndex>
@@ -250,7 +250,7 @@
             </Paragraphs>
             <rd:DefaultName>CName</rd:DefaultName>
             <Top>0.59027in</Top>
-            <Left>1.9675in</Left>
+            <Left>1.83208in</Left>
             <Height>0.20833in</Height>
             <Width>4.82292in</Width>
             <ZIndex>4</ZIndex>
@@ -268,10 +268,10 @@
             <TablixBody>
               <TablixColumns>
                 <TablixColumn>
-                  <Width>4.23959in</Width>
+                  <Width>4.30208in</Width>
                 </TablixColumn>
                 <TablixColumn>
-                  <Width>1.25in</Width>
+                  <Width>1.31249in</Width>
                 </TablixColumn>
               </TablixColumns>
               <TablixRows>
@@ -501,7 +501,7 @@
             <Top>3.08333in</Top>
             <Left>0.67583in</Left>
             <Height>0.83334in</Height>
-            <Width>5.48959in</Width>
+            <Width>5.61458in</Width>
             <ZIndex>5</ZIndex>
             <Style>
               <Border>
@@ -528,7 +528,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
             <Top>2.63541in</Top>
             <Left>0.67583in</Left>
             <Height>0.37847in</Height>
-            <Width>5.48958in</Width>
+            <Width>5.61458in</Width>
             <ZIndex>6</ZIndex>
             <Style>
               <Border>
@@ -586,7 +586,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
             <Top>0.86805in</Top>
-            <Left>0.81125in</Left>
+            <Left>0.67583in</Left>
             <Height>0.20833in</Height>
             <Width>0.96875in</Width>
             <ZIndex>8</ZIndex>
@@ -616,7 +616,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
             </Paragraphs>
             <rd:DefaultName>VATRegNo</rd:DefaultName>
             <Top>0.86805in</Top>
-            <Left>1.9675in</Left>
+            <Left>1.83208in</Left>
             <Height>0.20833in</Height>
             <Width>2.54167in</Width>
             <ZIndex>9</ZIndex>
@@ -646,7 +646,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
             <Top>1.14582in</Top>
-            <Left>0.81125in</Left>
+            <Left>0.67583in</Left>
             <Height>0.20833in</Height>
             <Width>0.96875in</Width>
             <ZIndex>10</ZIndex>
@@ -678,7 +678,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
             </Paragraphs>
             <rd:DefaultName>VATRegNo</rd:DefaultName>
             <Top>1.14582in</Top>
-            <Left>1.9675in</Left>
+            <Left>1.83208in</Left>
             <Height>0.20833in</Height>
             <Width>2.54167in</Width>
             <ZIndex>11</ZIndex>
@@ -708,7 +708,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
             <Top>1.4236in</Top>
-            <Left>0.81125in</Left>
+            <Left>0.67583in</Left>
             <Height>0.20833in</Height>
             <Width>0.96875in</Width>
             <ZIndex>12</ZIndex>
@@ -738,7 +738,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
             </Paragraphs>
             <rd:DefaultName>RefNo</rd:DefaultName>
             <Top>1.4236in</Top>
-            <Left>1.9675in</Left>
+            <Left>1.83208in</Left>
             <Height>0.20833in</Height>
             <Width>4.19792in</Width>
             <ZIndex>13</ZIndex>
@@ -768,7 +768,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
             <Top>1.70137in</Top>
-            <Left>0.81125in</Left>
+            <Left>0.67583in</Left>
             <Height>0.20833in</Height>
             <Width>0.96875in</Width>
             <ZIndex>14</ZIndex>
@@ -798,7 +798,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
             </Paragraphs>
             <rd:DefaultName>RefNo</rd:DefaultName>
             <Top>1.70137in</Top>
-            <Left>1.9525in</Left>
+            <Left>1.81708in</Left>
             <Height>0.20833in</Height>
             <Width>4.83792in</Width>
             <ZIndex>15</ZIndex>
@@ -828,7 +828,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
             </Paragraphs>
             <rd:DefaultName>RefNo</rd:DefaultName>
             <Top>1.97915in</Top>
-            <Left>1.9675in</Left>
+            <Left>1.83208in</Left>
             <Height>0.42015in</Height>
             <Width>4.82292in</Width>
             <ZIndex>16</ZIndex>
@@ -862,7 +862,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
             <Top>4.02083in</Top>
             <Left>1.79278in</Left>
             <Height>0.20833in</Height>
-            <Width>4.37263in</Width>
+            <Width>4.49763in</Width>
             <ZIndex>17</ZIndex>
             <Style>
               <Border>

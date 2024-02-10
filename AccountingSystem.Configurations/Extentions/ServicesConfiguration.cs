@@ -59,6 +59,7 @@ namespace AccountingSystem.Configurations.Extentions
 
 
             services.AddScoped<DbContext>();
+
             return services;
         }
     }

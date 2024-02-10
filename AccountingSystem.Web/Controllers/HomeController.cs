@@ -29,7 +29,7 @@ namespace AccountingSystem.Web.Controllers
 
             ClaimsPrincipal claimusers = HttpContext.User;
 
-            if (claimusers.Identity.IsAuthenticated)
+            if (claimusers.Identity.IsAuthenticated && HttpContext.Session.GetString("Name") != null)
                 return RedirectToAction("AccountingHome", "Home");
             else
                 return View();

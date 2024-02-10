@@ -251,7 +251,13 @@
         $scope.showInvoiceButton = true;
 
         $scope.getIdWiseCompany = function (id) {
-            $http.get('/Company/GetCompanyById', { params: { companyId: id } })
+            var hostname = window.location.pathname;
+            var Url = '';
+            if (hostname == '/')
+                Url = '/Company/GetCompanyById'
+            else
+                Url = hostname + '/Company/GetCompanyById';
+            $http.get(Url, { params: { companyId: id } })
                 .then(function (response) {
                     $scope.idWiseCompany = response.data;
                     $scope.onlineCompanyId = @onlineCompanyId
@@ -311,7 +317,14 @@
 
         $scope.searchCompany = function (startingKey) {
             if (startingKey && startingKey.length > 1) {
-                $http.get('/Company/GetCompanyListByKey', { params: { startingKey: startingKey } })
+                var hostname = window.location.pathname;
+                var Url = '';
+                if (hostname == '/')
+                    Url = '/Company/GetCompanyListByKey'
+                else
+                    Url = hostname + '/Company/GetCompanyListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
                         $scope.companyList = response.data;
                     }, function (error) {
@@ -351,7 +364,14 @@
                 cId: cId,
                 type: type
             };
-            $http.get('/Invoice/GetProductsForInvoice', { params: params })
+            var hostname = window.location.pathname;
+            var Url = '';
+            if (hostname == '/')
+                Url = '/Invoice/GetProductsForInvoice'
+            else
+                Url = hostname + '/Invoice/GetProductsForInvoice';
+
+            $http.get(Url, { params: params })
                 .then(function (response) {
                     $scope.products = response.data;
                 })
@@ -459,7 +479,13 @@
 
             }
             else {
-                $http.get('/Invoice/GetProductsDetails', { params: { Id: id } })
+                var hostname = window.location.pathname;
+                var Url = '';
+                if (hostname == '/')
+                    Url = '/Invoice/GetProductsDetails'
+                else
+                    Url = hostname + '/Invoice/GetProductsDetails';
+                $http.get(Url, { params: { Id: id } })
                     .then(function (response) {
                         $scope.bindData = response.data;
                         $scope.invoicePrice = response.data[0].totalAmount;
@@ -480,7 +506,14 @@
                 cId: id,
                 issueDate: issueDate
             };
-            $http.get('/Invoice/GenerateInvoiceNumber', { params: params })
+            var hostname = window.location.pathname;
+            var Url = '';
+            if (hostname == '/')
+                Url = '/Invoice/GenerateInvoiceNumber'
+            else
+                Url = hostname + '/Invoice/GenerateInvoiceNumber';
+
+            $http.get(Url, { params: params })
                 .then(function (response) {
                     $scope.invoiceNo = response.data;
                 })
@@ -550,7 +583,14 @@
                 sendDate: $scope.formattedFromDate
             };
 
-            $http.post('/Invoice/UpdateDeleteComments', requestBodyModel)
+            var hostname = window.location.pathname;
+            var Url = '';
+            if (hostname == '/')
+                Url = '/Invoice/UpdateDeleteComments'
+            else
+                Url = hostname + '/Invoice/UpdateDeleteComments';
+
+            $http.post(Url, requestBodyModel)
                 .then(function (response) {
                     var str = "";
                     if (action == 'U')
@@ -603,8 +643,14 @@
                             cId: $scope.selectedCompany.id.toString(),
                             tnolist: tnolist
                         };
+                        var hostname = window.location.pathname;
+                        var Url = '';
+                        if (hostname == '/')
+                            Url = '/Sale/CheckOnlineJobs'
+                        else
+                            Url = hostname + '/Sale/CheckOnlineJobs';
 
-                        $http.post('/Sale/CheckOnlineJobs', requestBodyModel)
+                        $http.post(Url, requestBodyModel)
                             .then(function (response) {
                                 $scope.data = response.data;
 
@@ -639,7 +685,14 @@
 
 
         $scope.checkInvoice = function () {
-            $http.get('/Invoice/CheckInvoiceNo', { params: $scope.invoiceNo })
+            var hostname = window.location.pathname;
+            var Url = '';
+            if (hostname == '/')
+                Url = '/Invoice/CheckInvoiceNo'
+            else
+                Url = hostname + '/Invoice/CheckInvoiceNo';
+                
+            $http.get(Url, { params: $scope.invoiceNo })
                 .then(function (response) {
                     if (response.data == true) {
                         var userConfirmed = confirm("The invoice Number is already exist. Do you want to make invoice with this existing invoice Number?");
@@ -752,10 +805,18 @@
         $scope.downloadReportChallan = function () {
             var format = 'pdf';
             var invoiceid = $scope.selectedRow.sbName;
-            var params = { InvoiceNo: invoiceid, format: format, CopyType: '1st Copy' };
+            var Copy = $scope.CopyType;
+            var params = { InvoiceNo: invoiceid, format: format, CopyType: Copy };
             var responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
 
-            $http.get('/Report/ShowChallanReportNew', { params: params, responseType: responseType })
+            var hostname = window.location.pathname;
+            var Url = '';
+            if (hostname == '/')
+                Url = '/Report/ShowChallanReportNew'
+            else
+                Url = hostname + '/Report/ShowChallanReportNew';
+
+            $http.get(Url, { params: params, responseType: responseType })
                 .then(function (response) {
                     var contentType = (format === 'pdf') ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
                     var file;
