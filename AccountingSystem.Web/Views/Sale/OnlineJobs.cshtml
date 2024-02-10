@@ -55,7 +55,7 @@
                     </div>
                 </div>
                 <div class="col-sm-5 mt-3">
-                    <button class="btn btn-info btn-sm float-right" ng-click="">Company Varification</button>
+                    <button class="btn btn-info btn-sm float-right" ng-click="showVarificationModal()">Company Varification</button>
                     <div class="float-right">
                         <label class="control-label float-right" style="font-weight: normal;">Paid Online</label>
                         <span style="border: 1px solid gray; background: #FFE6A8; height: 15px; width: 15px; margin: 8px 5px; " class="float-right"></span>
@@ -214,6 +214,53 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="modal fade" id="varificationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 80%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Company Varification</h5>
+                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="col-sm-6">
+                                    <div class="row">
+                                        <div class="col-sm-7">
+                                            <span>View Company list from online</span>
+                                            <div>
+                                                <label><input type="radio" name="radio" ng-model="radioBtn" value="0" checked>&nbsp; New</label>
+                                                <label class="ml-3"><input type="radio" name="radio" ng-model="radioBtn" value="1">&nbsp; All</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-5">
+                                            <button class="btn btn-info btn-sm pull-right" ng-click="showDetail()">Show details from online</button>
+                                        </div>
+                                    </div>
+                                    <select class="form-control form-control-sm" ng-model="onlineCompanies">
+@*                                         <option ng-repeat="" value=""></option>
+ *@                                    </select>
+                                </div>
+                                <div class="col-sm-6">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="ok()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
     </div>
 </div>
 
@@ -229,6 +276,8 @@
             $scope.invoice = '0';
             $scope.loadServices();
             $scope.loadUploadToInvoice();
+
+            $scope.onlineCompayList($scope.radioBtn);
         })
         $scope.from = new Date();
         $scope.to = new Date();
@@ -690,6 +739,30 @@
                     console.log(error);
                 });
         }
+
+
+        $scope.showVarificationModal = function () {
+            $("#varificationModal").modal('show');
+        }
+
+        
+        // $scope.onlineCompayList = function (radio) {
+        //     debugger
+        //     let Url = '';
+        //     if (window.location.hostname == 'localhost')
+        //         Url = '/Company/GetOnlineCompanyList';
+        //     else
+        //         Url = '/AccountingNew/Company/GetOnlineCompanyList';
+
+        //     $http.get(Url, { params: {radio:radio}})
+        //         .then(function (response) {
+        //             debugger
+        //             $scope.getOnlineCompanies = response.data;
+        //         })
+        //         .catch(function (error) {
+        //             console.log(error);
+        //         })
+        // }
     })
 </script>
 
