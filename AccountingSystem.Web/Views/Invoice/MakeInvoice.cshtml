@@ -251,7 +251,12 @@
         $scope.showInvoiceButton = true;
 
         $scope.getIdWiseCompany = function (id) {
-            $http.get('/Company/GetCompanyById', { params: { companyId: id } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetCompanyById';
+            else
+                Url = '/AccountingNew/Company/GetCompanyById';
+            $http.get(Url, { params: { companyId: id } })
                 .then(function (response) {
                     $scope.idWiseCompany = response.data;
                     $scope.onlineCompanyId = @onlineCompanyId
@@ -311,7 +316,13 @@
 
         $scope.searchCompany = function (startingKey) {
             if (startingKey && startingKey.length > 1) {
-                $http.get('/Company/GetCompanyListByKey', { params: { startingKey: startingKey } })
+             let Url = '';
+            if (window.location.hostname == 'localhost')
+                    Url = '/Company/GetCompanyListByKey';
+            else
+                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
                         $scope.companyList = response.data;
                     }, function (error) {
@@ -351,7 +362,13 @@
                 cId: cId,
                 type: type
             };
-            $http.get('/Invoice/GetProductsForInvoice', { params: params })
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/GetProductsForInvoice';
+            else
+                Url = '/AccountingNew/Invoice/GetProductsForInvoice';
+            $http.get(Url, { params: params })
                 .then(function (response) {
                     $scope.products = response.data;
                 })
@@ -459,7 +476,12 @@
 
             }
             else {
-                $http.get('/Invoice/GetProductsDetails', { params: { Id: id } })
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Invoice/GetProductsDetails';
+                else
+                    Url = '/AccountingNew/Invoice/GetProductsDetails';
+                $http.get(Url, { params: { Id: id } })
                     .then(function (response) {
                         $scope.bindData = response.data;
                         $scope.invoicePrice = response.data[0].totalAmount;
@@ -480,7 +502,12 @@
                 cId: id,
                 issueDate: issueDate
             };
-            $http.get('/Invoice/GenerateInvoiceNumber', { params: params })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/GenerateInvoiceNumber';
+            else
+                Url = '/AccountingNew/Invoice/GenerateInvoiceNumber';
+            $http.get(Url, { params: params })
                 .then(function (response) {
                     $scope.invoiceNo = response.data;
                 })
@@ -550,7 +577,13 @@
                 sendDate: $scope.formattedFromDate
             };
 
-            $http.post('/Invoice/UpdateDeleteComments', requestBodyModel)
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/UpdateDeleteComments';
+            else
+                Url = '/AccountingNew/Invoice/UpdateDeleteComments';
+
+            $http.post(Url, requestBodyModel)
                 .then(function (response) {
                     var str = "";
                     if (action == 'U')
@@ -604,7 +637,12 @@
                             tnolist: tnolist
                         };
 
-                        $http.post('/Sale/CheckOnlineJobs', requestBodyModel)
+                        let Url = '';
+                        if (window.location.hostname == 'localhost')
+                            Url = '/Sale/CheckOnlineJobs';
+                        else
+                            Url = '/AccountingNew/Sale/CheckOnlineJobs';
+                        $http.post(Url, requestBodyModel)
                             .then(function (response) {
                                 $scope.data = response.data;
 
@@ -639,7 +677,12 @@
 
 
         $scope.checkInvoice = function () {
-            $http.get('/Invoice/CheckInvoiceNo', { params: $scope.invoiceNo })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/CheckInvoiceNo';
+            else
+                Url = '/AccountingNew/Invoice/CheckInvoiceNo';
+            $http.get(Url, { params: $scope.invoiceNo })
                 .then(function (response) {
                     if (response.data == true) {
                         var userConfirmed = confirm("The invoice Number is already exist. Do you want to make invoice with this existing invoice Number?");
@@ -686,7 +729,12 @@
                     idList: idList,
                     InvoiceId: $scope.invoiceId
                 }
-                $http.post('/Invoice/SaveInvoice', requestBodyModel)
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Invoice/SaveInvoice';
+                else
+                    Url = '/AccountingNew/Invoice/SaveInvoice';
+                $http.post(Url, requestBodyModel)
                     .then(function (response) {
                         var data = response.data;
                         if (data == "Insert Successfully!") {
@@ -724,8 +772,12 @@
             var invoiceid = $scope.selectedRow.sbName;
             var params = { InvoiceNo: invoiceid, format: format };
             var responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
-
-            $http.get('/Report/ShowInvoice', { params: params, responseType: responseType })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Report/ShowInvoice';
+            else
+                Url = '/AccountingNew/Report/ShowInvoice';
+            $http.get(Url, { params: params, responseType: responseType })
                 .then(function (response) {
                     var contentType = (format === 'pdf') ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
                     var file;
@@ -755,8 +807,12 @@
             var Copy = $scope.CopyType;
             var params = { InvoiceNo: invoiceid, format: format, CopyType: Copy };
             var responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
-
-            $http.get('/Report/ShowChallanReportNew', { params: params, responseType: responseType })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Report/ShowChallanReportNew';
+            else
+                Url = '/AccountingNew/Report/ShowChallanReportNew';
+            $http.get(Url, { params: params, responseType: responseType })
                 .then(function (response) {
                     var contentType = (format === 'pdf') ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
                     var file;

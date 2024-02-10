@@ -318,7 +318,13 @@
 
         $scope.searchCompany = function (startingKey) {
             if (startingKey && startingKey.length > 1) {
-                $http.get('/Company/GetCompanyListByKey', { params: { startingKey: startingKey } })
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Company/GetCompanyListByKey';
+                else
+                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
                         $scope.companyList = response.data;
                     }, function (error) {
@@ -343,7 +349,13 @@
 
         $scope.searchProduct = function (startingKey) {
             if (startingKey && startingKey.length > 1) {
-                $http.get('/Ledger/GetProductListByKey', { params: { startingKey: startingKey } })
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Ledger/GetProductListByKey';
+                else
+                    Url = '/AccountingNew/Ledger/GetProductListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
                         $scope.getProductList = response.data;
                     }, function (error) {
@@ -363,7 +375,12 @@
 
 
         $scope.getSalesPerson = function () {
-            $http.get('/Sale/GetSalesPersonsByProductID', { params: { productID: 2 } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/GetSalesPersonsByProductID';
+            else
+                Url = '/AccountingNew/Sale/GetSalesPersonsByProductID';
+            $http.get(Url, { params: { productID: 2 } })
                 .then(function (response) {
                     $scope.salesPersons = response.data;
                     $scope.salesPerson = "0";
@@ -373,7 +390,12 @@
         };
 
         $scope.getIdWiseCompany = function (id) {
-            $http.get('/Company/GetCompanyById', { params: { companyId: id } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetCompanyById';
+            else
+                Url = '/AccountingNew/Company/GetCompanyById';
+            $http.get(Url, { params: { companyId: id } })
                 .then(function (response) {
                     $scope.idWiseCompany = response.data;
                     $scope.onlineCompanyId = @onlineCompanyId
@@ -394,7 +416,14 @@
         };
 
         $scope.getIdWiseProduct = function (id) {
-            $http.get('/Ledger/GetProductById', { params: { pId: id } })
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Ledger/GetProductById';
+            else
+                Url = '/AccountingNew/Ledger/GetProductById';
+
+            $http.get(Url, { params: { pId: id } })
                 .then(function (response) {
                     $scope.products = response.data;
                     $scope.onlineLedgerId = @onlineLedgerId
@@ -423,7 +452,13 @@
         }
 
         $scope.getBillingPerson = function (type, cId) {
-            $http.get('/Company/GetContactPersonsOrJobTitle', { params: { type: type, cId: cId } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetContactPersonsOrJobTitle';
+            else
+                Url = '/AccountingNew/Company/GetContactPersonsOrJobTitle';
+
+            $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
                     $scope.getBillingPersonData = response.data;
                     $scope.billingPerson = $scope.getBillingPersonData[0].id.toString();
@@ -446,7 +481,12 @@
         };
 
         $scope.getJobTitle = function (type, cId) {
-            $http.get('/Company/GetContactPersonsOrJobTitle', { params: { type: type, cId: cId } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetContactPersonsOrJobTitle';
+            else
+                Url = '/AccountingNew/Company/GetContactPersonsOrJobTitle';
+            $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
                     $scope.jobTitleData = response.data;
                     $scope.jobTitle = $scope.jobTitleData[0].title;
@@ -460,7 +500,12 @@
         }
 
         $scope.getTaxType = function () {
-            $http.get('/Ledger/GetProducts', { params: { admin: 0, account: 0, groupname: " ", isAll: " ", isI: " ", isVatType: 1 } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Ledger/GetProducts';
+            else
+                Url = '/AccountingNew/Ledger/GetProducts';
+            $http.get(Url, { params: { admin: 0, account: 0, groupname: " ", isAll: " ", isI: " ", isVatType: 1 } })
                 .then(function (response) {
                     $scope.taxTypes = response.data.filter(function (item) {
                         return item.id === 672 && item.sbName === 'VAT (AP)'
@@ -576,7 +621,12 @@
                 // workshopDate: $scope.workshopdateDiv ? $scope.workshopdate : "",
                 SPerson: $scope.salesPerson
             };
-            $http.post('/Sale/Save', JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/Save';
+            else
+                Url = '/AccountingNew/Sale/Save';
+            $http.post(Url , JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
                     if (response.data === "Success") {
                         alert('All information has been saved successfully.');

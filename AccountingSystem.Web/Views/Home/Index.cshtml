@@ -71,6 +71,8 @@
         var app = angular.module('loginApp', []);
 
         app.controller('LoginController', ['$http', function ($http) {
+          
+
             var vm = this;
             vm.username = '';
             vm.password = '';
@@ -85,12 +87,17 @@
                     password: vm.password,
                     rememberMe: vm.rememberMe
                 };
-                var hostname = window.location.pathname;
-                var Url = '';
-                if (hostname =='/')
-                    Url = '/Home/Login'
-                 else
-                    Url = hostname + '/Home/Login';
+               
+                
+                
+
+
+
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Home/Login';
+                else
+                    Url = 'AccountingNew/Home/Login';
 
                 $http.post(Url, JSON.stringify(credentials), { headers: { 'Content-Type': 'application/json' } })
 
