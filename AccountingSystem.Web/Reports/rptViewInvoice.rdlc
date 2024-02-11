@@ -413,7 +413,6 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
-                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -502,11 +501,15 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Amount in word: </Value>
+                                  <Value>Amount in word:  </Value>
                                   <Style />
                                 </TextRun>
                                 <TextRun>
                                   <Value>=Parameters!AmountInWord.Value</Value>
+                                  <Style />
+                                </TextRun>
+                                <TextRun>
+                                  <Value> Only</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
