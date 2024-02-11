@@ -17,7 +17,7 @@
     <div ng-controller="myController">
         <div class="col-sm-12">
             <div class="row" style="margin-top:-15px">
-                <div class="col-sm-7">
+                <div class="col-sm-8">
                     <div class="row">
                         <div class="col-sm-3">
                             <label class="col-form-label">From</label>
@@ -27,16 +27,16 @@
                             <label class="col-form-label">To</label>
                             <input type="date" class="form-control form-control-sm" ng-model="to" />
                         </div>
-                        <div class="col-sm-3 text-center mt-5">
+                        <div class="col-sm-2 text-center mt-5">
                             <label><input type="checkbox" ng-model="PNPL" /> PNPL</label>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <button class="btn btn-info btn-sm mt-5" ng-click="download()">Download Jobs</button>
                         </div>
                     </div>
                     <div class="row" style="margin-top:-10px">
                         <div class="col-sm-3">
-                            <label>Search By Companies</label>
+                            <label>Search By Company</label>
                             <input type="text" class="form-control form-control-sm" ng-model="cname" />
                         </div>
                         <div class="col-sm-3">
@@ -46,15 +46,15 @@
                                 <option ng-repeat="o in services" value="{{o.serviceId}}" data-ledgerid="{{o.ledgerId}}">{{o.serviceName}}</option>
                             </select>
                         </div>
-                        <div class="col-sm-3 text-center mt-4">
+                        <div class="col-sm-2 text-center mt-4">
                             <label><input type="checkbox" ng-model="verified" /> Varified</label>
                         </div>
-                        <div class="col-sm-3 mt-4">
+                        <div class="col-sm-4 mt-4">
                             <button class="btn btn-primary btn-sm" ng-click="search()" style="padding-left:45px;padding-right:45px">GO</button>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-5 mt-3">
+                <div class="col-sm-4 mt-3">
                     <button class="btn btn-info btn-sm float-right" ng-click="">Company Varification</button>
                     <div class="float-right">
                         <label class="control-label float-right" style="font-weight: normal;">Paid Online</label>
