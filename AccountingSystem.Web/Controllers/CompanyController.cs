@@ -22,13 +22,13 @@ namespace AccountingSystem.Web.Controllers
         {
             var result = await _CompanyManager.GetDistricts();
 
-            return View(result);
+            return Json(result);
         }
         public async Task<IActionResult> GetOnlineCompanyList(int radio)
         {
             var result = await _CompanyManager.GetOnlineCompanyList(radio);
 
-            return View(result);
+            return Json(result);
         }
         public async Task<IActionResult> GetCompanyListByKey(string startingKey)
         {

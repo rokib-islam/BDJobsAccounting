@@ -35,8 +35,12 @@ namespace AccountingSystem.Repository
 
             if (radio == 0)
             {
-                radioParam = "All";
+                radioParam = "New";
 
+            }
+            else
+            {
+                radioParam = "All";
             }
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
@@ -64,14 +68,22 @@ namespace AccountingSystem.Repository
 
         public async Task<List<Company>> GetOnlineCompanyInfo(int cpId)
         {
-            using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+            try
             {
-                var parameters = new DynamicParameters();
-                parameters.Add("@ComId", cpId);
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@ComId", cpId);
 
-                // Execute the stored procedure using Dapper
-                var result = await _db.QueryAsync<Company>("[dbo].[USP_Acc_Download_ComInfo]", parameters, commandType: CommandType.StoredProcedure);
-                return result.ToList();
+                    // Execute the stored procedure using Dapper
+                    var result = await _db.QueryAsync<Company>("[dbo].[USP_Acc_Download_ComInfo]", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
             }
 
         }

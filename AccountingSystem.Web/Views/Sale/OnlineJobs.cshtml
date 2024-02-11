@@ -1,5 +1,22 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@{
     ViewData["Title"] = "OnlineJobs";
+
+    var userId = Context.Session.GetInt32("UserID");
+    var accessRight = Context.Session.GetString("AccessRight");
+
+    var accessRights = new string[0];
+
+    if (string.IsNullOrEmpty(accessRight))
+    {
+                                <script type="text/javascript">
+                                    window.location.href = '@Url.Action("Index", "Home")';
+                                </script>
+    }
+    else
+    {
+        accessRights = accessRight.Split(',');
+    }
 }
 <style>
     .selected-row {
@@ -220,37 +237,190 @@
             <div class="modal-dialog" style="max-width: 80%;">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Company Varification</h5>
+                        <h7 class="modal-title" id="exampleModalLabel" style="margin-bottom:-10px;font-weight:bold">Company Varification</h7>
                         <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
                         <div class="row">
                             <div class="col-sm-12">
-                                <div class="col-sm-6">
-                                    <div class="row">
-                                        <div class="col-sm-7">
-                                            <span>View Company list from online</span>
-                                            <div>
-                                                <label><input type="radio" name="radio" ng-model="radioBtn" value="0" checked>&nbsp; New</label>
-                                                <label class="ml-3"><input type="radio" name="radio" ng-model="radioBtn" value="1">&nbsp; All</label>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="row px-2">
+                                            <div class="col-sm-7">
+                                                <span>View Company list from online</span>
+                                                <div>
+                                                    <label><input type="radio" name="radio" ng-model="radioBtn" value="0" ng-change="radioChange()" ng-checked="radioBtn === 0">&nbsp; New</label>
+                                                    <label class="ml-3"><input type="radio" name="radio" ng-model="radioBtn" value="1" ng-change="radioChange()">&nbsp; All</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                <button class="btn btn-info btn-sm pull-right" ng-click="showDetail()">Show details from online</button>
                                             </div>
                                         </div>
-                                        <div class="col-sm-5">
-                                            <button class="btn btn-info btn-sm pull-right" ng-click="showDetail()">Show details from online</button>
+                                        <select class="form-control form-control-sm" ng-model="onlineCompanies" size="6" style="height:150px">
+                                            <option ng-repeat="o in getOnlineCompanies" ng-click="selectComRow(o)" ng-class="{ 'selected-row': o === selectedComRow }" value="{{o.cp_id}}" data-accid="{{o.acc_Id}}">{{o.cname}}</option>
+                                        </select>
+                                        <div>
+                                            <span>Details of online registered company</span>
+                                        </div>
+                                        <div class="px-2" style="border:2px solid gray; height:380px">
+                                            <div class="text-center">
+                                                <input class="form-control form-control-sm col-sm-10 offset-1 my-2 text-center" style="background-color:lightskyblue;font-weight:bold" placeholder="Name of Company" ng-model="companyName" disabled />
+
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4">Address:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control form-control-sm" ng-model="address" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="row">
+                                                <div class="col-sm-5">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-4">City:</label>
+                                                        <div class="col-sm-8">
+                                                            <input class="form-control form-control-sm" ng-model="city" disabled />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-4">District:</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control form-control-sm" ng-model="district">
+                                                                <option value="0" selected>Select</option>
+                                                                <option ng-repeat="o in districtData" value="{{o.districtID}}">{{o.districtName}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4">Phone:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control form-control-sm" ng-model="phone" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4">Email:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control form-control-sm" ng-model="email" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4">Contact Person:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control form-control-sm" ng-model="contactPerson" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4">Designation:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control form-control-sm" ng-model="designation" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-5">Account created on:</label>
+                                                <div class="col-sm-7">
+                                                    <input class="form-control form-control-sm" ng-model="acCreated" disabled />
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <select class="form-control form-control-sm" ng-model="onlineCompanies">
-@*                                         <option ng-repeat="" value=""></option>
- *@                                    </select>
+                                    <div class="col-sm-6">
+                                        <div class="row px-2">
+                                            <label>List of Companies in local database</label>
+                                            <input class="form-control form-control-sm" style="margin-top:15px" ng-model="txtCompanies" />
+                                            <input class="form-control form-control-sm mt-2" ng-model="localCompanies" style="height:120px;" />
+                                            <div>
+                                                Details of local inserted company
+                                            </div>
+                                            <div class="px-2" style="border:2px solid gray; height:380px">
+                                                <div class="text-center">
+                                                    <input class="form-control form-control-sm col-sm-10 offset-1 my-2 text-center" style="background-color:lightskyblue;font-weight:bold" placeholder="Name of Company" ng-model="companyNameExist" disabled />
+
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-4">Address:</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control form-control-sm" ng-model="addressExist" disabled />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-5">
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-4">City:</label>
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control form-control-sm" ng-model="cityExist" disabled />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-4">District:</label>
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control form-control-sm" ng-model="districtExist" disabled />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-4">Phone:</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control form-control-sm" ng-model="phoneExist" disabled />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-4">Email:</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control form-control-sm" ng-model="phoneExist" disabled />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-4">Contact Person:</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control form-control-sm" ng-model="contactPersonExist" disabled />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-4">Designation:</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control form-control-sm" ng-model="designationExist" disabled />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-5">Local Compay ID:</label>
+                                                    <div class="col-sm-7">
+                                                        <input class="form-control form-control-sm" ng-model="localCompanyIdExist" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="col-sm-6">
+                                <div class="row mt-1" style="border:2px solid gray;margin-left:0px;margin-right:-7px">
+                                    <div class="col-sm-10">
+                                        <div style="font-weight:bold;color:green">
+                                            If onLine company is not found in local company list then you must add information of onLine company into local company database (Click Insert)
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-10" style="font-weight:bold;color:brown">
+                                                If onLine company information is exist in local company list but onLine company is showed as 'New' then write the ID number of local company and click Update
+                                            </div>
+                                            <input class="form-control form-control-sm col-sm-2" ng-model="accId" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 mt-2">
+                                        <button class="btn btn-success btn-sm" ng-click="insert()">Insert</button>
+                                        <button class="btn btn-primary btn-sm" ng-click="update()">Update</button>
+                                    </div>
                                 </div>
+
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary btn-sm" ng-click="ok()">OK</button>
                     </div>
                 </div>
             </div>
@@ -274,8 +444,11 @@
             $scope.invoiceTd = true;
             $scope.service = '0';
             $scope.invoice = '0';
+            $scope.radioBtn = '0';
+            $scope.district = '0';
             $scope.loadServices();
             $scope.loadUploadToInvoice();
+            $scope.GetDistricts();
 
             $scope.onlineCompayList($scope.radioBtn);
         })
@@ -701,7 +874,7 @@
                     var val = response.data;
                     if (val.connection === false) {
                         confirm(val.message);
-                    } 
+                    }
                     else if (val.duplicate === true) {
 
                         var confirmUpdate = confirm('This invoice already uploaded before.\n\nDo you want to update that invoice?');
@@ -745,24 +918,226 @@
             $("#varificationModal").modal('show');
         }
 
-        
-        // $scope.onlineCompayList = function (radio) {
-        //     debugger
-        //     let Url = '';
-        //     if (window.location.hostname == 'localhost')
-        //         Url = '/Company/GetOnlineCompanyList';
-        //     else
-        //         Url = '/AccountingNew/Company/GetOnlineCompanyList';
 
-        //     $http.get(Url, { params: {radio:radio}})
-        //         .then(function (response) {
-        //             debugger
-        //             $scope.getOnlineCompanies = response.data;
-        //         })
-        //         .catch(function (error) {
-        //             console.log(error);
-        //         })
-        // }
+        $scope.onlineCompayList = function (radio) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetOnlineCompanyList';
+            else
+                Url = '/AccountingNew/Company/GetOnlineCompanyList';
+
+            $http.get(Url, { params: { radio: radio } })
+                .then(function (response) {
+                    $scope.getOnlineCompanies = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+
+
+        $scope.radioChange = function () {
+            $scope.onlineCompayList($scope.radioBtn);
+        }
+
+        $scope.GetDistricts = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetDistricts';
+            else
+                Url = '/AccountingNew/Company/GetDistricts';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.districtData = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+
+        $scope.GetOnlineCompanyInfo = function (cpId) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetOnlineCompanyInfo';
+            else
+                Url = '/AccountingNew/Company/GetOnlineCompanyInfo';
+
+            $http.get(Url, { params: { cpId: cpId } })
+                .then(function (response) {
+                    $scope.onlineCompanyInfoData = response.data;
+                    $scope.companyName = $scope.onlineCompanyInfoData[0].name;
+                    $scope.address = $scope.onlineCompanyInfoData[0].address;
+                    $scope.city = $scope.onlineCompanyInfoData[0].city;
+                    $scope.phone = $scope.onlineCompanyInfoData[0].phone;
+                    $scope.email = $scope.onlineCompanyInfoData[0].e_mail;
+                    $scope.contactPerson = $scope.onlineCompanyInfoData[0].contactName;
+                    $scope.designation = $scope.onlineCompanyInfoData[0].designation;
+                    $scope.acCreated = $scope.onlineCompanyInfoData[0].acct_cr;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+
+        $scope.GetLocalCompanyInfo = function (id, type) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetLocalCompanyInfo';
+            else
+                Url = '/AccountingNew/Company/GetLocalCompanyInfo';
+
+            $http.get(Url, { params: { cpId: id } })
+                .then(function (response) {
+                    $scope.localCompanyInfoData = response.data;
+                    $scope.companyNameExist = $scope.localCompanyInfoData[0].name;
+                    $scope.addressExist = $scope.localCompanyInfoData[0].address;
+                    $scope.cityExist = $scope.localCompanyInfoData[0].city;
+                    $scope.phoneExist = $scope.localCompanyInfoData[0].phone;
+                    $scope.emailExist = $scope.localCompanyInfoData[0].email;
+                    $scope.contactPersonExist = $scope.localCompanyInfoData[0].accContactName;
+                    $scope.designationExist = $scope.localCompanyInfoData[0].designation;
+                    $scope.localCompanyIdExist = $scope.localCompanyInfoData[0].id;
+                    $scope.districtExist = $scope.localCompanyInfoData[0].districtId;
+
+                    $scope.txtCompanies = $scope.localCompanyInfoData[0].name;
+                    $scope.localCompanies = $scope.localCompanyInfoData[0].name;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        $scope.fieldsEmpty = function () {
+            $scope.companyNameExist = "";
+            $scope.addressExist = "";
+            $scope.cityExist = "";
+            $scope.districtExist = "";
+            $scope.phoneExist = "";
+            $scope.contactPersonExist = "";
+            $scope.designationExist = "";
+            $scope.localCompanyIdExist = "";
+        };
+
+
+        $scope.selectedComRow = null;
+        $scope.selectComRow = function (row) {
+            if ($scope.selectedComRow === row) {
+                // If the same row is clicked again, deselect it
+                $scope.selectedComRow = null;
+            } else {
+                $scope.selectedComRow = row;
+                // Call your showJobData function or perform other actions here
+                if ($scope.selectedComRow.acc_id == 0) {
+                    $scope.fieldsEmpty();
+                    $scope.GetOnlineCompanyInfo(row.cP_Id);
+                }
+                else {
+                    $scope.GetOnlineCompanyInfo(row.cP_Id);
+                    $scope.GetLocalCompanyInfo(row.acc_id, 1);
+                }
+
+            }
+        };
+
+
+        // $scope.insert = function () {
+        //     $scope.action = "Insert";
+        //     $scope.cpId = $scope.selectedComRow.cP_Id;
+        //     $scope.name = $scope.companyName;
+        //     $scope.address = $scope.address;
+        //     $scope.city = $scope.city;
+        //     $scope.phone = $scope.phone;
+        //     $scope.email = $scope.email;
+        //     $scope.cPerson = $scope.contactPerson;
+        //     $scope.designation = $scope.designation;
+        //     $scope.companyId = $scope.accId;
+        //     $scope.districtId = $scope.district;
+        //     debugger;
+
+        //     var access = '@accessRights.Contains("1")';
+
+        //     if (access === 'False') {
+        //         if (confirm('Sorry, You have no permission to add a record.')) {
+        //             return;
+        //         }
+        //     } else if ($scope.cpId == 0) {
+        //         var selectCompany = confirm("You must select an online registered company, then double click on that item\n\nor press 'Enter' or press 'Show details from Online' button and then press 'Insert' button. Do you want to continue?");
+        //         if (!selectCompany) {
+        //             return;
+        //         }
+        //     } else if ($scope.districtId.trim() === "") {
+        //         if (confirm("You must select a district. OK to continue?")) {
+        //             return;
+        //         }
+        //     } else {
+        //         let Url = '';
+        //         if (window.location.hostname == 'localhost')
+        //             Url = '/Company/CheckCompany';
+        //         else
+        //             Url = '/AccountingNew/Company/CheckCompany';
+
+        //         $http.get(Url, { params: { name: $scope.name } })
+        //             .then(function (response) {
+        //                 $scope.checkData = response.data;
+        //                 if ($scope.checkData.length != 0) {
+        //                     if (confirm('This company is already exist in local database. OK to continue?')) {
+        //                         return;
+        //                     }
+        //                 } else {
+        //                     let requestBodyModel = {
+        //                         action: $scope.action,
+        //                         cpId: $scope.cpId,
+        //                         name: $scope.name,
+        //                         address: $scope.address,
+        //                         city: $scope.city,
+        //                         phone: $scope.phone,
+        //                         email: $scope.email,
+        //                         cPerson: $scope.cPerson,
+        //                         designation: $scope.designation,
+        //                         companyId: $scope.companyId,
+        //                         districtId: $scope.districtId,
+        //                     };
+
+        //                     let Url = '';
+        //                     if (window.location.hostname == 'localhost')
+        //                         Url = '/Company/InsertUpdateOnlineCompany';
+        //                     else
+        //                         Url = '/AccountingNew/Company/InsertUpdateOnlineCompany';
+
+        //                     $http.post(Url, requestBodyModel)
+        //                         .then(function (response) {
+        //                             $scope.val = response.data;
+
+        //                             if ($scope.val == true) {
+        //                                 var m = "";
+        //                                 if ($scope.radioBtn === 0) {
+        //                                     m = "Now refresh the online company list. This company is not showed this time.";
+        //                                 }
+        //                                 $scope.onlineCompayList(1);
+        //                                 if ($scope.radioBtn == 0) {
+        //                                     $scope.onlineCompayList($scope.selectedComRow.cP_Id);
+        //                                 }
+
+        //                                 if (confirm("All information of the company '" + $scope.name + "' has been inserted successfully. And also updated the online database. " + m + " OK to continue?")) {
+        //                                     return;
+        //                                 }
+        //                             }
+        //                         })
+        //                         .catch(function (error) {
+        //                             console.log(error);
+        //                         });
+        //                 }
+        //             })
+        //             .catch(function (error) {
+        //                 console.log(error);
+        //             });
+        //     }
+        // };
+
     })
 </script>
 
