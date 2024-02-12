@@ -460,6 +460,7 @@
 
             $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
+                    debugger
                     $scope.getBillingPersonData = response.data;
                     $scope.billingPerson = $scope.getBillingPersonData[0].id.toString();
                     $scope.designation = $scope.getBillingPersonData[0].designation;
