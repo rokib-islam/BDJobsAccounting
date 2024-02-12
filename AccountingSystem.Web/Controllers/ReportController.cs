@@ -93,7 +93,7 @@ namespace AccountingSystem.Web.Controllers
                 using var report = new LocalReport();
                 var parameters = new[]
                 {
-                new ReportParameter("SumAmount", totalAmount.ToString()),
+                new ReportParameter("SumAmount", totalAmount.ToString("N2")),
                 new ReportParameter("AmountInWord", wordamount)
             };
 

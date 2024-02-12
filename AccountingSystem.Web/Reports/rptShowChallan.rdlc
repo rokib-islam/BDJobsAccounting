@@ -2597,13 +2597,13 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>6.21875in</Height>
+        <Height>15.79562cm</Height>
         <Style />
       </Body>
-      <Width>8.12375in</Width>
+      <Width>20.47558cm</Width>
       <Page>
         <PageHeader>
-          <Height>1.11333in</Height>
+          <Height>2.82786cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -2868,7 +2868,7 @@
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>0.2882in</Height>
+          <Height>0.73203cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <Style>
@@ -2877,11 +2877,13 @@
             </Border>
           </Style>
         </PageFooter>
-        <PageHeight>11.69in</PageHeight>
-        <PageWidth>8.27in</PageWidth>
-        <LeftMargin>0.25in</LeftMargin>
-        <TopMargin>0.25in</TopMargin>
-        <BottomMargin>0.25in</BottomMargin>
+        <PageHeight>29.7cm</PageHeight>
+        <PageWidth>21cm</PageWidth>
+        <LeftMargin>0cm</LeftMargin>
+        <RightMargin>0cm</RightMargin>
+        <TopMargin>0.635cm</TopMargin>
+        <BottomMargin>0.635cm</BottomMargin>
+        <ColumnSpacing>1.27cm</ColumnSpacing>
         <Style />
       </Page>
     </ReportSection>
@@ -2940,6 +2942,6 @@
       </CellDefinitions>
     </GridLayoutDefinition>
   </ReportParametersLayout>
-  <rd:ReportUnitType>Inch</rd:ReportUnitType>
+  <rd:ReportUnitType>Cm</rd:ReportUnitType>
   <rd:ReportID>66020f6b-57ce-471e-a5c2-f62025c71c25</rd:ReportID>
 </Report>
