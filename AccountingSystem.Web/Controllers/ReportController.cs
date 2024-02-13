@@ -78,7 +78,7 @@ namespace AccountingSystem.Web.Controllers
         }
 
 
-        public async Task<IActionResult> ShowInvoice(string InvoiceNo, string format)
+        public async Task<IActionResult> ShowInvoice(string InvoiceNo, string format, int isColorPad)
         {
             try
             {
@@ -94,7 +94,8 @@ namespace AccountingSystem.Web.Controllers
                 var parameters = new[]
                 {
                 new ReportParameter("SumAmount", totalAmount.ToString("N2")),
-                new ReportParameter("AmountInWord", wordamount)
+                new ReportParameter("AmountInWord", wordamount),
+                new ReportParameter("isColorPad", isColorPad.ToString())
             };
 
                 using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream("AccountingSystem.Web.Reports.rptViewInvoice.rdlc");
@@ -144,9 +145,9 @@ namespace AccountingSystem.Web.Controllers
                 using var report = new LocalReport();
                 var parameters = new[]
                 {
-                new ReportParameter("sumTotalVat", sumTotalVat.ToString()),
-                new ReportParameter("sumPriceWithVat", sumPriceWithVat.ToString()),
-                new ReportParameter("sumTotalPrice", sumTotalPrice.ToString()),
+                new ReportParameter("sumTotalVat", sumTotalVat.ToString("N2")),
+                new ReportParameter("sumPriceWithVat", sumPriceWithVat.ToString("N2")),
+                new ReportParameter("sumTotalPrice", sumTotalPrice.ToString("N2")),
                 new ReportParameter("CopyType", CopyType),
 
                 };

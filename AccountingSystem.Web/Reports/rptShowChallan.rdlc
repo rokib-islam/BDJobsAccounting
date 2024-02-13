@@ -278,7 +278,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Address of purchaser: </Value>
+                    <Value>BIN Number of purchaser: </Value>
                     <Style>
                       <FontSize>8pt</FontSize>
                     </Style>
@@ -312,7 +312,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Destination of Supply:</Value>
+                    <Value>Address of purchaser: </Value>
                     <Style>
                       <FontSize>8pt</FontSize>
                     </Style>
@@ -550,7 +550,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value> 000165845-0203</Value>
+                    <Value>000165845-0203</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
                     </Style>
@@ -1103,7 +1103,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Unit price (Taka)</Value>
+                                  <Value>Unit price (Taka)¹</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1137,7 +1137,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Total price (Taka)¹</Value>
+                                  <Value>Total price (Taka)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1205,7 +1205,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Amount of supplementary duty (Taka)</Value>
+                                  <Value>Amount of supplementary duty </Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1307,7 +1307,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Total Price including all Duty &amp; Tax(taka)</Value>
+                                  <Value>Total Price including all Duty &amp; Tax(Taka)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1346,7 +1346,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>1</Value>
+                                  <Value>(1)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1380,7 +1380,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>2</Value>
+                                  <Value>(2)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1414,7 +1414,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>3</Value>
+                                  <Value>(3)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1448,7 +1448,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>4</Value>
+                                  <Value>(4)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1482,7 +1482,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>5</Value>
+                                  <Value>(5)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1516,7 +1516,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>6</Value>
+                                  <Value>(6)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1550,7 +1550,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>7</Value>
+                                  <Value>(7)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1584,7 +1584,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>8</Value>
+                                  <Value>(8)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1618,7 +1618,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>9</Value>
+                                  <Value>(9)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1652,7 +1652,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>10</Value>
+                                  <Value>(10)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1686,7 +1686,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>11</Value>
+                                  <Value>(11)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1861,7 +1861,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!oneItemPrice.Value</Value>
+                                  <Value>=FormatNumber(Fields!oneItemPrice.Value, 2, , , TriState.True)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1895,7 +1895,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TotalPrice.Value</Value>
+                                  <Value>=FormatNumber(Fields!TotalPrice.Value, 2, , , TriState.True)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -1999,7 +1999,7 @@
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value> %</Value>
+                                  <Value> %.00</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -2033,7 +2033,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!TotalVat.Value</Value>
+                                  <Value>=FormatNumber(Fields!TotalVat.Value, 2, , , TriState.True)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -2067,7 +2067,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=Fields!priceWithVat.Value</Value>
+                                  <Value>=FormatNumber(Fields!priceWithVat.Value, 2, , , TriState.True)</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -2399,7 +2399,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Vehicle Type and Number:</Value>
+                    <Value>Designation:</Value>
                     <Style>
                       <FontSize>9pt</FontSize>
                     </Style>
@@ -2744,54 +2744,6 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
-            <Line Name="Line1">
-              <Top>0.49875in</Top>
-              <Left>5.92584in</Left>
-              <Height>0in</Height>
-              <Width>1in</Width>
-              <ZIndex>4</ZIndex>
-              <Style>
-                <Border>
-                  <Style>Solid</Style>
-                </Border>
-              </Style>
-            </Line>
-            <Line Name="Line3">
-              <Top>0.51264in</Top>
-              <Left>5.92584in</Left>
-              <Height>0.32181in</Height>
-              <Width>0in</Width>
-              <ZIndex>5</ZIndex>
-              <Style>
-                <Border>
-                  <Style>Solid</Style>
-                </Border>
-              </Style>
-            </Line>
-            <Line Name="Line4">
-              <Top>0.49875in</Top>
-              <Left>6.94667in</Left>
-              <Height>0.33569in</Height>
-              <Width>0in</Width>
-              <ZIndex>6</ZIndex>
-              <Style>
-                <Border>
-                  <Style>Solid</Style>
-                </Border>
-              </Style>
-            </Line>
-            <Line Name="Line5">
-              <Top>0.83444in</Top>
-              <Left>5.92584in</Left>
-              <Height>0in</Height>
-              <Width>1in</Width>
-              <ZIndex>7</ZIndex>
-              <Style>
-                <Border>
-                  <Style>Solid</Style>
-                </Border>
-              </Style>
-            </Line>
             <Textbox Name="Textbox5">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
@@ -2811,11 +2763,11 @@
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox5</rd:DefaultName>
-              <Top>0.55431in</Top>
+              <Top>0.54043in</Top>
               <Left>5.94667in</Left>
               <Height>0.21069in</Height>
               <Width>0.97917in</Width>
-              <ZIndex>8</ZIndex>
+              <ZIndex>4</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2849,7 +2801,7 @@
               <Left>5.92584in</Left>
               <Height>0.19097in</Height>
               <Width>1in</Width>
-              <ZIndex>9</ZIndex>
+              <ZIndex>5</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -2860,6 +2812,19 @@
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
+            <Rectangle Name="Rectangle2">
+              <KeepTogether>true</KeepTogether>
+              <Top>1.32858cm</Top>
+              <Left>15.05163cm</Left>
+              <Height>0.61452cm</Height>
+              <Width>2.54cm</Width>
+              <ZIndex>6</ZIndex>
+              <Style>
+                <Border>
+                  <Style>Solid</Style>
+                </Border>
+              </Style>
+            </Rectangle>
           </ReportItems>
           <Style>
             <Border>
