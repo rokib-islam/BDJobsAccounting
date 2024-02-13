@@ -1135,8 +1135,8 @@ accounts@bdjobs.com</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox23</rd:DefaultName>
-            <Top>7.69444in</Top>
-            <Left>0.63769in</Left>
+            <Top>7.84722in</Top>
+            <Left>0.78351in</Left>
             <Height>0.25in</Height>
             <Width>2.68054in</Width>
             <ZIndex>24</ZIndex>
@@ -1151,8 +1151,8 @@ accounts@bdjobs.com</Value>
             </Style>
           </Textbox>
           <Line Name="Line6">
-            <Top>7.68055in</Top>
-            <Left>0.63769in</Left>
+            <Top>7.83333in</Top>
+            <Left>0.78351in</Left>
             <Height>0in</Height>
             <Width>1.91666in</Width>
             <ZIndex>25</ZIndex>
@@ -1241,7 +1241,7 @@ accounts@bdjobs.com</Value>
             </Style>
           </Rectangle>
         </ReportItems>
-        <Height>20.47874cm</Height>
+        <Height>20.74333cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
@@ -1295,7 +1295,7 @@ accounts@bdjobs.com</Value>
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>1.38464cm</Height>
+          <Height>1.38463cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
