@@ -10,9 +10,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                    <script type="text/javascript">
-                        window.location.href = '@Url.Action("Index", "Home")';
-                    </script>
+                            <script type="text/javascript">
+                                window.location.href = '@Url.Action("Index", "Home")';
+                            </script>
     }
     else
     {
@@ -768,10 +768,12 @@
         //         });
         // };
         $scope.downloadReport = function () {
-            var format = 'pdf'
-            var invoiceid = $scope.selectedRow.sbName;
-            var params = { InvoiceNo: invoiceid, format: format };
-            var responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
+            let format = 'pdf'
+            let invoiceid = $scope.selectedRow.sbName;
+            
+            let isColorPad = $scope.print ? 1 : 0;
+            let params = { InvoiceNo: invoiceid, format: format, isColorPad: isColorPad };
+            let responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
             let Url = '';
             if (window.location.hostname == 'localhost')
                 Url = '/Report/ShowInvoice';
@@ -802,11 +804,11 @@
                 });
         };
         $scope.downloadReportChallan = function () {
-            var format = 'pdf';
-            var invoiceid = $scope.selectedRow.sbName;
-            var Copy = $scope.CopyType;
-            var params = { InvoiceNo: invoiceid, format: format, CopyType: Copy };
-            var responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
+            let format = 'pdf';
+            let invoiceid = $scope.selectedRow.sbName;
+            let Copy = $scope.CopyType;
+            let params = { InvoiceNo: invoiceid, format: format, CopyType: Copy };
+            let responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
             let Url = '';
             if (window.location.hostname == 'localhost')
                 Url = '/Report/ShowChallanReportNew';

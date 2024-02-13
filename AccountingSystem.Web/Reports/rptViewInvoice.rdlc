@@ -121,7 +121,7 @@
                   <TextRun>
                     <Value>INVOICE</Value>
                     <Style>
-                      <FontSize>12pt</FontSize>
+                      <FontSize>18pt</FontSize>
                       <FontWeight>Bold</FontWeight>
                     </Style>
                   </TextRun>
@@ -133,7 +133,7 @@
             </Paragraphs>
             <rd:DefaultName>Textbox3</rd:DefaultName>
             <Top>0.125in</Top>
-            <Left>3.59249in</Left>
+            <Left>3.61681in</Left>
             <Height>0.30208in</Height>
             <Width>1.52083in</Width>
             <Style>
@@ -153,7 +153,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Invoice No :</Value>
+                    <Value>Invoice No</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -161,10 +161,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>0.5868in</Top>
-            <Left>2.30083in</Left>
+            <Top>0.5729in</Top>
+            <Left>2.71057in</Left>
             <Height>0.20833in</Height>
-            <Width>0.95485in</Width>
+            <Width>0.88888in</Width>
             <ZIndex>1</ZIndex>
             <Style>
               <Border>
@@ -183,6 +183,10 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
+                    <Value>: </Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
                     <Value>=Fields!Invoice_No.Value</Value>
                     <Style />
                   </TextRun>
@@ -191,10 +195,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Invoice_No</rd:DefaultName>
-            <Top>0.5868in</Top>
-            <Left>3.31818in</Left>
+            <Top>0.5729in</Top>
+            <Left>3.59945in</Left>
             <Height>0.20833in</Height>
-            <Width>2.28125in</Width>
+            <Width>2.40972in</Width>
             <ZIndex>2</ZIndex>
             <Style>
               <Border>
@@ -213,7 +217,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Issued to :</Value>
+                    <Value>Issued to</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -221,10 +225,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>0.87847in</Top>
-            <Left>2.30083in</Left>
+            <Top>0.86457in</Top>
+            <Left>2.71057in</Left>
             <Height>0.20833in</Height>
-            <Width>0.95485in</Width>
+            <Width>0.88888in</Width>
             <ZIndex>3</ZIndex>
             <Style>
               <Border>
@@ -243,6 +247,18 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
+                    <Value>:</Value>
+                    <Style>
+                      <FontWeight>Normal</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value xml:space="preserve"> </Value>
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
                     <Value>=Fields!CName.Value</Value>
                     <Style>
                       <FontWeight>Bold</FontWeight>
@@ -253,10 +269,10 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>CName</rd:DefaultName>
-            <Top>0.86457in</Top>
-            <Left>3.31818in</Left>
+            <Top>0.85067in</Top>
+            <Left>3.59945in</Left>
             <Height>0.20833in</Height>
-            <Width>4.63542in</Width>
+            <Width>4.61806in</Width>
             <ZIndex>4</ZIndex>
             <Style>
               <Border>
@@ -291,7 +307,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>Decription of the Product/Services</Value>
+                                  <Value>Description the Product/Services</Value>
                                   <Style>
                                     <FontWeight>Bold</FontWeight>
                                   </Style>
@@ -303,7 +319,6 @@
                           <rd:DefaultName>Textbox8</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -335,7 +350,6 @@
                           <rd:DefaultName>Textbox12</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -370,9 +384,14 @@
                           <rd:DefaultName>comments</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <LeftBorder>
+                              <Style>Solid</Style>
+                            </LeftBorder>
+                            <RightBorder>
+                              <Style>Solid</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -404,9 +423,11 @@
                           <rd:DefaultName>amount1</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
-                              <Style>Solid</Style>
+                              <Style>None</Style>
                             </Border>
+                            <RightBorder>
+                              <Style>Solid</Style>
+                            </RightBorder>
                             <PaddingLeft>2pt</PaddingLeft>
                             <PaddingRight>2pt</PaddingRight>
                             <PaddingTop>2pt</PaddingTop>
@@ -441,7 +462,6 @@
                           <rd:DefaultName>Textbox15</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -476,7 +496,6 @@
                           <rd:DefaultName>amount</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -513,13 +532,14 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox29</rd:DefaultName>
                           <Style>
                             <Border>
-                              <Color>LightGrey</Color>
                               <Style>Solid</Style>
                             </Border>
                             <PaddingLeft>2pt</PaddingLeft>
@@ -561,7 +581,7 @@
             <RepeatColumnHeaders>true</RepeatColumnHeaders>
             <DataSetName>ShowInvoice</DataSetName>
             <Top>3.33333in</Top>
-            <Left>0.76959in</Left>
+            <Left>0.79391in</Left>
             <Height>2.21875in</Height>
             <Width>6.77082in</Width>
             <ZIndex>5</ZIndex>
@@ -588,7 +608,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox16</rd:DefaultName>
             <Top>2.88541in</Top>
-            <Left>0.76959in</Left>
+            <Left>0.79391in</Left>
             <Height>0.37847in</Height>
             <Width>5.88541in</Width>
             <ZIndex>6</ZIndex>
@@ -609,7 +629,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>VAT Reg No :</Value>
+                    <Value>VAT Reg No</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -617,10 +637,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>1.14235in</Top>
-            <Left>2.30083in</Left>
+            <Top>1.12845in</Top>
+            <Left>2.71057in</Left>
             <Height>0.20833in</Height>
-            <Width>0.95485in</Width>
+            <Width>0.88888in</Width>
             <ZIndex>7</ZIndex>
             <Style>
               <Border>
@@ -639,6 +659,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
+                    <Value>: </Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
                     <Value>=Fields!VATRegNo.Value</Value>
                     <Style />
                   </TextRun>
@@ -647,10 +671,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>VATRegNo</rd:DefaultName>
-            <Top>1.14235in</Top>
-            <Left>3.31818in</Left>
+            <Top>1.12845in</Top>
+            <Left>3.59945in</Left>
             <Height>0.20833in</Height>
-            <Width>2.54167in</Width>
+            <Width>2.67014in</Width>
             <ZIndex>8</ZIndex>
             <Style>
               <Border>
@@ -669,7 +693,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Issued on :</Value>
+                    <Value>Issued on</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -677,10 +701,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>1.42012in</Top>
-            <Left>2.30083in</Left>
+            <Top>1.40622in</Top>
+            <Left>2.71057in</Left>
             <Height>0.20833in</Height>
-            <Width>0.95485in</Width>
+            <Width>0.88888in</Width>
             <ZIndex>9</ZIndex>
             <Style>
               <Border>
@@ -699,9 +723,15 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=Fields!InvSendDt.Value</Value>
+                    <Value>: </Value>
                     <Style>
                       <Format>MM/dd/yyyy</Format>
+                    </Style>
+                  </TextRun>
+                  <TextRun>
+                    <Value>=Format(DateSerial(Year(Fields!InvSendDt.Value), Month(Fields!InvSendDt.Value), Day(Fields!InvSendDt.Value)), "MM/dd/yyyy")</Value>
+                    <Style>
+                      <Format>=Format(DateValue(Fields!InvSendDt.Value), "MM/dd/yyyy")</Format>
                     </Style>
                   </TextRun>
                 </TextRuns>
@@ -709,10 +739,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>VATRegNo</rd:DefaultName>
-            <Top>1.42012in</Top>
-            <Left>3.31818in</Left>
+            <Top>1.40622in</Top>
+            <Left>3.59945in</Left>
             <Height>0.20833in</Height>
-            <Width>2.54167in</Width>
+            <Width>2.67014in</Width>
             <ZIndex>10</ZIndex>
             <Style>
               <Border>
@@ -731,7 +761,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Your Ref :</Value>
+                    <Value>Your Ref</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -739,10 +769,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>1.6979in</Top>
-            <Left>2.30083in</Left>
+            <Top>1.684in</Top>
+            <Left>2.71057in</Left>
             <Height>0.20833in</Height>
-            <Width>0.97568in</Width>
+            <Width>0.88888in</Width>
             <ZIndex>11</ZIndex>
             <Style>
               <Border>
@@ -761,6 +791,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
+                    <Value>: </Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
                     <Value>=Fields!RefNo.Value</Value>
                     <Style />
                   </TextRun>
@@ -769,10 +803,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>RefNo</rd:DefaultName>
-            <Top>1.6979in</Top>
-            <Left>3.31818in</Left>
+            <Top>1.684in</Top>
+            <Left>3.59945in</Left>
             <Height>0.20833in</Height>
-            <Width>4.19792in</Width>
+            <Width>4.32639in</Width>
             <ZIndex>12</ZIndex>
             <Style>
               <Border>
@@ -791,7 +825,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Attn :</Value>
+                    <Value>Attn</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -799,10 +833,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox4</rd:DefaultName>
-            <Top>1.97567in</Top>
-            <Left>2.30083in</Left>
+            <Top>1.96177in</Top>
+            <Left>2.71057in</Left>
             <Height>0.20833in</Height>
-            <Width>0.95485in</Width>
+            <Width>0.88888in</Width>
             <ZIndex>13</ZIndex>
             <Style>
               <Border>
@@ -821,6 +855,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
+                    <Value>: </Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
                     <Value>=Fields!bname.Value</Value>
                     <Style />
                   </TextRun>
@@ -829,10 +867,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>RefNo</rd:DefaultName>
-            <Top>1.97567in</Top>
-            <Left>3.30318in</Left>
+            <Top>1.96177in</Top>
+            <Left>3.59945in</Left>
             <Height>0.20833in</Height>
-            <Width>4.65042in</Width>
+            <Width>4.61806in</Width>
             <ZIndex>14</ZIndex>
             <Style>
               <Border>
@@ -851,6 +889,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
+                    <Value>: </Value>
+                    <Style />
+                  </TextRun>
+                  <TextRun>
                     <Value>=Fields!designation.Value</Value>
                     <Style />
                   </TextRun>
@@ -859,10 +901,10 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>RefNo</rd:DefaultName>
-            <Top>2.25345in</Top>
-            <Left>3.31818in</Left>
+            <Top>2.23955in</Top>
+            <Left>3.59945in</Left>
             <Height>0.42015in</Height>
-            <Width>4.63542in</Width>
+            <Width>4.61806in</Width>
             <ZIndex>15</ZIndex>
             <Style>
               <Border>
@@ -876,7 +918,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
           </Textbox>
           <Line Name="Line7">
             <Top>0.19097in</Top>
-            <Left>6.22791in</Left>
+            <Left>6.25223in</Left>
             <Height>0in</Height>
             <Width>1.3125in</Width>
             <ZIndex>16</ZIndex>
@@ -909,7 +951,7 @@ e-TIN : 442866744556</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox1</rd:DefaultName>
             <Top>0.22222in</Top>
-            <Left>6.26958in</Left>
+            <Left>6.2939in</Left>
             <Height>0.3125in</Height>
             <Width>1.27083in</Width>
             <ZIndex>17</ZIndex>
@@ -925,7 +967,7 @@ e-TIN : 442866744556</Value>
           </Textbox>
           <Line Name="Line9">
             <Top>0.5868in</Top>
-            <Left>6.22791in</Left>
+            <Left>6.25223in</Left>
             <Height>0in</Height>
             <Width>1.3125in</Width>
             <ZIndex>18</ZIndex>
@@ -937,7 +979,7 @@ e-TIN : 442866744556</Value>
           </Line>
           <Line Name="Line10">
             <Top>0.19097in</Top>
-            <Left>7.54041in</Left>
+            <Left>7.56473in</Left>
             <Height>0.39583in</Height>
             <Width>0in</Width>
             <ZIndex>19</ZIndex>
@@ -949,7 +991,7 @@ e-TIN : 442866744556</Value>
           </Line>
           <Line Name="Line11">
             <Top>0.19097in</Top>
-            <Left>6.22791in</Left>
+            <Left>6.25223in</Left>
             <Height>0.39583in</Height>
             <Width>0in</Width>
             <ZIndex>20</ZIndex>
@@ -967,7 +1009,9 @@ e-TIN : 442866744556</Value>
                 <TextRuns>
                   <TextRun>
                     <Value>Bank Account Information:</Value>
-                    <Style />
+                    <Style>
+                      <FontWeight>Bold</FontWeight>
+                    </Style>
                   </TextRun>
                 </TextRuns>
                 <Style />
@@ -975,9 +1019,9 @@ e-TIN : 442866744556</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox17</rd:DefaultName>
             <Top>6.04514in</Top>
-            <Left>0.75919in</Left>
+            <Left>0.78351in</Left>
             <Height>0.21181in</Height>
-            <Width>1.78124in</Width>
+            <Width>3.01041in</Width>
             <ZIndex>21</ZIndex>
             <Style>
               <Border>
@@ -1015,7 +1059,7 @@ e-Mail Notification :</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox17</rd:DefaultName>
             <Top>6.28473in</Top>
-            <Left>0.75919in</Left>
+            <Left>0.78351in</Left>
             <Height>1.02431in</Height>
             <Width>1.77084in</Width>
             <ZIndex>22</ZIndex>
@@ -1055,7 +1099,7 @@ accounts@bdjobs.com</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox17</rd:DefaultName>
             <Top>6.27084in</Top>
-            <Left>2.54392in</Left>
+            <Left>2.56824in</Left>
             <Height>1.03819in</Height>
             <Width>3.43054in</Width>
             <ZIndex>23</ZIndex>
@@ -1091,7 +1135,7 @@ accounts@bdjobs.com</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox23</rd:DefaultName>
             <Top>8.36111in</Top>
-            <Left>0.75919in</Left>
+            <Left>0.78351in</Left>
             <Height>0.25in</Height>
             <Width>2.68054in</Width>
             <ZIndex>24</ZIndex>
@@ -1107,7 +1151,7 @@ accounts@bdjobs.com</Value>
           </Textbox>
           <Line Name="Line6">
             <Top>8.34722in</Top>
-            <Left>0.75919in</Left>
+            <Left>0.78351in</Left>
             <Height>0in</Height>
             <Width>1.91666in</Width>
             <ZIndex>25</ZIndex>
@@ -1136,7 +1180,7 @@ accounts@bdjobs.com</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox22</rd:DefaultName>
             <Top>5.62153in</Top>
-            <Left>1.17583in</Left>
+            <Left>1.20015in</Left>
             <Height>0.35417in</Height>
             <Width>5.97917in</Width>
             <ZIndex>26</ZIndex>
@@ -1168,7 +1212,7 @@ accounts@bdjobs.com</Value>
             </Paragraphs>
             <rd:DefaultName>Textbox17</rd:DefaultName>
             <Top>5.62153in</Top>
-            <Left>0.76959in</Left>
+            <Left>0.79391in</Left>
             <Height>0.20833in</Height>
             <Width>0.54167in</Width>
             <ZIndex>27</ZIndex>
@@ -1185,7 +1229,7 @@ accounts@bdjobs.com</Value>
           <Rectangle Name="Rectangle1">
             <KeepTogether>true</KeepTogether>
             <Top>15.92793cm</Top>
-            <Left>1.92834cm</Left>
+            <Left>1.99011cm</Left>
             <Height>2.637cm</Height>
             <Width>13.24678cm</Width>
             <ZIndex>28</ZIndex>
@@ -1196,54 +1240,52 @@ accounts@bdjobs.com</Value>
             </Style>
           </Rectangle>
         </ReportItems>
-        <Height>22.37493cm</Height>
+        <Height>21.98687cm</Height>
         <Style>
           <Border>
-            <Style>Solid</Style>
+            <Style>None</Style>
           </Border>
-          <BottomBorder>
-            <Style>None</Style>
-          </BottomBorder>
-          <LeftBorder>
-            <Style>None</Style>
-          </LeftBorder>
-          <RightBorder>
-            <Style>None</Style>
-          </RightBorder>
         </Style>
       </Body>
-      <Width>20.87246cm</Width>
+      <Width>20.93423cm</Width>
       <Page>
         <PageHeader>
-          <Height>1.61079cm</Height>
+          <Height>1.76073cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
-            <Line Name="Line1">
-              <Top>0.63417in</Top>
-              <Height>0in</Height>
-              <Width>8.2175in</Width>
-              <Style>
-                <Border>
-                  <Style>Solid</Style>
-                </Border>
-              </Style>
-            </Line>
             <Image Name="Image1">
               <Source>Embedded</Source>
               <Value>ID2024021111_36_24Window</Value>
               <Sizing>FitProportional</Sizing>
-              <Top>0.09598in</Top>
-              <Left>3.34249in</Left>
-              <Height>0.46875in</Height>
+              <Top>0.1064in</Top>
+              <Left>3.36681in</Left>
+              <Height>0.51042in</Height>
               <Width>1.97917in</Width>
-              <ZIndex>1</ZIndex>
+              <Visibility>
+                <Hidden>=IIF(Parameters!isColorPad.Value = 1, True, false)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
                 </Border>
               </Style>
             </Image>
+            <Line Name="Line3">
+              <Top>1.70782cm</Top>
+              <Left>0cm</Left>
+              <Height>0cm</Height>
+              <Width>20.87246cm</Width>
+              <ZIndex>1</ZIndex>
+              <Visibility>
+                <Hidden>=IIF(Parameters!isColorPad.Value = 1, True, False)</Hidden>
+              </Visibility>
+              <Style>
+                <Border>
+                  <Style>Solid</Style>
+                </Border>
+              </Style>
+            </Line>
           </ReportItems>
           <Style>
             <Border>
@@ -1252,7 +1294,7 @@ accounts@bdjobs.com</Value>
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>1.20825cm</Height>
+          <Height>1.38464cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <ReportItems>
@@ -1279,10 +1321,13 @@ accounts@bdjobs.com</Value>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox24</rd:DefaultName>
-              <Top>0.02778in</Top>
-              <Left>1.3807in</Left>
+              <Top>0.09722in</Top>
+              <Left>1.40502in</Left>
               <Height>0.2118in</Height>
               <Width>5.63888in</Width>
+              <Visibility>
+                <Hidden>=IIF(Parameters!isColorPad.Value = 1, True, false)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1316,11 +1361,14 @@ accounts@bdjobs.com</Value>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox25</rd:DefaultName>
-              <Top>0.23958in</Top>
-              <Left>1.96875in</Left>
+              <Top>0.30902in</Top>
+              <Left>1.99307in</Left>
               <Height>0.23611in</Height>
               <Width>4.10291in</Width>
               <ZIndex>1</ZIndex>
+              <Visibility>
+                <Hidden>=IIF(Parameters!isColorPad.Value = 1, True, false)</Hidden>
+              </Visibility>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1331,17 +1379,6 @@ accounts@bdjobs.com</Value>
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
-            <Line Name="Line8">
-              <Top>0.02778in</Top>
-              <Height>0in</Height>
-              <Width>8.2175in</Width>
-              <ZIndex>2</ZIndex>
-              <Style>
-                <Border>
-                  <Style>Solid</Style>
-                </Border>
-              </Style>
-            </Line>
             <Textbox Name="Textbox36">
               <CanGrow>true</CanGrow>
               <KeepTogether>true</KeepTogether>
@@ -1377,11 +1414,11 @@ accounts@bdjobs.com</Value>
                 </Paragraph>
               </Paragraphs>
               <rd:DefaultName>Textbox36</rd:DefaultName>
-              <Top>0.14111cm</Top>
-              <Left>0.35278cm</Left>
+              <Top>0.3175cm</Top>
+              <Left>0.41456cm</Left>
               <Height>0.46743cm</Height>
               <Width>2.97781cm</Width>
-              <ZIndex>3</ZIndex>
+              <ZIndex>2</ZIndex>
               <Style>
                 <Border>
                   <Style>None</Style>
@@ -1392,6 +1429,21 @@ accounts@bdjobs.com</Value>
                 <PaddingBottom>2pt</PaddingBottom>
               </Style>
             </Textbox>
+            <Line Name="Line2">
+              <Top>0.17639cm</Top>
+              <Left>0cm</Left>
+              <Height>0cm</Height>
+              <Width>20.87246cm</Width>
+              <ZIndex>3</ZIndex>
+              <Visibility>
+                <Hidden>=IIF(Parameters!isColorPad.Value = 1, True, false)</Hidden>
+              </Visibility>
+              <Style>
+                <Border>
+                  <Style>Solid</Style>
+                </Border>
+              </Style>
+            </Line>
           </ReportItems>
           <Style>
             <Border>
@@ -1423,6 +1475,10 @@ accounts@bdjobs.com</Value>
       <AllowBlank>true</AllowBlank>
       <Prompt>ReportParameter1</Prompt>
     </ReportParameter>
+    <ReportParameter Name="isColorPad">
+      <DataType>String</DataType>
+      <Prompt>ReportParameter1</Prompt>
+    </ReportParameter>
   </ReportParameters>
   <ReportParametersLayout>
     <GridLayoutDefinition>
@@ -1438,6 +1494,11 @@ accounts@bdjobs.com</Value>
           <ColumnIndex>2</ColumnIndex>
           <RowIndex>0</RowIndex>
           <ParameterName>AmountInWord</ParameterName>
+        </CellDefinition>
+        <CellDefinition>
+          <ColumnIndex>3</ColumnIndex>
+          <RowIndex>0</RowIndex>
+          <ParameterName>isColorPad</ParameterName>
         </CellDefinition>
       </CellDefinitions>
     </GridLayoutDefinition>
