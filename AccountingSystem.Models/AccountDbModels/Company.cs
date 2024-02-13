@@ -8,14 +8,18 @@ namespace AccountingSystem.Models.AccountDbModels
     public class Company
     {
         public int Id { get; set; }
+        public int acc_id { get; set; }
         [DisplayName("Company Name")]
         public string Name { get; set; }
+        public string cname { get; set; }
         public string Address { get; set; }
         public string City { get; set; }
         public string Phone { get; set; }
         public string Email { get; set; }
+        public string e_mail { get; set; }
         public string Fax { get; set; }
         public string ContactPerson { get; set; }
+        public string ContactName { get; set; }
         public string Designation { get; set; }
         public double Balance { get; set; }
         public bool BlackListed { get; set; }
@@ -30,6 +34,7 @@ namespace AccountingSystem.Models.AccountDbModels
         public string VatRegAdd { get; set; }
 
         public string AccCreatedDate { get; set; }
+        public string acct_cr { get; set; }
 
         public string DistrictId { get; set; }
 
