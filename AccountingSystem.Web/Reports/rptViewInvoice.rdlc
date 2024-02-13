@@ -363,7 +363,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>1.52419in</Height>
+                  <Height>0.84711in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -579,10 +579,11 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <RepeatColumnHeaders>true</RepeatColumnHeaders>
+            <KeepTogether>true</KeepTogether>
             <DataSetName>ShowInvoice</DataSetName>
             <Top>3.33333in</Top>
             <Left>0.79391in</Left>
-            <Height>2.21875in</Height>
+            <Height>1.54167in</Height>
             <Width>6.77082in</Width>
             <ZIndex>5</ZIndex>
             <Style>
@@ -1018,7 +1019,7 @@ e-TIN : 442866744556</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox17</rd:DefaultName>
-            <Top>6.04514in</Top>
+            <Top>5.38888in</Top>
             <Left>0.78351in</Left>
             <Height>0.21181in</Height>
             <Width>3.01041in</Width>
@@ -1058,7 +1059,7 @@ e-Mail Notification :</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox17</rd:DefaultName>
-            <Top>6.28473in</Top>
+            <Top>5.62847in</Top>
             <Left>0.78351in</Left>
             <Height>1.02431in</Height>
             <Width>1.77084in</Width>
@@ -1098,7 +1099,7 @@ accounts@bdjobs.com</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox17</rd:DefaultName>
-            <Top>6.27084in</Top>
+            <Top>5.61458in</Top>
             <Left>2.56824in</Left>
             <Height>1.03819in</Height>
             <Width>3.43054in</Width>
@@ -1134,8 +1135,8 @@ accounts@bdjobs.com</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox23</rd:DefaultName>
-            <Top>8.36111in</Top>
-            <Left>0.78351in</Left>
+            <Top>7.69444in</Top>
+            <Left>0.63769in</Left>
             <Height>0.25in</Height>
             <Width>2.68054in</Width>
             <ZIndex>24</ZIndex>
@@ -1150,8 +1151,8 @@ accounts@bdjobs.com</Value>
             </Style>
           </Textbox>
           <Line Name="Line6">
-            <Top>8.34722in</Top>
-            <Left>0.78351in</Left>
+            <Top>7.68055in</Top>
+            <Left>0.63769in</Left>
             <Height>0in</Height>
             <Width>1.91666in</Width>
             <ZIndex>25</ZIndex>
@@ -1179,7 +1180,7 @@ accounts@bdjobs.com</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox22</rd:DefaultName>
-            <Top>5.62153in</Top>
+            <Top>4.96527in</Top>
             <Left>1.20015in</Left>
             <Height>0.35417in</Height>
             <Width>5.97917in</Width>
@@ -1211,7 +1212,7 @@ accounts@bdjobs.com</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox17</rd:DefaultName>
-            <Top>5.62153in</Top>
+            <Top>4.96527in</Top>
             <Left>0.79391in</Left>
             <Height>0.20833in</Height>
             <Width>0.54167in</Width>
@@ -1228,7 +1229,7 @@ accounts@bdjobs.com</Value>
           </Textbox>
           <Rectangle Name="Rectangle1">
             <KeepTogether>true</KeepTogether>
-            <Top>15.92793cm</Top>
+            <Top>14.26104cm</Top>
             <Left>1.99011cm</Left>
             <Height>2.637cm</Height>
             <Width>13.24678cm</Width>
@@ -1240,7 +1241,7 @@ accounts@bdjobs.com</Value>
             </Style>
           </Rectangle>
         </ReportItems>
-        <Height>21.98687cm</Height>
+        <Height>20.47874cm</Height>
         <Style>
           <Border>
             <Style>None</Style>
