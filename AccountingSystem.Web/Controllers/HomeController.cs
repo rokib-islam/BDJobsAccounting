@@ -29,7 +29,7 @@ namespace AccountingSystem.Web.Controllers
 
             ClaimsPrincipal claimusers = HttpContext.User;
 
-            if (claimusers.Identity.IsAuthenticated)
+            if (claimusers.Identity.IsAuthenticated && HttpContext.Session.GetString("Name") != null)
                 return RedirectToAction("AccountingHome", "Home");
             else
                 return View();
@@ -38,31 +38,6 @@ namespace AccountingSystem.Web.Controllers
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginViewModel credentials)
         {
-            //var resultData = new { success = false, message = "Incorrect User Name or Password" };
-
-            //var user = _AccountManager.GetUsers(credentials.username, credentials.password);
-
-            //if (user != null)
-            //{
-            //    HttpContext.Session.SetString("Name", user.Name);
-            //    HttpContext.Session.SetInt32("UserID", user.UserID);
-
-            //    if (credentials.rememberMe)
-            //    {
-            //        // Set username in a cookie
-            //        Response.Cookies.Append("username", user.UName, new CookieOptions { Expires = DateTime.Now.AddDays(7) });
-            //        Response.Cookies.Append("password", user.PWord, new CookieOptions { Expires = DateTime.Now.AddDays(7) });
-            //    }
-
-
-
-            //    var resul = new { success = true, redirectUrl = Url.Action("AccountingHome", "Home") };
-            //    return Json(resul);
-            //}
-
-            //// Return the JsonResult
-            //return Json(resultData);
-
 
             var user = await _AccountManager.GetUsers(credentials.username, credentials.password);
             if (user != null)

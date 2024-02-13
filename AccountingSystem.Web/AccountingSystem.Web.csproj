@@ -8,13 +8,13 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Content Remove="wwwroot\Reports\rptShowChallan.rdlc" />
-    <Content Remove="wwwroot\Reports\rptViewInvoice.rdlc" />
+    <Content Remove="Reports\rptShowChallan.rdlc" />
+    <Content Remove="Reports\rptViewInvoice.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="wwwroot\Reports\rptShowChallan.rdlc" />
-    <EmbeddedResource Include="wwwroot\Reports\rptViewInvoice.rdlc" />
+    <EmbeddedResource Include="Reports\rptShowChallan.rdlc" />
+    <EmbeddedResource Include="Reports\rptViewInvoice.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,6 +29,7 @@
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.0" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageReference Include="ReportViewerCore.NETCore" Version="15.1.19" />
   </ItemGroup>
 
   <ItemGroup>

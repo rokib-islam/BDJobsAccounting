@@ -54,7 +54,7 @@ namespace AccountingSystem.Repository
 
             try
             {
-                using (var onlineSqlConnection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                using (var onlineSqlConnection = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
                 {
                     var cmdtext = "SELECT * FROM dbo_Invoice WHERE Invoice_No=@InvoiceNo";
                     var data = await onlineSqlConnection.QueryFirstOrDefaultAsync(cmdtext, new { InvoiceNo = invoiceNo });
@@ -114,8 +114,8 @@ namespace AccountingSystem.Repository
             }
             catch (Exception ex)
             {
-                // Handle the exception or log it as needed
-                throw ex;
+                isOk = false;
+                message = ex.ToString();
             }
 
             return new { Duplicate = isExist, Message = message, Connection = isOk };

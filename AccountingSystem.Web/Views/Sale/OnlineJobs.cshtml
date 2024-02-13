@@ -1,22 +1,32 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@{
     ViewData["Title"] = "OnlineJobs";
+
+    var userId = Context.Session.GetInt32("UserID");
+    var accessRight = Context.Session.GetString("AccessRight");
+
+    var accessRights = new string[0];
+
+    if (string.IsNullOrEmpty(accessRight))
+    {
+            <script type="text/javascript">
+                window.location.href = '@Url.Action("Index", "Home")';
+            </script>
+    }
+    else
+    {
+        accessRights = accessRight.Split(',');
+    }
 }
 <style>
     .selected-row {
         border: 3px solid black !important;
     }
 
-    .selected-row td {
-        padding: 8px !important;
-    }
+        .selected-row td {
+            padding: 8px !important;
+        }
 
-    .selected-job-row {
-        border: 3px solid #007bff;
-    }
-
-    .selected-job-row td {
-        padding: 8px;
-    }
 </style>
 <h3 class="text-center alert-primary" style="margin-top:-10px">OnlineJobs</h3>
 
@@ -24,7 +34,7 @@
     <div ng-controller="myController">
         <div class="col-sm-12">
             <div class="row" style="margin-top:-15px">
-                <div class="col-sm-7">
+                <div class="col-sm-8">
                     <div class="row">
                         <div class="col-sm-3">
                             <label class="col-form-label">From</label>
@@ -34,16 +44,16 @@
                             <label class="col-form-label">To</label>
                             <input type="date" class="form-control form-control-sm" ng-model="to" />
                         </div>
-                        <div class="col-sm-3 text-center mt-5">
+                        <div class="col-sm-2 text-center mt-5">
                             <label><input type="checkbox" ng-model="PNPL" /> PNPL</label>
                         </div>
-                        <div class="col-sm-3">
+                        <div class="col-sm-4">
                             <button class="btn btn-info btn-sm mt-5" ng-click="download()">Download Jobs</button>
                         </div>
                     </div>
                     <div class="row" style="margin-top:-10px">
                         <div class="col-sm-3">
-                            <label>Search By Companies</label>
+                            <label>Search By Company</label>
                             <input type="text" class="form-control form-control-sm" ng-model="cname" />
                         </div>
                         <div class="col-sm-3">
@@ -53,16 +63,17 @@
                                 <option ng-repeat="o in services" value="{{o.serviceId}}" data-ledgerid="{{o.ledgerId}}">{{o.serviceName}}</option>
                             </select>
                         </div>
-                        <div class="col-sm-3 text-center mt-4">
+                        <div class="col-sm-2 text-center mt-4">
                             <label><input type="checkbox" ng-model="verified" /> Varified</label>
                         </div>
-                        <div class="col-sm-3 mt-4">
+                        <div class="col-sm-4 mt-4">
                             <button class="btn btn-primary btn-sm" ng-click="search()" style="padding-left:45px;padding-right:45px">GO</button>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-5 mt-3">
-                    <button class="btn btn-info btn-sm float-right" ng-click="">Company Varification</button>
+               
+                <div class="col-sm-4 mt-3">
+                    <button class="btn btn-info btn-sm float-right" ng-click="showVarificationModal()">Company Varification</button>
                     <div class="float-right">
                         <label class="control-label float-right" style="font-weight: normal;">Paid Online</label>
                         <span style="border: 1px solid gray; background: #FFE6A8; height: 15px; width: 15px; margin: 8px 5px; " class="float-right"></span>
@@ -123,8 +134,9 @@
                 <div class="form-group row">
                     <label class="col-sm-5 table-hover fw-bold">Invoices to Upload</label>
                     <div class="col-sm-6">
-                        <select class="form-control form-control-sm" ng-model="invoice">
-                            <option value="0">Select</option>
+                        <select class="form-control form-control-sm" ng-model="invoice" ng-change="serviceChange()">
+                            <option value="0" selected>Select</option>
+                            <option ng-repeat="o in uploadToInviceData" value="{{o.ledgerId}}" data-serviceid="{{o.serviceId}}">{{o.serviceName}}</option>
                         </select>
                     </div>
                 </div>
@@ -152,23 +164,26 @@
                 </table>
             </div>
             <div class="col-sm-5 row ml-2" style="height: 150px; overflow-y: auto;margin-top:-10px;">
-                <table class="table table-bordered table-sm" style="white-space:nowrap;">
+                <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
                     <thead class="thead-light">
                         <tr>
                             <th class="acenter">Sl#</th>
+                            <th class="acenter">Job Title</th>
                             <th class="acenter">Invoice No</th>
                             <th class="acenter">Price</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr ng-repeat="o in invoiceData">
+                        <tr ng-repeat="o in invoiceData" ng-click="dataLoadInInvoicePrice(o)" ng-class="{ 'selected-row': o === selectInvoice }">
                             <td>{{$index+1}}</td>
-                            <td>{{}}</td>
-                            <td>{{}}</td>
+                            <td>{{o.title}}</td>
+                            <td ng-if="o.companyID == 0">{{o.invoice_No}}</td>
+                            <td>{{o.tAmount}}</td>
                         </tr>
                     </tbody>
                 </table>
             </div>
+
         </div>
 
 
@@ -217,9 +232,212 @@
                 </div>
             </div>
         </div>
+
+
+        <div class="modal fade" id="varificationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 80%;">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h7 class="modal-title" id="exampleModalLabel" style="margin-bottom:-10px;font-weight:bold;margin-top:-10px">Company Varification</h7>
+                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body" style="margin-top:-10px">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="row px-2">
+                                            <div class="col-sm-7">
+                                                <span>View Company list from online</span>
+                                                <div>
+                                                    <label><input type="radio" name="radio" ng-model="radioBtn" value="0" ng-change="radioChange()" ng-checked="radioBtn === 0">&nbsp; New</label>
+                                                    <label class="ml-3"><input type="radio" name="radio" ng-model="radioBtn" value="1" ng-change="radioChange()">&nbsp; All</label>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-5">
+                                                @*                                                 <button class="btn btn-info btn-sm pull-right" ng-click="showDetail()">Show details from online</button>
+                                                *@
+                                            </div>
+                                        </div>
+                                        <select class="form-control form-control-sm" ng-model="onlineCompanies" size="6" style="height:120px">
+                                            <option ng-repeat="o in getOnlineCompanies" ng-click="selectComRow(o)" ng-class="{ 'selected-row': o === selectedComRow }" value="{{o.cp_id}}" data-accid="{{o.acc_Id}}">{{o.cname}}</option>
+                                        </select>
+                                        <div class="mt-1">
+                                            <span>Details of online registered company</span>
+                                        </div>
+                                        <div class="px-2 mt-1" style="border:2px solid gray; height:330px">
+                                            <div class="text-center">
+                                                <input class="form-control form-control-sm col-sm-10 offset-1 my-2 text-center" style="background-color:lightskyblue;font-weight:bold" placeholder="Name of Company" ng-model="companyName" disabled />
+
+                                            </div>
+                                            <div class="form-group row">
+                                                <label class="col-sm-4">Address:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control form-control-sm" ng-model="address" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="row" style="margin-top:-10px">
+                                                <div class="col-sm-5">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-4">City:</label>
+                                                        <div class="col-sm-8">
+                                                            <input class="form-control form-control-sm" ng-model="city" disabled />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-4">District:</label>
+                                                        <div class="col-sm-8">
+                                                            <select class="form-control form-control-sm" ng-model="district">
+                                                                <option value="0" selected>Select</option>
+                                                                <option ng-repeat="o in districtData" value="{{o.districtID}}">{{o.districtName}}</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" style="margin-top:-10px">
+                                                <label class="col-sm-4">Phone:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control form-control-sm" ng-model="phone" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" style="margin-top:-10px">
+                                                <label class="col-sm-4">Email:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control form-control-sm" ng-model="email" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" style="margin-top:-10px">
+                                                <label class="col-sm-4">Contact Person:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control form-control-sm" ng-model="contactPerson" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" style="margin-top:-10px">
+                                                <label class="col-sm-4">Designation:</label>
+                                                <div class="col-sm-8">
+                                                    <input class="form-control form-control-sm" ng-model="designation" disabled />
+                                                </div>
+                                            </div>
+                                            <div class="form-group row" style="margin-top:-10px">
+                                                <label class="col-sm-5">Account created on:</label>
+                                                <div class="col-sm-7">
+                                                    <input class="form-control form-control-sm" ng-model="acCreated" disabled />
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="row px-2">
+                                            <label>List of Companies in local database</label>
+                                            <input class="form-control form-control-sm" style="margin-top:15px" ng-model="txtCompanies" />
+                                            <input class="form-control form-control-sm mt-2" ng-model="localCompanies" style="height:90px;" />
+                                            <div class="mt-1">
+                                                Details of local inserted company
+                                            </div>
+                                            <div class="px-2 mt-1" style="border:2px solid gray; height:330px">
+                                                <div class="text-center">
+                                                    <input class="form-control form-control-sm col-sm-10 offset-1 my-2 text-center" style="background-color:lightskyblue;font-weight:bold" placeholder="Name of Company" ng-model="companyNameExist" disabled />
+
+                                                </div>
+                                                <div class="form-group row">
+                                                    <label class="col-sm-4">Address:</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control form-control-sm" ng-model="addressExist" disabled />
+                                                    </div>
+                                                </div>
+                                                <div class="row">
+                                                    <div class="col-sm-5">
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-4">City:</label>
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control form-control-sm" ng-model="cityExist" disabled />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-6">
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-4">District:</label>
+                                                            <div class="col-sm-8">
+                                                                @* <input class="form-control form-control-sm" ng-model="districtExist" disabled /> *@
+                                                                <select class="form-control form-control-sm" ng-model="districtExist" disabled>
+                                                                    <option ng-repeat="o in districtData" value="{{o.districtID}}">{{o.districtName}}</option>
+                                                                </select>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" style="margin-top:-10px">
+                                                    <label class="col-sm-4">Phone:</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control form-control-sm" ng-model="phoneExist" disabled />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" style="margin-top:-10px">
+                                                    <label class="col-sm-4">Email:</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control form-control-sm" ng-model="phoneExist" disabled />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" style="margin-top:-10px">
+                                                    <label class="col-sm-4">Contact Person:</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control form-control-sm" ng-model="contactPersonExist" disabled />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" style="margin-top:-10px">
+                                                    <label class="col-sm-4">Designation:</label>
+                                                    <div class="col-sm-8">
+                                                        <input class="form-control form-control-sm" ng-model="designationExist" disabled />
+                                                    </div>
+                                                </div>
+                                                <div class="form-group row" style="margin-top:-10px">
+                                                    <label class="col-sm-5">Local Compay ID:</label>
+                                                    <div class="col-sm-7">
+                                                        <input class="form-control form-control-sm" ng-model="localCompanyIdExist" disabled />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row mt-1" style="border:2px solid gray;margin-left:0px;margin-right:-7px">
+                                    <div class="col-sm-10">
+                                        <div style="font-weight:bold;color:green">
+                                            If onLine company is not found in local company list then you must add information of onLine company into local company database (Click Insert)
+                                        </div>
+                                        <div class="form-group row">
+                                            <div class="col-sm-10" style="font-weight:bold;color:brown">
+                                                If onLine company information is exist in local company list but onLine company is showed as 'New' then write the ID number of local company and click Update
+                                            </div>
+                                            <input class="form-control form-control-sm col-sm-2" ng-model="accId" />
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-2 mt-2">
+                                        <button class="btn btn-success btn-sm" ng-click="insert()" ng-disabled="insertDisable">Insert</button>
+                                        <button class="btn btn-primary btn-sm" ng-click="update()" ng-disabled="updateDisable">Update</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+
     </div>
 </div>
-
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 <script>
@@ -227,8 +445,18 @@
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.spinner = false;
+            $scope.invoiceTd = true;
+            $scope.updateDisable = true;
+            $scope.insertDisable = true;
             $scope.service = '0';
+            $scope.invoice = '0';
+            $scope.radioBtn = '0';
+            $scope.district = '0';
             $scope.loadServices();
+            $scope.loadUploadToInvoice();
+            $scope.GetDistricts();
+
+            $scope.onlineCompayList($scope.radioBtn);
         })
         $scope.from = new Date();
         $scope.to = new Date();
@@ -264,9 +492,30 @@
         };
 
         $scope.loadServices = function () {
-            $http.get('/Ledger/GetService', { params: { sTypy: 1 } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Ledger/GetService';
+            else
+                Url = '/AccountingNew/Ledger/GetService';
+
+            $http.get(Url, { params: { sTypy: 1 } })
                 .then(function (response) {
                     $scope.services = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+        }
+
+        $scope.loadUploadToInvoice = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Ledger/GetService';
+            else
+                Url = '/AccountingNew/Ledger/GetService';
+
+            $http.get(Url, { params: { sTypy: 0 } })
+                .then(function (response) {
+                    $scope.uploadToInviceData = response.data;
                 }, function (error) {
                     console.error(error);
                 })
@@ -278,7 +527,13 @@
             var toDate = $scope.to;
             var PNPL = $scope.PNPL ? 1 : 0;
 
-            $http.get('/Sale/DownLoadOnlineJobs', { params: { fromDate: fromDate, toDate: toDate, PNPL: PNPL } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/DownLoadOnlineJobs';
+            else
+                Url = '/AccountingNew/Sale/DownLoadOnlineJobs';
+
+            $http.get(Url, { params: { fromDate: fromDate, toDate: toDate, PNPL: PNPL } })
                 .then(function (response) {
                     $("#companyDiv").show();
                     var errorText = "";
@@ -313,7 +568,13 @@
             var CName = $scope.cname == "" || $scope.cname == undefined ? "" : $scope.cname;
             var Verified = $scope.verified == "" || $scope.verified == undefined ? 0 : $scope.verified;
 
-            $http.get('/Sale/GetOnlineJobList', { params: { CName: CName, Verified: Verified, LedgerID: LedgerID } })
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/GetOnlineJobList';
+            else
+                Url = '/AccountingNew/Sale/GetOnlineJobList';
+
+            $http.get(Url, { params: { CName: CName, Verified: Verified, LedgerID: LedgerID } })
                 .then(function (response) {
                     $scope.companyData = response.data;
                     $scope.spinner = false;
@@ -325,7 +586,14 @@
         };
 
         $scope.showJobData = function (cpId, date, adType, adRegion) {
-            $http.get('/Sale/GetJobs', { params: { cpId: cpId, date: date, adType: adType, adRegion: adRegion } })
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/GetJobs';
+            else
+                Url = '/AccountingNew/Sale/GetJobs';
+
+            $http.get(Url, { params: { cpId: cpId, date: date, adType: adType, adRegion: adRegion } })
                 .then(function (response) {
                     $scope.jobData = response.data;
                 }, function (error) {
@@ -343,6 +611,7 @@
                 $scope.selectedRow = row;
                 // Call your showJobData function or perform other actions here
                 $scope.showJobData(row.cP_ID, row.postingDate, row.addType, row.region);
+                $scope.fillInvoiceTable(row.cP_ID, "", 0);
             }
         };
 
@@ -358,6 +627,8 @@
 
             }
         };
+
+
 
         $scope.showbutton = function () {
             if ($scope.selectedJob) {
@@ -387,7 +658,14 @@
 
             if (confirmDelete) {
                 var jpId = $scope.selectedJob.jp_Id; // Adjust this based on your data structure
-                $http.get('/Sale/DeleteOnlineJob', { params: { jpId: jpId } })
+
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Sale/DeleteOnlineJob';
+                else
+                    Url = '/AccountingNew/Sale/DeleteOnlineJob';
+
+                $http.get(Url, { params: { jpId: jpId } })
                     .then(function (response) {
                         if (response.data === true) {
                             alert("Delete operation completed successfully.");
@@ -484,19 +762,508 @@
                         onlineProduct = "Online Job Posting (Basic)";
                     }
                 }
-                
-                $http.get('/Ledger/GetOnlineLedgerId', { params: { onlineProduct: onlineProduct } })
-                .then(function(response){
+
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Ledger/GetOnlineLedgerId';
+                else
+                    Url = '/AccountingNew/Ledger/GetOnlineLedgerId';
+
+                $http.get(Url, { params: { onlineProduct: onlineProduct } })
+                    .then(function (response) {
                         $scope.data = response.data;
                         window.open('.././Sale/NewSale?onlinejobId=' + onlinejobId + '&onlineLedgerId=' + $scope.data + '&companyid=' + accId);
-                })
-                .catch (function(error) {
-                    console.log(error);
-                })
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    })
             }
             else {
                 alert("The company '" + $scope.selectedRow.cName + "' is new for the local database.\nYou must add the information of this company to the local database from another form by clicking 'Check companies & set company ID' button.\nThen click 'OK' to proceed with making sales or 'Cancel' to cancel the operation.");
                 return false;
+            }
+        }
+        $scope.fillInvoiceTable = function (cpId, sDate, ledgerId) {
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/GetInvoices';
+            else
+                Url = '/AccountingNew/Invoice/GetInvoices';
+
+            $http.get(Url, { params: { cpId: cpId, sDate: sDate, ledgerId: ledgerId } })
+                .then(function (response) {
+                    $scope.invoiceData = response.data;
+                })
+                .catch(function () {
+                    console.log(error);
+                    alert('Error fetching job data');
+                })
+        };
+
+
+
+        $scope.selectInvoice = null;
+        $scope.dataLoadInInvoicePrice = function (o) {
+            if ($scope.selectInvoice === o) {
+                // If the same job is clicked again, deselect it
+                $scope.selectInvoice = null;
+            } else {
+                $scope.selectInvoice = o;
+                $scope.invoicePrice = $scope.selectInvoice.tAmount;
+                $scope.invoiceNo = $scope.selectInvoice.invoice_No;
+                $scope.billingTo = $scope.selectInvoice.billingContact;
+                $scope.uploadBtn = true;
+            }
+        };
+
+        $scope.serviceChange = function () {
+            if ($scope.invoice !== "0") {
+                var sDate = "";
+                if ($scope.invoice == 18 || $scope.invoice == 44)
+                    sDate = "01/01/2010";
+                else
+                    sDate = "01/01/2011";
+
+                $scope.fillInvoiceTable(0, sDate, $scope.invoice);
+
+            }
+        };
+
+        $scope.uploadInvoice = function () {
+            var selectedLedger = $scope.uploadToInviceData.find(function (s) {
+                return s.ledgerId == $scope.invoice;
+            });
+
+            $scope.cpId = $scope.selectedRow ? $scope.selectedRow.cP_ID : 0;
+            $scope.invoiceNo = $scope.invoiceNo;
+            $scope.serviceNo = selectedLedger ? selectedLedger.serviceId : 0;
+            $scope.billingContact = $scope.billingTo ? $scope.billingTo : "";
+            $scope.price = $scope.invoicePrice.toString();
+            $scope.opId = $scope.selectInvoice.opId.toString();
+            $scope.jpIdList = [];
+            $scope.serviceID = $scope.selectInvoice.serviceID;
+            $scope.companyID = $scope.selectInvoice.cP_ID;
+            $scope.companyName = $scope.selectInvoice.name;
+            $scope.saleDate = $scope.selectInvoice.sdate;
+
+            angular.forEach($scope.invoiceData, function (item) {
+                if (item !== null && item !== undefined && item.jpId !== "") {
+                    $scope.jpIdList.push(item.jpId);
+                }
+            });
+
+            $scope.strJpId = $scope.jpIdList.join(",");
+
+            var requestBodyModel = {
+                CpId: $scope.cpId,
+                InvoiceNo: $scope.invoiceNo,
+                ServiceNo: $scope.serviceNo,
+                BillingContact: $scope.billingContact,
+                Price: $scope.price,
+                OpId: $scope.opId,
+                JpIdList: $scope.strJpId,
+                ServiceID: $scope.serviceID,
+                CompanyID: $scope.companyID,
+                CompanyName: $scope.companyName,
+                SaleDate: $scope.saleDate,
+            };
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/UploadInvoicesOnline';
+            else
+                Url = '/AccountingNew/Invoice/UploadInvoicesOnline';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    var val = response.data;
+                    if (val.connection === false) {
+                        confirm(val.message);
+                    }
+                    else if (val.duplicate === true) {
+
+                        var confirmUpdate = confirm('This invoice already uploaded before.\n\nDo you want to update that invoice?');
+                        if (confirmUpdate) {
+
+                            let Url = '';
+                            if (window.location.hostname == 'localhost')
+                                Url = '/Invoice/UpdateInvoice';
+                            else
+                                Url = '/AccountingNew/Invoice/UpdateInvoice';
+
+                            $http.post(Url, { invoiceNo: InvoiceNo })
+                                .then(function (val1) {
+
+                                    var sDate = "";
+                                    if (selectedLedger.serviceId === 18 || selectedLedger.serviceId === 44) {
+                                        sDate = "01/01/2010";
+                                    } else {
+                                        sDate = "01/01/2011";
+                                    }
+                                    $scope.fillInvoiceTable(0, sDate, $scope.invoice);
+
+                                })
+                                .catch(function (error) {
+
+                                    console.log(error);
+                                });
+                        }
+                    } else {
+                        confirm(val.message);
+                    }
+                })
+                .catch(function (error) {
+
+                    console.log(error);
+                });
+        }
+
+
+        $scope.showVarificationModal = function () {
+            $("#varificationModal").modal('show');
+        }
+
+
+        $scope.onlineCompayList = function (radio) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetOnlineCompanyList';
+            else
+                Url = '/AccountingNew/Company/GetOnlineCompanyList';
+
+            $http.get(Url, { params: { radio: radio } })
+                .then(function (response) {
+                    $scope.getOnlineCompanies = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+
+
+        $scope.radioChange = function () {
+            $scope.onlineCompayList($scope.radioBtn);
+        }
+
+        $scope.GetDistricts = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetDistricts';
+            else
+                Url = '/AccountingNew/Company/GetDistricts';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.districtData = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+
+        $scope.GetOnlineCompanyInfo = function (cpId) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetOnlineCompanyInfo';
+            else
+                Url = '/AccountingNew/Company/GetOnlineCompanyInfo';
+
+            $http.get(Url, { params: { cpId: cpId } })
+                .then(function (response) {
+                    $scope.onlineCompanyInfoData = response.data;
+                    $scope.companyName = $scope.onlineCompanyInfoData[0].name;
+                    $scope.address = $scope.onlineCompanyInfoData[0].address;
+                    $scope.city = $scope.onlineCompanyInfoData[0].city;
+                    $scope.phone = $scope.onlineCompanyInfoData[0].phone;
+                    $scope.email = $scope.onlineCompanyInfoData[0].e_mail;
+                    $scope.contactPerson = $scope.onlineCompanyInfoData[0].contactName;
+                    $scope.designation = $scope.onlineCompanyInfoData[0].designation;
+                    $scope.acCreated = $scope.onlineCompanyInfoData[0].acct_cr;
+                    $scope.accId = $scope.onlineCompanyInfoData[0].acc_id;
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+
+        $scope.GetLocalCompanyInfo = function (id, type) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetLocalCompanyInfo';
+            else
+                Url = '/AccountingNew/Company/GetLocalCompanyInfo';
+
+            $http.get(Url, { params: { cpId: id } })
+                .then(function (response) {
+                    $scope.localCompanyInfoData = response.data;
+                    $scope.companyNameExist = $scope.localCompanyInfoData[0].name;
+                    $scope.addressExist = $scope.localCompanyInfoData[0].address;
+                    $scope.cityExist = $scope.localCompanyInfoData[0].city;
+                    $scope.phoneExist = $scope.localCompanyInfoData[0].phone;
+                    $scope.emailExist = $scope.localCompanyInfoData[0].email;
+                    $scope.contactPersonExist = $scope.localCompanyInfoData[0].accContactName;
+                    $scope.designationExist = $scope.localCompanyInfoData[0].designation;
+                    $scope.localCompanyIdExist = $scope.localCompanyInfoData[0].id;
+                    $scope.district = $scope.localCompanyInfoData[0].districtId.toString();
+                    $scope.districtExist = $scope.localCompanyInfoData[0].districtId.toString();
+
+                    $scope.txtCompanies = $scope.localCompanyInfoData[0].name;
+                    $scope.localCompanies = $scope.localCompanyInfoData[0].name;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        $scope.fieldsEmpty = function () {
+            $scope.companyNameExist = "";
+            $scope.addressExist = "";
+            $scope.cityExist = "";
+            $scope.districtExist = "";
+            $scope.phoneExist = "";
+            $scope.contactPersonExist = "";
+            $scope.designationExist = "";
+            $scope.localCompanyIdExist = "";
+        };
+
+
+        $scope.selectedComRow = null;
+        $scope.selectComRow = function (row) {
+            if ($scope.selectedComRow === row) {
+                // If the same row is clicked again, deselect it
+                $scope.selectedComRow = null;
+            } else {
+                $scope.selectedComRow = row;
+                // Call your showJobData function or perform other actions here
+                if ($scope.selectedComRow.acc_id == 0) {
+                    $scope.fieldsEmpty();
+                    $scope.GetOnlineCompanyInfo(row.cP_Id);
+
+                    $scope.updateDisable = false;
+                    $scope.insertDisable = false;
+                }
+                else {
+                    $scope.GetOnlineCompanyInfo(row.cP_Id);
+                    $scope.GetLocalCompanyInfo(row.acc_id, 1);
+
+                    $scope.updateDisable = false;
+                    $scope.insertDisable = false;
+                }
+
+            }
+        };
+
+
+        $scope.insert = function () {
+            $scope.action = "Insert";
+            $scope.cpId = $scope.selectedComRow.cP_Id;
+            $scope.name = $scope.companyName;
+            $scope.address = $scope.address;
+            $scope.city = $scope.city;
+            $scope.phone = $scope.phone;
+            $scope.email = $scope.email;
+            $scope.cPerson = $scope.contactPerson;
+            $scope.designation = $scope.designation;
+            $scope.companyId = $scope.accId;
+            $scope.districtId = $scope.district;
+
+            var access = '@accessRights.Contains("1")';
+
+            if (access === 'False') {
+                if (confirm('Sorry, You have no permission to add a record.')) {
+                    return;
+                }
+            } else if ($scope.cpId == 0) {
+                var selectCompany = confirm("You must select an online registered company, then click on that item\n\nor press 'Enter' or press 'Show details from Online' button and then press 'Insert' button.");
+                if (!selectCompany) {
+                    return;
+                }
+            } else if ($scope.districtId == "0") {
+                if (confirm("You must select a district.")) {
+                    return;
+                }
+            } else {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Company/CheckCompany';
+                else
+                    Url = '/AccountingNew/Company/CheckCompany';
+
+                $http.get(Url, { params: { name: $scope.name } })
+                    .then(function (response) {
+                        $scope.checkData = response.data;
+                        if ($scope.checkData.length != 0) {
+                            if (confirm('This company is already exist in local database.')) {
+                                return;
+                            }
+                        } else {
+                            let requestBodyModel = {
+                                action: $scope.action,
+                                cpId: $scope.cpId,
+                                name: $scope.name,
+                                address: $scope.address,
+                                city: $scope.city,
+                                phone: $scope.phone,
+                                email: $scope.email,
+                                cPerson: $scope.cPerson,
+                                designation: $scope.designation,
+                                companyId: $scope.companyId,
+                                districtId: $scope.districtId,
+                            };
+
+                            let Url = '';
+                            if (window.location.hostname == 'localhost')
+                                Url = '/Company/InsertUpdateOnlineCompany';
+                            else
+                                Url = '/AccountingNew/Company/InsertUpdateOnlineCompany';
+
+                            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                                .then(function (response) {
+                                    $scope.val = response.data;
+
+                                    if ($scope.val == 1) {
+                                        var m = "";
+                                        if ($scope.radioBtn == 0) {
+                                            m = "Now refresh the online company list. This company is not showed this time.";
+                                        }
+                                        $scope.radioBtn = '1'
+                                        $scope.onlineCompayList(1);
+                                        if ($scope.radioBtn == 0) {
+                                            $scope.onlineCompayList($scope.selectedComRow.cP_Id);
+                                        }
+
+                                        if (confirm("All information of the company '" + $scope.name + "' has been inserted successfully. And also updated the online database. " + m + "")) {
+                                            return;
+                                        }
+                                    }
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                });
+                        }
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                    });
+            }
+        };
+
+
+        $scope.update = function () {
+            var action = "UPDATE";
+            var cpId = $scope.selectedComRow.cP_Id;
+            var name = $scope.companyName;
+            var address = $scope.address;
+            var city = $scope.city;
+            var phone = $scope.phone;
+            var email = $scope.email;
+            var cPerson = $scope.contactPerson;
+            var designation = $scope.designation;
+            var companyId = $scope.accId;
+            var districtId = $scope.district;
+
+
+            if ('@accessRights.Contains("2")' === 'False') {
+                alert('Sorry, You have no permission to update a record.');
+            } else if ($scope.accId == 0 || $scope.accId == "") {
+                alert("You must give an ID number of local registered company\nwhich matched with the selected online registered company.");
+            } else if (!$.isNumeric(companyId)) {
+                alert("Give a numeric ID number.");
+            } else {
+                var confirmation = confirm("Are you sure that this online registered company and the local company of your given ID is the same?");
+                if (confirmation) {
+                    var comId = parseInt(companyId);
+
+                    let Url = '';
+                    if (window.location.hostname == 'localhost')
+                        Url = '/Company/CheckOnlineCompany';
+                    else
+                        Url = '/AccountingNew/Company/CheckOnlineCompany';
+
+                    $http.get(Url, { params: { id: comId } })
+                        .then(function (response) {
+                            $scope.val = response.data;
+                            if ($scope.val.cP_Id != 0 && $scope.val.cP_Id != cpId) {
+                                var confirmation1 = confirm("The company of the given ID number indicates another online company.\nDo you still want to update?");
+                                if (confirmation1) {
+                                    var requestBodyModel = {
+                                        action: action,
+                                        cpId: cpId,
+                                        name: name,
+                                        address: address,
+                                        city: city,
+                                        phone: phone,
+                                        email: email,
+                                        cPerson: cPerson,
+                                        designation: designation,
+                                        companyId: companyId,
+                                        districtId: districtId
+                                    };
+
+                                    let Url = '';
+                                    if (window.location.hostname == 'localhost')
+                                        Url = '/Company/InsertUpdateOnlineCompany';
+                                    else
+                                        Url = '/AccountingNew/Company/InsertUpdateOnlineCompany';
+
+                                    $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                                        .then(function (response) {
+                                            $scope.val = response.data;
+                                            if ($scope.val == true) {
+                                                alert("Update completed successfully.");
+                                            }
+                                        })
+                                        .catch(function (error) {
+                                            console.log(error);
+                                        })
+
+                                }
+
+                            }
+                            else {
+                                var requestBodyModel = {
+                                    action: action,
+                                    cpId: cpId,
+                                    name: name,
+                                    address: address,
+                                    city: city,
+                                    phone: phone,
+                                    email: email,
+                                    cPerson: cPerson,
+                                    designation: designation,
+                                    companyId: companyId,
+                                    districtId: districtId
+                                };
+
+                                let Url = '';
+                                if (window.location.hostname == 'localhost')
+                                    Url = '/Company/InsertUpdateOnlineCompany';
+                                else
+                                    Url = '/AccountingNew/Company/InsertUpdateOnlineCompany';
+
+                                $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                                    .then(function (response) {
+                                        $scope.val = response.data;
+                                        if ($scope.val == true) {
+                                            alert("Update completed successfully.");
+                                        }
+                                    })
+                                    .catch(function (error) {
+                                        console.log(error);
+                                    })
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        })
+
+
+                }
             }
         }
 

@@ -30,7 +30,19 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 
+
 builder.Services.ConfigureServices();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        builder =>
+        {
+            builder.AllowAnyOrigin()
+                   .AllowAnyMethod()
+                   .AllowAnyHeader();
+        });
+});
 
 var app = builder.Build();
 
@@ -53,6 +65,8 @@ app.UseAuthorization();
 app.UseSession();
 
 app.UseAuthorization();
+
+app.UseCors("AllowAll");
 
 app.MapControllerRoute(
     name: "default",

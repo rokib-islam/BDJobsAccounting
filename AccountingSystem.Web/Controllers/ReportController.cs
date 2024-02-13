@@ -1,7 +1,11 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Web.HelperMethod;
-using AspNetCore.Reporting;
 using Microsoft.AspNetCore.Mvc;
+//using AspNetCore.Reporting;
+using Microsoft.Reporting.NETCore;
+using System.Reflection;
+
+
 
 namespace AccountingSystem.Web.Controllers
 {
@@ -72,55 +76,118 @@ namespace AccountingSystem.Web.Controllers
 
             return words;
         }
-        public async Task<IActionResult> Show(string InvoiceNo, string format)
+
+
+        public async Task<IActionResult> ShowInvoice(string InvoiceNo, string format, int isColorPad)
         {
-            double totalAmount = 0;
             try
             {
+                double totalAmount = 0;
                 var reportData = await _ReportManager.GetInvoiceReportAsync(InvoiceNo);
-                foreach (var report in reportData)
-                {
-                    totalAmount += report.amount;
-                }
+
+                totalAmount = reportData.Sum(report => report.amount);
+
                 string wordamount = await ConvertToWords((int)Math.Round(totalAmount));
-
-                string reportPath = Path.Combine(_WebHostEnvironment.WebRootPath, "Reports", "rptViewInvoice.rdlc");
                 var datatable = Helpers.ListiToDataTable(reportData);
-                var localReport = new LocalReport(reportPath);
-                localReport.AddDataSource("ShowInvoice", datatable);
 
-
-                var parameters = new Dictionary<string, string>
+                using var report = new LocalReport();
+                var parameters = new[]
                 {
-                    { "SumAmount", totalAmount.ToString() },
-                    { "AmountInWord", wordamount }
-                };
+                new ReportParameter("SumAmount", totalAmount.ToString("N2")),
+                new ReportParameter("AmountInWord", wordamount),
+                new ReportParameter("isColorPad", isColorPad.ToString())
+            };
 
+                using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream("AccountingSystem.Web.Reports.rptViewInvoice.rdlc");
+                report.LoadReportDefinition(rs);
+                report.DataSources.Add(new ReportDataSource("ShowInvoice", datatable));
+                report.SetParameters(parameters);
 
-                byte[] reportBytes;
+                byte[] fileContents;
+                string contentType;
+                string fileName;
 
-                if (format == "pdf")
+                if (format.ToLower() == "pdf")
                 {
-                    var res = localReport.Execute(RenderType.Pdf, 1, parameters, "application/pdf");
-                    reportBytes = res.MainStream;
-                    return File(reportBytes, "application/pdf", "invoice_report.pdf");
+                    fileContents = report.Render("pdf");
+                    contentType = "application/pdf";
+                    fileName = "InvoiceReport.pdf";
                 }
-                else if (format == "excel")
+                else if (format.ToLower() == "excel")
                 {
-                    var res = localReport.Execute(RenderType.Excel, 1, parameters, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                    reportBytes = res.MainStream;
-                    return File(reportBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet", "invoice_report.xlsx");
+                    fileContents = report.Render("excel");
+                    contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    fileName = "InvoiceReport.xlsx";
                 }
                 else
                 {
-                    return BadRequest("Invalid format specified.");
+                    // Handle unsupported format
+                    return BadRequest("Unsupported format. Please specify either 'pdf' or 'excel'.");
                 }
+
+                return File(fileContents, contentType, fileName);
             }
-            catch (Exception ex)
+            catch
             {
                 return StatusCode(500, "An error occurred while generating the report.");
             }
         }
+        public async Task<IActionResult> ShowChallanReportNew(string InvoiceNo, string format, string CopyType)
+        {
+            try
+            {
+                var reportData = await _ReportManager.GetChalanReportNew(InvoiceNo);
+                double sumTotalVat = reportData.Sum(report => report.TotalVat);
+                double sumPriceWithVat = reportData.Sum(report => report.priceWithVat);
+                double sumTotalPrice = reportData.Sum(report => report.TotalPrice);
+                var datatable = Helpers.ListiToDataTable(reportData);
+
+                using var report = new LocalReport();
+                var parameters = new[]
+                {
+                new ReportParameter("sumTotalVat", sumTotalVat.ToString("N2")),
+                new ReportParameter("sumPriceWithVat", sumPriceWithVat.ToString("N2")),
+                new ReportParameter("sumTotalPrice", sumTotalPrice.ToString("N2")),
+                new ReportParameter("CopyType", CopyType),
+
+                };
+
+                using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream("AccountingSystem.Web.Reports.rptShowChallan.rdlc");
+                report.LoadReportDefinition(rs);
+                report.DataSources.Add(new ReportDataSource("ShowChallan", datatable));
+                report.SetParameters(parameters);
+
+                byte[] fileContents;
+                string contentType;
+                string fileName;
+
+                if (format.ToLower() == "pdf")
+                {
+                    fileContents = report.Render("pdf");
+                    contentType = "application/pdf";
+                    fileName = "ChallanReport.pdf";
+                }
+                else if (format.ToLower() == "excel")
+                {
+                    fileContents = report.Render("excel");
+                    contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    fileName = "ChallanReport.xlsx";
+                }
+                else
+                {
+                    // Handle unsupported format
+                    return BadRequest("Unsupported format. Please specify either 'pdf' or 'excel'.");
+                }
+
+                return File(fileContents, contentType, fileName);
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while generating the report.");
+            }
+        }
+
+
 
     }
 }

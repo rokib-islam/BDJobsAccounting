@@ -37,7 +37,7 @@ namespace AccountingSystem.BLL
         {
             return await _repository.CheckCompany(name);
         }
-        public async Task<List<Company>> InsertUpdateOnlineCompany(CompanyInsertUpdateViewModel FromData)
+        public async Task<int> InsertUpdateOnlineCompany(CompanyInsertUpdateViewModel FromData)
         {
             return await _repository.InsertUpdateOnlineCompany(FromData);
         }

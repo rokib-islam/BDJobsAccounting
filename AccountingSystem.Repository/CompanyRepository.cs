@@ -35,8 +35,12 @@ namespace AccountingSystem.Repository
 
             if (radio == 0)
             {
-                radioParam = "All";
+                radioParam = "New";
 
+            }
+            else
+            {
+                radioParam = "All";
             }
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
@@ -64,14 +68,22 @@ namespace AccountingSystem.Repository
 
         public async Task<List<Company>> GetOnlineCompanyInfo(int cpId)
         {
-            using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+            try
             {
-                var parameters = new DynamicParameters();
-                parameters.Add("@ComId", cpId);
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@ComId", cpId);
 
-                // Execute the stored procedure using Dapper
-                var result = await _db.QueryAsync<Company>("[dbo].[USP_Acc_Download_ComInfo]", parameters, commandType: CommandType.StoredProcedure);
-                return result.ToList();
+                    // Execute the stored procedure using Dapper
+                    var result = await _db.QueryAsync<Company>("[dbo].[USP_Acc_Download_ComInfo]", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
             }
 
         }
@@ -102,8 +114,9 @@ namespace AccountingSystem.Repository
                 return result.ToList();
             }
         }
-        public async Task<List<Company>> InsertUpdateOnlineCompany(CompanyInsertUpdateViewModel FromData)
+        public async Task<int> InsertUpdateOnlineCompany(CompanyInsertUpdateViewModel FromData)
         {
+            int msg = 0;
             try
             {
                 var parameters = new
@@ -124,14 +137,16 @@ namespace AccountingSystem.Repository
 
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    var result = await _db.QueryAsync<Company>("USP_INSERT_UPDATE_ONLINE_COMPANY", parameters, commandType: CommandType.StoredProcedure);
-                    return result.ToList();
+                    await _db.QueryAsync<Company>("USP_INSERT_UPDATE_ONLINE_COMPANY", parameters, commandType: CommandType.StoredProcedure);
+                    msg = 1;
                 }
             }
             catch (Exception ex)
             {
                 throw ex;
+                msg = 0;
             }
+            return msg;
         }
 
         public async Task UpdateProfile(CompanyInsertUpdateViewModel FromData)
@@ -174,9 +189,11 @@ namespace AccountingSystem.Repository
 
         public async Task<Company> CheckOnlineCompany(int id)
         {
-            using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+            try
             {
-                var result = await _db.QueryFirstOrDefaultAsync<Company>(@"
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryFirstOrDefaultAsync<Company>(@"
                 SELECT DISTINCT C.Id, C.Name, C.Address, C.City, C.Phone, C.Email, C.Fax,
                 CASE WHEN CP.Name IS NULL THEN C.Contact_Person ELSE CP.Name END As Contact_Person,
                 CASE WHEN CP.Designation IS NULL THEN C.Designation ELSE CP.Designation END As Designation,
@@ -185,8 +202,15 @@ namespace AccountingSystem.Repository
                 LEFT JOIN ContactPersons CP ON C.Id = CP.CID AND CP.PType = 'Contact person'
                 WHERE C.Id = @Id", new { Id = id });
 
-                return result;
+                    return result;
+                }
             }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
         }
         public async Task<Company> SMSAlertGetOnlineCompanyInfoAsync(int cpId)
         {

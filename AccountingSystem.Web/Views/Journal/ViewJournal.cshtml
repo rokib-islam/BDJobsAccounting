@@ -1,4 +1,6 @@
-﻿
+﻿@{
+    ViewData["Title"] = "View Journal";
+}
 <head>
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
@@ -157,8 +159,8 @@
                     <td>{{data.id}}</td>
                     <td>{{data.sbName}}</td>
                     <td>{{data.description}}</td>
-                    <td>{{data.debt}}</td>
-                    <td>{{data.credit}}</td>
+                    <td>{{numberToAmount(data.debt)}}</td>
+                    <td>{{numberToAmount(data.credit)}}</td>
                     <td>{{data.jDate}}</td>
                 </tr>
             </tbody>
@@ -190,17 +192,31 @@
         
 
         $scope.getLedger = function () {
-            debugger
-            $http.get('/Ledger/GetAllLedger')
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Ledger/GetAllLedger';
+            else
+                Url = '/AccountingNew/Ledger/GetAllLedger';
+            $http.get(Url)
                 .then(function (response) {
                     $scope.ledgers = response.data;
                 }, function (error) {
                     console.error(error);
                 });
         };
+        $scope.numberToAmount = (num) => {
+            let amountConvertar = new Intl.NumberFormat('en-In', {
+            }).format(num);
+            return amountConvertar;
+        }
 
         $scope.getUser = function () {
-            $http.get('/Home/GetSpecificUser')
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Home/GetSpecificUser';
+            else
+                Url = '/AccountingNew/Home/GetSpecificUser';
+            $http.get(Url)
                 .then(function (response) {
                     $scope.users = response.data;
                 }, function (error) {
@@ -209,7 +225,12 @@
         };
 
         $scope.getApprovers = function () {
-            $http.get('/Home/GetApprovers')
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Home/GetApprovers';
+            else
+                Url = '/AccountingNew/Home/GetApprovers';
+            $http.get(Url)
                 .then(function (response) {
                     $scope.approvers = response.data;
                 }, function (error) {
@@ -223,7 +244,14 @@
 
         $scope.searchCompany = function (startingKey) {
             if (startingKey && startingKey.length > 1) {
-                $http.get('/Company/GetCompanyListByKey', { params: { startingKey: startingKey } })
+
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Company/GetCompanyListByKey';
+                else
+                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
                         $scope.companyList = response.data;
                     }, function (error) {
@@ -256,7 +284,13 @@
                 IsApproved: $scope.approve
             };
 
-            $http.post('/Journal/GetJournals', requestData)
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Journal/GetJournals';
+            else
+                Url = '/AccountingNew/Journal/GetJournals';
+
+            $http.post(Url, requestData)
                 .then(function (response) {
                     $scope.showTable = true;
 

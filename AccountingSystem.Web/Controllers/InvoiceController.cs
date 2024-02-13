@@ -23,11 +23,21 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(data);
         }
-        public async Task<IActionResult> UploadInvoicesOnline(int? cpId, string invoiceNo, int serviceNo, string billingContact, string price, string opId, string jpIdList, int serviceID, int companyID, string companyName, string saleDate)
+        //public async Task<IActionResult> UploadInvoicesOnline(int? cpId, string invoiceNo, int serviceNo, string billingContact, string price, string opId, string jpIdList, int serviceID, int companyID, string companyName, string saleDate)
+        //{
+        //    var invSendDt = await _InvoiceManager.GetInvSendDt(invoiceNo);
+        //    var cid = cpId ?? 0;
+        //    var results = await _InvoiceManager.UploadInvoiceOnline(cid, invoiceNo, serviceNo, invSendDt, billingContact, price, opId, jpIdList, serviceID, companyID, companyName, saleDate);
+
+        //    return Json(results);
+        //}
+
+        [HttpPost]
+        public async Task<IActionResult> UploadInvoicesOnline([FromBody] UploadInvoicesOnlineModel model)
         {
-            var invSendDt = await _InvoiceManager.GetInvSendDt(invoiceNo);
-            var cid = cpId ?? 0;
-            var results = await _InvoiceManager.UploadInvoiceOnline(cid, invoiceNo, serviceNo, invSendDt, billingContact, price, opId, jpIdList, serviceID, companyID, companyName, saleDate);
+            var invSendDt = await _InvoiceManager.GetInvSendDt(model.InvoiceNo);
+            var cid = model.CpId ?? 0;
+            var results = await _InvoiceManager.UploadInvoiceOnline(cid, model.InvoiceNo, model.ServiceNo, invSendDt, model.BillingContact, model.Price, model.OpId, model.JpIdList, model.ServiceID, model.CompanyID, model.CompanyName, model.SaleDate);
 
             return Json(results);
         }
