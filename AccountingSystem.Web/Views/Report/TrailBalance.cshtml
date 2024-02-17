@@ -1,0 +1,134 @@
+﻿@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = "Trail Balance";
+   
+}
+
+<h3 class="text-center alert-primary" style="margin-top:-10px">Trail Balance</h3>
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="col-sm-12" style="padding-left:10px;padding-right:10px">
+            <div class="row py-3" style="border:1px solid lightgray">
+
+                <div class="col-sm-3">
+                   
+                        <label><input ng-model="radioValueRange" ng-change="updateDuration()" value="1" type="radio" checked>&nbsp; Range</label>
+                    
+
+                </div>
+                <div class="col-sm-3">
+                    
+                        <label><input ng-model="radioValueMonth" ng-change="updateDuration()" value="1" type="radio" checked>&nbsp; Month</label>
+                    
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group row">
+                        <label class="col-sm-3">From</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control form-control-sm" ng-model="from" />
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group row">
+                        <label class="col-sm-3">To</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control form-control-sm" ng-model="to" />
+                        </div>
+                    </div>
+
+                </div>
+
+
+              @*   <div class="col-sm-6">
+                   
+                    <div class="mt-4 py-2" style="border:1px solid lightgray;padding:10px">
+                       
+                       
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label><input ng-model="radioValueRange" ng-change="updateDuration()" value="1" type="radio" checked>&nbsp; Range</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label><input ng-model="radioValueMonth" ng-change="updateDuration()" value="1" type="radio" checked>&nbsp; Month</label>
+                                </div>
+                            </div>
+                        </div>
+
+                      
+                       
+                        
+                    </div>
+                 
+                </div>
+                <div class="col-sm-6">
+
+                    <div class="mt-4" style="border:1px solid lightgray;padding:10px">
+
+
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3">From</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control form-control-sm" ng-model="from" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group row">
+                                    <label class="col-sm-3">To</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control form-control-sm" ng-model="to" />
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                    </div>
+
+                </div> *@
+                
+
+                
+
+
+            </div>
+            <div class="mt-2 text-center">
+                
+                    <button class="btn btn-success btn-sm px-5" ng-disabled="saveButtonDisabled" ng-click="Show()">Show</button>
+               
+
+            </div>
+        </div>
+
+
+
+       
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+
+         
+        });
+
+      
+
+
+    });
+</script>
+
+

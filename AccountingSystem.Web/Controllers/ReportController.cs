@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 //using AspNetCore.Reporting;
 using Microsoft.Reporting.NETCore;
 using System.Reflection;
+using System.Security.Claims;
 
 
 
@@ -28,6 +29,15 @@ namespace AccountingSystem.Web.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+        public IActionResult TrailBalance()
+        {
+
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+            else
+                return RedirectToAction("Index", "Home");
         }
         public async Task<string> ConvertToWords(int number)
         {
