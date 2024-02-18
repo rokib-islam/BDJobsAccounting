@@ -197,7 +197,56 @@ namespace AccountingSystem.Web.Controllers
             }
         }
 
+        public async Task<IActionResult> ShowTrailBalance(string type, string startDate, string endDate, string format)
+        {
+            try
+            {
+                var reportData = await _ReportManager.GetTrialBalanceReportAsync(type, startDate, endDate);
+                var datatable = Helpers.ListiToDataTable(reportData);
 
+                var title = type == "Month" ? "For the Month of "
+                    + new DateTime(Convert.ToInt32(endDate), Convert.ToInt32(startDate), 1).ToString("MMMM, yyyy") : "For the date " + startDate + " to " + endDate;
+
+                using var report = new LocalReport();
+                var parameters = new[]
+                {
+                    new ReportParameter("title", title)
+                };
+
+                using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream("AccountingSystem.Web.Reports.rptTrailBalance.rdlc");
+                report.LoadReportDefinition(rs);
+                report.DataSources.Add(new ReportDataSource("ShowTrialBalance", datatable));
+                report.SetParameters(parameters);
+
+                byte[] fileContents;
+                string contentType;
+                string fileName;
+
+                if (format.ToLower() == "pdf")
+                {
+                    fileContents = report.Render("pdf");
+                    contentType = "application/pdf";
+                    fileName = "TrialBalance.pdf";
+                }
+                else if (format.ToLower() == "excel")
+                {
+                    fileContents = report.Render("excel");
+                    contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    fileName = "TrialBalance.xlsx";
+                }
+                else
+                {
+                    // Handle unsupported format
+                    return BadRequest("Unsupported format. Please specify either 'pdf' or 'excel'.");
+                }
+
+                return File(fileContents, contentType, fileName);
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while generating the report.");
+            }
+        }
 
     }
 }

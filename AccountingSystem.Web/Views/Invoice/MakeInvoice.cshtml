@@ -768,74 +768,79 @@
         //         });
         // };
         $scope.downloadReport = function () {
-            let format = 'pdf'
-            let invoiceid = $scope.selectedRow.sbName;
-            
-            let isColorPad = $scope.print ? 1 : 0;
-            let params = { InvoiceNo: invoiceid, format: format, isColorPad: isColorPad };
-            let responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
-            let Url = '';
-            if (window.location.hostname == 'localhost')
-                Url = '/Report/ShowInvoice';
-            else
-                Url = '/AccountingNew/Report/ShowInvoice';
-            $http.get(Url, { params: params, responseType: responseType })
-                .then(function (response) {
-                    var contentType = (format === 'pdf') ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-                    var file;
+            const format =  'pdf'; // Use default format if not selected
+            const invoiceId = $scope.selectedRow.sbName;
+            const isColorPad = $scope.print ? 1 : 0;
 
-                    if (format === 'pdf') {
-                        file = new Blob([response.data], { type: contentType });
-                        var fileURL = URL.createObjectURL(file);
-                        window.open(fileURL);
+            const params = { InvoiceNo: invoiceId, format, isColorPad };
+            const Url = window.location.hostname === 'localhost' ? '/Report/ShowInvoice' : '/AccountingNew/Report/ShowInvoice';
+
+            $http.get(Url, { params, responseType: 'blob' })
+                .then(response => {
+                    const blob = new Blob([response.data], { type: response.headers('Content-Type') });
+                    const filename = response.headers('Content-Disposition').split(';')[1].split('=')[1];
+
+                    if (format === 'excel') {
+                        // Download Excel file
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } else if (format === 'pdf') {
+                        // Open PDF file in a new window with proper user feedback
+                        try {
+                            const pdfData = URL.createObjectURL(blob);
+                            window.open(pdfData, '_blank');
+                        } catch (err) {
+                            console.error('Error opening PDF:', err);
+                            alert('An error occurred while opening the PDF. Please check your browser settings and try again.');
+                        } finally {
+                            URL.revokeObjectURL(pdfData); // Always revoke created URL objects
+                        }
                     } else {
-                        file = new Blob([response.data], { type: contentType });
-                        var a = document.createElement('a');
-                        a.href = URL.createObjectURL(file);
-                        a.download = 'invoice_report.xlsx';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
+                        console.error('Unsupported format:', format);
+                        alert('The selected format is not supported. Please choose PDF or Excel.');
                     }
-                })
-                .catch(function (error) {
-                    console.error(error);
-                    alert('Error fetching report data');
                 });
         };
         $scope.downloadReportChallan = function () {
-            let format = 'pdf';
-            let invoiceid = $scope.selectedRow.sbName;
-            let Copy = $scope.CopyType;
-            let params = { InvoiceNo: invoiceid, format: format, CopyType: Copy };
-            let responseType = (format === 'pdf') ? 'arraybuffer' : 'blob';
-            let Url = '';
-            if (window.location.hostname == 'localhost')
-                Url = '/Report/ShowChallanReportNew';
-            else
-                Url = '/AccountingNew/Report/ShowChallanReportNew';
-            $http.get(Url, { params: params, responseType: responseType })
-                .then(function (response) {
-                    var contentType = (format === 'pdf') ? 'application/pdf' : 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet';
-                    var file;
+            const format =  'pdf'; // Use default format if not selected
+            const invoiceId = $scope.selectedRow.sbName;
+            const copyType = $scope.CopyType;
 
-                    if (format === 'pdf') {
-                        file = new Blob([response.data], { type: contentType });
-                        var fileURL = URL.createObjectURL(file);
-                        window.open(fileURL);
+            const params = { InvoiceNo: invoiceId, format, CopyType: copyType };
+            const Url = window.location.hostname === 'localhost' ? '/Report/ShowChallanReportNew' : '/AccountingNew/Report/ShowChallanReportNew';
+
+            $http.get(Url, { params, responseType: 'blob' })
+                .then(response => {
+                    const blob = new Blob([response.data], { type: response.headers('Content-Type') });
+                    const filename = response.headers('Content-Disposition').split(';')[1].split('=')[1];
+
+                    if (format === 'excel') {
+                        // Download Excel file
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } else if (format === 'pdf') {
+                        // Open PDF file in a new window with proper user feedback
+                        try {
+                            const pdfData = URL.createObjectURL(blob);
+                            window.open(pdfData, '_blank');
+                        } catch (err) {
+                            console.error('Error opening PDF:', err);
+                            alert('An error occurred while opening the PDF. Please check your browser settings and try again.');
+                        } finally {
+                            URL.revokeObjectURL(pdfData); // Always revoke created URL objects
+                        }
                     } else {
-                        file = new Blob([response.data], { type: contentType });
-                        var a = document.createElement('a');
-                        a.href = URL.createObjectURL(file);
-                        a.download = 'invoice_report.xlsx';
-                        document.body.appendChild(a);
-                        a.click();
-                        document.body.removeChild(a);
+                        console.error('Unsupported format:', format);
+                        alert('The selected format is not supported. Please choose PDF or Excel.');
                     }
-                })
-                .catch(function (error) {
-                    console.error(error);
-                    alert('Error fetching report data');
                 });
         };
 

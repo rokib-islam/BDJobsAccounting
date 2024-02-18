@@ -54,6 +54,28 @@ namespace AccountingSystem.Repository
 
             return chalans;
         }
+        public async Task<List<Ledger>> GetTrialBalanceReportAsync(string type, string startingDate, string endDate)
+        {
+
+            var ledgers = new List<Ledger>();
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new { Type = type, StartingDate = startingDate, EndDate = endDate };
+                    var result = await _db.QueryAsync<Ledger>("USP_TRIAL_BALANCE_RPT", parameters, commandType: CommandType.StoredProcedure);
+
+                    ledgers.AddRange(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return ledgers;
+        }
 
 
     }

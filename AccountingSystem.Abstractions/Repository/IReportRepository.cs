@@ -6,6 +6,7 @@ namespace AccountingSystem.Abstractions.Repository
     {
         Task<List<InvoiceReport>> GetInvoiceReportAsync(string invoiceNo);
         Task<List<ChalanReport>> GetChalanReportNew(string invoiceNo);
+        Task<List<Ledger>> GetTrialBalanceReportAsync(string type, string startingDate, string endDate);
 
     }
 }
