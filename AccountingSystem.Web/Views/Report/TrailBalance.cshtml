@@ -1,0 +1,154 @@
+﻿@using Microsoft.AspNetCore.Http
+
+@{
+    ViewData["Title"] = "Trial Balance";
+   
+}
+
+<h3 class="text-center alert-primary" style="margin-top:-10px">Trial Balance</h3>
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="col-sm-12" style="padding-left:10px;padding-right:10px">
+            <div class="row py-3" style="border:1px solid lightgray">
+
+                <div class="col-sm-3">
+                   
+                     <label><input ng-model="radioValueRange" name="rang" ng-change="updateDuration(1)" value="1" type="radio">&nbsp; Range</label>
+                    
+
+                </div>
+                <div class="col-sm-3">
+
+                    <label><input ng-model="radioValueRange" name="rang" ng-change="updateDuration(2)" value="2" type="radio">&nbsp; Month</label>
+                    
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group row" ng-show="radioValueRange==1">
+                        <label class="col-sm-3">From</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control form-control-sm" ng-model="from" />
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-show="radioValueRange==2">
+                        <label class="col-sm-3">Month</label>
+                        <div class="col-sm-9">
+                            <select class="form-control form-control-sm" ng-model="selectedMonth">
+                                
+                                <option value="0">Select</option>
+                                <option value="1">January</option>
+                                <option value="2">February</option>
+                                <option value="3">March</option>
+                                <option value="4">April</option>
+                                <option value="5">May</option>
+                                <option value="6">June</option>
+                                <option value="7">July</option>
+                                <option value="8">August</option>
+                                <option value="9">September</option>
+                                <option value="10">October</option>
+                                <option value="11">November</option>
+                                <option value="12">December</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="col-sm-3">
+                    <div class="form-group row" ng-show="radioValueRange==1">
+                        <label class="col-sm-3">To</label>
+                        <div class="col-sm-9">
+                            <input type="date" class="form-control form-control-sm" ng-model="to" />
+                        </div>
+                    </div>
+                    <div class="form-group row" ng-show="radioValueRange==2">
+                        <label class="col-sm-3">Year</label>
+                        <div class="col-sm-9">
+                            <select class="form-control form-control-sm" ng-model="selectedYear">
+                                <option value="">Select a year</option>
+                                <option ng-repeat="year in years" value="{{year}}">{{year}}</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+
+
+             
+
+            </div>
+            <div class="mt-2 text-center">
+                
+                    <button class="btn btn-success btn-sm px-5" ng-disabled="saveButtonDisabled" ng-click="Show()">Show</button>
+               
+
+            </div>
+        </div>
+
+
+
+       
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        // Initialize default values
+        $scope.radioValueRange = '1';
+        $scope.selectedMonth = '0';
+
+        var currentYear = new Date().getFullYear();
+
+        $scope.years = [];
+        for (var year = 2024; year >= 2000; year--) {
+            $scope.years.push(year);
+        }
+        $scope.selectedYear = '';
+
+        
+
+        $scope.Show = function () {
+            const format = $scope.selectedFormat || 'excel'; // Use default format if not selected
+            const type = $scope.radioValueRange == 1 ? 'Range' : 'Month';
+            const startDate = $scope.radioValueRange == 1 ? $scope.from.toISOString().split('T')[0] : $scope.selectedMonth;
+            const endDate = $scope.radioValueRange == 1 ? $scope.to.toISOString().split('T')[0] : $scope.selectedYear;
+
+            const params = { type, startDate, endDate, format };
+            const Url = window.location.hostname === 'localhost' ? '/Report/ShowTrailBalance' : '/AccountingNew/Report/ShowTrailBalance';
+
+
+            $http.get(Url, { params, responseType: 'blob' })
+                .then(response => {
+                    const blob = new Blob([response.data], { type: response.headers('Content-Type') });
+                    const filename = response.headers('Content-Disposition').split(';')[1].split('=')[1];
+
+                    if (format === 'excel') {
+                        // Download Excel file
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } else if (format === 'pdf') {
+                        // Open PDF file in a new window with proper user feedback
+                        try {
+                            const pdfData = URL.createObjectURL(blob);
+                            window.open(pdfData, '_blank');
+                        } catch (err) {
+                            console.error('Error opening PDF:', err);
+                            alert('An error occurred while opening the PDF. Please check your browser settings and try again.');
+                        } finally {
+                            URL.revokeObjectURL(pdfData); // Always revoke created URL objects
+                        }
+                    } else {
+                        console.error('Unsupported format:', format);
+                        alert('The selected format is not supported. Please choose PDF or Excel.');
+                    }
+                });
+        };
+
+    });
+</script>
+
+

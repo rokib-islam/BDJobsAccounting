@@ -20,5 +20,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetChalanReportNew(invoiceNo);
         }
+
+        public Task<List<Ledger>> GetTrialBalanceReportAsync(string type, string startingDate, string endDate)
+        {
+            return _repository.GetTrialBalanceReportAsync(type, startingDate, endDate);
+        }
     }
 }

@@ -210,7 +210,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>Address of challan:</Value>
+                    <Value>Address of challan issued:</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
                     </Style>
@@ -1714,7 +1714,7 @@
                   </TablixCells>
                 </TablixRow>
                 <TablixRow>
-                  <Height>0.33333in</Height>
+                  <Height>0.42708in</Height>
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
@@ -1999,7 +1999,7 @@
                                   </Style>
                                 </TextRun>
                                 <TextRun>
-                                  <Value> %.00</Value>
+                                  <Value>.00 %</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -2125,9 +2125,9 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>ShowChallan</DataSetName>
-            <Top>2.36458in</Top>
+            <Top>2.14583in</Top>
             <Left>0.20139in</Left>
-            <Height>1.26042in</Height>
+            <Height>1.35417in</Height>
             <Width>7.7036in</Width>
             <ZIndex>23</ZIndex>
             <Style>
@@ -2347,7 +2347,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>ShowChallan</DataSetName>
-            <Top>3.63889in</Top>
+            <Top>3.51389in</Top>
             <Left>0.20139in</Left>
             <Height>0.25in</Height>
             <Width>7.70361in</Width>
@@ -2377,7 +2377,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>4.375in</Top>
+            <Top>3.81945in</Top>
             <Left>0.20139in</Left>
             <Height>0.20834in</Height>
             <Width>1.83208in</Width>
@@ -2411,7 +2411,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>4.61111in</Top>
+            <Top>4.05556in</Top>
             <Left>0.20139in</Left>
             <Height>0.22223in</Height>
             <Width>1.83208in</Width>
@@ -2445,7 +2445,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>5.31596in</Top>
+            <Top>4.76041in</Top>
             <Left>0.20139in</Left>
             <Height>0.20834in</Height>
             <Width>0.69666in</Width>
@@ -2479,7 +2479,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>5.77083in</Top>
+            <Top>5.21528in</Top>
             <Left>0.20139in</Left>
             <Height>0.17709in</Height>
             <Width>2.84229in</Width>
@@ -2513,7 +2513,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>4.375in</Top>
+            <Top>3.81945in</Top>
             <Left>2.06125in</Left>
             <Height>0.20834in</Height>
             <Width>2.94666in</Width>
@@ -2547,7 +2547,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>4.61111in</Top>
+            <Top>4.05556in</Top>
             <Left>2.06125in</Left>
             <Height>0.22223in</Height>
             <Width>2.94666in</Width>
@@ -2581,7 +2581,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>5.75in</Top>
+            <Top>5.19445in</Top>
             <Left>5.22918in</Left>
             <Height>0.19792in</Height>
             <Width>0.69666in</Width>
@@ -2597,7 +2597,7 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>15.79562cm</Height>
+        <Height>14.18166cm</Height>
         <Style />
       </Body>
       <Width>20.47558cm</Width>
@@ -2616,7 +2616,7 @@
                     <TextRun>
                       <Value>The Government of the People's Republic of Bangladesh</Value>
                       <Style>
-                        <FontSize>8pt</FontSize>
+                        <FontSize>9pt</FontSize>
                       </Style>
                     </TextRun>
                   </TextRuns>
@@ -2833,9 +2833,60 @@
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>0.73203cm</Height>
+          <Height>0.99661cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
+          <ReportItems>
+            <Textbox Name="Textbox43">
+              <CanGrow>true</CanGrow>
+              <KeepTogether>true</KeepTogether>
+              <Paragraphs>
+                <Paragraph>
+                  <TextRuns>
+                    <TextRun>
+                      <Value>Page: </Value>
+                      <Style>
+                        <FontSize>7pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Globals!PageNumber</Value>
+                      <Style>
+                        <FontSize>7pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>/</Value>
+                      <Style>
+                        <FontSize>7pt</FontSize>
+                      </Style>
+                    </TextRun>
+                    <TextRun>
+                      <Value>=Globals!TotalPages</Value>
+                      <Style>
+                        <FontSize>7pt</FontSize>
+                      </Style>
+                    </TextRun>
+                  </TextRuns>
+                  <Style />
+                </Paragraph>
+              </Paragraphs>
+              <rd:DefaultName>Textbox36</rd:DefaultName>
+              <Top>0.03528cm</Top>
+              <Left>17.92109cm</Left>
+              <Height>0.46741cm</Height>
+              <Width>2.55449cm</Width>
+              <Style>
+                <Border>
+                  <Style>None</Style>
+                </Border>
+                <PaddingLeft>2pt</PaddingLeft>
+                <PaddingRight>2pt</PaddingRight>
+                <PaddingTop>2pt</PaddingTop>
+                <PaddingBottom>2pt</PaddingBottom>
+              </Style>
+            </Textbox>
+          </ReportItems>
           <Style>
             <Border>
               <Style>None</Style>

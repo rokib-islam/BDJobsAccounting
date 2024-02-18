@@ -13,6 +13,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Reports\rptTrailBalance.rdlc" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="Reports\rptTrailBalance.rdlc" />
     <EmbeddedResource Include="Reports\rptShowChallan.rdlc" />
     <EmbeddedResource Include="Reports\rptViewInvoice.rdlc" />
   </ItemGroup>
