@@ -51,7 +51,7 @@
                         <div class="form-group row mt-4">
                             <label class="col-sm-4 col-form-label">Sales Price</label>
                             <div class="col-sm-8">
-                                <input type="number" class="form-control form-control-sm" ng-model="salesPrice" ng-change="updateTableValues()" />
+                                <input type="text" class="form-control form-control-sm text-right" ng-model="salesPrice" ng-change="updateTableValues()" />
                             </div>
                         </div>
                         <div class="row">
@@ -69,8 +69,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Amount</label>
-                                    <div class="col-sm-8">
-                                        <input type="number" class="form-control form-control-sm" ng-model="amount" ng-change="updateTableValues()" ng-disabled="amountDisable" />
+                                    <div class="col-sm-8"> 
+                                        <input type="text" class="form-control form-control-sm text-right" ng-model="amount" ng-change="updateTableValues()" ng-disabled="amountDisable" />
                                     </div>
                                 </div>
                             </div>
@@ -209,8 +209,8 @@
                                     <tr ng-repeat="row in rows">
                                         <td>{{$index+1}}</td>
                                         <td><input type="date" ng-model="row.sDate" class="form-control form-control-sm" /></td>
-                                        <td>{{row.salesPrice}}</td>
-                                        <td>{{row.taxAmount}}</td>
+                                        <td class="text-right">{{row.salesPrice}}</td>
+                                        <td class="text-right">{{row.taxAmount}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -269,14 +269,14 @@
 
                 $scope.salesPerson = '0';
                 $scope.billingPerson = '0';
-                $scope.taxType = '0';
+                $scope.taxType = '672';
                 $scope.month = '1';
                 $scope.invoiceNo = 0;
-                $scope.amountDisable = true;
+                //$scope.amountDisable = true;
                 $scope.getSalesPerson();
                 $scope.getTaxType();
                 $scope.saveButtonDisabled = true;
-                //$scope.makeInvoiceDisable = true;
+                $scope.makeInvoiceDisable = true;
             }
 
 
@@ -583,7 +583,7 @@
                 else if ($scope.salesPerson == 0 || $scope.salesPerson == "") {
                     alert("You must select a 'Sales Person'.");
                 }
-                else if ($scope.productName == 0 || $scope.salesPerson == "" || $scope.salesPerson == undefined) {
+                else if ($scope.searchQueryProduct == 0 || $scope.searchQueryProduct == "" || $scope.searchQueryProduct == undefined) {
                     alert("You must select a 'Product Name'.");
                 }
                 // else if ($scope.taxType != '0' && parseFloat($scope.rows[0].taxAmount) === 0 || $scope.rows[0].taxAmount == undefined) {
