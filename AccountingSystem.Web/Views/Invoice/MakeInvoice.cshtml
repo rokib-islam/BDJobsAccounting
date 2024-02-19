@@ -128,17 +128,23 @@
 
                             <div class="col-sm-4">
                                @*  <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="" ng-disabled="showChallanButton">Show Challan</button> *@
-                                <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="downloadReportChallan()" ng-disabled="showChallanButton">Show Challan</button>
+                                <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="downloadReportChallan()" ng-disabled="showChallanButton">Show Challan
+                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showChallanspinner"></span>
+                                </button>
                             </div>
                         </div>
                         <div class="row mt-2">
                             <div class="col-sm-6">
-                                <button type="button" class="btn btn-block btn-success btn-sm" ng-click="save()" ng-disabled="saveDisabled">Save</button>
+                                <button type="button" class="btn btn-block btn-success btn-sm" ng-click="save()" ng-disabled="saveDisabled">Save
+                                     &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="saveSpinner"></span>
+                                </button>
                             </div>
 
                             <div class="col-sm-6">
                                 @*  <button type="button" class="btn btn-block btn-info btn-sm" ng-click="" ng-disabled="showInvoiceButton">Show Invoice</button> *@
-                                <button type="button" class="btn btn-block btn-info btn-sm" ng-click="downloadReport()" ng-disabled="showInvoiceButton">Show Invoice</button>
+                                <button type="button" class="btn btn-block btn-info btn-sm" ng-click="downloadReport()" ng-disabled="showInvoiceButton">Show Invoice
+                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showInviceSpinner"></span>
+                                </button>
                             </div>
 
                         </div>
@@ -685,6 +691,7 @@
                 Url = '/Invoice/CheckInvoiceNo';
             else
                 Url = '/AccountingNew/Invoice/CheckInvoiceNo';
+
             $http.get(Url, { params: $scope.invoiceNo })
                 .then(function (response) {
                     if (response.data == true) {
@@ -737,18 +744,23 @@
                     Url = '/Invoice/SaveInvoice';
                 else
                     Url = '/AccountingNew/Invoice/SaveInvoice';
+
+                $scope.saveSpinner = true;
                 $http.post(Url, requestBodyModel)
                     .then(function (response) {
                         var data = response.data;
                         if (data == "Insert Successfully!") {
                             alert("Invoice information is successfully saved.");
                             $scope.saveDisabled = true;
+                            $scope.saveSpinner = false;
                         } else {
                             alert("Error: " + data);
+                            $scope.saveSpinner = false;
                         }
                     })
                     .catch(function (error) {
                         console.log(error);
+                        $scope.saveSpinner = false;
                     })
             }
         };
@@ -778,8 +790,10 @@
             const params = { InvoiceNo: invoiceId, format, isColorPad };
             const Url = window.location.hostname === 'localhost' ? '/Report/ShowInvoice' : '/AccountingNew/Report/ShowInvoice';
 
+            $scope.showInviceSpinner = true;
             $http.get(Url, { params, responseType: 'blob' })
                 .then(response => {
+                    $scope.showInviceSpinner = false;
                     const blob = new Blob([response.data], { type: response.headers('Content-Type') });
                     const filename = response.headers('Content-Disposition').split(';')[1].split('=')[1];
 
@@ -816,8 +830,10 @@
             const params = { InvoiceNo: invoiceId, format, CopyType: copyType };
             const Url = window.location.hostname === 'localhost' ? '/Report/ShowChallanReportNew' : '/AccountingNew/Report/ShowChallanReportNew';
 
+            $scope.showChallanspinner = true;
             $http.get(Url, { params, responseType: 'blob' })
                 .then(response => {
+                    $scope.showChallanspinner = false;
                     const blob = new Blob([response.data], { type: response.headers('Content-Type') });
                     const filename = response.headers('Content-Disposition').split(';')[1].split('=')[1];
 
@@ -841,6 +857,7 @@
                             URL.revokeObjectURL(pdfData); // Always revoke created URL objects
                         }
                     } else {
+                        $scope.showChallanspinner = false;
                         console.error('Unsupported format:', format);
                         alert('The selected format is not supported. Please choose PDF or Excel.');
                     }
