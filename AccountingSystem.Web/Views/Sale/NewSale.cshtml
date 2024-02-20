@@ -51,7 +51,7 @@
                         <div class="form-group row mt-4">
                             <label class="col-sm-4 col-form-label">Sales Price</label>
                             <div class="col-sm-8">
-                                <input type="number" class="form-control form-control-sm" ng-model="salesPrice" ng-change="updateTableValues()" />
+                                <input type="text" class="form-control form-control-sm text-right" ng-model="salesPrice" ng-change="updateTableValues()" />
                             </div>
                         </div>
                         <div class="row">
@@ -69,8 +69,8 @@
                             <div class="col-sm-6">
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Amount</label>
-                                    <div class="col-sm-8">
-                                        <input type="number" class="form-control form-control-sm" ng-model="amount" ng-change="updateTableValues()" ng-disabled="amountDisable" />
+                                    <div class="col-sm-8"> 
+                                        <input type="text" class="form-control form-control-sm text-right" ng-model="amount" ng-change="updateTableValues()" ng-disabled="amountDisable" />
                                     </div>
                                 </div>
                             </div>
@@ -90,7 +90,7 @@
                             <div class="col-sm-8">
                                 <select class="form-control form-control-sm" ng-model="billingPerson" ng-change="loadDesignation()">
                                     <option value="0" selected>Select</option>
-                                    <option ng-repeat="o in getBillingPersonData" value="{{o.id}}">{{o.name}}</option>
+                                    <option ng-repeat="o in getBillingPersonData" value="{{o.name}}">{{o.name}}</option>
                                 </select>
                             </div>
                         </div>
@@ -127,7 +127,9 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-sm-6 d-flex justify-content-end">
-                                <button class="btn btn-success btn-sm px-5" ng-disabled="saveButtonDisabled" ng-click="save()">Save</button>
+                                <button class="btn btn-success btn-sm px-5" ng-disabled="saveButtonDisabled" ng-click="save()">Save
+                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
+                                </button>
                             </div>
                             <div class="col-sm-6">
                                 <button class="btn btn-primary btn-sm px-4" ng-click="makeInvoice()" ng-disabled="makeInvoiceDisable">Make Invoice</button>
@@ -209,8 +211,8 @@
                                     <tr ng-repeat="row in rows">
                                         <td>{{$index+1}}</td>
                                         <td><input type="date" ng-model="row.sDate" class="form-control form-control-sm" /></td>
-                                        <td>{{row.salesPrice}}</td>
-                                        <td>{{row.taxAmount}}</td>
+                                        <td class="text-right">{{row.salesPrice}}</td>
+                                        <td class="text-right">{{row.taxAmount}}</td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -269,14 +271,14 @@
 
                 $scope.salesPerson = '0';
                 $scope.billingPerson = '0';
-                $scope.taxType = '0';
+                $scope.taxType = '672';
                 $scope.month = '1';
                 $scope.invoiceNo = 0;
-                $scope.amountDisable = true;
+                //$scope.amountDisable = true;
                 $scope.getSalesPerson();
                 $scope.getTaxType();
                 $scope.saveButtonDisabled = true;
-                //$scope.makeInvoiceDisable = true;
+                $scope.makeInvoiceDisable = true;
             }
 
 
@@ -460,9 +462,8 @@
 
             $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
-                    debugger
                     $scope.getBillingPersonData = response.data;
-                    $scope.billingPerson = $scope.getBillingPersonData[0].id.toString();
+                    $scope.billingPerson = $scope.getBillingPersonData[0].name.toString();
                     $scope.designation = $scope.getBillingPersonData[0].designation;
                 }, function (error) {
                     console.error(error);
@@ -471,7 +472,7 @@
 
         $scope.loadDesignation = function () {
             var selectedBillingPerson = $scope.getBillingPersonData.find(function (person) {
-                return person.id == $scope.billingPerson;
+                return person.name == $scope.billingPerson;
             });
 
             if (selectedBillingPerson) {
@@ -583,7 +584,7 @@
                 else if ($scope.salesPerson == 0 || $scope.salesPerson == "") {
                     alert("You must select a 'Sales Person'.");
                 }
-                else if ($scope.productName == 0 || $scope.salesPerson == "" || $scope.salesPerson == undefined) {
+                else if ($scope.searchQueryProduct == 0 || $scope.searchQueryProduct == "" || $scope.searchQueryProduct == undefined) {
                     alert("You must select a 'Product Name'.");
                 }
                 // else if ($scope.taxType != '0' && parseFloat($scope.rows[0].taxAmount) === 0 || $scope.rows[0].taxAmount == undefined) {
@@ -597,7 +598,6 @@
         };
 
         $scope.ok = function () {
-
             $scope.formattedFromDate = $scope.dateFrom.toISOString().split('T')[0];
             $scope.formattedToDate = $scope.dateTo.toISOString().split('T')[0];
             $scope.formattedJournalDate = $scope.journalDate.toISOString().split('T')[0];
@@ -627,16 +627,21 @@
                 Url = '/Sale/Save';
             else
                 Url = '/AccountingNew/Sale/Save';
+
+            $scope.spinner = true;
             $http.post(Url , JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
+                    
                     if (response.data === "Success") {
                         alert('All information has been saved successfully.');
                         $("#closejournal").modal('hide');
                         $scope.makeInvoiceDisable = false;
+                        $scope.spinner = false;
                     }
                     else {
                         alert(response.data);
                         $("#closejournal").modal('hide');
+                        $scope.spinner = false;
                     }
                 })
         };

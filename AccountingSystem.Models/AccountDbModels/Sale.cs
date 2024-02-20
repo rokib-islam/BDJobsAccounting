@@ -24,6 +24,7 @@
         public int Duration { get; set; }
         public double Tax { get; set; }
         public int BillingContactId { get; set; }
+        public int BillContactId { get; set; }
         public string RefNo { get; set; }
         public int TaxId { get; set; }
         public int SalesPerson { get; set; }

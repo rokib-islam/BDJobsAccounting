@@ -1,0 +1,610 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "EditSale";
+    var userId = Context.Session.GetInt32("UserID");
+    var accessRight = Context.Session.GetString("AccessRight");
+
+    var accessRights = new string[0];
+
+    if (string.IsNullOrEmpty(accessRight))
+    {
+                                            <script type="text/javascript">
+                                                window.location.href = '@Url.Action("Index", "Home")';
+                                            </script>
+    }
+    else
+    {
+        accessRights = accessRight.Split(',');
+    }
+}
+
+<style>
+    .selected-row {
+        border: 3px solid black !important;
+    }
+</style>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+
+<h3 class="text-center alert-primary" style="margin-top:-10px">Edit Sale</h3>
+
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="col-sm-12">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Company</label>
+                        <div class="col-sm-9">
+                            <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="company" ng-keyup="searchCompany(company)">
+                            @* <select class="form-control form-control-sm" size="10" ng-model="comList" style="position:absolute;z-index:999;width: 200px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                            <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                            </select> *@
+                        </div>
+                    </div>
+                    <div>Select a company</div>
+                    <select class="form-control form-control-sm" size="10" ng-model="comList" style="height:225px;border:2px solid gray">
+                        <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                    </select>
+
+                    <div class="row mt-2">
+                        <div class="col-sm-3">
+                            <button class="btn btn-success btn-sm" ng-click="regularSalesBtn()">Regular List</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-primary btn-sm" ng-click="deletedSalesBtn()">Deleted List</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="px-3 py-3" style="border:2px solid gray">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Sales Price</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control form-control-sm" ng-model="salesPrice">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">VAT Amount</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control form-control-sm" ng-model="vatAmount">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-2 col-form-label mt-3">Duration</label>
+                            <div class="col-sm-4">
+                                <label>From Date</label>
+                                <input type="date" class="form-control form-control-sm" ng-model="fromDate">
+                            </div>
+                            <div class="col-sm-4">
+                                <label>To Date</label>
+                                <input type="date" class="form-control form-control-sm" ng-model="toDate">
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Duration</label>
+                                <input type="number" class="form-control form-control-sm" ng-model="duration">
+                            </div>
+                        </div>
+                        <div class="form-group row mt-2">
+                            <label class="col-sm-3 col-form-label">Billing Contact</label>
+                            <div class="col-sm-9">
+                                <select class="form-control form-control-sm" ng-model="billingContact">
+                                    <option value="0" selected>Select</option>
+                                    <option ng-repeat="o in getBillingPersonData" value="{{o.id}}">{{o.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Ref No.</label>
+                            <div class="col-sm-9">
+                                <input type="number" class="form-control form-control-sm" ng-model="refNo">
+                            </div>
+                        </div>
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Sales Person</label>
+                            <div class="col-sm-9">
+                                <select class="form-control form-control-sm" ng-model="salesPerson">
+                                    <option value="0" selected>select</option>
+                                    <option ng-repeat="o in salesPersons" value="{{o.salesPersonID}}">{{o.salesPersonName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                
+                
+            </div>
+            <div class="col-sm-12 mt-3">
+                <div class="pull-left text-left" ng-show="isVisible">
+                    <div class="col-sm-12 row">
+                        <div class="col-sm-6">
+                            Show
+                            <select id="page" ng-model="itemsPerPage">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="40">40</option>
+                                <option value="50" selected>50</option>
+                                <option value="60">60</option>
+                                <option value="80">80</option>
+                                <option value="100">100</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="3000">3000</option>
+                                <option value="5000">5000</option>
+                                <option value="10000">10000</option>
+                                <option value="10000000">All</option>
+                            </select>
+                            entries per page. (Total:{{totalItems}} data)
+                        </div>
+                        <div class="col-sm-6 d-flex justify-content-end">
+                            <nav aria-label="...">
+                                <ul class="pagination">
+                                    <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                        <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- The ng-repeat code you provided -->
+                                    <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                        <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                    </li>
+
+                                    <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                        <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <div style="height: 200px; overflow-y: auto;border:2px solid gray" ng-show="showTable">
+                <table class="table table-bordered table-striped table-sm" style="white-space:nowrap;">
+                    <thead class="table-info">
+                        <tr>
+                            <th style="text-align:center">SNo</th>
+                            <th style="text-align:center">Product name</th>
+                            <th style="text-align:center">From</th>
+                            <th style="text-align:center">To</th>
+                            <th style="text-align:center">Duration</th>
+                            <th style="text-align:center">Price(Tk)</th>
+                            <th style="text-align:center">Due(Tk)</th>
+                            <th style="text-align:center">Posted</th>
+                            <th style="text-align:center">VAT(Tk)</th>
+                            <th style="text-align:center">Invoice No</th>
+                        </tr>
+                    </thead>
+                    <tbody style="height:130px">
+                        <tr ng-repeat="o in salesData" ng-click="selectRegularRow(o)" ng-class="{'selected-row':o===selectedRow}">
+                            <td style="text-align:center">{{$index+1}}</td>
+                            <td style="text-align:center">{{o.sbName}}</td>
+                            <td style="text-align:center">{{o.from}}</td>
+                            <td style="text-align:center">{{o.to}}</td>
+                            <td style="text-align:center">{{o.duration}}</td>
+                            <td style="text-align:right">{{o.salesPrice}}</td>
+                            <td style="text-align:right">{{o.duesAmount}}</td>
+                            <td style="text-align:center">{{o.posted}}</td>
+                            <td style="text-align:right">{{o.tax}}</td>
+                            <td style="text-align:center">{{o.invoiceNo}}</td>
+                        </tr>
+                    </tbody>
+                        <tr>
+                            <th colspan="5" style="text-align:right">Total</th>
+                            <th style="text-align:right">{{sumTotalAmount}}</th>
+                            <th style="text-align:right">{{sumDuesAmount}}</th>
+                            <th colspan="3"></th>
+
+                        </tr>
+                </table>
+            </div>
+
+
+            <div class="col-sm-12">
+                <div class="pull-left text-left" ng-show="isVisibleDelete">
+                    <div class="col-sm-12 row">
+                        <div class="col-sm-6">
+                            Show
+                            <select id="page" ng-model="itemsPerPage">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="40">40</option>
+                                <option value="50" selected>50</option>
+                                <option value="60">60</option>
+                                <option value="80">80</option>
+                                <option value="100">100</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="3000">3000</option>
+                                <option value="5000">5000</option>
+                                <option value="10000">10000</option>
+                                <option value="10000000">All</option>
+                            </select>
+                            entries per page. (Total:{{totalItems}} data)
+                        </div>
+                        <div class="col-sm-6 d-flex justify-content-end">
+                            <nav aria-label="...">
+                                <ul class="pagination">
+                                    <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                        <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- The ng-repeat code you provided -->
+                                    <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                        <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                    </li>
+
+                                    <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                        <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div style="height: 200px; overflow-y: auto;border:2px solid gray" ng-show="showDeletedTable">
+                <table class="table table-bordered table-striped table-sm">
+                    <thead class="table-info">
+                        <tr>
+                            <th style="text-align:center">SNo</th>
+                            <th style="text-align:center">Product name</th>
+                            <th style="text-align:center">Invoice No</th>
+                            <th style="text-align:center">Deleted Date</th>
+                            <th style="text-align:center">Price(Tk)</th>
+                            <th style="text-align:center">VAT(Tk)</th>
+                            <th style="text-align:center">Deleted Reason</th>
+                        </tr>
+                    </thead>
+                    <tbody style="height:130px">
+                        <tr ng-repeat="o in deletedSalesData">
+                            <td style="text-align:center">{{$index+1}}</td>
+                            <td style="text-align:center">{{o.serviceName}}</td>
+                            <td style="text-align:center">{{o.invoiceNo}}</td>
+                            <td style="text-align:center">{{o.cancellationDate}}</td>
+                            <td style="text-align:right">{{o.totalPrice}}</td>
+                            <td style="text-align:right">{{o.totalVat}}</td>
+                            <td style="text-align:center">{{o.deleteReason}}</td>
+                        </tr>
+
+                    </tbody>
+                        <tr>
+                            <th colspan="4" style="text-align:right">Total</th>
+                            <th style="text-align:right">{{sumTotalPrice}}</th>
+                            <th style="text-align:right">{{sumTotalVat}}</th>
+                            <th></th>
+                        </tr>
+                </table>
+            </div>
+            <div class="row mt-2">
+                <div class="col-sm-3">
+                    <button class="btn btn-danger btn-sm px-4" ng-click="delete()" ng-disabled="deleteBtn">Delete</button>
+                </div>
+                <div class="col-sm-3">
+                    <button class="btn btn-primary btn-sm px-4" ng-click="update()" ng-disabled="updateBtn">Update</button>
+                </div>
+                <div class="col-sm-3 text-end">
+                    <button class="btn btn-success btn-sm" ng-click="makeJournal()" ng-disabled="makeJournalBtn">Make Journal</button>
+                </div>
+                <div class="col-sm-3 text-end">
+                    <button class="btn btn-warning btn-sm" ng-click="makeInvoice()" ng-disabled="makeInvoiceBtn">Make Invoice</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="deletedReasonModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Sale Delete Reason</h5>
+                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body px-4">
+                        <div class="row">
+                            <label>Delete Reason</label>
+                            <textarea type="text" ng-model="reason" class="form-control form-control-sm"></textarea>
+                        </div>
+                        <div class="row">
+                            <label>Delete Date</label>
+                            <input type="date" ng-model="deleteDate" class="form-control form-control-sm"/>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="finalDelete()">Delete</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+            $scope.getSalesPerson();
+            $scope.billingContact = "0";
+            $scope.isVisible = false;
+            $scope.isVisibleDelete = false;
+            $scope.showTable = true;
+            $scope.showDeletedTable = false;
+            $scope.makeInvoiceBtn = true;
+            $scope.deleteBtn = true;
+            $scope.updateBtn = true;
+            $scope.makeJournalBtn = true;
+
+            $scope.itemsPerPage = '20';
+            $scope.maxPageLength = 5;
+            $scope.currentPage = 1;
+            $scope.totalItems = 0;
+        });
+
+        $scope.companyList = [];
+        $scope.searchCompany = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Company/GetCompanyListByKey';
+                else
+                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.companyList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.companyList = [];
+            }
+        };
+
+        $scope.selectedCompany = null;
+        $scope.selectCompany = function (company) {
+            $scope.selectedCompany = company;
+            $scope.company = company.name;
+            //$scope.companyList = [];
+
+            $scope.getBillingPerson($scope.comList);
+            $scope.getSales($scope.currentPage, $scope.itemsPerPage, $scope.comList, 0);
+            //$scope.getDeletedSales($scope.currentPage, $scope.itemsPerPage, $scope.comList);
+
+            $scope.showTable = true;
+            $scope.makeInvoiceBtn = false;
+        }
+
+        $scope.getBillingPerson = function (cId) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetContactPersonByCompanyId';
+            else
+                Url = '/AccountingNew/Company/GetContactPersonByCompanyId';
+
+            $http.get(Url, { params: { companyId: cId } })
+                .then(function (response) {
+                    $scope.getBillingPersonData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+        }
+
+        $scope.getSalesPerson = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/GetSalesPersonsByProductID';
+            else
+                Url = '/AccountingNew/Sale/GetSalesPersonsByProductID';
+            $http.get(Url, { params: { productID: 2 } })
+                .then(function (response) {
+                    $scope.salesPersons = response.data;
+                    $scope.salesPerson = "0";
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+        $scope.getSales = function (pageNo, pageSize, cId, tno) {
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/GetSales';
+            else
+                Url = '/AccountingNew/Sale/GetSales';
+
+            $http.get(Url, { params: { pageNo: pageNo, pageSize: pageSize, cId: cId, tno: tno } })
+                .then(function (response) {
+                    $scope.salesData = response.data.sales;
+                    $scope.totalItems = response.data.sales[0].totalRecord;
+                    $scope.sumTotalAmount = response.data.totalAmount;
+                    $scope.sumDuesAmount = response.data.duesAmount;
+                    $scope.isVisible = true;
+                    $scope.showDeletedTable = false;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        $scope.regularSalesBtn = function () {
+            $scope.getSales($scope.currentPage, $scope.itemsPerPage, $scope.comList, 0);
+            $scope.isVisible = true;
+            $scope.showTable = true;
+            $scope.isVisibleDelete = false;
+            $scope.showDeletedTable = false;
+        }
+
+        $scope.deletedSalesBtn = function () {
+            $scope.getDeletedSales($scope.currentPage, $scope.itemsPerPage, $scope.comList);
+            $scope.isVisible = false;
+            $scope.showTable = false;
+            $scope.showDeletedTable = true;
+            $scope.isVisibleDelete = true;
+        }
+
+        $scope.getDeletedSales = function (pageNo, pageSize, cId) {
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/GetDeletedSales';
+            else
+                Url = '/AccountingNew/Sale/GetDeletedSales';
+
+            $http.get(Url, { params: { pageNo: pageNo, pageSize: pageSize, cId: cId } })
+                .then(function (response) {
+                    $scope.deletedSalesData = response.data;
+                    $scope.totalItems = response.data[0].totalRows;
+                    $scope.sumTotalPrice = response.data.reduce((a, b) => a + b.totalPrice, 0);
+                    $scope.sumTotalVat = response.data.reduce((a, b) => a + b.totalVat, 0);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+
+
+        $scope.$watch('totalItems', function () {
+            $scope.calculatePages();
+        });
+
+        $scope.$watch('itemsPerPage', function () {
+            $scope.calculatePages();
+        });
+
+        $scope.$watch('currentPage', function () {
+            if ($scope.currentPage > 1) {
+                $scope.calculatePages();
+                $scope.getSales($scope.currentPage, $scope.itemsPerPage, $scope.comList, 0);
+            }
+            else {
+                $scope.calculatePages();
+            }
+
+        });
+
+        $scope.calculatePages = function () {
+            $scope.totalPages = Math.ceil($scope.totalItems / $scope.itemsPerPage);
+            $scope.pages = [];
+
+            var startPage = Math.max(1, $scope.currentPage - Math.floor($scope.maxPageLength / 2));
+            var endPage = Math.min($scope.totalPages, startPage + $scope.maxPageLength - 1);
+
+            for (var i = startPage; i <= endPage; i++) {
+                $scope.pages.push(i);
+            }
+        };
+
+        $scope.getPages = function () {
+            return $scope.pages || [];
+        };
+
+        $scope.setCurrentPage = function (page) {
+            if (page >= 1 && page <= $scope.totalPages) {
+                $scope.currentPage = page;
+            }
+        };
+
+        $scope.selectRegularRow = function (row) {
+            $scope.selectedRow = row;
+            $scope.salesPrice = $scope.selectedRow.salesPrice;
+            $scope.vatAmount = $scope.selectedRow.accReceivale;
+            $scope.fromDate = new Date($scope.selectedRow.from);
+            $scope.toDate = new Date($scope.selectedRow.to);
+            $scope.duration = $scope.selectedRow.duration;
+            $scope.billingContact = $scope.selectedRow.billContactId.toString();
+
+            $scope.deleteBtn = false;
+            $scope.updateBtn = false;
+        }
+
+        $scope.makeInvoice = function () {
+            $scope.cid = ($scope.selectedCompany.id).toString();
+            if ($scope.cid != null) {
+                window.open('.././Invoice/MakeInvoice?companyId=' + $scope.cid);
+
+            }
+        }
+
+        $scope.delete = function () {
+            if ('@accessRights.Contains("3")' !== 'True') {
+                alert('Sorry, you have no access to delete a record.');
+            } else {
+                var result = confirm('Are you sure you want to delete this sale?');
+                if (result) {                  
+                    $("#deletedReasonModal").modal('show');
+                } else {
+                    // User clicked 'Cancel', do nothing or handle accordingly
+                }
+            }
+        }
+
+        $scope.finalDelete=function(){
+            if ($scope.deleteDate == '' || $scope.deleteDate == undefined) {
+                alert('Please give sale delete date.');
+                return false;
+            }
+            var confirmation = confirm('Are you sure you want to generate Credit Note?');
+
+            if (confirmation) { 
+                var CNote = confirmation ? 1 : 0;
+                var tno = $scope.selectedRow.tno;
+                var deleteReason = $scope.reason;
+                var deleteDate = $scope.deleteDate;
+
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Sale/DeleteSale';
+                else
+                    Url = '/AccountingNew/Sale/DeleteSale';
+
+                $http.get(Url, { params: { tno: tno, deleteReason: deleteReason, creditNote: CNote, deleteDate: deleteDate } })
+                .then(function(response){
+                    var data = response.data;
+                        if (data == "1") {
+                            alert('Can not delete. Cash has been collected for this sale. You must delete that Cash from Cash Collection form, then delete this sale.');
+                        } else if (data == "2") {
+                            alert('Can not delete. Some of Sales journal is approved.');
+                        } else if (data == "-1") {
+                            alert('Internal Database Error.');
+                        } else if (data == "0") {
+                            alert('Delete operation has been completed successfully.');
+                            $scope.deletedate = '';
+                            $scope.deleteReason = '';
+                            $('#deletedReasonModal').modal('hide');
+                            // Call your functions to update the sales lists
+                            $scope.getSales(1, $scope.itemsPerPage, $scope.comList, 0);
+                            
+                            //$scope.getDeletedSales(1, $scope.itemsPerPage, $scope.comList);
+                        }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+            }
+        }
+
+        // $scope.update = function () {
+        //     debugger
+        //     if ('@accessRights.Contains("2")' !== "True") {
+        //         alert("Sorry, You have no permission to update a record.");
+        //     }
+        //     else {
+
+        //     }
+        // }
+    });
+</script>

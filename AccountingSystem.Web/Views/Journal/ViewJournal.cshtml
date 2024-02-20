@@ -93,7 +93,9 @@
                     </div>
                 </div>
                 <div class="text-center mt-3">
-                    <button class="btn btn-success btn-sm" style="padding-left:30px;padding-right:30px" ng-click="loadData()">Load</button>
+                    <button class="btn btn-success btn-sm" style="padding-left:30px;padding-right:30px" ng-click="loadData()">Load
+                        &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
+                    </button>
                 </div>
             </div>
         </div>
@@ -290,17 +292,22 @@
             else
                 Url = '/AccountingNew/Journal/GetJournals';
 
+            $scope.spinner = true;
             $http.post(Url, requestData)
-                .then(function (response) {
-                    $scope.showTable = true;
-
-                    console.log(response.data);
+                .then(function (response) {                    
+                    if (response.data == 0) {
+                        alert('There is no data to shown.')
+                        $scope.spinner = false;
+                        $scope.showTable = false;
+                    }
                     $scope.journalData = response.data;
                     $scope.totalItems = response.data[0].totalRecords;
-
+                    $scope.showTable = true;
                     $scope.isVisible = true;
+                    $scope.spinner = false;
                 }, function (error) {
                     console.error(error);
+                    $scope.spinner = false;
                 })
         };
         // paging code

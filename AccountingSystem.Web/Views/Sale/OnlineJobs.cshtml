@@ -48,7 +48,9 @@
                             <label><input type="checkbox" ng-model="PNPL" /> PNPL</label>
                         </div>
                         <div class="col-sm-4">
-                            <button class="btn btn-info btn-sm mt-5" ng-click="download()">Download Jobs</button>
+                            <button class="btn btn-info btn-sm mt-5" ng-click="download()">Download Jobs
+                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="downloadSpinner"></span>
+                            </button>
                         </div>
                     </div>
                     <div class="row" style="margin-top:-10px">
@@ -67,7 +69,9 @@
                             <label><input type="checkbox" ng-model="verified" /> Varified</label>
                         </div>
                         <div class="col-sm-4 mt-4">
-                            <button class="btn btn-primary btn-sm" ng-click="search()" style="padding-left:45px;padding-right:45px">GO</button>
+                            <button class="btn btn-primary btn-sm" ng-click="search()" style="padding-left:45px;padding-right:45px">GO
+                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="goSpinner"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -93,13 +97,7 @@
                         <span style="border: 1px solid gray; background: #0CFBFF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
                     </div>
                 </div>
-            </div>
-            <center>
-                <button class="btn btn-primary" type="button" disabled ng-show="spinner">
-                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-                    Loading...
-                </button>
-            </center>
+            </div>            
             <div class="row mt-2" style="height: 200px; overflow-y: auto;border:2px solid gray">
                 <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
                     <thead class="thead-light">
@@ -219,7 +217,9 @@
         <div class="col-sm-12">
             <div class="row" style=" margin-top: 10px; margin-bottom: 10px; padding-left: 0;padding-right: 0;">
                 <div class="col-sm-3">
-                    <button class="btn btn-primary btn-sm" ng-click="refresh()" style="padding-left:45px;padding-right:45px">Refresh</button>
+                    <button class="btn btn-primary btn-sm" ng-click="refresh()" style="padding-left:45px;padding-right:45px">Refresh
+                        &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="refreshSpinner"></span>
+                    </button>
                 </div>
                 <div class="col-sm-3">
                     <button class="btn btn-primary btn-sm" ng-click="makeSale()" style="padding-left:45px;padding-right:45px" ng-disabled="!makeBtn">Make Sale</button>
@@ -228,7 +228,8 @@
                     <button class="btn btn-primary btn-sm" ng-click="delete()" style="padding-left:45px;padding-right:45px" ng-disabled="!deleteBtn">Delete</button>
                 </div>
                 <div class="col-sm-3">
-                    <button class="btn btn-primary btn-sm" ng-click="uploadInvoice()" style="padding-left:45px;padding-right:45px" ng-disabled="!uploadBtn">Upload Invoice</button>
+                    <button class="btn btn-primary btn-sm" ng-click="uploadInvoice()" style="padding-left:45px;padding-right:45px" ng-disabled="!uploadBtn">Upload Invoice
+                    </button>
                 </div>
             </div>
         </div>
@@ -416,7 +417,8 @@
                                         </div>
                                     </div>
                                     <div class="col-sm-2 mt-2">
-                                        <button class="btn btn-success btn-sm" ng-click="insert()" ng-disabled="insertDisable">Insert</button>
+                                        <button class="btn btn-success btn-sm" ng-click="insert()" ng-disabled="insertDisable">Insert
+                                        </button>
                                         <button class="btn btn-primary btn-sm" ng-click="update()" ng-disabled="updateDisable">Update</button>
                                     </div>
                                 </div>
@@ -444,7 +446,6 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-            $scope.spinner = false;
             $scope.invoiceTd = true;
             $scope.updateDisable = true;
             $scope.insertDisable = true;
@@ -522,7 +523,7 @@
         }
 
         $scope.download = function () {
-            $scope.spinner = true;
+            
             var fromDate = $scope.from;
             var toDate = $scope.to;
             var PNPL = $scope.PNPL ? 1 : 0;
@@ -533,6 +534,7 @@
             else
                 Url = '/AccountingNew/Sale/DownLoadOnlineJobs';
 
+            $scope.downloadSpinner = true;
             $http.get(Url, { params: { fromDate: fromDate, toDate: toDate, PNPL: PNPL } })
                 .then(function (response) {
                     $("#companyDiv").show();
@@ -547,11 +549,11 @@
                     if (errorText !== "") {
                         alert("Error:\n\n" + errorText);
                     }
-                    $scope.spinner = false;
+                    $scope.downloadSpinner = false;
                 }, function (error) {
                     console.error(error);
                     alert('No data found');
-                    $scope.spinner = false;
+                    $scope.downloadSpinner = false;
                 })
         }
 
@@ -559,7 +561,7 @@
         $scope.jobData = [];
 
         $scope.refreshData = function () {
-            $scope.spinner = true;
+            
             var selectedService = $scope.services.find(function (s) {
                 return s.serviceId == $scope.service;
             });
@@ -574,14 +576,15 @@
             else
                 Url = '/AccountingNew/Sale/GetOnlineJobList';
 
+            $scope.refreshSpinner = true;
             $http.get(Url, { params: { CName: CName, Verified: Verified, LedgerID: LedgerID } })
                 .then(function (response) {
                     $scope.companyData = response.data;
-                    $scope.spinner = false;
+                    $scope.refreshSpinner = false;
                 }, function (error) {
                     console.error(error);
                     alert('Error fetching data');
-                    $scope.spinner = false;
+                    $scope.refreshSpinner = false;
                 })
         };
 
@@ -592,13 +595,15 @@
                 Url = '/Sale/GetJobs';
             else
                 Url = '/AccountingNew/Sale/GetJobs';
-
+            $scope.goSpinner = true;
             $http.get(Url, { params: { cpId: cpId, date: date, adType: adType, adRegion: adRegion } })
                 .then(function (response) {
                     $scope.jobData = response.data;
+                    $scope.goSpinner = false;
                 }, function (error) {
                     console.error(error);
                     alert('Error fetching job data');
+                    $scope.goSpinner = false;
                 });
         };
 
@@ -877,9 +882,11 @@
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
+                    
                     var val = response.data;
                     if (val.connection === false) {
                         confirm(val.message);
+                        
                     }
                     else if (val.duplicate === true) {
 
@@ -892,6 +899,7 @@
                             else
                                 Url = '/AccountingNew/Invoice/UpdateInvoice';
 
+                            
                             $http.post(Url, { invoiceNo: InvoiceNo })
                                 .then(function (val1) {
 
@@ -905,16 +913,17 @@
 
                                 })
                                 .catch(function (error) {
-
+                                    
                                     console.log(error);
                                 });
                         }
                     } else {
                         confirm(val.message);
+                       
                     }
+                    
                 })
                 .catch(function (error) {
-
                     console.log(error);
                 });
         }
@@ -1060,6 +1069,7 @@
 
 
         $scope.insert = function () {
+            
             $scope.action = "Insert";
             $scope.cpId = $scope.selectedComRow.cP_Id;
             $scope.name = $scope.companyName;
@@ -1124,6 +1134,7 @@
 
                             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                                 .then(function (response) {
+                                    
                                     $scope.val = response.data;
 
                                     if ($scope.val == 1) {
@@ -1140,6 +1151,7 @@
                                         if (confirm("All information of the company '" + $scope.name + "' has been inserted successfully. And also updated the online database. " + m + "")) {
                                             return;
                                         }
+                                        
                                     }
                                 })
                                 .catch(function (error) {
