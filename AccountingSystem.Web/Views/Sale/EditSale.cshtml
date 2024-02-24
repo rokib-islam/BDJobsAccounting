@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                            <script type="text/javascript">
-                                                window.location.href = '@Url.Action("Index", "Home")';
-                                            </script>
+                                                                    <script type="text/javascript">
+                                                                        window.location.href = '@Url.Action("Index", "Home")';
+                                                                    </script>
     }
     else
     {
@@ -61,13 +61,13 @@
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">Sales Price</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control form-control-sm" ng-model="salesPrice">
+                                <input type="number" class="form-control form-control-sm text-end" ng-model="salesPrice">
                             </div>
                         </div>
                         <div class="form-group row">
                             <label class="col-sm-3 col-form-label">VAT Amount</label>
                             <div class="col-sm-9">
-                                <input type="number" class="form-control form-control-sm" ng-model="vatAmount">
+                                <input type="number" class="form-control form-control-sm text-end" ng-model="vatAmount">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -82,7 +82,7 @@
                             </div>
                             <div class="col-sm-2">
                                 <label>Duration</label>
-                                <input type="number" class="form-control form-control-sm" ng-model="duration">
+                                <input type="number" class="form-control form-control-sm text-center" ng-model="duration">
                             </div>
                         </div>
                         <div class="form-group row mt-2">
@@ -597,14 +597,51 @@
             }
         }
 
-        // $scope.update = function () {
-        //     debugger
-        //     if ('@accessRights.Contains("2")' !== "True") {
-        //         alert("Sorry, You have no permission to update a record.");
-        //     }
-        //     else {
+        $scope.update = function () {
+            debugger
+            if ('@accessRights.Contains("2")' !== "True") {
+                alert("Sorry, You have no permission to update a record.");
+            }
+            else {
+                $scope.amountCheck();
+            }
+        }
+        $scope.amountCheck = function () {
+            if ($scope.salesPrice === '' || $scope.salesPrice === 0) {
+                let isConfirmed = confirm("You have given no amount. Do you treat this product as free?");
+                if (isConfirmed) {
+                    $scope.taxCheck();
+                }
+            } else {
+                $scope.taxCheck();
+            }
+        };
+        $scope.taxCheck = function () {
+            if ($scope.vatAmount === '' || $scope.vatAmount === 0) {
+                let isConfirmed = confirm('You have given no VAT amount. Do you treat this product has no VAT?');
+                if(isConfirmed){
+                    $scope.dateCheck();
+                }
+            } else{
+                $scope.dateCheck();
+            }           
+        }
+        $scope.dateCheck = function () {
+            let datefrom = new Date($scope.fromDate);
+            let dateto = new Date($scope.toDate);
+            if (datefrom > dateto) {
+               alert("From-date is greater than To-date.");               
+            } else {
+                $scope.contactPersonCheck();
+            }
+        }
+        $scope.contactPersonCheck = function () {           
+            if ($scope.billingContact === '' || $scope.billingContact === null) {
+                alert("You must select a billing contact person.");
+            } else {
+                $scope.updateSale();
+            }
+        }
 
-        //     }
-        // }
     });
 </script>

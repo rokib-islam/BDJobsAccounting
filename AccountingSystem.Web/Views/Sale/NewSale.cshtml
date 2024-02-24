@@ -88,10 +88,21 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Billing Person</label>
                             <div class="col-sm-8">
-                                <select class="form-control form-control-sm" ng-model="billingPerson" ng-change="loadDesignation()">
+                                @* <select class="form-control form-control-sm" ng-model="billingPerson" ng-change="loadDesignation()">
                                     <option value="0" selected>Select</option>
                                     <option ng-repeat="o in getBillingPersonData" value="{{o.name}}">{{o.name}}</option>
+                                </select> *@
+                                <select class="form-control form-control-sm" ng-model="selectedBillingPerson" ng-change="billingPersonChanged()">
+                                    <option value="0" selected>Select</option>
+                                    <option value="Other">Other</option>
+                                    <option ng-repeat="o in getBillingPersonData" value="{{o.name}}">{{o.name}}</option>
+                                    
                                 </select>
+
+                                <!-- Input field for new billing person -->
+                                <input type="text" ng-model="newBillingPerson" ng-show="isNewBillingPersonVisible" class="form-control form-control-sm" placeholder="Enter new billing person">
+
+                                
                             </div>
                         </div>
                         <div class="form-group row">
@@ -453,34 +464,82 @@
             $scope.getJobTitle('T', $scope.comList);
         }
 
+
+        $scope.selectedBillingPerson = '0';
+        $scope.newBillingPerson = '';
+        $scope.isNewBillingPersonVisible = false;
+
+        $scope.billingPersonChanged = function () {
+            if ($scope.selectedBillingPerson === 'Other') {
+                $scope.isNewBillingPersonVisible = true;
+                $scope.newBillingPerson = ''; // Clear the new billing person input field
+            } else {
+                $scope.isNewBillingPersonVisible = false;
+                
+                var selectedBillingPerson = $scope.getBillingPersonData.find(function (person) {
+                    return person.name == $scope.selectedBillingPerson;
+                });
+
+                if (selectedBillingPerson) {
+                    $scope.designation = selectedBillingPerson.designation;
+                } else {
+                    $scope.designation = '';
+                }
+            }
+        };
+
         $scope.getBillingPerson = function (type, cId) {
             let Url = '';
-            if (window.location.hostname == 'localhost')
+            if (window.location.hostname == 'localhost') {
                 Url = '/Company/GetContactPersonsOrJobTitle';
-            else
+            } else {
                 Url = '/AccountingNew/Company/GetContactPersonsOrJobTitle';
+            }
 
             $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
                     $scope.getBillingPersonData = response.data;
-                    $scope.billingPerson = $scope.getBillingPersonData[0].name.toString();
-                    $scope.designation = $scope.getBillingPersonData[0].designation;
+
+                    // Assuming you have a default value for $scope.selectedBillingPerson
+                    $scope.selectedBillingPerson = '0';
+                    $scope.newBillingPerson = '';
+                    $scope.isNewBillingPersonVisible = false;
+
                 }, function (error) {
                     console.error(error);
-                })
-        }
-
-        $scope.loadDesignation = function () {
-            var selectedBillingPerson = $scope.getBillingPersonData.find(function (person) {
-                return person.name == $scope.billingPerson;
-            });
-
-            if (selectedBillingPerson) {
-                $scope.designation = selectedBillingPerson.designation;
-            } else {
-                $scope.designation = '';
-            }
+                });
         };
+
+
+        // $scope.getBillingPerson = function (type, cId) {
+        //     let Url = '';
+        //     if (window.location.hostname == 'localhost')
+        //         Url = '/Company/GetContactPersonsOrJobTitle';
+        //     else
+        //         Url = '/AccountingNew/Company/GetContactPersonsOrJobTitle';
+
+        //     $http.get(Url, { params: { type: type, cId: cId } })
+        //         .then(function (response) {
+        //             debugger
+        //             $scope.getBillingPersonData = response.data;
+        //             $scope.billingPerson = $scope.getBillingPersonData[0].name.toString();
+        //             $scope.designation = $scope.getBillingPersonData[0].designation;
+        //         }, function (error) {
+        //             console.error(error);
+        //         })
+        // }
+
+        // $scope.loadDesignation = function () {
+        //     var selectedBillingPerson = $scope.getBillingPersonData.find(function (person) {
+        //         return person.name == $scope.selectedBillingPerson;
+        //     });
+
+        //     if (selectedBillingPerson) {
+        //         $scope.designation = selectedBillingPerson.designation;
+        //     } else {
+        //         $scope.designation = '';
+        //     }
+        // };
 
         $scope.getJobTitle = function (type, cId) {
             let Url = '';
@@ -578,7 +637,7 @@
                 // else if (parseFloat($scope.total) !== parseFloat(parseFloat($scope.salesPrice) + $scope.taxAmount)) {
                 //     alert("The total amount of the invoice scheduler is not equal to the sales price.");
                 // }
-                else if ($scope.billingPerson == "" || $scope.billingPerson == 0) {
+                else if ($scope.selectedBillingPerson == "0") {
                     alert("You must give the name of 'Billing Person'.");
                 }
                 else if ($scope.salesPerson == 0 || $scope.salesPerson == "") {
@@ -609,8 +668,9 @@
                 ToDate: $scope.formattedToDate ? $scope.formattedToDate : "",
                 JournalDate: $scope.formattedJournalDate ? $scope.formattedJournalDate : "",
                 SalesPrice: $scope.salesPrice,
-                BillingPerson: $scope.billingPerson,
-                Designation: $scope.designation,
+                // BillingPerson: $scope.billingPerson,
+                BillingPerson: $scope.selectedBillingPerson == "Other" ? $scope.newBillingPerson : $scope.selectedBillingPerson,
+                Designation: $scope.designation == null ? "" : $scope.designation,
                 Comment: $scope.comments || "",
                 Duration: $scope.month,
                 NoOfInvoice: $scope.invoiceNo,
