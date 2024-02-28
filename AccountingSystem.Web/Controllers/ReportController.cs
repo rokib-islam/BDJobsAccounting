@@ -202,6 +202,11 @@ namespace AccountingSystem.Web.Controllers
             try
             {
                 var reportData = await _ReportManager.GetTrialBalanceReportAsync(type, startDate, endDate);
+                double sumDebit = reportData.Where(report => report.Total > 0).Sum(report => report.Total);
+                double sumPCredit = Math.Abs(reportData.Where(report => report.Total < 0).Sum(report => report.Total));
+
+
+
                 var datatable = Helpers.ListiToDataTable(reportData);
 
                 var title = type == "Month" ? "For the Month of "
@@ -210,8 +215,12 @@ namespace AccountingSystem.Web.Controllers
                 using var report = new LocalReport();
                 var parameters = new[]
                 {
-                    new ReportParameter("title", title)
+                    new ReportParameter("title", title),
+                    new ReportParameter("sumDebit", sumDebit.ToString("N2")),
+                    new ReportParameter("sumCredit", sumPCredit.ToString("N2"))
                 };
+
+
 
                 using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream("AccountingSystem.Web.Reports.rptTrailBalance.rdlc");
                 report.LoadReportDefinition(rs);
@@ -242,7 +251,7 @@ namespace AccountingSystem.Web.Controllers
 
                 return File(fileContents, contentType, fileName);
             }
-            catch
+            catch (Exception ex)
             {
                 return StatusCode(500, "An error occurred while generating the report.");
             }
