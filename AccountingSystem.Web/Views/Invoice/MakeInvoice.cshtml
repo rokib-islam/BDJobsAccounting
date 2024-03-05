@@ -407,6 +407,7 @@
 
         $scope.selectedAnotherRow = null;
         $scope.comments = '';
+        $scope.totalPrice = 0;
 
         $scope.passAnother = function (shiftedProduct) {
             if (shiftedProduct.product !== "") {
@@ -415,7 +416,8 @@
                     $scope.comments = '';
                 } else {
                     $scope.selectedAnotherRow = shiftedProduct;
-                    $scope.totalPrice = $scope.selectedAnotherRow.amount;
+                    //$scope.totalPrice = $scope.selectedAnotherRow.amount;
+                    //$scope.totalPrice += $scope.selectedAnotherRow.amount;
                     var comments = "";
                     var ledgerId = shiftedProduct.ledgerId;
 
@@ -539,6 +541,7 @@
                 if (indexToRemove !== -1) {
                     $scope.products.splice(indexToRemove, 1);
                 }
+                $scope.totalPrice += $scope.selectedRow.amount;
                 $scope.selectedRow = null;
             } else {
                 console.log('Please select a row before clicking Go.');
@@ -561,6 +564,7 @@
                 if (indexToRemove !== -1) {
                     $scope.shiftData.splice(indexToRemove, 1);
                 }
+                $scope.totalPrice -= $scope.selectedAnotherRow.amount;
                 $scope.selectedAnotherRow = null;
             } else {
                 console.log('Please select a row before clicking back.');
