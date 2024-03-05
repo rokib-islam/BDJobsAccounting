@@ -4,6 +4,7 @@
     {
         public int Id { get; set; }
         public int JpId { get; set; }
+        public int jp_id { get; set; }
         public string Title { get; set; }
         public double SalesPrice { get; set; }
         public string InvoiceNo { get; set; }

@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                                                    <script type="text/javascript">
-                                                                        window.location.href = '@Url.Action("Index", "Home")';
-                                                                    </script>
+                                                                                <script type="text/javascript">
+                                                                                    window.location.href = '@Url.Action("Index", "Home")';
+                                                                                </script>
     }
     else
     {
@@ -183,14 +183,14 @@
                         </tr>
                     </thead>
                     <tbody style="height:130px">
-                        <tr ng-repeat="o in salesData" ng-click="selectRegularRow(o)" ng-class="{'selected-row':o===selectedRow}">
+                        <tr ng-repeat="o in salesData" ng-click="selectRegularRow(o, $index+1)" ng-class="{'selected-row':o===selectedRow}" ng-style="{'background-color': o.isCancel == 1 ? '#FF7D7D' : ''}">
                             <td style="text-align:center">{{$index+1}}</td>
                             <td style="text-align:center">{{o.sbName}}</td>
                             <td style="text-align:center">{{o.from}}</td>
                             <td style="text-align:center">{{o.to}}</td>
                             <td style="text-align:center">{{o.duration}}</td>
                             <td style="text-align:right">{{o.salesPrice}}</td>
-                            <td style="text-align:right">{{o.duesAmount}}</td>
+                            <td style="text-align:right">{{o.accReceivale}}</td>
                             <td style="text-align:center">{{o.posted}}</td>
                             <td style="text-align:right">{{o.tax}}</td>
                             <td style="text-align:center">{{o.invoiceNo}}</td>
@@ -430,7 +430,7 @@
                     $scope.salesData = response.data.sales;
                     $scope.totalItems = response.data.sales[0].totalRecord;
                     $scope.sumTotalAmount = response.data.totalAmount;
-                    $scope.sumDuesAmount = response.data.duesAmount;
+                    $scope.sumDuesAmount = response.data.accReceivale;
                     $scope.isVisible = true;
                     $scope.showDeletedTable = false;
                 })
@@ -448,7 +448,7 @@
         }
 
         $scope.deletedSalesBtn = function () {
-            $scope.getDeletedSales($scope.currentPage, $scope.itemsPerPage, $scope.comList);
+            $scope.getDeletedSales(1, $scope.itemsPerPage, $scope.comList);
             $scope.isVisible = false;
             $scope.showTable = false;
             $scope.showDeletedTable = true;
@@ -518,8 +518,9 @@
             }
         };
 
-        $scope.selectRegularRow = function (row) {
+        $scope.selectRegularRow = function (row, rowIndex) {
             $scope.selectedRow = row;
+            $scope.selectedRowIndex = rowIndex;
             $scope.salesPrice = $scope.selectedRow.salesPrice;
             $scope.vatAmount = $scope.selectedRow.accReceivale;
             $scope.fromDate = new Date($scope.selectedRow.from);
@@ -598,7 +599,6 @@
         }
 
         $scope.update = function () {
-            debugger
             if ('@accessRights.Contains("2")' !== "True") {
                 alert("Sorry, You have no permission to update a record.");
             }
@@ -635,13 +635,197 @@
                 $scope.contactPersonCheck();
             }
         }
-        $scope.contactPersonCheck = function () {           
+        $scope.contactPersonCheck = function () {  
             if ($scope.billingContact === '' || $scope.billingContact === null) {
                 alert("You must select a billing contact person.");
             } else {
                 $scope.updateSale();
             }
         }
+        
+
+
+        $scope.updateSale = function () {
+            var sid = $scope.selectedRow.id;
+            var vatId = $scope.selectedRow.taxId;
+            var description = "Company: " + $scope.selectedCompany.name + ", Item: " + $scope.selectedRow.sbName;
+
+            var oldAmount = parseFloat($scope.selectedRow.salesPrice);
+            var newAmount = parseFloat($scope.salesPrice);
+
+            var oldVatAmount = parseFloat($scope.selectedRow.tax);
+            var newVatAmount = parseFloat($scope.vatAmount);
+
+            var oldDuration = parseInt($scope.selectedRow.duration);
+            var newDuration = parseInt($scope.duration);
+
+            var oldRefNo = $scope.selectedRow.refNo;
+            var newRefNo = $scope.refNo == undefined ? "" : $scope.refNo;
+
+            var tno = $scope.selectedRow.tno;
+            var AR = parseFloat(newAmount + newVatAmount);
+            $scope.formattedFromDate = $scope.fromDate.toISOString().split('T')[0];
+            var dtp = $scope.formattedFromDate;
+            $scope.formattedToDate = $scope.toDate.toISOString().split('T')[0];
+            var dtp2 = $scope.formattedToDate;
+            var posted = $scope.selectedRow.posted ? 'Yes' : 'No';
+            if (oldAmount != newAmount || oldVatAmount != newVatAmount || oldDuration != newDuration) {
+                $http.post('/Sale/GetNumberOfId', { tno: tno })
+                    .then(function (response) {
+                        if (response.data.first > 0) {
+                            alert("Can not update.\nCash has been collected for this sale. You must delete that Cash from Cash Collection form, then update this sale.");
+
+                        } else if (response.data.Second > 0) {
+                            alert("Can not update.\nThe Sales journal is approved.");
+
+                        } else {
+                            var isConfirmed = confirm("Are you sure to update the change amount of the Sale?");
+                            if (isConfirmed) {
+                                let requestBodyModel = {
+                                    SalesPrice: newAmount,
+                                    AccReceivable: AR,
+                                    Duration: newDuration,
+                                    Tax: newVatAmount,
+                                    StartDate: dtp,
+                                    EndDate: dtp2,
+                                    Tno: tno,
+                                    ContactId: $scope.billingContact,
+                                    RefNo: newRefNo,
+                                    SalesPerson: $scope.salesPerson
+                                };
+                                let Url = '';
+                                if (window.location.hostname == 'localhost')
+                                    Url = '/Sale/UpdateSaleInfo';
+                                else
+                                    Url = '/AccountingNew/Sale/UpdateSaleInfo';
+
+                                $scope.spinner = true;
+                                $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+
+                                    .then(function (dt) {
+                                        if (dt.data == true) {
+                                            if (posted == 'Yes') {
+                                                $http.post('/Sale/UpdateSalesJournal', {
+                                                    sid: $scope.selectedRow.SId,
+                                                    vatId: $scope.selectedRow.VatId,
+                                                    tno: tno,
+                                                    oldDuration: $scope.oldDuration,
+                                                    newDuration: $scope.newDuration,
+                                                    oldAmount: $scope.oldAmount,
+                                                    newAmount: $scope.newAmount,
+                                                    oldVatAmount: $scope.oldVatAmount,
+                                                    newVatAmount: $scope.newVatAmount,
+                                                    fromDate: dtp,
+                                                    description: description,
+                                                    userId: @userId,
+                                                    sPerson: $scope.SalesPersons.selectedOption
+                                                })
+                                                    .then(function (dt1) {
+                                                        if (dt1.data == true) {
+                                                            forTrialBalance(tno);
+                                                        }
+                                                    });
+                                            } else {
+                                                var isPostConfirmed = confirm("Update completed successfully.\nYou must post this entry to the Journal. Do you want to post this now?");
+                                                if (isPostConfirmed) {
+                                                    $http.post('/Sale/UpdateSalePosted', {
+                                                        sid: $scope.selectedRow.sid,
+                                                        newAmount: newAmount,
+                                                        fromdate: dtp,
+                                                        newDuration: newDuration,
+                                                        tno: tno,
+                                                        description: description,
+                                                        dateFrom: dtp,
+                                                        vatId: $scope.selectedRow.vatId,
+                                                        newVatAmount: newVatAmount,
+                                                        userId: @userId
+                                                    })
+                                                        .then(function (dat) {
+                                                            if (dat.data == true) {
+                                                                forTrialBalance(tno);
+                                                            }
+                                                        });
+                                                }
+                                            }
+                                        }
+                                    });
+                                $("#companyList").trigger('change');
+                            }
+                        }
+                    })
+                    .catch(function (error) {
+                        // Handle error
+                        console.log(error);
+                    });
+            }
+            else {
+                var sb = {
+                    Sl: $scope.selectedRowIndex,
+                    Name: $scope.selectedRow.sbName,
+                    SId: $scope.selectedRow.sId,
+                    Tno: $scope.selectedRow.tno
+                };
+
+                if (sb.Name !== $scope.sbName.Name || sb.SId !== $scope.sbName.SId) {
+                    $scope.view = false;
+
+                    // Prompt user for product change
+                    var isConfirmed = confirm('You have changed the product name.\nDo you want to change the product for this sale?');
+
+                    if (isConfirmed) {
+                        var json = {
+                            oldSid: $scope.sbName.SId,
+                            tno: $scope.sbName.Tno,
+                            newSid: sb.SId
+                        };
+
+                        // Use $http.post for AngularJS
+                        $http.post('/Sale/UpdateProduct', json)
+                            .then(function (response) {
+                                if (response.data === true) {
+                                    alert('The product has been changed successfully.');
+                                }
+                            });
+                    } else {
+                        // If user chooses not to change the product, revert the changes
+                        $scope.selectedRow.Name = $scope.sbName.Name;
+                        $scope.selectedRow.SId = $scope.sbName.SId;
+                    }
+
+                    $scope.sbName = {
+                        Sl: $scope.selectedRow.Sl,
+                        Name: $scope.selectedRow.Name,
+                        SId: $scope.selectedRow.SId,
+                        Tno: $scope.selectedRow.Tno
+                    };
+                    $scope.row = $scope.selectedRow;
+
+                    return;
+                }
+
+                // Check if other details have changed
+                if ($scope.selectedRow.ContactPersonId !== $scope.contactPersons.selectedOption ||
+                    $scope.selectedRow.RefNo !== $scope.refNo ||
+                    $scope.selectedRow.SalesPerson !== $scope.SalesPersons.selectedOption) {
+                    // Use $http.post for AngularJS
+                    $http.post('/Sale/UpdateSaleContactPersonAndRefNo', {
+                        personId: $scope.contactPersons.selectedOption,
+                        refNo: $scope.refNo,
+                        salesPerson: $scope.SalesPersons.selectedOption,
+                        tno: tno
+                    })
+                        .then(function (response) {
+                            if (response.data === true) {
+                                alert('Update Sales successfully.');
+                                $("#companyList").trigger('change');
+                            }
+                        });
+                } else {
+                    alert('There are no changes to update.');
+                }
+            }
+        };
+
 
     });
 </script>

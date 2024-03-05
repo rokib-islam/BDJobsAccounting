@@ -839,22 +839,21 @@
             var selectedLedger = $scope.uploadToInviceData.find(function (s) {
                 return s.ledgerId == $scope.invoice;
             });
-
             $scope.cpId = $scope.selectedRow ? $scope.selectedRow.cP_ID : 0;
             $scope.invoiceNo = $scope.invoiceNo;
             $scope.serviceNo = selectedLedger ? selectedLedger.serviceId : 0;
             $scope.billingContact = $scope.billingTo ? $scope.billingTo : "";
             $scope.price = $scope.invoicePrice.toString();
             $scope.opId = $scope.selectInvoice.opId.toString();
-            $scope.jpIdList = [];
+            
             $scope.serviceID = $scope.selectInvoice.serviceID;
             $scope.companyID = $scope.selectInvoice.cP_ID;
             $scope.companyName = $scope.selectInvoice.name;
             $scope.saleDate = $scope.selectInvoice.sdate;
-
+            $scope.jpIdList = [];
             angular.forEach($scope.invoiceData, function (item) {
                 if (item !== null && item !== undefined && item.jpId !== "") {
-                    $scope.jpIdList.push(item.jpId);
+                    $scope.jpIdList.push(item.jp_id);
                 }
             });
 

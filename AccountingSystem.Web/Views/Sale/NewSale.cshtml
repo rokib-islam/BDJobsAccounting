@@ -5,7 +5,16 @@
     var userId = Context.Session.GetInt32("UserID");
     var accessRight = Context.Session.GetString("AccessRight");
     //var accessRights = accessRight.Split(',');
-    var onlineJobId = ViewBag.OnlineJobId;
+    //var onlineJobId = ViewBag.OnlineJobId;
+    var onlineJobId = 0;
+    if (ViewBag.OnlineJobId == null)
+    {
+        onlineJobId = 0;
+    }
+    else
+    {
+        onlineJobId = ViewBag.OnlineJobId;
+    }
     var onlineLedgerId = ViewBag.OnlineLedgerId;
     var onlineCompanyId = ViewBag.OnlineCompanyId;
 
@@ -69,7 +78,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Amount</label>
-                                    <div class="col-sm-8"> 
+                                    <div class="col-sm-8">
                                         <input type="text" class="form-control form-control-sm text-right" ng-model="amount" ng-change="updateTableValues()" ng-disabled="amountDisable" />
                                     </div>
                                 </div>
@@ -88,21 +97,10 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Billing Person</label>
                             <div class="col-sm-8">
-                                @* <select class="form-control form-control-sm" ng-model="billingPerson" ng-change="loadDesignation()">
-                                    <option value="0" selected>Select</option>
-                                    <option ng-repeat="o in getBillingPersonData" value="{{o.name}}">{{o.name}}</option>
-                                </select> *@
-                                <select class="form-control form-control-sm" ng-model="selectedBillingPerson" ng-change="billingPersonChanged()">
-                                    <option value="0" selected>Select</option>
-                                    <option value="Other">Other</option>
-                                    <option ng-repeat="o in getBillingPersonData" value="{{o.name}}">{{o.name}}</option>
-                                    
+                                <input class="form-control form-control-sm" placeholder="Search Billing Person Here" autocomplete="off" ng-model="searchKeyword" ng-keyup="searchBillingPerson()">
+                                <select class="form-control form-control-sm" size="10" ng-model="billingPersonList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="getBillingPersonData && getBillingPersonData.length > 0" ng-change="loadDesignation()">
+                                    <option ng-repeat="o in getBillingPersonData | filter:searchFilter" value="{{o.name}}" ng-click="selectBillingPerson(o)">{{o.name}}</option>
                                 </select>
-
-                                <!-- Input field for new billing person -->
-                                <input type="text" ng-model="newBillingPerson" ng-show="isNewBillingPersonVisible" class="form-control form-control-sm" placeholder="Enter new billing person">
-
-                                
                             </div>
                         </div>
                         <div class="form-group row">
@@ -138,7 +136,8 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-sm-6 d-flex justify-content-end">
-                                <button class="btn btn-success btn-sm px-5" ng-disabled="saveButtonDisabled" ng-click="save()">Save
+                                <button class="btn btn-success btn-sm px-5" ng-disabled="saveButtonDisabled" ng-click="save()">
+                                    Save
                                     &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
                                 </button>
                             </div>
@@ -280,6 +279,8 @@
                 //$scope.makeInvoiceDisable = true;
             } else {
 
+                $scope.amount = '0.00';
+                $scope.salesPrice = '0.00';
                 $scope.salesPerson = '0';
                 $scope.billingPerson = '0';
                 $scope.taxType = '672';
@@ -357,6 +358,21 @@
             $scope.saveButtonDisabled = false;
         }
 
+        $scope.selectCompanyBillPerson = function (company) {
+            $scope.selectedCompany = company;
+            $scope.searchQuery = company.name;
+            $scope.companyList = [];
+
+            $scope.setOptionBillPerson();
+            $scope.saveButtonDisabled = false;
+        }
+
+        $scope.searchBillingPerson = function () {
+            $scope.selectCompanyBillPerson($scope.selectedCompany);
+        }
+
+
+
         $scope.getProductList = [];
         $scope.selectedProduct = null;
 
@@ -383,7 +399,6 @@
             $scope.selectedProduct = product;
             $scope.searchQueryProduct = product.ladgerName;
             $scope.getProductList = [];
-
         }
 
 
@@ -456,90 +471,53 @@
                 });
         };
 
-
-
-
         $scope.setOption = function () {
             $scope.getBillingPerson('C', $scope.comList);
             $scope.getJobTitle('T', $scope.comList);
         }
 
+        $scope.setOptionBillPerson = function () {
+            $scope.getBillingPerson('C', $scope.selectedCompany.id);
+        }
 
-        $scope.selectedBillingPerson = '0';
-        $scope.newBillingPerson = '';
-        $scope.isNewBillingPersonVisible = false;
+        $scope.selectBillingPerson = function (o) {
+            $scope.selectedBillingPerson = o;
+            $scope.searchKeyword = o.name;
+            $scope.getBillingPersonData = [];
+        }
 
-        $scope.billingPersonChanged = function () {
-            if ($scope.selectedBillingPerson === 'Other') {
-                $scope.isNewBillingPersonVisible = true;
-                $scope.newBillingPerson = ''; // Clear the new billing person input field
-            } else {
-                $scope.isNewBillingPersonVisible = false;
-                
-                var selectedBillingPerson = $scope.getBillingPersonData.find(function (person) {
-                    return person.name == $scope.selectedBillingPerson;
-                });
-
-                if (selectedBillingPerson) {
-                    $scope.designation = selectedBillingPerson.designation;
-                } else {
-                    $scope.designation = '';
-                }
-            }
+        $scope.searchFilter = function (billingPerson) {
+            var keyword = $scope.searchKeyword || ''; // Get the search keyword from a model variable
+            return billingPerson.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
         };
+
 
         $scope.getBillingPerson = function (type, cId) {
             let Url = '';
-            if (window.location.hostname == 'localhost') {
+            if (window.location.hostname == 'localhost')
                 Url = '/Company/GetContactPersonsOrJobTitle';
-            } else {
+            else
                 Url = '/AccountingNew/Company/GetContactPersonsOrJobTitle';
-            }
 
             $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
                     $scope.getBillingPersonData = response.data;
-
-                    // Assuming you have a default value for $scope.selectedBillingPerson
-                    $scope.selectedBillingPerson = '0';
-                    $scope.newBillingPerson = '';
-                    $scope.isNewBillingPersonVisible = false;
-
+                    
                 }, function (error) {
                     console.error(error);
-                });
+                })
+        }
+
+        $scope.loadDesignation = function () {
+            var selectedBillingPerson = $scope.selectedBillingPerson;
+
+            if (selectedBillingPerson) {
+                $scope.designation = selectedBillingPerson.designation;
+            } else {
+                $scope.designation = '';
+            }
         };
 
-
-        // $scope.getBillingPerson = function (type, cId) {
-        //     let Url = '';
-        //     if (window.location.hostname == 'localhost')
-        //         Url = '/Company/GetContactPersonsOrJobTitle';
-        //     else
-        //         Url = '/AccountingNew/Company/GetContactPersonsOrJobTitle';
-
-        //     $http.get(Url, { params: { type: type, cId: cId } })
-        //         .then(function (response) {
-        //             debugger
-        //             $scope.getBillingPersonData = response.data;
-        //             $scope.billingPerson = $scope.getBillingPersonData[0].name.toString();
-        //             $scope.designation = $scope.getBillingPersonData[0].designation;
-        //         }, function (error) {
-        //             console.error(error);
-        //         })
-        // }
-
-        // $scope.loadDesignation = function () {
-        //     var selectedBillingPerson = $scope.getBillingPersonData.find(function (person) {
-        //         return person.name == $scope.selectedBillingPerson;
-        //     });
-
-        //     if (selectedBillingPerson) {
-        //         $scope.designation = selectedBillingPerson.designation;
-        //     } else {
-        //         $scope.designation = '';
-        //     }
-        // };
 
         $scope.getJobTitle = function (type, cId) {
             let Url = '';
@@ -637,7 +615,7 @@
                 // else if (parseFloat($scope.total) !== parseFloat(parseFloat($scope.salesPrice) + $scope.taxAmount)) {
                 //     alert("The total amount of the invoice scheduler is not equal to the sales price.");
                 // }
-                else if ($scope.selectedBillingPerson == "0") {
+                else if ($scope.searchKeyword == "0" || $scope.searchKeyword == "" || $scope.searchKeyword == null || $scope.searchKeyword == undefined) {
                     alert("You must give the name of 'Billing Person'.");
                 }
                 else if ($scope.salesPerson == 0 || $scope.salesPerson == "") {
@@ -660,6 +638,7 @@
             $scope.formattedFromDate = $scope.dateFrom.toISOString().split('T')[0];
             $scope.formattedToDate = $scope.dateTo.toISOString().split('T')[0];
             $scope.formattedJournalDate = $scope.journalDate.toISOString().split('T')[0];
+            //$scope.jpId2 = @onlineJobId;
             let requestBodyModel = {
                 UserId: @userId,
                 CId: $scope.selectedCompany.id,
@@ -669,7 +648,7 @@
                 JournalDate: $scope.formattedJournalDate ? $scope.formattedJournalDate : "",
                 SalesPrice: $scope.salesPrice,
                 // BillingPerson: $scope.billingPerson,
-                BillingPerson: $scope.selectedBillingPerson == "Other" ? $scope.newBillingPerson : $scope.selectedBillingPerson,
+                BillingPerson: $scope.searchKeyword,
                 Designation: $scope.designation == null ? "" : $scope.designation,
                 Comment: $scope.comments || "",
                 Duration: $scope.month,
@@ -677,7 +656,7 @@
                 RefNo: $scope.referenceNo || "",
                 TypeId: $scope.taxType ? $scope.taxType.toString() : "",
                 Vat: $scope.amount || 0,
-                JpId: 0,
+                JpId: @onlineJobId == 0 ? 0 : @onlineJobId,
                 JobTitle: $scope.jobTitle ? $scope.jobTitle.toString() : "",
                 // workshopDate: $scope.workshopdateDiv ? $scope.workshopdate : "",
                 SPerson: $scope.salesPerson
@@ -689,9 +668,9 @@
                 Url = '/AccountingNew/Sale/Save';
 
             $scope.spinner = true;
-            $http.post(Url , JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
-                    
+
                     if (response.data === "Success") {
                         alert('All information has been saved successfully.');
                         $("#closejournal").modal('hide');
