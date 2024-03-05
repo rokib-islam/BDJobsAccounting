@@ -108,7 +108,7 @@
         
 
         $scope.Show = function () {
-            const format = $scope.selectedFormat || 'excel'; // Use default format if not selected
+            const format = $scope.selectedFormat || 'pdf'; // Use default format if not selected
             const type = $scope.radioValueRange == 1 ? 'Range' : 'Month';
             const startDate = $scope.radioValueRange == 1 ? $scope.from.toISOString().split('T')[0] : $scope.selectedMonth;
             const endDate = $scope.radioValueRange == 1 ? $scope.to.toISOString().split('T')[0] : $scope.selectedYear;
