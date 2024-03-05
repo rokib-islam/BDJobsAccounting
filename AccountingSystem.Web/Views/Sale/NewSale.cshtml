@@ -5,7 +5,16 @@
     var userId = Context.Session.GetInt32("UserID");
     var accessRight = Context.Session.GetString("AccessRight");
     //var accessRights = accessRight.Split(',');
-    var onlineJobId = ViewBag.OnlineJobId;
+    //var onlineJobId = ViewBag.OnlineJobId;
+    var onlineJobId = 0;
+    if (ViewBag.OnlineJobId == null)
+    {
+        onlineJobId = 0;
+    }
+    else
+    {
+        onlineJobId = ViewBag.OnlineJobId;
+    }
     var onlineLedgerId = ViewBag.OnlineLedgerId;
     var onlineCompanyId = ViewBag.OnlineCompanyId;
 
@@ -629,6 +638,7 @@
             $scope.formattedFromDate = $scope.dateFrom.toISOString().split('T')[0];
             $scope.formattedToDate = $scope.dateTo.toISOString().split('T')[0];
             $scope.formattedJournalDate = $scope.journalDate.toISOString().split('T')[0];
+            //$scope.jpId2 = @onlineJobId;
             let requestBodyModel = {
                 UserId: @userId,
                 CId: $scope.selectedCompany.id,
@@ -646,7 +656,7 @@
                 RefNo: $scope.referenceNo || "",
                 TypeId: $scope.taxType ? $scope.taxType.toString() : "",
                 Vat: $scope.amount || 0,
-                JpId: 0,
+                JpId: @onlineJobId == 0 ? 0 : @onlineJobId,
                 JobTitle: $scope.jobTitle ? $scope.jobTitle.toString() : "",
                 // workshopDate: $scope.workshopdateDiv ? $scope.workshopdate : "",
                 SPerson: $scope.salesPerson
