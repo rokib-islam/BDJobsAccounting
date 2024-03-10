@@ -103,7 +103,7 @@ namespace AccountingSystem.Web.Controllers
                 return RedirectToAction("Index", "Home");
         }
 
-       
+
         public Task<bool> CheckInvoiceNo(string invoiceNo)
         {
             var results = _InvoiceManager.CheckInvoiceNo(invoiceNo);
@@ -128,6 +128,15 @@ namespace AccountingSystem.Web.Controllers
             var results = await _InvoiceManager.GetInvoicesAsync(parameters);
 
             return Json(results);
+        }
+
+        [HttpPost]
+        [Route("api/OnlineInvocie")]
+        public async Task<IActionResult> OnlineInvocie([FromBody] OnlineInvoiceRequestModel OnlineInvoice)
+        {
+            var responseList = await _InvoiceManager.OnlineInvcoie(OnlineInvoice);
+
+            return await Task.FromResult(Ok(responseList));
         }
 
     }

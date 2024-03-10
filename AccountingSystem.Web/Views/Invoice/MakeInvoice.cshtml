@@ -423,15 +423,15 @@
 
                     if (shiftedProduct.comments == "" || shiftedProduct.comments == null || shiftedProduct.comments.length < 110) {
                         if (
-                            ledgerId == 44 ||
+                            //ledgerId == 44 ||
                             ledgerId == 1165 ||
-                            ledgerId == 2253 ||
+                            //ledgerId == 2253 ||
                             ledgerId == 2270 ||
                             ledgerId == 8388 ||
                             ledgerId == 18979 ||
                             ledgerId == 18981 ||
                             ledgerId == 18980 ||
-                            ledgerId == 22254 ||
+                            //ledgerId == 22254 ||
                             ledgerId == 22255 ||
                             ledgerId == 22257 ||
                             ledgerId == 26422
@@ -445,7 +445,37 @@
                                 shiftedProduct.eDate +
                                 " for the following job position(s):\n\n" +
                                 shiftedProduct.product;
-                        } else if (ledgerId == 18) {
+                        }
+                        else if (
+                            ledgerId == 44 ||
+                            
+                            ledgerId == 2253 ||
+                            
+                            ledgerId == 22254 ||
+                          
+                            ledgerId == 26451
+                        ) {
+                            var serviceName = "";
+                            if (shiftedProduct.sbName == "Online Job Posting (Standard Listing)")
+                                serviceName = "Standard Listing";
+                            else if (shiftedProduct.sbName == "Online Job Posting (Premium Listing)")
+                                serviceName = "Premium Listing";
+                            else if (shiftedProduct.sbName == "Online Job Posting (Premium Plus Listing)")
+                                serviceName = "Premium Plus Listing";
+                            else if (shiftedProduct.sbName == "Online Job Posting-Basic (SME)")
+                                serviceName = "SME package";
+
+                            comments =
+                                "Payment for Web Listing Services under '" +
+                                serviceName +
+                                "' at the classified section of Bdjobs.com from " +
+                                shiftedProduct.sDate +
+                                " to " +
+                                shiftedProduct.eDate +
+                                " for the following job position(s):\n\nDesignation Name: " +
+                                shiftedProduct.product;
+                        }
+                        else if (ledgerId == 18) {
                             comments =
                                 "Payment for 'Job Announcement Display' at the Home Page of Bdjobs.com from " +
                                 shiftedProduct.sDate +
@@ -453,7 +483,7 @@
                                 shiftedProduct.eDate +
                                 " for the following position(s):\n\n" +
                                 shiftedProduct.product;
-                        } else if (shiftedProduct.product.trim() == "VAT (AP)") {
+                        } else if (shiftedProduct.product.trim() == "Add: VAT@5% Under Service Code: S099.10 (IT Enabled Services)") {
                             comments = "VAT";
                         } else {
                             comments =
