@@ -481,7 +481,7 @@ namespace AccountingSystem.Repository
         {
             try
             {
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
                 {
                     var dynamicParameters = new DynamicParameters();
                     dynamicParameters.Add("@PageNo", parameters.PageNo);
