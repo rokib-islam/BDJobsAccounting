@@ -91,7 +91,7 @@
                         <span style="border: 1px solid gray; background: #9C27B0; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span><br />
                         <label class="control-label float-right" style="font-weight: normal;">Premium</label>
                         <span style="border: 1px solid gray; background: #D5F5E3; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                        <label class="control-label float-right" style="font-weight: normal;">Uddokta</label>
+                        <label class="control-label float-right" style="font-weight: normal;">SME</label>
                         <span style="border: 1px solid gray; background: #fa6e66; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
                         <label class="control-label float-right" style="font-weight: normal;">LN</label>
                         <span style="border: 1px solid gray; background: #0CFBFF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
@@ -486,7 +486,7 @@
                     rowStyle["background"] = "#FFE6A8"; // Paid Online
 
                 } else if (o.addType == 10) {
-                    rowStyle["background"] = "#fa6e66"; // Uddokta
+                    rowStyle["background"] = "#fa6e66"; // SME
                 }
             }
 
@@ -728,23 +728,27 @@
                 var onlineProduct = "";
                 if (type == "Stand-out") {
                     if ($scope.selectedJob.blueCollar > 0) {
-                        onlineProduct = "Online Job Posting-Stand-out (Blue Color)";
+                       // onlineProduct = "Online Job Posting-Stand-out (Blue Color)";
+                        onlineProduct = "Online Job Posting (Premium Listing-BC)";
                     } else {
-                        onlineProduct = "Online Job Posting (Stand-out)";
+                        //onlineProduct = "Online Job Posting (Stand-out)";
+                        onlineProduct = "Online Job Posting (Premium Listing)";
                     }
                 }
                 else if (type == "Premium") {
                     if ($scope.selectedJob.blueCollar > 0) {
-                        onlineProduct = "Online Job Posting-Stand-out (BCP)";
+                        //onlineProduct = "Online Job Posting-Stand-out (BCP)";
+                        onlineProduct = "Online Job Posting (Premium Plus Listing-BC)";
                     } else {
-                        onlineProduct = "Online Job Posting (Stand-out Premium)";
+                        //onlineProduct = "Online Job Posting (Stand-out Premium)";
+                        onlineProduct = "Online Job Posting (Premium Plus Listing)";
                     }
                 }
-                else if (type == "Uddokta") {
+                else if (type == "SME") {
                     if ($scope.selectedJob.blueCollar > 0) {
-                        onlineProduct = "Online Job Posting-Basic (Uddokta BC)";
+                        onlineProduct = "Online Job Posting-Basic (SME-BC)";
                     } else {
-                        onlineProduct = "Online Job Posting-Basic (Uddokta)";
+                        onlineProduct = "Online Job Posting-Basic (SME)";
                     }
                 }
                 else if ($scope.selectedRow.region > 0) {
@@ -753,6 +757,7 @@
                     } else {
                         if ($scope.selectedJob.blueCollar > 0) {
                             onlineProduct = "Online Job Posting-Basic-Regional (Blue Color)";
+                            onlineProduct = "Online Job Posting (Standard Listing-BC)";
                         } else {
                             onlineProduct = "Online Job Posting (Basic) Regional";
                         }
@@ -763,9 +768,11 @@
                 }
                 else {
                     if ($scope.selectedJob.blueCollar > 0) {
-                        onlineProduct = "Online Job Posting-Basic (Blue Color)";
+                        //onlineProduct = "Online Job Posting-Basic (Blue Color)";
+                        onlineProduct = "Online Job Posting (Standard Listing-BC)";
                     } else {
-                        onlineProduct = "Online Job Posting (Basic)";
+                        //onlineProduct = "Online Job Posting (Basic)";
+                        onlineProduct = "Online Job Posting (Standard Listing)";
                     }
                 }
 
