@@ -757,6 +757,18 @@
                             alert("Invoice information is successfully saved.");
                             $scope.saveDisabled = true;
                             $scope.saveSpinner = false;
+                           
+
+                            $scope.blankPrice();
+                            $scope.loadProducts($scope.selectedCompany.id, 1);
+                            $scope.tableEmpty();
+                            $scope.comments = '';
+                            $scope.disabledCommentsTable = false;
+                            $scope.disabledComments = true;
+                            $scope.saveDisabled = true;
+                            $scope.showChallanButton = false;
+                            $scope.showInvoiceButton = false;
+                            $scope.invoiceType = '1';
                         } else {
                             alert("Error: " + data);
                             $scope.saveSpinner = false;

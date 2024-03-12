@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingSystem.Abstractions.BLL
 {
@@ -24,13 +25,13 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<Ledger>> CheckJobTitle(int productId);
         Task<object> GetSales(string pageNo, string pageSize, int cId, int tno);
         Task<IEnumerable<DeletedSalesViewModel>> GetDeletedSales(string pageNo, string pageSize, int cId);
-        Task<string> UpdateSaleProduct(string oldSid, string tno, string newSid);
+        Task<string> UpdateSaleProduct(UpdateProductModel model);
         Task<string> DeleteSale(int tno, string deleteReason, int creditNote, DateTime deleteDate);
         Task<string> MakeJournalOfSale(MakeJournalOfSales saleInfo);
         Task<object> GetNumberOfId(string tno);
         Task<string> UpdateSaleInfoAsync(UpdateSalesInfo salesInfo);
         Task<string> UpdateSalePosted(MakeJournalOfSales saleInfo);
-        Task<string> UpdateSaleContactPersonAndRefNo(string personId, string refNo, int salesPerson, string tno);
+        Task<string> UpdateSaleContactPersonAndRefNo(UpdateSaleContactPersonAndRefNoModel model);
         Task<List<SalesPerson>> GetSalesPersonListByKey(string startingKey);
     }
 }

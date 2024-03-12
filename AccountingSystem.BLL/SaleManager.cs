@@ -98,9 +98,9 @@ namespace AccountingSystem.BLL
             return _repository.GetDeletedSales(pageNo, pageSize, cId);
         }
 
-        public Task<string> UpdateSaleProduct(string oldSid, string tno, string newSid)
+        public Task<string> UpdateSaleProduct(UpdateProductModel model)
         {
-            return _repository.UpdateSaleProduct(oldSid, tno, newSid);
+            return _repository.UpdateSaleProduct(model.OldSid, model.Tno, model.NewSid);
         }
 
         public Task<string> DeleteSale(int tno, string deleteReason, int creditNote, DateTime deleteDate)
@@ -127,9 +127,9 @@ namespace AccountingSystem.BLL
             return _repository.UpdateSalePosted(saleInfo);
         }
 
-        public Task<string> UpdateSaleContactPersonAndRefNo(string personId, string refNo, int salesPerson, string tno)
+        public Task<string> UpdateSaleContactPersonAndRefNo(UpdateSaleContactPersonAndRefNoModel model)
         {
-            return _repository.UpdateSaleContactPersonAndRefNo(personId, refNo, salesPerson, tno);
+            return _repository.UpdateSaleContactPersonAndRefNo(model.PersonId, model.RefNo, model.SalesPerson, model.Tno);
         }
 
         public Task<List<SalesPerson>> GetSalesPersonListByKey(string startingKey)

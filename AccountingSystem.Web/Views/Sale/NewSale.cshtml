@@ -22,9 +22,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-        <script type="text/javascript">
-            window.location.href = '@Url.Action("Index", "Home")';
-        </script>
+            <script type="text/javascript">
+                window.location.href = '@Url.Action("Index", "Home")';
+            </script>
     }
     else
     {
@@ -276,6 +276,7 @@
                 $scope.getSalesPerson();
                 $scope.taxTypeAmountDisable();
                 $scope.saveButtonDisabled = false;
+                $scope.billingPersonList = hide;
                 //$scope.makeInvoiceDisable = true;
             } else {
 
@@ -529,6 +530,7 @@
                 .then(function (response) {
                     $scope.jobTitleData = response.data;
                     $scope.jobTitle = $scope.jobTitleData[0].title;
+                    $scope.searchKeyword = $scope.jobTitleData[0].companyName;
                     $scope.dateFrom = new Date($scope.jobTitleData[0].postingDate);
 
                     $scope.dateTo = new Date($scope.jobTitleData[0].validDate);

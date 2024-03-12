@@ -229,6 +229,7 @@
                 </div>
                 <div class="col-sm-3">
                     <button class="btn btn-primary btn-sm" ng-click="uploadInvoice()" style="padding-left:45px;padding-right:45px" ng-disabled="!uploadBtn">Upload Invoice
+                        &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="UploadInvoiceSpinner"></span>
                     </button>
                 </div>
             </div>
@@ -836,6 +837,7 @@
         };
 
         $scope.uploadInvoice = function () {
+            $scope.UploadInvoiceSpinner = true;
             var selectedLedger = $scope.uploadToInviceData.find(function (s) {
                 return s.ledgerId == $scope.invoice;
             });
@@ -885,7 +887,7 @@
                     var val = response.data;
                     if (val.connection === false) {
                         confirm(val.message);
-                        
+                        $scope.UploadInvoiceSpinner = false;
                     }
                     else if (val.duplicate === true) {
 
@@ -909,21 +911,23 @@
                                         sDate = "01/01/2011";
                                     }
                                     $scope.fillInvoiceTable(0, sDate, $scope.invoice);
-
+                                    $scope.UploadInvoiceSpinner = false;
                                 })
                                 .catch(function (error) {
                                     
                                     console.log(error);
+                                    $scope.UploadInvoiceSpinner = false;
                                 });
                         }
                     } else {
                         confirm(val.message);
-                       
+                        $scope.UploadInvoiceSpinner = false;
                     }
                     
                 })
                 .catch(function (error) {
                     console.log(error);
+                    $scope.UploadInvoiceSpinner = false;
                 });
         }
 
