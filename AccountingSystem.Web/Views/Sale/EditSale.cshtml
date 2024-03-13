@@ -992,9 +992,9 @@
                     var isConfirmed = confirm('You have changed the product name.\nDo you want to change the product for this sale?');
                     if (isConfirmed) {
                         var json = {
-                            OldSid: sbName.SId,
+                            OldSid: sbName.SId.toString(),
                             Tno: sb.Tno,
-                            NewSid: sb.SId
+                            NewSid: sb.SId.toString()
                         };
 
                         let Url = '';
