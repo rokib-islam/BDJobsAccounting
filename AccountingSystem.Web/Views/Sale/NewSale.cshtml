@@ -22,9 +22,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-            <script type="text/javascript">
-                window.location.href = '@Url.Action("Index", "Home")';
-            </script>
+                                    <script type="text/javascript">
+                                        window.location.href = '@Url.Action("Index", "Home")';
+                                    </script>
     }
     else
     {
@@ -98,7 +98,7 @@
                             <label class="col-sm-4 col-form-label">Billing Person</label>
                             <div class="col-sm-8">
                                 <input class="form-control form-control-sm" placeholder="Search Billing Person Here" autocomplete="off" ng-model="searchKeyword" ng-keyup="searchBillingPerson()">
-                                <select class="form-control form-control-sm" size="10" ng-model="billingPersonList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="getBillingPersonData && getBillingPersonData.length > 0" ng-change="loadDesignation()">
+                                <select class="form-control form-control-sm" size="10" ng-model="billingPersonList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="getBillingPersonData && getBillingPersonData.length > 0 && billingPersonListVisible" ng-change="loadDesignation()">
                                     <option ng-repeat="o in getBillingPersonData | filter:searchFilter" value="{{o.name}}" ng-click="selectBillingPerson(o)">{{o.name}}</option>
                                 </select>
                             </div>
@@ -276,7 +276,7 @@
                 $scope.getSalesPerson();
                 $scope.taxTypeAmountDisable();
                 $scope.saveButtonDisabled = false;
-                $scope.billingPersonList = hide;
+                $scope.billingPersonListVisible = false;
                 //$scope.makeInvoiceDisable = true;
             } else {
 
@@ -291,7 +291,7 @@
                 $scope.getSalesPerson();
                 $scope.getTaxType();
                 $scope.saveButtonDisabled = true;
-                $scope.makeInvoiceDisable = true;
+                $scope.makeInvoiceDisable = true;                
             }
 
 
@@ -503,6 +503,10 @@
             $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
                     $scope.getBillingPersonData = response.data;
+                    if ($scope.getBillingPersonData.length == 0) {
+                        $scope.billingPersonListVisible = false;
+                    }
+                    $scope.billingPersonListVisible = true;
                     
                 }, function (error) {
                     console.error(error);
@@ -529,11 +533,25 @@
             $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
                     $scope.jobTitleData = response.data;
-                    $scope.jobTitle = $scope.jobTitleData[0].title;
-                    $scope.searchKeyword = $scope.jobTitleData[0].companyName;
+                    $scope.jobTitle = $scope.jobTitleData[0].title;                   
                     $scope.dateFrom = new Date($scope.jobTitleData[0].postingDate);
-
                     $scope.dateTo = new Date($scope.jobTitleData[0].validDate);
+                    if ($scope.getBillingPersonData.length == 0) {
+                        $scope.searchKeyword = $scope.jobTitleData[0].companyName;
+                        $scope.designation = $scope.jobTitleData[0].type;
+                    }
+                    else {
+                        if ($scope.getBillingPersonData.length > 0) {
+                            $scope.billingPersonListVisible = false;
+                            $scope.designation = $scope.jobTitleData[0].type;
+                            $scope.searchKeyword = $scope.jobTitleData[0].companyName;
+                        } else {
+                            $scope.designation = $scope.jobTitleData[0].type;
+                            $scope.searchKeyword = $scope.jobTitleData[0].companyName;
+                        }
+                       
+                    }
+                    
 
                 }, function (error) {
                     console.error(error);
