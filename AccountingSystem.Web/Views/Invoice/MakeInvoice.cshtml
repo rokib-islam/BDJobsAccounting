@@ -446,17 +446,23 @@
                                 " for the following job position(s):\n\n" +
                                 shiftedProduct.product;
                         }
-                        else if (ledgerId == 44 ||    ledgerId == 2253 ||  ledgerId == 22254 || ledgerId == 26451)
+                        else if (
+                            ledgerId == 44 ||
                             
-                            {
+                            ledgerId == 2253 ||
+                            
+                            ledgerId == 22254 ||
+                          
+                            ledgerId == 26451
+                        ) {
                             var serviceName = "";
-                            if (shiftedProduct.product == "Online Job Posting (Standard Listing)")
+                            if (shiftedProduct.sbName == "Online Job Posting (Standard Listing)")
                                 serviceName = "Standard Listing";
-                            else if (shiftedProduct.product == "Online Job Posting (Premium Listing)")
+                            else if (shiftedProduct.sbName == "Online Job Posting (Premium Listing)")
                                 serviceName = "Premium Listing";
-                            else if (shiftedProduct.product == "Online Job Posting (Premium Plus Listing)")
+                            else if (shiftedProduct.sbName == "Online Job Posting (Premium Plus Listing)")
                                 serviceName = "Premium Plus Listing";
-                            else if (shiftedProduct.product == "Online Job Posting-Basic (SME)")
+                            else if (shiftedProduct.sbName == "Online Job Posting-Basic (SME)")
                                 serviceName = "SME package";
 
                             comments =
@@ -477,8 +483,8 @@
                                 shiftedProduct.eDate +
                                 " for the following position(s):\n\n" +
                                 shiftedProduct.product;
-                        } else if (shiftedProduct.product.trim() == "VAT (AP)") {
-                            comments = "Add: VAT@5% Under Service Code: S099.10 (IT Enabled Services)";
+                        } else if (shiftedProduct.product.trim() == "Add: VAT@5% Under Service Code: S099.10 (IT Enabled Services)") {
+                            comments = "VAT";
                         } else {
                             comments =
                                 "Payment for Web Listing (" +
