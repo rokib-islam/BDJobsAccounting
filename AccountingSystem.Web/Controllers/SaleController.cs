@@ -138,9 +138,10 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
-        public async Task<IActionResult> UpdateProduct(string oldSid, string tno, string newSid)
+        [HttpPost]
+        public async Task<IActionResult> UpdateProduct([FromBody] UpdateProductModel model)
         {
-            var result = await _SaleManager.UpdateSaleProduct(oldSid, tno, newSid);
+            var result = await _SaleManager.UpdateSaleProduct(model);
 
             return Json(result);
         }
@@ -159,19 +160,22 @@ namespace AccountingSystem.Web.Controllers
             var result = await _SaleManager.GetNumberOfId(tno);
             return Json(result);
         }
-        public async Task<IActionResult> UpdateSaleInfo(UpdateSalesInfo salesInfo)
+        [HttpPost]
+        public async Task<IActionResult> UpdateSaleInfo([FromBody] UpdateSalesInfo salesInfo)
         {
             var result = await _SaleManager.UpdateSaleInfoAsync(salesInfo);
             return Json(result);
         }
-        public async Task<IActionResult> UpdateSalePosted(MakeJournalOfSales saleInfo)
+        [HttpPost]
+        public async Task<IActionResult> UpdateSalePosted([FromBody] MakeJournalOfSales saleInfo)
         {
             var result = await _SaleManager.UpdateSalePosted(saleInfo);
             return Json(result);
         }
-        public async Task<IActionResult> UpdateSaleContactPersonAndRefNo(string personId, string refNo, int salesPerson, string tno)
+        [HttpPost]
+        public async Task<IActionResult> UpdateSaleContactPersonAndRefNo([FromBody] UpdateSaleContactPersonAndRefNoModel model)
         {
-            var result = await _SaleManager.UpdateSaleContactPersonAndRefNo(personId, refNo, salesPerson, tno);
+            var result = await _SaleManager.UpdateSaleContactPersonAndRefNo(model);
             return Json(result);
         }
 

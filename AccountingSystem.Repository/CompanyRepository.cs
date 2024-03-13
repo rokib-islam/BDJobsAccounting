@@ -153,7 +153,7 @@ namespace AccountingSystem.Repository
         {
             int cId = 0;
 
-            if (FromData.Action == "INSERT")
+            if (FromData.Action == "Insert")
             {
                 try
                 {
@@ -210,7 +210,7 @@ namespace AccountingSystem.Repository
 
                 throw ex;
             }
-            
+
         }
         public async Task<Company> SMSAlertGetOnlineCompanyInfoAsync(int cpId)
         {
@@ -293,7 +293,7 @@ namespace AccountingSystem.Repository
                             PostingDate = Convert.ToDateTime(r.postingDate).ToShortDateString(),
                             ValidDate = Convert.ToDateTime(r.ValidDate).ToShortDateString(),
                             Title = r.title,
-                            Type = r.Designation
+                            Type = r.designation
                         }).ToList();
 
                         return jobList;

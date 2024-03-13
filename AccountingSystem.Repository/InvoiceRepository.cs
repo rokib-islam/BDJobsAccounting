@@ -75,10 +75,16 @@ namespace AccountingSystem.Repository
                             var insertSql = "INSERT INTO dbo_Invoice(Cp_id,Inv_Date,Invoice_No,ServiceId,Bill_Contact,Amount,OPID) VALUES(@CpId, @InvSendDt, @InvoiceNo, @ServiceNo, @BillingContact, @Price, @OpId)";
                             await onlineSqlConnection.ExecuteAsync(insertSql, new { CpId = cpId, InvSendDt = invSendDt, InvoiceNo = invoiceNo, ServiceNo = serviceNo, BillingContact = billingContact, Price = price, OpId = opId });
 
-                            var updateSql = "UPDATE JobBillInfo SET InvoiceID=(SELECT InvoiceId FROM dbo_Invoice WHERE Invoice_No=@InvoiceNo) WHERE jp_id IN (@JpIdList)";
-                            await onlineSqlConnection.ExecuteAsync(updateSql, new { InvoiceNo = invoiceNo, JpIdList = jpIdList });
+                            var IntjpIdList = jpIdList.Split(',').Select(int.Parse).ToList();
 
-                            await onlineSqlConnection.ExecuteAsync("UPDATE tmpJobs SET Submitted=1 WHERE Invoice_No = @InvoiceNo", new { InvoiceNo = invoiceNo });
+                            var updateSql = "UPDATE JobBillInfo SET InvoiceID=(SELECT InvoiceId FROM dbo_Invoice WHERE Invoice_No=@InvoiceNo) WHERE jp_id IN @JpIdList";
+                            await onlineSqlConnection.ExecuteAsync(updateSql, new { InvoiceNo = invoiceNo, JpIdList = IntjpIdList });
+
+                            using (var onlineSqlConnection2 = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                            {
+                                await onlineSqlConnection2.ExecuteAsync("UPDATE tmpJobs SET Submitted=1 WHERE Invoice_No = @InvoiceNo", new { InvoiceNo = invoiceNo });
+                            }
+
 
                             message = $"Invoice number '<strong>{invoiceNo}</strong>' has been sent to the online database successfully.";
                         }
@@ -356,7 +362,7 @@ namespace AccountingSystem.Repository
                             {
                                 product.Comments = item.Comments;
                                 product.Amount = Convert.ToDouble(item.Amount);
-                                product.SbName = item.SbName;
+                                product.SbName = item.SBName;
                                 product.EDate = Convert.ToDateTime(item.EDate).ToShortDateString();
                                 product.Product = item.Product;
                                 product.LedgerId = item.LedgerID;
@@ -506,6 +512,51 @@ namespace AccountingSystem.Repository
                         commandType: CommandType.StoredProcedure);
 
                     return invoices.AsList();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions accordingly
+                throw new Exception("Error retrieving invoices.", ex);
+            }
+        }
+
+        public async Task<OnlineInvoiceResponseModel> OnlineInvcoie(OnlineInvoiceRequestModel parameters)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {
+                    var dynamicParameters = new DynamicParameters();
+                    dynamicParameters.Add("@acc_id", parameters.Acc_Id);
+                    dynamicParameters.Add("@JP_ID", parameters.Jp_Id);
+                    dynamicParameters.Add("@AddType", parameters.AddType);
+                    dynamicParameters.Add("@Regional", parameters.Regional);
+                    dynamicParameters.Add("@BlueCollar", parameters.BlueCollar);
+                    dynamicParameters.Add("@SalesPrice", parameters.SalesPrice);
+                    dynamicParameters.Add("@Tax", parameters.Tax);
+                    dynamicParameters.Add("@SDate", parameters.SDate);
+                    dynamicParameters.Add("@EDate", parameters.EDate);
+                    dynamicParameters.Add("@SalesPersonName", parameters.SalesPersonName);
+                    dynamicParameters.Add("@billingContact", parameters.BillingContact);
+                    dynamicParameters.Add("@Designation", parameters.Designation);
+                    dynamicParameters.Add("@Title", parameters.Title);
+                    dynamicParameters.Add("@companyName", parameters.CompanyName);
+                    dynamicParameters.Add("@address", parameters.Address);
+                    dynamicParameters.Add("@city", parameters.City);
+                    dynamicParameters.Add("@phone", parameters.Phone);
+                    dynamicParameters.Add("@email", parameters.Email);
+                    dynamicParameters.Add("@CP_ID", parameters.Cp_Id);
+                    dynamicParameters.Add("@DistrictID", parameters.DistrictId);
+                    dynamicParameters.Add("@BINNo", parameters.BINNo);
+
+
+                    var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
+                        "USP_OnlineInvoice",
+                        dynamicParameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return invoices.FirstOrDefault();
                 }
             }
             catch (Exception ex)

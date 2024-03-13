@@ -59,6 +59,11 @@ namespace AccountingSystem.BLL
             return _repository.GetProductsDetails(id);
         }
 
+        public Task<OnlineInvoiceResponseModel> OnlineInvcoie(OnlineInvoiceRequestModel parameters)
+        {
+            return _repository.OnlineInvcoie(parameters);
+        }
+
         public Task<string> PostToOnlineAsync(string postType, string invoiceNo, string invoiceId)
         {
             return _repository.PostToOnlineAsync(postType, invoiceNo, invoiceId);

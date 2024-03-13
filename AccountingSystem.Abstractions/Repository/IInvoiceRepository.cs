@@ -21,6 +21,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task<string> DeleteUndeleteInvoice(int invoiceId, bool invalid);
         Task<string> UpdateAmount(string invoiceNo, decimal amount);
         Task<List<Invoice>> GetInvoicesAsync(GetInvoiceListParam parameters);
+        Task<OnlineInvoiceResponseModel> OnlineInvcoie(OnlineInvoiceRequestModel parameters);
     }
 
 
