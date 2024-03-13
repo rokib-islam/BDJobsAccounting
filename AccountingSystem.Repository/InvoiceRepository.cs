@@ -362,7 +362,7 @@ namespace AccountingSystem.Repository
                             {
                                 product.Comments = item.Comments;
                                 product.Amount = Convert.ToDouble(item.Amount);
-                                product.SbName = item.SbName;
+                                product.SbName = item.SBName;
                                 product.EDate = Convert.ToDateTime(item.EDate).ToShortDateString();
                                 product.Product = item.Product;
                                 product.LedgerId = item.LedgerID;
