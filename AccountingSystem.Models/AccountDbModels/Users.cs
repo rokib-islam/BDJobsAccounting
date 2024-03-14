@@ -1,8 +1,11 @@
-﻿namespace AccountingSystem.Models.AccountDbModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace AccountingSystem.Models.AccountDbModels
 {
 
     public class Users
     {
+        [Key]
         public int UserID { get; set; }
         public string Name { get; set; }
         public string Designation { get; set; }

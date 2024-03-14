@@ -10,8 +10,6 @@ namespace AccountingSystem.AppLicationDbContext.AccountingDatabase
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Users>().HasKey(u => u.UserID);
-
             base.OnModelCreating(modelBuilder);
         }
 

@@ -23,5 +23,8 @@
         public int Cp_Id { get; set; }
         public int DistrictId { get; set; }
         public string BINNo { get; set; }
+        public string TransactionNo { get; set; }
+        public int PaymentMode { get; set; }
+
     }
 }
