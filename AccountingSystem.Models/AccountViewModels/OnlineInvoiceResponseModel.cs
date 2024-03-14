@@ -24,6 +24,8 @@
         public string UserName { get; set; }
         public int IsCancel { get; set; }
         public string CreditNote { get; set; }
+        public string InvoiceDesc { get; set; }
+        public string InvoiceDescTax { get; set; }
 
     }
 }
