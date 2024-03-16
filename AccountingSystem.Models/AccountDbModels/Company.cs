@@ -19,6 +19,7 @@ namespace AccountingSystem.Models.AccountDbModels
         public string e_mail { get; set; }
         public string Fax { get; set; }
         public string ContactPerson { get; set; }
+        public string Contact_Person { get; set; }
         public string ContactName { get; set; }
         public string Designation { get; set; }
         public double Balance { get; set; }
