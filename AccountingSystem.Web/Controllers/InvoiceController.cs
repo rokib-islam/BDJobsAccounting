@@ -139,5 +139,30 @@ namespace AccountingSystem.Web.Controllers
             return await Task.FromResult(Ok(responseList));
         }
 
+        public IActionResult ViewJournal()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult OnlineInvoice()
+        {
+            ClaimsPrincipal claimsPrincipal = HttpContext.User;
+            if (claimsPrincipal.Identity.IsAuthenticated)
+                return View();
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+
+        public async Task<IActionResult> LoadOnlineInvoice([FromBody] LoadOnlineInvoiceModel model)
+        {
+            var result= await _InvoiceManager.LoadOnlineInvoice(model);
+            return Json(result);
+        }
     }
 }

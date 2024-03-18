@@ -566,6 +566,29 @@ namespace AccountingSystem.Repository
             }
         }
 
+        public async Task<List<LoadOnlineInvoiceResponseModel>> LoadOnlineInvoice(LoadOnlineInvoiceModel model)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    Status = model.Status,
+                    Fromdate = model.FromDate,
+                    Todate = model.ToDate,
+                };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<LoadOnlineInvoiceResponseModel>("USP_LoadOnlineInvoice", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            
+        }
 
     }
 }

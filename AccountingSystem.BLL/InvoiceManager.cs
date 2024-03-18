@@ -94,7 +94,9 @@ namespace AccountingSystem.BLL
             return await _repository.UploadInvoiceOnline(cpId, invoiceNo, serviceNo, invSendDt, billingContact, price, opId, jpIdList, serviceID, companyID, companyName, saleDate);
         }
 
-
-
+        public async Task<List<LoadOnlineInvoiceResponseModel>> LoadOnlineInvoice(LoadOnlineInvoiceModel model)
+        {
+            return await _repository.LoadOnlineInvoice(model);
+        }
     }
 }
