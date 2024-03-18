@@ -54,7 +54,7 @@
                         <td class="text-center">{{data.postDate | date: "dd-MM-yyyy"}}</td>
                         <td class="text-center">{{data.title}}</td>
                         <td class="text-center">{{data.companyName}}</td>
-                        <td class="text-center"><button class="btn btn-success btn-sm" ng-click="change()">Change</button></td>
+                        <td class="text-center"><button class="btn btn-success btn-sm" ng-click="Rick(data.jP_ID)">Reconcile</button></td>
                     </tr>
                 </tbody>
             </table>
@@ -87,9 +87,27 @@
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
-                    debugger
+                   
                     $scope.onlineData = response.data;
                     $scope.showTable = true;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        $scope.Rick = function (JP_ID) {
+            
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/OIvoiceReconc';
+            else
+                Url = '/AccountingNew/Invoice/OIvoiceReconc';
+
+            $http.get(Url, { params: { JP_ID: JP_ID } })
+            // $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content - Type': 'application / json' } })
+                .then(function (response) {
+                    alert(response.message);
+                    $scope.load();
                 })
                 .catch(function (error) {
                     console.log(error);

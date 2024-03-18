@@ -576,7 +576,7 @@ namespace AccountingSystem.Repository
                     Fromdate = model.FromDate,
                     Todate = model.ToDate,
                 };
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
                 {
                     var result = await _db.QueryAsync<LoadOnlineInvoiceResponseModel>("USP_LoadOnlineInvoice", parameters, commandType: CommandType.StoredProcedure);
                     return result.ToList();
@@ -587,7 +587,7 @@ namespace AccountingSystem.Repository
 
                 throw ex;
             }
-            
+
         }
 
     }

@@ -161,8 +161,14 @@ namespace AccountingSystem.Web.Controllers
 
         public async Task<IActionResult> LoadOnlineInvoice([FromBody] LoadOnlineInvoiceModel model)
         {
-            var result= await _InvoiceManager.LoadOnlineInvoice(model);
+            var result = await _InvoiceManager.LoadOnlineInvoice(model);
             return Json(result);
         }
+        public async Task<IActionResult> OIvoiceReconc(int JP_ID)
+        {
+            // var result = await _InvoiceManager.LoadOnlineInvoice(model);
+            return Json("");
+        }
+
     }
 }
