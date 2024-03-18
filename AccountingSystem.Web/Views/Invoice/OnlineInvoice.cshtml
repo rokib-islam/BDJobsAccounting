@@ -47,14 +47,17 @@
                 <tbody>
                     <tr ng-repeat="data in onlineData">
                         <td class="text-center">{{$index + 1}}</td>
+                        <td class="text-center">{{data.companyName}}</td>
+                        <td class="text-center">{{data.title}}</td>
                         <td class="text-end">{{data.price | number}}</td>
                         <td class="text-end">{{data.vat | number}}</td>
                         <td class="text-center">{{data.status}}</td>
                         <td class="text-center">{{data.invoiceNo}}</td>
                         <td class="text-center">{{data.postDate | date: "dd-MM-yyyy"}}</td>
-                        <td class="text-center">{{data.title}}</td>
-                        <td class="text-center">{{data.companyName}}</td>
-                        <td class="text-center"><button class="btn btn-success btn-sm" ng-click="Rick(data.jP_ID)">Reconcile</button></td>
+                        <td class="text-center">
+                            <button class="btn btn-success btn-sm" ng-click="Rick(data.jP_ID)">Reconcile</button>
+                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner"></span>
+                        </td>
                     </tr>
                 </tbody>
             </table>
@@ -97,7 +100,7 @@
         }
 
         $scope.Rick = function (JP_ID) {
-            
+            $scope.reconcileSpinner = true;
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/OIvoiceReconc';
             else
@@ -107,10 +110,13 @@
             
                 .then(function (response) {
                     alert(response.data);
+                    $scope.reconcileSpinner = false;
                     $scope.load();
+                    
                 })
                 .catch(function (error) {
                     console.log(error);
+                    $scope.reconcileSpinner = false;
                 })
         }
     })
