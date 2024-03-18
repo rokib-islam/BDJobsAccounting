@@ -1,6 +1,8 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Models.AccountViewModels;
+using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace AccountingSystem.Web.Controllers
@@ -8,10 +10,13 @@ namespace AccountingSystem.Web.Controllers
     public class InvoiceController : Controller
     {
         private readonly IInvoiceManager _InvoiceManager;
+        private readonly HttpClient _httpClient;
 
-        public InvoiceController(IInvoiceManager InvoiceManagerManager)
+
+        public InvoiceController(IInvoiceManager InvoiceManagerManager, HttpClient httpClient)
         {
             _InvoiceManager = InvoiceManagerManager;
+            _httpClient = httpClient;
         }
         public IActionResult Index()
         {
@@ -164,11 +169,52 @@ namespace AccountingSystem.Web.Controllers
             var result = await _InvoiceManager.LoadOnlineInvoice(model);
             return Json(result);
         }
+
         public async Task<IActionResult> OIvoiceReconc(int JP_ID)
         {
-            // var result = await _InvoiceManager.LoadOnlineInvoice(model);
-            return Json("");
+            var url = "https://corporate3.bdjobs.com/InvoiceReconciliation.asp";
+
+            // No conversion needed, JP_ID remains an integer
+            var content = new FormUrlEncodedContent(new[]
+            {
+                 new KeyValuePair<string, string>("ItemId", JP_ID.ToString())
+             });
+
+            try
+            {
+                var response = await _httpClient.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Handle successful response with potential API-specific processing
+                    string responseMessage;
+                    using (var responseStream = await response.Content.ReadAsStreamAsync())
+                    {
+                        using (var reader = new StreamReader(responseStream))
+                        {
+                            responseMessage = reader.ReadToEnd();
+                            ApiResponseReconc responseObjectTyped = JsonConvert.DeserializeObject<ApiResponseReconc>(responseMessage);
+
+                            if (responseObjectTyped.Status == 200)
+                                return Json("Successfully posted");
+                            else
+                                return Json(responseObjectTyped.Message);
+                        }
+                    }
+                }
+                else
+                {
+                    return Json($"Invoice reconciliation failed (HTTP status code: {response.StatusCode})");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
         }
 
+
     }
+
+
 }

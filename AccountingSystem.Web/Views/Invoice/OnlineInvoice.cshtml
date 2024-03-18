@@ -104,9 +104,9 @@
                 Url = '/AccountingNew/Invoice/OIvoiceReconc';
 
             $http.get(Url, { params: { JP_ID: JP_ID } })
-            // $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content - Type': 'application / json' } })
+            
                 .then(function (response) {
-                    alert(response.message);
+                    alert(response.data);
                     $scope.load();
                 })
                 .catch(function (error) {

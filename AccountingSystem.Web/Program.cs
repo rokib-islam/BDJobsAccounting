@@ -29,9 +29,10 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         option.ExpireTimeSpan = TimeSpan.FromMinutes(30);
     });
 
+// **Register HttpClient service**
+builder.Services.AddHttpClient();  // Register basic HttpClient instance
 
-
-builder.Services.ConfigureServices();
+builder.Services.ConfigureServices();  // This line is likely unnecessary
 
 builder.Services.AddCors(options =>
 {
@@ -39,8 +40,8 @@ builder.Services.AddCors(options =>
         builder =>
         {
             builder.AllowAnyOrigin()
-                   .AllowAnyMethod()
-                   .AllowAnyHeader();
+                .AllowAnyMethod()
+                .AllowAnyHeader();
         });
 });
 
@@ -67,6 +68,9 @@ app.UseSession();
 app.UseAuthorization();
 
 app.UseCors("AllowAll");
+
+// Modify InvoiceController to inject HttpClient
+
 
 app.MapControllerRoute(
     name: "default",
