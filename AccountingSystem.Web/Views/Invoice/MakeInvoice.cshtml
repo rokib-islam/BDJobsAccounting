@@ -25,8 +25,21 @@
             border: 3px solid black !important;
         }
 
-    </style>
+        .button-container {
+            position: relative;
+        }
 
+        .extra-buttons {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            right: 110px; /* Adjust this value as needed */
+        }
+
+
+    </style>
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -100,9 +113,23 @@
                             </div>
                             <div class="col-sm-6">
                                 <label class="d-flex justify-content-end"><input type="checkbox" />&nbsp; Delivery Tiger</label>
-                                <button class="btn btn-info btn-sm float-right" ng-click="PreviewLabelreport()">Preview Label
-                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showlabelspinner"></span>
-                                </button>
+                                <div class="button-container">
+                                    <button class="btn btn-info btn-sm float-right" ng-click="toggleExtraButtons()">
+                                        Preview Label
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showlabelspinner"></span>
+                                    </button>
+                                    <div class="extra-buttons" ng-show="showExtraButtons">
+                                        <button class="btn btn-secondary btn-sm" ng-click="PreviewLabelreport('Pdf')">
+                                            <i class="fas fa-file-pdf" style="font-size: 20px;"></i>
+                                        </button>
+                                        <button class="btn btn-secondary btn-sm" ng-click="PreviewLabelreport('Word')">
+                                            <i class="fas fa-file-word" style="font-size: 20px;"></i>
+                                        </button>
+
+
+                                    </div>
+                                </div>
+
                                 
                             </div>
                         </div>
@@ -258,6 +285,7 @@
         $scope.saveDisabled = true;
         $scope.showChallanButton = true;
         $scope.showInvoiceButton = true;
+        $scope.showExtraButtons = false;
 
         $scope.getIdWiseCompany = function (id) {
             let Url = '';
@@ -645,7 +673,16 @@
                     console.log(error);
                 });
         };
-
+        function toggleButtons() {
+            var additionalButtons = document.getElementsByClassName("additionalButton");
+            for (var i = 0; i < additionalButtons.length; i++) {
+                if (additionalButtons[i].style.display === "none") {
+                    additionalButtons[i].style.display = "inline-block";
+                } else {
+                    additionalButtons[i].style.display = "none";
+                }
+            }
+        }
 
         $scope.save = function () {
             if ($scope.searchQuery == "" || $scope.searchQuery == null || $scope.searchQuery == undefined) {
@@ -912,8 +949,8 @@
                     }
                 });
         };
-        $scope.PreviewLabelreport = function () {
-            const format = 'Word'; // Use default format if not selected
+        $scope.PreviewLabelreport = function (format) {
+            $scope.toggleExtraButtons();
             const listId = $scope.selectedRow.id;
             if (listId == 0) { 
                 alert("select any Invoice first");
@@ -941,7 +978,7 @@
                         document.body.appendChild(link);
                         link.click();
                         document.body.removeChild(link);
-                    } else if (format === 'pdf') {
+                    } else if (format === 'Pdf') {
                         // Open PDF file in a new window with proper user feedback
                         try {
                             const pdfData = URL.createObjectURL(blob);
@@ -959,7 +996,16 @@
                     }
                 });
         };
+       
+        
 
+        
+
+        $scope.toggleExtraButtons = function () {
+            $scope.showExtraButtons = !$scope.showExtraButtons;
+        };
+
+       
 
 
     });

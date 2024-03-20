@@ -290,8 +290,9 @@ namespace AccountingSystem.Web.Controllers
                 }
                 else if (format.ToLower() == "word")
                 {
-                    fileContents = report.Render("word");
-                    contentType = "application/vnd.openxmlformats-officedocument.wordprocessingml.document";
+                    
+                    fileContents = report.Render("WORDOPENXML"); 
+                    contentType = "application/msword";
                     fileName = "PreviewLabel.docx";
                 }
                 else

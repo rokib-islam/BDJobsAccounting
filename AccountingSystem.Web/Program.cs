@@ -67,6 +67,8 @@ app.UseSession();
 
 app.UseAuthorization();
 
+app.UseStaticFiles();
+
 app.UseCors("AllowAll");
 
 // Modify InvoiceController to inject HttpClient

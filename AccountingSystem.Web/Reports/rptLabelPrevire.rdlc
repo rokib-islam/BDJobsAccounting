@@ -174,7 +174,7 @@
             <rd:DefaultName>city</rd:DefaultName>
             <Top>2.58494cm</Top>
             <Left>6.55849cm</Left>
-            <Height>0.6cm</Height>
+            <Height>1.17327cm</Height>
             <Width>11.0725cm</Width>
             <ZIndex>3</ZIndex>
             <Style>
@@ -218,7 +218,7 @@
             </Style>
           </Textbox>
         </ReportItems>
-        <Height>3.2114cm</Height>
+        <Height>3.89932cm</Height>
         <Style />
       </Body>
       <Width>20.72662cm</Width>
@@ -234,7 +234,7 @@
           </Style>
         </PageHeader>
         <PageFooter>
-          <Height>1.04953cm</Height>
+          <Height>0.46745cm</Height>
           <PrintOnFirstPage>true</PrintOnFirstPage>
           <PrintOnLastPage>true</PrintOnLastPage>
           <Style>
