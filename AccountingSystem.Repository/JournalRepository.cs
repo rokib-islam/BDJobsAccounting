@@ -52,6 +52,34 @@ namespace AccountingSystem.Repository
                 throw ex;
             }
         }
+
+
+        public async Task<object> GetJournalsForTrialBalance(string pageNo, string pageSize, string tno, string fromDate, string endDate)
+        {   
+            try
+            {
+
+                var parameters = new
+                {
+                    PageNo = pageNo,
+                    PageSize = pageSize,
+                    TNO = tno,
+                    FromDate = fromDate,
+                    EndDate = endDate,
+                };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<Journal>("USP_VIEW_SALE_WISE_JOURNAL_LIST", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         public async Task<string> GetClosingDateAsync()
         {
             string date = "";

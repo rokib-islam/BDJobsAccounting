@@ -21,6 +21,13 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/AccountingSystem.Web.styles.css" asp-append-version="true" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" />
+
+    <style>
+        .navbar-nav a:hover {
+            background-color: lightblue;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -63,6 +70,14 @@
                             </div>
                         </li>
                         <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Company
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Company" asp-action="Company">Company Details</a>
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
                             <!-- Add dropdown class to the list item -->
                             <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Report
@@ -72,6 +87,7 @@
                                 
                             </div>
                         </li>
+                        
                     </ul>
 
                     <div class="navbar-text ml-auto">

@@ -49,5 +49,12 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
+        public async Task<IActionResult> GetJournalsForTrialBalance([FromBody] GetJournalsForTrialBalanceModel model)
+        {
+            var result = await _journalManager.GetJournalsForTrialBalance(model.PageNo, model.PageSize, model.Tno, model.FromDate, model.EndDate);
+
+            return Json(result);
+        }
+
     }
 }

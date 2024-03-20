@@ -23,5 +23,8 @@ namespace AccountingSystem.Models.AccountDbModels
         public string UpdatedDate { get; set; }
         public string UpdatedBy { get; set; }
         public string TotalRecords { get; set; }
+        public int TotalRecord { get; set; }
+        public double TotalDebt { get; set; }
+        public double TotalCredit { get; set; }
     }
 }

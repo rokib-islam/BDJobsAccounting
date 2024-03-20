@@ -2,6 +2,7 @@
 using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AccountingSystem.Web.Controllers
 {
@@ -143,6 +144,16 @@ namespace AccountingSystem.Web.Controllers
         {
             var resp = await _CompanyManager.GetCompanyById(companyId);
             return Json(resp);
+        }
+
+        public IActionResult Company()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
         }
     }
 }
