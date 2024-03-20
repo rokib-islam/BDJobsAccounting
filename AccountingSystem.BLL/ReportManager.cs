@@ -25,5 +25,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetTrialBalanceReportAsync(type, startingDate, endDate);
         }
+
+        public Task<List<LabelReport>> GetLabelReport(string type, string list)
+        {
+            return _repository.GetLabelReport(type, list);
+        }
     }
 }

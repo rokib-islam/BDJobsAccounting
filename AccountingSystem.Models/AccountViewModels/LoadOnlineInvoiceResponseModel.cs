@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AccountingSystem.Models.AccountViewModels
+﻿namespace AccountingSystem.Models.AccountViewModels
 {
     public class LoadOnlineInvoiceResponseModel
     {
@@ -15,6 +9,7 @@ namespace AccountingSystem.Models.AccountViewModels
         public DateTime PostDate { get; set; }
         public string Title { get; set; }
         public string CompanyName { get; set; }
+        public string TransactionNo { get; set; }
         public int JP_ID { get; set; }
     }
 }

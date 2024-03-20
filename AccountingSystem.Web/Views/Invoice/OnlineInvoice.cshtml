@@ -36,12 +36,13 @@
                 <tr style="background-color:skyblue">
                     <td class="text-center">Sl#</td>
                     <td class="text-center">Company Name</td>
-                    <td class="text-center">Title</td>
+                    <td class="text-center">Job Title</td>
                     <td class="text-center">Price</td>
                     <td class="text-center">Vat</td>
                     <td class="text-center">Status</td>
                     <td class="text-center">Invoice No</td>
                     <td class="text-center">Post Date</td>
+                    <td class="text-center">Transaction No</td>
                     <td class="text-center">Action</td>
                 </tr>
                 <tbody>
@@ -54,6 +55,7 @@
                         <td class="text-center">{{data.status}}</td>
                         <td class="text-center">{{data.invoiceNo}}</td>
                         <td class="text-center">{{data.postDate | date: "dd-MM-yyyy"}}</td>
+                        <td class="text-center">{{data.transactionNo}}</td>
                         <td class="text-center">
                             <button class="btn btn-success btn-sm" ng-click="Rick(data.jP_ID)">Reconcile</button>
                             &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner"></span>
