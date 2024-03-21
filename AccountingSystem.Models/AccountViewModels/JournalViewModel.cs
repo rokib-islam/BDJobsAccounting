@@ -1,10 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace AccountingSystem.Models.AccountDbModels
+﻿namespace AccountingSystem.Models.AccountViewModels
 {
     //[Table("Journal", Schema = "dbo")]
-    public class Journal
+    public class JournalViewModel
     {
         // [Key]
         public int id { get; set; }

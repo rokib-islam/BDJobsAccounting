@@ -24,27 +24,27 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetOnlineLedgerId(onlineProduct);
         }
-        public async Task<List<Ledger>> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType)
+        public async Task<List<LedgerViewModel>> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType)
         {
             return await _repository.GetProducts(admin, account, groupname, isAll, isI, isVatType);
         }
 
-        public Task<List<Ledger>> GetLedgersWithBalance()
+        public Task<List<LedgerViewModel>> GetLedgersWithBalance()
         {
             return _repository.GetLedgersWithBalance();
         }
 
-        public Task<List<Ledger>> GetAllLedgers()
+        public Task<List<LedgerViewModel>> GetAllLedgers()
         {
             return _repository.GetAllLedgers();
         }
 
-        public Task SaveLedgerAsync(Ledger aLedger)
+        public Task SaveLedgerAsync(LedgerViewModel aLedger)
         {
             return _repository.SaveLedgerAsync(aLedger);
         }
 
-        public Task<int> UpdateLedgerAsync(Ledger aLedger)
+        public Task<int> UpdateLedgerAsync(LedgerViewModel aLedger)
         {
             return _repository.UpdateLedgerAsync(aLedger);
         }
@@ -54,12 +54,12 @@ namespace AccountingSystem.BLL
             return _repository.DeleteLedgerAsync(ledgerId);
         }
 
-        public async Task<List<Ledger>> GetProductListByKey(string Key)
+        public async Task<List<LedgerViewModel>> GetProductListByKey(string Key)
         {
             return await _repository.GetProductListByKey(Key);
         }
 
-        public async Task<List<Ledger>> GetProductById(int pId)
+        public async Task<List<LedgerViewModel>> GetProductById(int pId)
         {
             return await _repository.GetProductById(pId);
         }

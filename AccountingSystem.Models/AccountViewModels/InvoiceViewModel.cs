@@ -1,6 +1,6 @@
-﻿namespace AccountingSystem.Models.AccountDbModels
+﻿namespace AccountingSystem.Models.AccountViewModels
 {
-    public class Invoice
+    public class InvoiceViewModel
     {
         public int Id { get; set; }
         public int Cid { get; set; }

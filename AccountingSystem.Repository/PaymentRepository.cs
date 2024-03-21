@@ -1,6 +1,5 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
-using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -19,9 +18,9 @@ namespace AccountingSystem.Repository
             _context = context;
             _DBCon = config;
         }
-        public async Task<IEnumerable<CashCollection>> GetCashCollectionAsync(string id)
+        public async Task<IEnumerable<CashCollectionViewModel>> GetCashCollectionAsync(string id)
         {
-            var collections = new List<CashCollection>();
+            var collections = new List<CashCollectionViewModel>();
 
             try
             {
@@ -31,7 +30,7 @@ namespace AccountingSystem.Repository
                           FROM cash_Collection
                           WHERE InvoiceSchedulerId = @Id";
 
-                    var result = await _db.QueryAsync<CashCollection>(query, new { Id = id });
+                    var result = await _db.QueryAsync<CashCollectionViewModel>(query, new { Id = id });
 
                     collections.AddRange(result);
                 }

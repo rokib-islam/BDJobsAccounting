@@ -1,6 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
-using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 
 namespace AccountingSystem.BLL
@@ -13,7 +12,7 @@ namespace AccountingSystem.BLL
             _repository = repository;
         }
 
-        public Task<IEnumerable<CashCollection>> GetCashCollectionAsync(string id)
+        public Task<IEnumerable<CashCollectionViewModel>> GetCashCollectionAsync(string id)
         {
             return _repository.GetCashCollectionAsync(id);
         }

@@ -287,9 +287,9 @@ namespace AccountingSystem.Repository
 
             return data;
         }
-        public async Task<IEnumerable<Sale>> GetSalesInfoAsync(string invoiceNo)
+        public async Task<IEnumerable<SaleViewModel>> GetSalesInfoAsync(string invoiceNo)
         {
-            var sales = new List<Sale>();
+            var sales = new List<SaleViewModel>();
 
             try
             {
@@ -300,7 +300,7 @@ namespace AccountingSystem.Repository
                           FROM sales AS s, ledger AS l, InvoiceSceduler AS i1, InvoiceList AS i
                           WHERE i.Id = i1.invoice_id AND i1.TNO = s.tno AND s.PCode = l.id AND i.Invoice_No = @InvoiceNo";
 
-                    var result = await _db.QueryAsync<Sale>(query, new { InvoiceNo = invoiceNo });
+                    var result = await _db.QueryAsync<SaleViewModel>(query, new { InvoiceNo = invoiceNo });
 
                     sales.AddRange(result);
                 }
@@ -487,7 +487,7 @@ namespace AccountingSystem.Repository
             }
         }
 
-        public async Task<List<Ledger>> CheckJobTitle(int productId)
+        public async Task<List<LedgerViewModel>> CheckJobTitle(int productId)
         {
             try
             {
@@ -495,7 +495,7 @@ namespace AccountingSystem.Repository
                 {
                     var parameters = new { ProductID = productId };
 
-                    var result = await _db.QueryAsync<Ledger>("USP_CheckJobTitle", parameters, commandType: CommandType.StoredProcedure);
+                    var result = await _db.QueryAsync<LedgerViewModel>("USP_CheckJobTitle", parameters, commandType: CommandType.StoredProcedure);
 
                     return result.ToList();
                 }
@@ -507,7 +507,7 @@ namespace AccountingSystem.Repository
         }
         public async Task<object> GetSales(string pageNo, string pageSize, int cId, int tno)
         {
-            var sales = new List<Sale>();
+            var sales = new List<SaleViewModel>();
             var totalAmount = 0.00;
             var totalDues = 0.00;
 
@@ -524,7 +524,7 @@ namespace AccountingSystem.Repository
 
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    var result = await _db.QueryAsync<Sale>("USP_VIEW_SALES", parameters, commandType: CommandType.StoredProcedure);
+                    var result = await _db.QueryAsync<SaleViewModel>("USP_VIEW_SALES", parameters, commandType: CommandType.StoredProcedure);
 
                     foreach (var item in result)
                     {

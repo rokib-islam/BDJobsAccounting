@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -129,7 +130,7 @@ namespace AccountingSystem.Web.Controllers
             var resp = await _CompanyManager.GetCompanyByNameAsync(name, id) == null;
             return Json(resp);
         }
-        public async Task<IActionResult> Index(Company aCompany)
+        public async Task<IActionResult> Index(CompanyViewModel aCompany)
         {
             var resp = await _CompanyManager.InsertOrUpdateCompanyAsync(aCompany);
             return Json(resp);

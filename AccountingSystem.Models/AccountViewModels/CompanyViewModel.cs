@@ -2,10 +2,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace AccountingSystem.Models.AccountDbModels
+namespace AccountingSystem.Models.AccountViewModels
 {
     [Keyless]
-    public class Company
+    public class CompanyViewModel
     {
         public int Id { get; set; }
         public int acc_id { get; set; }

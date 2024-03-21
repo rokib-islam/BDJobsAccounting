@@ -94,7 +94,7 @@ namespace AccountingSystem.Web.Controllers
 
             var allLedger = await _LedgerManager.GetAllLedgers();
             var ledger = allLedger.FirstOrDefault(x => x.Id == subGroupId);
-            var aLedger = new Ledger
+            var aLedger = new LedgerViewModel
             {
                 GroupName = group,
                 Under = ledger != null ? ledger.Under + "," + subGroupId : subGroupId.ToString(),

@@ -52,7 +52,7 @@ namespace AccountingSystem.BLL
             return _repository.CheckOnlineJobsAsync(tnolist, cId);
         }
 
-        public Task<IEnumerable<Sale>> GetSalesInfoAsync(string invoiceNo)
+        public Task<IEnumerable<SaleViewModel>> GetSalesInfoAsync(string invoiceNo)
         {
             return _repository.GetSalesInfoAsync(invoiceNo);
         }
@@ -83,7 +83,7 @@ namespace AccountingSystem.BLL
             return _repository.GetSMSAlertApplyLimit(Data);
         }
 
-        public Task<List<Ledger>> CheckJobTitle(int productId)
+        public Task<List<LedgerViewModel>> CheckJobTitle(int productId)
         {
             return _repository.CheckJobTitle(productId);
         }

@@ -29,7 +29,7 @@ namespace AccountingSystem.Repository
                 return result.ToList();
             }
         }
-        public async Task<List<Company>> GetOnlineCompanyList(int radio)
+        public async Task<List<CompanyViewModel>> GetOnlineCompanyList(int radio)
         {
             var radioParam = "";
 
@@ -48,25 +48,25 @@ namespace AccountingSystem.Repository
                 parameters.Add("@ViewType", radioParam);
 
                 // Execute the stored procedure using Dapper
-                var result = await _db.QueryAsync<Company>("[dbo].[USP_ONLINE_COMPANY_LIST]", parameters, commandType: CommandType.StoredProcedure);
+                var result = await _db.QueryAsync<CompanyViewModel>("[dbo].[USP_ONLINE_COMPANY_LIST]", parameters, commandType: CommandType.StoredProcedure);
                 return result.ToList();
             }
 
         }
-        public async Task<List<Company>> GetCompanyListByKey(string Key)
+        public async Task<List<CompanyViewModel>> GetCompanyListByKey(string Key)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
                 var query = "SELECT TOP 10 Id, Name, BlackListed FROM Company WHERE Name LIKE @Key ORDER BY Name";
                 var parameters = new { Key = "%" + Key + "%" };
 
-                var result = await _db.QueryAsync<Company>(query, parameters);
+                var result = await _db.QueryAsync<CompanyViewModel>(query, parameters);
                 return result.ToList();
             }
 
         }
 
-        public async Task<List<Company>> GetOnlineCompanyInfo(int cpId)
+        public async Task<List<CompanyViewModel>> GetOnlineCompanyInfo(int cpId)
         {
             try
             {
@@ -76,7 +76,7 @@ namespace AccountingSystem.Repository
                     parameters.Add("@ComId", cpId);
 
                     // Execute the stored procedure using Dapper
-                    var result = await _db.QueryAsync<Company>("[dbo].[USP_Acc_Download_ComInfo]", parameters, commandType: CommandType.StoredProcedure);
+                    var result = await _db.QueryAsync<CompanyViewModel>("[dbo].[USP_Acc_Download_ComInfo]", parameters, commandType: CommandType.StoredProcedure);
                     return result.ToList();
                 }
             }
@@ -87,7 +87,7 @@ namespace AccountingSystem.Repository
             }
 
         }
-        public async Task<List<Company>> GetCompanyById(int cpId)
+        public async Task<List<CompanyViewModel>> GetCompanyById(int cpId)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
@@ -95,12 +95,12 @@ namespace AccountingSystem.Repository
                 parameters.Add("@CompanyId", cpId);
 
                 // Execute the stored procedure using Dapper
-                var result = await _db.QueryAsync<Company>("[dbo].[GetCompanyDetailsById]", parameters, commandType: CommandType.StoredProcedure);
+                var result = await _db.QueryAsync<CompanyViewModel>("[dbo].[GetCompanyDetailsById]", parameters, commandType: CommandType.StoredProcedure);
                 return result.ToList();
             }
 
         }
-        public async Task<List<Company>> CheckCompany(string name)
+        public async Task<List<CompanyViewModel>> CheckCompany(string name)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
@@ -110,7 +110,7 @@ namespace AccountingSystem.Repository
                 var parameters = new DynamicParameters();
                 parameters.Add("@Name", name);
 
-                var result = await _db.QueryAsync<Company>(query, parameters);
+                var result = await _db.QueryAsync<CompanyViewModel>(query, parameters);
                 return result.ToList();
             }
         }
@@ -137,7 +137,7 @@ namespace AccountingSystem.Repository
 
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    await _db.QueryAsync<Company>("USP_INSERT_UPDATE_ONLINE_COMPANY", parameters, commandType: CommandType.StoredProcedure);
+                    await _db.QueryAsync<CompanyViewModel>("USP_INSERT_UPDATE_ONLINE_COMPANY", parameters, commandType: CommandType.StoredProcedure);
                     msg = 1;
                 }
             }
@@ -187,13 +187,13 @@ namespace AccountingSystem.Repository
             }
         }
 
-        public async Task<Company> CheckOnlineCompany(int id)
+        public async Task<CompanyViewModel> CheckOnlineCompany(int id)
         {
             try
             {
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    var result = await _db.QueryFirstOrDefaultAsync<Company>(@"
+                    var result = await _db.QueryFirstOrDefaultAsync<CompanyViewModel>(@"
                 SELECT DISTINCT C.Id, C.Name, C.Address, C.City, C.Phone, C.Email, C.Fax,
                 CASE WHEN CP.Name IS NULL THEN C.Contact_Person ELSE CP.Name END As Contact_Person,
                 CASE WHEN CP.Designation IS NULL THEN C.Designation ELSE CP.Designation END As Designation,
@@ -212,7 +212,7 @@ namespace AccountingSystem.Repository
             }
 
         }
-        public async Task<Company> SMSAlertGetOnlineCompanyInfoAsync(int cpId)
+        public async Task<CompanyViewModel> SMSAlertGetOnlineCompanyInfoAsync(int cpId)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
@@ -223,7 +223,7 @@ namespace AccountingSystem.Repository
                         CP_ID = cpId
                     };
 
-                    var result = await _db.QueryFirstOrDefaultAsync<Company>("USP_SMSAlert_Get_OnLine_Company_Info", parameters,
+                    var result = await _db.QueryFirstOrDefaultAsync<CompanyViewModel>("USP_SMSAlert_Get_OnLine_Company_Info", parameters,
                         commandType: CommandType.StoredProcedure);
 
                     return result;
@@ -235,7 +235,7 @@ namespace AccountingSystem.Repository
             }
         }
 
-        public async Task<IEnumerable<Company>> SMSAlertGetOnlineCompanyListAsync(int radio)
+        public async Task<IEnumerable<CompanyViewModel>> SMSAlertGetOnlineCompanyListAsync(int radio)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
@@ -247,7 +247,7 @@ namespace AccountingSystem.Repository
                     };
 
                     // Using Dapper's QueryAsync to get a list of results
-                    var result = await _db.QueryAsync<Company>(
+                    var result = await _db.QueryAsync<CompanyViewModel>(
                         "USP_SMSAlert_Get_OnLine_Company_Info",
                         parameters,
                         commandType: CommandType.StoredProcedure
@@ -365,19 +365,19 @@ namespace AccountingSystem.Repository
                 await _db.ExecuteAsync(sqlQuery, new { Id = id });
             }
         }
-        public async Task<Company> GetCompanyByNameAsync(string name, int id)
+        public async Task<CompanyViewModel> GetCompanyByNameAsync(string name, int id)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
 
                 var sqlQuery = "SELECT Id, Name, Address, City, Phone, Email, Fax, Contact_Person, Designation, Balance, BlackListed, CP_ID, AccContactName, VATRegNo, VATRegAdd, DistrictID, UpazilaID, BankID FROM Company WHERE Name = @Name AND Id <> @Id";
 
-                var result = await _db.QueryFirstOrDefaultAsync<Company>(sqlQuery, new { Name = name, Id = id });
+                var result = await _db.QueryFirstOrDefaultAsync<CompanyViewModel>(sqlQuery, new { Name = name, Id = id });
 
                 return result;
             }
         }
-        public async Task<string> InsertOrUpdateCompanyAsync(Company aCompany)
+        public async Task<string> InsertOrUpdateCompanyAsync(CompanyViewModel aCompany)
         {
             var res = "";
             try

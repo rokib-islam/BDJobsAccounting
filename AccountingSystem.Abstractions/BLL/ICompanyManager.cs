@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
 using AccountingSystem.Web.Models;
 
 namespace AccountingSystem.Abstractions.BLL
@@ -7,23 +8,23 @@ namespace AccountingSystem.Abstractions.BLL
     {
         //Users GetUsers(string userName, string password);
         Task<List<DistrictList>> GetDistricts();
-        Task<List<Company>> GetOnlineCompanyList(int radio);
-        Task<List<Company>> GetCompanyListByKey(string startingKey);
-        Task<List<Company>> GetOnlineCompanyInfo(int cpId);
-        Task<List<Company>> GetCompanyById(int cpId);
-        Task<List<Company>> CheckCompany(string name);
+        Task<List<CompanyViewModel>> GetOnlineCompanyList(int radio);
+        Task<List<CompanyViewModel>> GetCompanyListByKey(string startingKey);
+        Task<List<CompanyViewModel>> GetOnlineCompanyInfo(int cpId);
+        Task<List<CompanyViewModel>> GetCompanyById(int cpId);
+        Task<List<CompanyViewModel>> CheckCompany(string name);
         Task<int> InsertUpdateOnlineCompany(CompanyInsertUpdateViewModel FromData);
         Task UpdateProfile(CompanyInsertUpdateViewModel FromData);
-        Task<Company> CheckOnlineCompany(int id);
-        Task<Company> SMSAlertGetOnlineCompanyInfoAsync(int cpId);
-        Task<IEnumerable<Company>> SMSAlertGetOnlineCompanyListAsync(int radio);
+        Task<CompanyViewModel> CheckOnlineCompany(int id);
+        Task<CompanyViewModel> SMSAlertGetOnlineCompanyInfoAsync(int cpId);
+        Task<IEnumerable<CompanyViewModel>> SMSAlertGetOnlineCompanyListAsync(int radio);
         Task<object> GetContactPersonsOrJobTitle(string type, int? cId);
         Task<List<ContactPerson>> GetContactPersonsByCompanyId(int companyId);
         Task<ContactPerson> GetContactPersonByIdAsync(int id);
         Task InsertOrUpdateCPAsync(ContactPerson aContact, string actionType);
         Task DeletePersonAsync(int id);
-        Task<Company> GetCompanyByNameAsync(string name, int id);
-        Task<string> InsertOrUpdateCompanyAsync(Company aCompany);
+        Task<CompanyViewModel> GetCompanyByNameAsync(string name, int id);
+        Task<string> InsertOrUpdateCompanyAsync(CompanyViewModel aCompany);
         Task DeleteCompanyAsync(int id);
 
     }
