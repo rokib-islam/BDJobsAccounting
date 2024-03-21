@@ -1,0 +1,280 @@
+﻿@{
+    ViewData["Title"] = "Company";
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="row">
+            <div class="col-sm-12">
+                <h5 class="alert-primary text-center" style="margin-top:-10px">Company Information</h5>
+                <div class="row">
+                    <label class="col-sm-2 col-form-label">List of Companies</label>
+                    <div class="col-sm-6">
+                        <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
+                        <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                            <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <label class="col-sm-4">Id</label>
+                            <div class="col-sm-8">
+                                <input class="form-control form-control-sm" ng-model="id" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <label class="col-sm-4">Online Id</label>
+                            <div class="col-sm-8">
+                                <input class="form-control form-control-sm" ng-model="onlineId" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-2">
+                        <label class="float-end">Black Listed &nbsp;<input type="checkbox" ng-model="blackList" /></label>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 mt-2">
+                    <div class="row">
+                        <label class="col-sm-2">Company Name</label>
+                        <div class="col-sm-10">
+                            <input class="form-control form-control-sm" ng-model="companyName" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 mt-2">
+                    <div class="row">
+                        <label class="col-sm-2">Vat Challan Name</label>
+                        <div class="col-sm-10">
+                            <input class="form-control form-control-sm" ng-model="vatChallanName" />
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-7">
+                        <div class="row">
+                            <label class="col-sm-3">Vat Reg No</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="vatRegNo" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <label class="col-sm-4">District</label>
+                            <div class="col-sm-8">
+                                <select class="form-control form-control-sm" ng-model="district">
+                                    <option value="-1">Select</option>
+                                    <option ng-repeat="data in districtData" value="{{data.districtId}}">{{data.districtName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                       
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-7">
+                        <div class="row">
+                            <label class="col-sm-3">Vat Reg Add</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="vatRegAdd" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <label class="col-sm-4">Bank Information</label>
+                            <div class="col-sm-8">
+                                <select class="form-control form-control-sm" ng-model="bankInfo">
+                                    <option value="-1">Select</option>
+                                    <option></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-12 mt-2">
+                    <div class="row mt-2">
+                        <label class="col-sm-2">Address</label>
+                        <div class="col-sm-10">
+                            <input class="form-control form-control-sm" ng-model="address" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+           <div class="col-sm-12">
+               <div class="row">
+                    <div class="col-sm-7">
+                        <div class="row mt-2">
+                            <label class="col-sm-3">City</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="city" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Phone</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="phone" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Email</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="email" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Fax</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="fax" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Contact Person</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="contactPerson" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Designation</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="designation" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Acc. Person</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="accperson" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Acc. Person Mail</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="accMail" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Acc. Person Contact No</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="accMobile" />
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-5 mt-3">
+                        <div class="px-3 py-4" style="border:2px solid gray">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <label class="float-end"><input type="radio" name="radio" ng-model="radioAdd" />&nbsp; Add</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="float-end"><input type="radio" name="radio" ng-model="radioUpdate" />&nbsp; Update</label>
+                                </div>
+                                <div class="col-sm-4">
+                                    <label class="float-end"><input type="checkbox" ng-model="checkCp" /> &nbsp; CP</label>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <label class="col-sm-3">Name</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control form-control-sm" ng-model="billingName" />
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <label class="col-sm-3">Designation</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control form-control-sm" ng-model="billingDesignation" />
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <label class="col-sm-3">Email</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control form-control-sm" ng-model="billingEmail" />
+                                </div>
+                            </div>
+                            <div class="row mt-2">
+                                <label class="col-sm-3">Phone</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control form-control-sm" ng-model="billingPhone" />
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-sm-4">
+                                    <button class="btn btn-info btn-sm px-3" ng-click="billingDelete()">Delete</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <button class="btn btn-info btn-sm px-3" ng-click="billingUpdate()">Update</button>
+                                </div>
+                                <div class="col-sm-4">
+                                    <button class="btn btn-info btn-sm px-4" ng-click="billingAdd()">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+               </div>
+           </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+            $scope.getDistrict();
+
+        })
+        $scope.district = '-1';
+        $scope.bankInfo = '-1';
+
+        $scope.companyList = [];
+        $scope.selectedCompany = null;
+
+        $scope.searchCompany = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Company/GetCompanyListByKey';
+                else
+                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.companyList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.companyList = [];
+            }
+        };
+
+        $scope.selectCompany = function (company) {
+            $scope.selectedCompany = company;
+            $scope.searchQuery = company.name;
+            $scope.companyList = [];
+        }
+
+        
+        $scope.getDistrict = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetDistricts';
+            else
+                Url = '/AccountingNew/Company/GetDistricts';
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.districtData = response.data;
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+    })
+</script>
+

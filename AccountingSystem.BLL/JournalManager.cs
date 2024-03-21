@@ -36,5 +36,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetVoucherListAsync(year, month);
         }
+
+        public async Task<object> GetJournalsForTrialBalance(string pageNo, string pageSize, string tno, string fromDate, string endDate)
+        {
+            return await _repository.GetJournalsForTrialBalance(pageNo, pageSize, tno, fromDate, endDate);
+        }
     }
 }
