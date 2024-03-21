@@ -549,7 +549,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@DistrictID", parameters.DistrictId);
                     dynamicParameters.Add("@BINNo", parameters.BINNo);
                     dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
-                    dynamicParameters.Add("@PaymentMode", parameters.PaymentMode);
+                    dynamicParameters.Add("@PaymentMode", parameters.PaymentMethod);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
