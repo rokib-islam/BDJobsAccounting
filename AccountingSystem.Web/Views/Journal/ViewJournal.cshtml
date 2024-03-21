@@ -146,7 +146,7 @@
 
 
         <table ng-show="showTable" class="table table-bordered table-sm" style="font-size:15px">
-            <tr style="background-color:skyblue">
+            <tr style="background-color:skyblue ; text-align: center">
                 <td>Sl#</td>
                 <td>Id</td>
                 <td>Ledger name</td>
@@ -161,8 +161,8 @@
                     <td>{{data.id}}</td>
                     <td>{{data.sbName}}</td>
                     <td>{{data.description}}</td>
-                    <td>{{numberToAmount(data.debt)}}</td>
-                    <td>{{numberToAmount(data.credit)}}</td>
+                    <td class="text-right">{{numberToAmount(data.debt)}}</td>
+                    <td class="text-right">{{numberToAmount(data.credit)}}</td>
                     <td>{{data.jDate}}</td>
                 </tr>
             </tbody>
