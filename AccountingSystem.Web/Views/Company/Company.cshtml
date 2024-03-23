@@ -23,7 +23,7 @@
                         <div class="row">
                             <label class="col-sm-4">Id</label>
                             <div class="col-sm-8">
-                                <input class="form-control form-control-sm" ng-model="id" />
+                                <input class="form-control form-control-sm" ng-model="companyId" />
                             </div>
                         </div>
                     </div>
@@ -36,7 +36,7 @@
                         </div>
                     </div>
                     <div class="col-sm-2">
-                        <label class="float-end">Black Listed &nbsp;<input type="checkbox" ng-model="blackList" /></label>
+                        <label class="float-end">Black Listed &nbsp;<input type="checkbox" ng-model="blackListed" /></label>
                     </div>
                 </div>
 
@@ -71,7 +71,7 @@
                             <div class="col-sm-8">
                                 <select class="form-control form-control-sm" ng-model="district">
                                     <option value="-1">Select</option>
-                                    <option ng-repeat="data in districtData" value="{{data.districtId}}">{{data.districtName}}</option>
+                                    <option ng-repeat="data in districtData" value="{{data.districtID}}">{{data.districtName}}</option>
                                 </select>
                             </div>
                         </div>
@@ -92,8 +92,7 @@
                             <label class="col-sm-4">Bank Information</label>
                             <div class="col-sm-8">
                                 <select class="form-control form-control-sm" ng-model="bankInfo">
-                                    <option value="-1">Select</option>
-                                    <option></option>
+                                    <option ng-repeat="data in bankInformationData" value="{{data.bankID}}">{{data.bankName}}</option>
                                 </select>
                             </div>
                         </div>
@@ -183,7 +182,9 @@
                             <div class="row mt-3">
                                 <label class="col-sm-3">Name</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control form-control-sm" ng-model="billingName" />
+                                    <select class="form-control form-control-sm" ng-model="billingName" ng-change="loadDesignation()">
+                                        <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}">{{data.name}}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mt-2">
@@ -228,10 +229,11 @@
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.getDistrict();
-
+            $scope.getBankInformation();
+            $scope.district = '-1';
+            $scope.bankInfo = '1'; 
         })
-        $scope.district = '-1';
-        $scope.bankInfo = '-1';
+        
 
         $scope.companyList = [];
         $scope.selectedCompany = null;
@@ -259,8 +261,8 @@
             $scope.selectedCompany = company;
             $scope.searchQuery = company.name;
             $scope.companyList = [];
+            $scope.getAllCompanyInfoById($scope.selectedCompany.id);
         }
-
         
         $scope.getDistrict = function () {
             let Url = '';
@@ -271,6 +273,91 @@
             $http.get(Url)
                 .then(function (response) {
                     $scope.districtData = response.data;
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+        $scope.getBankInformation = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Payment/GetBankInformation';
+            else
+                Url = '/AccountingNew/Payment/GetBankInformation';
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.bankInformationData = response.data;
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+        
+        $scope.getAllCompanyInfoById = function (cId) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetCompanyById';
+            else
+                Url = '/AccountingNew/Company/GetCompanyById';
+            $http.get(Url, { params: { companyId: cId } })
+                .then(function (response) {
+                    $scope.allCompanyData = response.data[0];
+                    
+                    $scope.loadCompanyDataWithId()
+                    $scope.getContactPersonByCompanyId($scope.selectedCompany.id);
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+        $scope.loadCompanyDataWithId = function () {
+            $scope.companyId = $scope.allCompanyData.id;
+            $scope.onlineId = $scope.allCompanyData.cP_Id;
+            $scope.blackListed = $scope.allCompanyData.blackListed;
+            $scope.companyName = $scope.allCompanyData.name;
+            $scope.vatChallanName = $scope.allCompanyData.vatChallanName;
+            $scope.vatRegNo = $scope.allCompanyData.vatRegNo;
+            $scope.district = $scope.allCompanyData.districtId;
+            $scope.vatRegAdd = $scope.allCompanyData.vatRegAdd;
+            $scope.bankInfo = $scope.allCompanyData.bankId.toString();
+            $scope.address = $scope.allCompanyData.address;
+            $scope.city = $scope.allCompanyData.city;
+            $scope.phone = $scope.allCompanyData.phone;
+            $scope.email = $scope.allCompanyData.email;
+            $scope.fax = $scope.allCompanyData.fax;
+            $scope.contactPerson = $scope.allCompanyData.contact_Person;
+            $scope.designation = $scope.allCompanyData.designation;
+            $scope.accperson = $scope.allCompanyData.accContactName;
+            $scope.accMail = $scope.allCompanyData.accPersonMail;
+            $scope.accMobile = $scope.allCompanyData.accPersonContactNo;
+        }
+
+
+        $scope.getContactPersonByCompanyId = function (cId) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetContactPersonByCompanyId';
+            else
+                Url = '/AccountingNew/Company/GetContactPersonByCompanyId';
+            $http.get(Url, { params: { companyId: cId } })
+                .then(function (response) {
+                    $scope.companyIdWiseContactPersonData = response.data;
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+        
+        $scope.loadDesignation = function () {
+            var id = $scope.billingName;
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetContactPersonById';
+            else
+                Url = '/AccountingNew/Company/GetContactPersonById';
+            $http.get(Url, { params: { id: id} })
+                .then(function (response) {
+                    $scope.contactPersonData = response.data;
+                    $scope.billingDesignation = $scope.contactPersonData.designation;
                 }, function (error) {
                     console.error(error);
                 });

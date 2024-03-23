@@ -32,5 +32,12 @@ namespace AccountingSystem.BLL
             return _repository.UpdateCashCollection(cashCollection);
         }
 
+        public async Task<List<BankInformationModel>> GetBankInformation()
+        {
+            return await _repository.GetBankInformation();
+        }
+
+
+
     }
 }

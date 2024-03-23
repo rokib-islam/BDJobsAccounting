@@ -8,5 +8,7 @@ namespace AccountingSystem.Abstractions.BLL
         Task<string> InsertCashCollectionAsync(InsertCashCollectionViewModel cashCollection);
         Task<string> UpdateCashCollection(InsertCashCollectionViewModel cashCollection);
         Task<string> UnpaidCashCollectionAsync(UnpaidCashCollection model);
+
+        Task<List<BankInformationModel>> GetBankInformation();
     }
 }
