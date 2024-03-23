@@ -453,6 +453,13 @@
                     var ledgerId = shiftedProduct.ledgerId;
 
                     if (shiftedProduct.comments == "" || shiftedProduct.comments == null || shiftedProduct.comments.length < 110) {
+
+                        var partssDate = shiftedProduct.sDate.split("/");
+                        var formattedSDate = (partssDate[1].length === 1 ? '0' + partssDate[1] : partssDate[1]) + "-" + (partssDate[0].length === 1 ? '0' + partssDate[0] : partssDate[0]) + "-" + partssDate[2];
+
+                        var partseDate = shiftedProduct.eDate.split("/");
+                        var formattedeDate = (partseDate[1].length === 1 ? '0' + partseDate[1] : partseDate[1]) + "-" + (partseDate[0].length === 1 ? '0' + partseDate[0] : partseDate[0]) + "-" + partseDate[2];
+
                         if (
                             //ledgerId == 44 ||
                             ledgerId == 1165 ||
@@ -471,9 +478,9 @@
                                 "Payment for '" +
                                 shiftedProduct.sbName +
                                 "' at the classified section of Bdjobs.com from " +
-                                shiftedProduct.sDate +
+                                formattedSDate +
                                 " to " +
-                                shiftedProduct.eDate +
+                                formattedeDate +
                                 " for the following job position(s):\n\n" +
                                 shiftedProduct.product;
                         }
@@ -500,18 +507,18 @@
                                 "Payment for Web Listing Services under '" +
                                 serviceName +
                                 "' at the classified section of Bdjobs.com from " +
-                                shiftedProduct.sDate +
+                                formattedSDate +
                                 " to " +
-                                shiftedProduct.eDate +
+                                formattedeDate +
                                 " for the following job position(s):\n\nDesignation Name: " +
                                 shiftedProduct.product;
                         }
                         else if (ledgerId == 18) {
                             comments =
                                 "Payment for 'Job Announcement Display' at the Home Page of Bdjobs.com from " +
-                                shiftedProduct.sDate +
+                                formattedSDate +
                                 " to " +
-                                shiftedProduct.eDate +
+                                formattedeDate +
                                 " for the following position(s):\n\n" +
                                 shiftedProduct.product;
                         } else if (shiftedProduct.product.trim() == "Add: VAT@5% Under Service Code: S099.10 (IT Enabled Services)") {
@@ -521,9 +528,9 @@
                                 "Payment for Web Listing (" +
                                 shiftedProduct.product +
                                 ") at the classified section of www.bdjobs.com from " +
-                                shiftedProduct.sDate +
+                                formattedSDate +
                                 " to " +
-                                shiftedProduct.eDate +
+                                formattedeDate +
                                 " for the following position:\n\n" +
                                 shiftedProduct.product;
                         }

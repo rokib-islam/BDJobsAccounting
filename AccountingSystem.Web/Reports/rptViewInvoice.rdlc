@@ -730,7 +730,7 @@ Thank you for subscribing our services. Please pay the bill as follows:</Value>
                     </Style>
                   </TextRun>
                   <TextRun>
-                    <Value>=Format(DateSerial(Year(Fields!InvSendDt.Value), Month(Fields!InvSendDt.Value), Day(Fields!InvSendDt.Value)), "MM/dd/yyyy")</Value>
+                    <Value>=Format(DateSerial(Year(Fields!InvSendDt.Value), Month(Fields!InvSendDt.Value), Day(Fields!InvSendDt.Value)), "dd-MM-yyyy")</Value>
                     <Style>
                       <Format>=Format(DateValue(Fields!InvSendDt.Value), "MM/dd/yyyy")</Format>
                     </Style>
@@ -1019,8 +1019,8 @@ e-TIN : 442866744556</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox17</rd:DefaultName>
-            <Top>5.38888in</Top>
-            <Left>0.78351in</Left>
+            <Top>5.58332in</Top>
+            <Left>0.79391in</Left>
             <Height>0.21181in</Height>
             <Width>3.01041in</Width>
             <ZIndex>21</ZIndex>
@@ -1059,8 +1059,8 @@ e-TIN : 442866744556</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox17</rd:DefaultName>
-            <Top>5.62847in</Top>
-            <Left>0.78351in</Left>
+            <Top>5.82291in</Top>
+            <Left>0.79391in</Left>
             <Height>1.02431in</Height>
             <Width>1.61459in</Width>
             <ZIndex>22</ZIndex>
@@ -1099,8 +1099,8 @@ e-TIN : 442866744556</Value>
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox17</rd:DefaultName>
-            <Top>5.61458in</Top>
-            <Left>2.43977in</Left>
+            <Top>5.80902in</Top>
+            <Left>2.45017in</Left>
             <Height>1.03819in</Height>
             <Width>3.55901in</Width>
             <ZIndex>23</ZIndex>
@@ -1169,42 +1169,8 @@ e-TIN : 442866744556</Value>
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value> Payment should be made in A/C payee cheque in favor of </Value>
-                    <Style>
-                      <FontSize>8pt</FontSize>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value xml:space="preserve"> </Value>
-                    <Style>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>"</Value>
-                    <Style>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Normal</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>Bdjobs.com Ltd</Value>
-                    <Style>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Bold</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value>"</Value>
-                    <Style>
-                      <FontSize>8pt</FontSize>
-                      <FontWeight>Normal</FontWeight>
-                    </Style>
-                  </TextRun>
-                  <TextRun>
-                    <Value> or BEFTN to our following bank account:
-(Please send us the payment info / advice to our following e-mail ID in case of BEFTN payment / bank deposit)</Value>
+                    <Value>We prefer online payment (by Credit/Debit Card, bKash/Nagad or others) from Recruiter's panel (https://recruiter.bdjobs.com/dashboard).
+However, you can pay over NPSB/ BEFTN/ RTGS from any scheduled bank to our following bank account or by an account payee cheque in favor of "Bdjobs.com Limited":</Value>
                     <Style>
                       <FontSize>8pt</FontSize>
                     </Style>
@@ -1216,8 +1182,8 @@ e-TIN : 442866744556</Value>
             <rd:DefaultName>Textbox22</rd:DefaultName>
             <Top>4.96527in</Top>
             <Left>1.20015in</Left>
-            <Height>0.35417in</Height>
-            <Width>6.36458in</Width>
+            <Height>0.60417in</Height>
+            <Width>6.72569in</Width>
             <ZIndex>26</ZIndex>
             <Style>
               <Border>
@@ -1263,8 +1229,8 @@ e-TIN : 442866744556</Value>
           </Textbox>
           <Rectangle Name="Rectangle1">
             <KeepTogether>true</KeepTogether>
-            <Top>14.26103cm</Top>
-            <Left>1.99012cm</Left>
+            <Top>14.75492cm</Top>
+            <Left>2.01654cm</Left>
             <Height>2.56645cm</Height>
             <Width>13.24678cm</Width>
             <ZIndex>28</ZIndex>

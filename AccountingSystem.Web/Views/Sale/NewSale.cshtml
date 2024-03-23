@@ -685,7 +685,7 @@
                 TypeId: $scope.taxType ? $scope.taxType.toString() : "",
                 Vat: $scope.amount || 0,
                 JpId: $scope.jobTitle ? $scope.jobTitle : 0,
-                JobTitle: selectedJpId.title,
+                JobTitle: selectedJpId == undefined ? "" : selectedJpId.title,
                 // workshopDate: $scope.workshopdateDiv ? $scope.workshopdate : "",
                 SPerson: $scope.salesPerson
             };
