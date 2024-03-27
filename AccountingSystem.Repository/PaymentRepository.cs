@@ -1,8 +1,10 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
@@ -133,8 +135,14 @@ namespace AccountingSystem.Repository
             }
         }
 
-
-
+        public async Task<List<BankInformationModel>> GetBankInformation()
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = await _db.QueryAsync<BankInformationModel>("Select * From BankInformation Order By BankID", new { });
+                return result.ToList();
+            }
+        }
 
 
     }

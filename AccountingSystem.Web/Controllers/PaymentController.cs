@@ -41,6 +41,12 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
+        public async Task<IActionResult> GetBankInformation()
+        {
+            var result = await _PaymentManager.GetBankInformation();
+            return Json(result);
+        }
+
 
     }
 }

@@ -1,5 +1,21 @@
-﻿@{
+﻿@using Microsoft.AspNetCore.Http
+@{
     ViewData["Title"] = "Company";
+    var userId = Context.Session.GetInt32("UserID");
+    var accessRight = Context.Session.GetString("AccessRight");
+
+    var accessRights = new string[0];
+
+    if (string.IsNullOrEmpty(accessRight))
+    {
+        <script type="text/javascript">
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
+    }
+    else
+    {
+        accessRights = accessRight.Split(',');
+    }
 }
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
@@ -23,7 +39,7 @@
                         <div class="row">
                             <label class="col-sm-4">Id</label>
                             <div class="col-sm-8">
-                                <input class="form-control form-control-sm" ng-model="id" />
+                                <input class="form-control form-control-sm" ng-model="companyId" ng-disabled="companyIdDisabled" />
                             </div>
                         </div>
                     </div>
@@ -36,7 +52,7 @@
                         </div>
                     </div>
                     <div class="col-sm-2">
-                        <label class="float-end">Black Listed &nbsp;<input type="checkbox" ng-model="blackList" /></label>
+                        <label class="float-end">Black Listed &nbsp;<input type="checkbox" ng-model="blackListed" /></label>
                     </div>
                 </div>
 
@@ -71,11 +87,11 @@
                             <div class="col-sm-8">
                                 <select class="form-control form-control-sm" ng-model="district">
                                     <option value="-1">Select</option>
-                                    <option ng-repeat="data in districtData" value="{{data.districtId}}">{{data.districtName}}</option>
+                                    <option ng-repeat="data in districtData" value="{{data.districtID}}">{{data.districtName}}</option>
                                 </select>
                             </div>
                         </div>
-                       
+
                     </div>
                 </div>
                 <div class="row mt-2">
@@ -92,8 +108,7 @@
                             <label class="col-sm-4">Bank Information</label>
                             <div class="col-sm-8">
                                 <select class="form-control form-control-sm" ng-model="bankInfo">
-                                    <option value="-1">Select</option>
-                                    <option></option>
+                                    <option ng-repeat="data in bankInformationData" value="{{data.bankID}}">{{data.bankName}}</option>
                                 </select>
                             </div>
                         </div>
@@ -108,8 +123,8 @@
                     </div>
                 </div>
             </div>
-           <div class="col-sm-12">
-               <div class="row">
+            <div class="col-sm-12">
+                <div class="row">
                     <div class="col-sm-7">
                         <div class="row mt-2">
                             <label class="col-sm-3">City</label>
@@ -138,13 +153,13 @@
                         <div class="row mt-2">
                             <label class="col-sm-3">Contact Person</label>
                             <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="contactPerson" />
+                                <input class="form-control form-control-sm" ng-model="contactPerson" ng-disabled="contactPersonDisabled" />
                             </div>
                         </div>
                         <div class="row mt-2">
                             <label class="col-sm-3">Designation</label>
                             <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="designation" />
+                                <input class="form-control form-control-sm" ng-model="designation" ng-disabled="designationDisabled" />
                             </div>
                         </div>
                         <div class="row mt-2">
@@ -171,10 +186,10 @@
                         <div class="px-3 py-4" style="border:2px solid gray">
                             <div class="row">
                                 <div class="col-sm-4">
-                                    <label class="float-end"><input type="radio" name="radio" ng-model="radioAdd" />&nbsp; Add</label>
+                                    <label class="float-end"><input type="radio" name="radio" ng-model="radioBtn" value="1" ng-change="radioChange()" />&nbsp; Add</label>
                                 </div>
                                 <div class="col-sm-4">
-                                    <label class="float-end"><input type="radio" name="radio" ng-model="radioUpdate" />&nbsp; Update</label>
+                                    <label class="float-end"><input type="radio" name="radio" ng-model="radioBtn" value="2" ng-change="radioChange()" />&nbsp; Update</label>
                                 </div>
                                 <div class="col-sm-4">
                                     <label class="float-end"><input type="checkbox" ng-model="checkCp" /> &nbsp; CP</label>
@@ -183,7 +198,10 @@
                             <div class="row mt-3">
                                 <label class="col-sm-3">Name</label>
                                 <div class="col-sm-9">
-                                    <input class="form-control form-control-sm" ng-model="billingName" />
+                                    <input type="text" class="form-control form-control-sm" ng-model="billingNameInput" ng-show="billingNameInputShow" />
+                                    <select class="form-control form-control-sm" ng-model="billingName" ng-change="loadDesignation()" ng-show="billingNameShow">
+                                        <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}" data-name="{{data.name}}">{{data.name}}</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="row mt-2">
@@ -206,19 +224,31 @@
                             </div>
                             <div class="row mt-3">
                                 <div class="col-sm-4">
-                                    <button class="btn btn-info btn-sm px-3" ng-click="billingDelete()">Delete</button>
+                                    <button class="btn btn-info btn-sm px-3" ng-click="billingDelete()" ng-disabled="billingDeleteDisabled">Delete</button>
                                 </div>
                                 <div class="col-sm-4">
-                                    <button class="btn btn-info btn-sm px-3" ng-click="billingUpdate()">Update</button>
+                                    <button class="btn btn-info btn-sm px-3" ng-click="billingUpdate()" ng-disabled="billingUpdateDisabled">Update</button>
                                 </div>
                                 <div class="col-sm-4">
-                                    <button class="btn btn-info btn-sm px-4" ng-click="billingAdd()">Add</button>
+                                    <button class="btn btn-info btn-sm px-4" ng-click="billingAdd()" ng-disabled="billingAddDisabled">Add</button>
                                 </div>
                             </div>
                         </div>
                     </div>
-               </div>
-           </div>
+                </div>
+            </div>
+
+            <div class="row offset-1">
+                <div class="col-sm-4">
+                    <button class="btn btn-info btn-sm px-3" ng-click="delete()" ng-disabled="deleteDisabled">Delete</button>
+                </div>
+                <div class="col-sm-4">
+                    <button class="btn btn-info btn-sm px-3" ng-click="update()" ng-disabled="updateDisabled">Update</button>
+                </div>
+                <div class="col-sm-4">
+                    <button class="btn btn-info btn-sm px-4" ng-click="add()" ng-disabled="addDisabled">Add</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -228,14 +258,52 @@
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.getDistrict();
-
+            $scope.getBankInformation();
+            $scope.district = '-1';
+            $scope.bankInfo = '1';
+            $scope.radioBtn = '2'
+            $scope.billingNameShow = true;
+            $scope.billingAddDisabled = true;
+            $scope.billingUpdateDisabled = true;
+            $scope.billingDeleteDisabled = true;
+            $scope.updateDisabled = true;
+            $scope.deleteDisabled = true;
+            $scope.companyIdDisabled = true;
+            $scope.contactPersonDisabled = false;
+            $scope.designationDisabled = false;
         })
-        $scope.district = '-1';
-        $scope.bankInfo = '-1';
+
+        $scope.radioChange = function () {
+            if ($scope.radioBtn == 1) {
+                $scope.billingDesignation = "";
+                $scope.billingNameInput = "";
+                $scope.billingEmail = "";
+                $scope.billingPhone = "";
+                $scope.billingNameInputShow = true;
+                $scope.billingNameShow = false;
+                $scope.billingUpdateDisabled = true;
+                $scope.billingDeleteDisabled = true;
+                $scope.billingAddDisabled = false;
+            }
+            else if ($scope.radioBtn == 2) {
+                $scope.billingName = "";
+                $scope.billingDesignation = "";
+                $scope.billingEmail = "";
+                $scope.billingPhone = "";
+                $scope.billingNameShow = true;
+                $scope.billingNameInputShow = false;
+                $scope.billingAddDisabled = true;
+                $scope.billingUpdateDisabled = false;
+                $scope.billingDeleteDisabled = false;
+                $scope.getContactPersonByCompanyId($scope.selectedCompany.id);
+            }
+        };
+
+
+
 
         $scope.companyList = [];
         $scope.selectedCompany = null;
-
         $scope.searchCompany = function (startingKey) {
             if (startingKey && startingKey.length > 1) {
                 let Url = '';
@@ -247,6 +315,7 @@
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
                         $scope.companyList = response.data;
+                        $scope.list = $scope.companyList;
                     }, function (error) {
                         console.error(error);
                     })
@@ -259,9 +328,19 @@
             $scope.selectedCompany = company;
             $scope.searchQuery = company.name;
             $scope.companyList = [];
+            $scope.getAllCompanyInfoById($scope.selectedCompany.id);
+
+            $scope.billingUpdateDisabled = false;
+            $scope.billingDeleteDisabled = false;
+
+            $scope.updateDisabled = false;
+            $scope.deleteDisabled = false;
+            $scope.addDisabled = true;
+
+            $scope.contactPersonDisabled = true;
+            $scope.designationDisabled = true;
         }
 
-        
         $scope.getDistrict = function () {
             let Url = '';
             if (window.location.hostname == 'localhost')
@@ -275,6 +354,482 @@
                     console.error(error);
                 });
         };
+
+        $scope.getBankInformation = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Payment/GetBankInformation';
+            else
+                Url = '/AccountingNew/Payment/GetBankInformation';
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.bankInformationData = response.data;
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+        $scope.getAllCompanyInfoById = function (cId) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetCompanyById';
+            else
+                Url = '/AccountingNew/Company/GetCompanyById';
+            $http.get(Url, { params: { companyId: cId } })
+                .then(function (response) {
+                    $scope.allCompanyData = response.data[0];
+
+                    $scope.loadCompanyDataWithId()
+                    $scope.getContactPersonByCompanyId($scope.selectedCompany.id);
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+        $scope.loadCompanyDataWithId = function () {
+            $scope.companyId = $scope.allCompanyData.id;
+            $scope.onlineId = $scope.allCompanyData.cP_Id;
+            $scope.blackListed = $scope.allCompanyData.blackListed;
+            $scope.companyName = $scope.allCompanyData.name;
+            $scope.vatChallanName = $scope.allCompanyData.vatChallanName;
+            $scope.vatRegNo = $scope.allCompanyData.vatRegNo;
+            $scope.district = $scope.allCompanyData.districtId;
+            $scope.vatRegAdd = $scope.allCompanyData.vatRegAdd;
+            $scope.bankInfo = $scope.allCompanyData.bankId.toString();
+            $scope.address = $scope.allCompanyData.address;
+            $scope.city = $scope.allCompanyData.city;
+            $scope.phone = $scope.allCompanyData.phone;
+            $scope.email = $scope.allCompanyData.email;
+            $scope.fax = $scope.allCompanyData.fax;
+            $scope.contactPerson = $scope.allCompanyData.contact_Person;
+            $scope.designation = $scope.allCompanyData.designation;
+            $scope.accperson = $scope.allCompanyData.accContactName;
+            $scope.accMail = $scope.allCompanyData.accPersonMail;
+            $scope.accMobile = $scope.allCompanyData.accPersonContactNo;
+        }
+
+
+        $scope.getContactPersonByCompanyId = function (cId) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetContactPersonByCompanyId';
+            else
+                Url = '/AccountingNew/Company/GetContactPersonByCompanyId';
+            $http.get(Url, { params: { companyId: cId } })
+                .then(function (response) {
+                    $scope.companyIdWiseContactPersonData = response.data;
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+        $scope.loadDesignation = function () {
+            var id = $scope.billingName;
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/GetContactPersonById';
+            else
+                Url = '/AccountingNew/Company/GetContactPersonById';
+            $http.get(Url, { params: { id: id } })
+                .then(function (response) {
+                    $scope.contactPersonData = response.data;
+                    $scope.billingDesignation = $scope.contactPersonData.designation;
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+        $scope.billingAdd = function () {
+            if ($scope.searchQuery == '' || $scope.searchQuery == undefined) {
+                if (!confirm("You must select a company first.")) {
+                    return;
+                }
+            }
+            else {
+                var companyName = $scope.searchQuery.trim();
+                var isCompanyExist = false;
+
+                angular.forEach($scope.list, function (company) {
+                    if (company.name.toLowerCase().replace(/&amp/g, "&") === companyName.toLowerCase()) {
+                        $scope.companyId = company.value;
+                        isCompanyExist = true;
+                        return;
+                    }
+                });
+
+                if (!isCompanyExist) {
+                    if (!confirm("The entered company doesn't exist.")) {
+                        return;
+                    }
+                }
+                var name = $scope.billingNameInput;
+                if (name == "" || $scope.checkAllAreSpaces(name)) {
+                    if (!confirm("Enter a person name.")) {
+                        return;
+                    }
+                }
+                var designation = $scope.billingDesignation;
+                var email = $scope.billingEmail;
+                var phone = $scope.billingPhone;
+                var pType = "Billing person";
+
+                if ($scope.checkCp == true) {
+                    pType = "Contact person";
+                }
+
+                let requestBodyModel = {
+                    Id: 0,
+                    CId: $scope.selectedCompany.id,
+                    Name: name,
+                    Designation: designation,
+                    PType: pType,
+                    Email: email,
+                    Phone: phone
+                };
+
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Company/AddOrUpdatePerson';
+                else
+                    Url = '/AccountingNew/Company/AddOrUpdatePerson';
+
+                $scope.spinner = true;
+                $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                    .then(function (response) {
+                        alert("Billing Person added successfully.");
+                        $scope.radioChange();
+
+                    }, function (error) {
+                        console.error(error);
+                    })
+            }
+
+        }
+
+        $scope.billingUpdate = function () {
+            if ($scope.searchQuery == '' || $scope.searchQuery == undefined) {
+                if (!confirm("You must select a company first.")) {
+                    return;
+                }
+            }
+            else {
+                var companyName = $scope.searchQuery.trim();
+                var isCompanyExist = false;
+
+                angular.forEach($scope.list, function (company) {
+                    if (company.name.toLowerCase().replace(/&amp/g, "&") === companyName.toLowerCase()) {
+                        $scope.companyId = company.value;
+                        isCompanyExist = true;
+                        return;
+                    }
+                });
+
+                if (!isCompanyExist) {
+                    if (!confirm("The entered company doesn't exist.")) {
+                        return;
+                    }
+                }
+
+                var selectedbillingName = $scope.companyIdWiseContactPersonData.find(function (s) {
+                    return s.id == $scope.billingName;
+                });
+                var Id = $scope.billingName;
+                var name = selectedbillingName.name;
+                if (name == "" || $scope.checkAllAreSpaces(name)) {
+                    if (!confirm("Enter a person name.")) {
+                        return;
+                    }
+                }
+                var designation = $scope.billingDesignation;
+                var email = $scope.billingEmail;
+                var phone = $scope.billingPhone;
+                var pType = "Billing person";
+
+                if ($scope.checkCp == true) {
+                    pType = "Contact person";
+                }
+
+                let requestBodyModel = {
+                    Id: Id,
+                    CId: $scope.selectedCompany.id,
+                    Name: name,
+                    Designation: designation,
+                    PType: pType,
+                    Email: email,
+                    Phone: phone
+                };
+
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Company/AddOrUpdatePerson';
+                else
+                    Url = '/AccountingNew/Company/AddOrUpdatePerson';
+
+                $scope.spinner = true;
+                $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                    .then(function (response) {
+                        alert("Billing Person Updated successfully.");
+                        $scope.radioChange();
+                    }, function (error) {
+                        console.error(error);
+                    })
+            }
+
+        }
+
+        $scope.billingDelete = function () {
+            if ($scope.searchQuery == '' || $scope.searchQuery == undefined) {
+                if (!confirm("You must select a company first.")) {
+                    return;
+                }
+            }
+            else {
+                var companyName = $scope.searchQuery.trim();
+                var isCompanyExist = false;
+
+                angular.forEach($scope.list, function (company) {
+                    if (company.name.toLowerCase().replace(/&amp/g, "&") === companyName.toLowerCase()) {
+                        $scope.companyId = company.value;
+                        isCompanyExist = true;
+                        return;
+                    }
+                });
+
+                if (!isCompanyExist) {
+                    if (!confirm("The entered company doesn't exist.")) {
+                        return;
+                    }
+                }
+
+                var selectedbillingName = $scope.companyIdWiseContactPersonData.find(function (s) {
+                    return s.id == $scope.billingName;
+                });
+
+                let requestBodyModel = {
+                    Id: $scope.billingName,
+                    CId: $scope.selectedCompany.id
+                };
+
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Company/DeletePerson';
+                else
+                    Url = '/AccountingNew/Company/DeletePerson';
+
+                $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                    .then(function (response) {
+                        alert("Billing Person Deleted successfully.");
+                        $scope.radioChange();
+                    }, function (error) {
+                        console.error(error);
+                    })
+            }
+
+        }
+
+        $scope.checkAllAreSpaces = function (str) {
+            var isSpace = true;
+            for (var l = 0; l < str.length; l++) {
+                var ch = str[l];
+                if (ch != " ")
+                    isSpace = false;
+            }
+            return isSpace;
+        }
+
+        $scope.add = function () {
+            var access = '@accessRights.Contains("1")';
+            if (access == 'False') {
+                alert("Sorry, You have no permission to insert a record.");
+            }
+            $scope.insertOrUpdateCompany();
+        }
+
+        $scope.update = function () {
+            var access = '@accessRights.Contains("2")';
+            if (access == 'False') {
+                alert("Sorry, You have no permission to Update a record.");
+            }
+            $scope.insertOrUpdateCompany();
+        }
+
+        $scope.insertOrUpdateCompany = function () {
+            var cpId = $scope.onlineId == undefined ? 0 : $scope.onlineId;
+            var black = $scope.blackListed == undefined ? false : $scope.blackListed;
+            var name = $scope.companyName == undefined ? "" : $scope.companyName;
+            var vatRegNo = $scope.vatRegNo == undefined ? "" : $scope.vatRegNo;
+            var vatRegAdd = $scope.vatRegAdd == undefined ? "" : $scope.vatRegAdd;
+            var designation = $scope.designation == undefined ? "" : $scope.designation;
+            var contactPerson = $scope.contactPerson == undefined ? "" : $scope.contactPerson;
+            var fax = $scope.fax == undefined ? "" : $scope.fax;
+            var email = $scope.email == undefined ? "" : $scope.email;
+            var phone = $scope.phone == undefined ? "" : $scope.phone;
+            var city = $scope.city == undefined ? "" : $scope.city;
+            var address = $scope.address == undefined ? "" : $scope.address;
+            var id = $scope.companyId == undefined ? 0 : $scope.companyId;
+            var districtId = $scope.district == undefined ? "" : $scope.district;
+            var bankId = +$scope.bankInfo;
+            var vatChallanName = $scope.vatChallanName == undefined ? "" : $scope.vatChallanName;
+            var accName = $scope.accperson == undefined ? "" : $scope.accperson;
+            var accPersonMail = $scope.accMail == undefined ? "" : $scope.accMail;
+            var accPersonContactNo = $scope.accMobile == undefined ? "" : $scope.accMobile;
+            if (name == "" || name == undefined || $scope.checkAllAreSpaces(name)) {
+                alert("Company name required.");
+                return;
+            } else if (districtId == -1 || districtId == "" || districtId == undefined) {
+                alert("District required.");
+                return;
+            } else if (address == "" || address == undefined || $scope.checkAllAreSpaces(address)) {
+                alert("Address required.");
+                return;
+            } else if (city == "" || city == undefined || $scope.checkAllAreSpaces(city)) {
+                alert("City required.");
+                return;
+            }
+
+            if (id == 0 || id == undefined) {
+                id = "-1";
+            }
+            let requestBodyModel = {
+                name: name,
+                id: id
+            };
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Company/CheckCompanyNameWithId';
+            else
+                Url = '/AccountingNew/Company/CheckCompanyNameWithId';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    if (response.data == true) {
+                        var companyData = {
+                            CP_Id: cpId,
+                            BlackListed: black,
+                            Name: name,
+                            VatRegNo: vatRegNo,
+                            VatRegAdd: vatRegAdd,
+                            Designation: designation,
+                            ContactPerson: contactPerson,
+                            Fax: fax,
+                            Email: email,
+                            Phone: phone,
+                            City: city,
+                            Address: address,
+                            Id: id == "-1" ? 0 : id,
+                            DistrictId: districtId,
+                            BankId: bankId,
+                            VatChallanName: vatChallanName,
+                            AccContactName: accName,
+                            AccPersonMail: accPersonMail,
+                            AccPersonContactNo: accPersonContactNo
+                        };
+
+                        let Url = '';
+                        if (window.location.hostname == 'localhost')
+                            Url = '/Company/InsertOrUpdateCompany';
+                        else
+                            Url = '/AccountingNew/Company/InsertOrUpdateCompany';
+
+                        $http.post(Url, JSON.stringify(companyData), { headers: { 'Content-Type': 'application/json' } })
+                            .then(function (response) {
+                                var strMessage = "";
+                                if (response.data == "Success") {
+                                    strMessage = "Success.";
+                                    $scope.clearFields();
+                                    $scope.getAllCompanyInfoById($scope.selectedCompany.id);
+                                }
+                                // Display success message
+                                alert(strMessage);
+                            })
+                            .catch(function (error) {
+                                // Handle error in posting company data
+                                alert("Error in posting company data: " + error.message);
+                            });
+                    } else {
+                        // Handle error when company name already exists
+                        alert("Company name already exists.");
+                    }
+                })
+                .catch(function (error) {
+                    // Handle error in checking company name
+                    alert("Error in checking company name: " + error.message);
+                });
+        }
+
+
+        $scope.delete = function () {
+            if ('@accessRights.Contains("3")' != 'True') {
+                alert("Sorry, You have no permission to delete a record.");
+            } else {
+                if ($scope.searchQuery == '' || $scope.searchQuery == undefined) {
+                    if (!confirm("You must select a company first.")) {
+                        return;
+                    }
+                } else {
+                    var companyName = $scope.searchQuery.trim();
+                    var isCompanyExist = false;
+
+                    angular.forEach($scope.list, function (company) {
+                        if (company.name.toLowerCase().replace(/&amp/g, "&") === companyName.toLowerCase()) {
+                            $scope.companyId = company.value;
+                            isCompanyExist = true;
+                            return;
+                        }
+                    });
+                    if (!isCompanyExist) {
+                        if (!confirm("The entered company doesn't exist.")) {
+                            return;
+                        }
+                    }
+                    var confirmed = confirm("Are you sure you want to delete?");
+                    if (confirmed) {
+
+                        let Url = '';
+                        if (window.location.hostname == 'localhost')
+                            Url = '/Company/Delete';
+                        else
+                            Url = '/AccountingNew/Company/Delete';
+
+                        $http.get(Url, { params: { companyId: $scope.selectedCompany.id } }, { headers: { 'Content-Type': 'application/json' } })
+                            .then(function (response) {
+                                if (response.data == true) {
+                                    alert("Delete Successfully.");
+                                    $scope.clearFields();
+                                }
+                            })
+                            .catch(function (error) {
+                                console.error('Error deleting company:', error);
+                            });
+                    }
+                }
+            }
+        };
+
+        $scope.clearFields = function () {
+            $scope.searchQuery = '';
+            $scope.companyId = '';
+            $scope.onlineId = '';
+            $scope.blackListed = '';
+            $scope.companyName = '';
+            $scope.vatChallanName = '';
+            $scope.vatRegNo = '';
+            $scope.district = '';
+            $scope.vatRegAdd = '';
+            $scope.bankInfo = '';
+            $scope.address = '';
+            $scope.city = '';
+            $scope.phone = '';
+            $scope.email = '';
+            $scope.fax = '';
+            $scope.contactPerson = '';
+            $scope.designation = '';
+            $scope.accperson = '';
+            $scope.accMail = '';
+            $scope.accMobile = '';
+        }
     })
 </script>
 
