@@ -100,7 +100,7 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
-        public async Task<IActionResult> AddOrUpdatePerson(ContactPerson aPerson)
+        public async Task<IActionResult> AddOrUpdatePerson([FromBody] ContactPerson aPerson)
         {
             if (aPerson.Id == 0)
             {
@@ -116,21 +116,21 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(returnValue);
         }
-        public async Task<IActionResult> DeletePerson(int Id, int CId)
+        public async Task<IActionResult> DeletePerson([FromBody] DeletePersonModel model)
         {
-            await _CompanyManager.DeletePersonAsync(Id);
+            await _CompanyManager.DeletePersonAsync(model.Id);
 
-            var returnValue = await _CompanyManager.GetContactPersonsByCompanyId(CId);
+            var returnValue = await _CompanyManager.GetContactPersonsByCompanyId(model.CId);
             returnValue = returnValue.OrderBy(x => x.Name).ToList();
 
             return Json(returnValue);
         }
-        public async Task<IActionResult> CheckCompanyNameWithId(string name, int id)
+        public async Task<IActionResult> CheckCompanyNameWithId([FromBody] CheckCompanyNameWithIdModel model)
         {
-            var resp = await _CompanyManager.GetCompanyByNameAsync(name, id) == null;
+            var resp = await _CompanyManager.GetCompanyByNameAsync(model.name, model.id) == null;
             return Json(resp);
         }
-        public async Task<IActionResult> Index(CompanyViewModel aCompany)
+        public async Task<IActionResult> InsertOrUpdateCompany([FromBody] CompanyViewModel aCompany)
         {
             var resp = await _CompanyManager.InsertOrUpdateCompanyAsync(aCompany);
             return Json(resp);
