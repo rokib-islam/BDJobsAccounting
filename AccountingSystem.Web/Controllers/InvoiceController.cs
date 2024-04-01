@@ -214,6 +214,87 @@ namespace AccountingSystem.Web.Controllers
         }
 
 
+        public IActionResult OnlinePaymentVarification()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> LoadOnlinePaymentVarificationData([FromBody] loadOnlinePaymentVarificationDataModel model)
+        {
+            var url = "https://corporate3.bdjobs.com/api/GetBillingsForAccouting.asp";
+
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("fromDate", model.FromDate),
+                new KeyValuePair<string, string>("toDate", model.ToDate),
+                new KeyValuePair<string, string>("verified", model.Verified),
+                new KeyValuePair<string, string>("pageNo", model.PageNo.ToString()),
+                new KeyValuePair<string, string>("pageSize", model.PageSize.ToString())
+            });
+
+            try
+            {
+                var response = await _httpClient.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseMessage = await response.Content.ReadAsStringAsync();
+                    ApiResponseModel responseObjectTyped = JsonConvert.DeserializeObject<ApiResponseModel>(responseMessage);
+
+                    return Json(responseObjectTyped);
+                }
+                else
+                {
+                    return Json($"Onlin Payment Varification failed (HTTP status code: {response.StatusCode})");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
+        }
+
+
+        public async Task<IActionResult> VarifyOrReject([FromBody] VarifyOrReject model)
+        {
+            var url = "https://corporate3.bdjobs.com/api/GetBillingsForAccouting.asp";
+
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("QID", model.QID.ToString()),
+                new KeyValuePair<string, string>("verified", model.verified.ToString()),
+                new KeyValuePair<string, string>("verifiedBy", model.verifiedBy.ToString()),
+                
+            });
+
+            try
+            {
+                var response = await _httpClient.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseMessage = await response.Content.ReadAsStringAsync();
+                    ApiResponseModel responseObjectTyped = JsonConvert.DeserializeObject<ApiResponseModel>(responseMessage);
+
+                    return Json(responseObjectTyped);
+                }
+                else
+                {
+                    return Json($"Onlin Payment Varification failed (HTTP status code: {response.StatusCode})");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
+        }
     }
 
 
