@@ -27,7 +27,7 @@
                 <h5 class="alert-primary text-center" style="margin-top:-10px">Company Information</h5>
                 <div class="row">
                     <label class="col-sm-2 col-form-label">List of Companies</label>
-                    <div class="col-sm-6">
+                    <div class="col-sm-7">
                         <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
                         <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
                             <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
@@ -38,7 +38,7 @@
                     <div class="col-sm-5">
                         <div class="row">
                             <label class="col-sm-4">Id</label>
-                            <div class="col-sm-8">
+                            <div class="col-sm-7 ms-2">
                                 <input class="form-control form-control-sm" ng-model="companyId" ng-disabled="companyIdDisabled" />
                             </div>
                         </div>
@@ -56,76 +56,57 @@
                     </div>
                 </div>
 
-                <div class="col-sm-12 mt-2">
-                    <div class="row">
-                        <label class="col-sm-2">Company Name</label>
-                        <div class="col-sm-10">
-                            <input class="form-control form-control-sm" ng-model="companyName" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-12 mt-2">
-                    <div class="row">
-                        <label class="col-sm-2">Vat Challan Name</label>
-                        <div class="col-sm-10">
-                            <input class="form-control form-control-sm" ng-model="vatChallanName" />
-                        </div>
-                    </div>
-                </div>
-                <div class="row mt-2">
+            </div>
+            <div class="col-sm-12 mt-2">
+                <div class="row">
                     <div class="col-sm-7">
-                        <div class="row">
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Company Name</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="companyName" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Vat Reg Add</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="vatRegAdd" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Vat Challan Name</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="vatChallanName" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
                             <label class="col-sm-3">Vat Reg No</label>
                             <div class="col-sm-9">
                                 <input class="form-control form-control-sm" ng-model="vatRegNo" />
                             </div>
                         </div>
-                    </div>
-                    <div class="col-sm-5">
-                        <div class="row">
-                            <label class="col-sm-4">District</label>
-                            <div class="col-sm-8">
+                        <div class="row mt-2">
+                            <label class="col-sm-3">District</label>
+                            <div class="col-sm-9">
                                 <select class="form-control form-control-sm" ng-model="district">
                                     <option value="-1">Select</option>
                                     <option ng-repeat="data in districtData" value="{{data.districtID}}">{{data.districtName}}</option>
                                 </select>
                             </div>
                         </div>
-
-                    </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-sm-7">
-                        <div class="row">
-                            <label class="col-sm-3">Vat Reg Add</label>
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Bank Information</label>
                             <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="vatRegAdd" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-5">
-                        <div class="row">
-                            <label class="col-sm-4">Bank Information</label>
-                            <div class="col-sm-8">
                                 <select class="form-control form-control-sm" ng-model="bankInfo">
                                     <option ng-repeat="data in bankInformationData" value="{{data.bankID}}">{{data.bankName}}</option>
                                 </select>
                             </div>
                         </div>
-                    </div>
-                </div>
-                <div class="col-sm-12 mt-2">
-                    <div class="row mt-2">
-                        <label class="col-sm-2">Address</label>
-                        <div class="col-sm-10">
-                            <input class="form-control form-control-sm" ng-model="address" />
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Address</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="address" />
+                            </div>
                         </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-12">
-                <div class="row">
-                    <div class="col-sm-7">
                         <div class="row mt-2">
                             <label class="col-sm-3">City</label>
                             <div class="col-sm-9">
@@ -182,7 +163,7 @@
                         </div>
 
                     </div>
-                    <div class="col-sm-5 mt-3">
+                    <div class="col-sm-5 mt-2">
                         <div class="px-3 py-4" style="border:2px solid gray">
                             <div class="row">
                                 <div class="col-sm-4">
@@ -739,22 +720,18 @@
                                 if (response.data == "Success") {
                                     strMessage = "Success.";
                                     $scope.clearFields();
-                                    $scope.getAllCompanyInfoById($scope.selectedCompany.id);
+                                    // $scope.getAllCompanyInfoById($scope.selectedCompany.id);
                                 }
-                                // Display success message
                                 alert(strMessage);
                             })
                             .catch(function (error) {
-                                // Handle error in posting company data
                                 alert("Error in posting company data: " + error.message);
                             });
                     } else {
-                        // Handle error when company name already exists
                         alert("Company name already exists.");
                     }
                 })
                 .catch(function (error) {
-                    // Handle error in checking company name
                     alert("Error in checking company name: " + error.message);
                 });
         }
