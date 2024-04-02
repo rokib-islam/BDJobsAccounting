@@ -577,6 +577,7 @@ namespace AccountingSystem.Repository
                     Status = model.Status,
                     Fromdate = model.FromDate,
                     Todate = model.ToDate,
+                    PaymentMode = model.paymentMode
                 };
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
