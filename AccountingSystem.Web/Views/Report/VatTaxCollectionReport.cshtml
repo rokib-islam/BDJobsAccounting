@@ -66,7 +66,7 @@
                     <td class="text-center">{{data.challanNo}}</td>
                     <td class="text-center">{{data.postingDate | date: "dd-MM-yyyy"}}</td>
                     <td class="text-center">{{data.vdS_CertificateNo}}</td>
-                    <td class="text-center">{{ data.vdS_CertificateDate === "1900-01-01T00:00:00" ? "" : (data.vdS_CertificateDate | date: "dd-MM-yyyy") }}</td>
+                    <td class="text-center">{{ data.vdS_CertificateDate === "0001-01-01T00:00:00" ? "" : (data.vdS_CertificateDate | date: "dd-MM-yyyy") }}</td>
                     <td class="text-center">{{data.challanACCode}}</td>
                     <td class="text-center">{{data.serviceName}}</td>
                     
@@ -115,9 +115,8 @@
         $scope.toDate = new Date();
 
         $scope.load = function () {
-            debugger
             let requestBodyModel = {
-                CId: $scope.selectedCompany.id,
+                CId: $scope.comList == undefined ? 0 : $scope.comList,
                 FromDate: $scope.fromDate,
                 ToDate: $scope.toDate
             }
@@ -130,7 +129,6 @@
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
-                    debugger
                     $scope.vatTaxData = response.data;
                     $scope.showTable = true;
                 })

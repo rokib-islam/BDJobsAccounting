@@ -143,12 +143,7 @@
                                 <input class="form-control form-control-sm" ng-model="designation" ng-disabled="designationDisabled" />
                             </div>
                         </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Acc. Person</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="accperson" />
-                            </div>
-                        </div>
+                        
                         <div class="row mt-2">
                             <label class="col-sm-3">Acc. Person Mail</label>
                             <div class="col-sm-9">
@@ -161,7 +156,12 @@
                                 <input class="form-control form-control-sm" ng-model="accMobile" />
                             </div>
                         </div>
-
+                        <div class="row mt-2">
+                            <label class="col-sm-3">HR Person</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="accperson" />
+                            </div>
+                        </div>
                     </div>
                     <div class="col-sm-5 mt-2">
                         <div class="px-3 py-4" style="border:2px solid gray">
@@ -219,7 +219,7 @@
                 </div>
             </div>
 
-            <div class="row offset-1">
+            <div class="row offset-1 mt-2">
                 <div class="col-sm-4">
                     <button class="btn btn-info btn-sm px-3" ng-click="delete()" ng-disabled="deleteDisabled">Delete</button>
                 </div>
@@ -360,7 +360,7 @@
                 .then(function (response) {
                     $scope.allCompanyData = response.data[0];
 
-                    $scope.loadCompanyDataWithId()
+                    $scope.loadCompanyDataWithId();
                     $scope.getContactPersonByCompanyId($scope.selectedCompany.id);
                 }, function (error) {
                     console.error(error);
@@ -416,6 +416,8 @@
                 .then(function (response) {
                     $scope.contactPersonData = response.data;
                     $scope.billingDesignation = $scope.contactPersonData.designation;
+                    $scope.billingEmail = $scope.contactPersonData.email;
+                    $scope.billingPhone = $scope.contactPersonData.phone;
                 }, function (error) {
                     console.error(error);
                 });
@@ -552,6 +554,8 @@
                     .then(function (response) {
                         alert("Billing Person Updated successfully.");
                         $scope.radioChange();
+
+                        $scope.getAllCompanyInfoById($scope.selectedCompany.id);
                     }, function (error) {
                         console.error(error);
                     })
