@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.Models.AccountViewModels;
 using AccountingSystem.Web.HelperMethod;
 using Microsoft.AspNetCore.Mvc;
 //using AspNetCore.Reporting;
@@ -309,9 +310,21 @@ namespace AccountingSystem.Web.Controllers
             }
         }
 
+        public IActionResult VatTaxCollectionReport()
+        {
 
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+            else
+                return RedirectToAction("Index", "Home");
+        }
 
-
+        public async Task<IActionResult> LoadVatTaxCollectionData([FromBody] LoadVatTaxCollectionDataModel_Request model)
+        {
+            var result = await _ReportManager.LoadVatTaxCollectionData(model);
+            return Json(result);
+        }
     }
 }
 
