@@ -8,5 +8,6 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<ChalanReport>> GetChalanReportNew(string invoiceNo);
         Task<List<TrialBalanceRptModel>> GetTrialBalanceReportAsync(string type, string startingDate, string endDate);
         Task<List<LabelReport>> GetLabelReport(string type, string list);
+        Task<List<LoadVatTaxCollectionDataModel_Response>> LoadVatTaxCollectionData(LoadVatTaxCollectionDataModel_Request model);
     }
 }

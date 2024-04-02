@@ -99,5 +99,29 @@ namespace AccountingSystem.Repository
             return labels;
         }
 
+        public async Task<List<LoadVatTaxCollectionDataModel_Response>> LoadVatTaxCollectionData(LoadVatTaxCollectionDataModel_Request model)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    CId = model.CId,
+                    Fromdate = model.FromDate,
+                    Todate = model.ToDate,
+                };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<LoadVatTaxCollectionDataModel_Response>("USP_LoadTaxVatCollectionData", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
     }
 }
