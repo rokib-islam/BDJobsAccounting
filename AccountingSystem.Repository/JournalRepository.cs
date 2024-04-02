@@ -1,6 +1,5 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
-using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
 using Microsoft.Data.SqlClient;
@@ -51,6 +50,34 @@ namespace AccountingSystem.Repository
             {
                 throw ex;
             }
+        }
+
+
+        public async Task<object> GetJournalsForTrialBalance(string pageNo, string pageSize, string tno, string fromDate, string endDate)
+        {   
+            try
+            {
+
+                var parameters = new
+                {
+                    PageNo = pageNo,
+                    PageSize = pageSize,
+                    TNO = tno,
+                    FromDate = fromDate,
+                    EndDate = endDate,
+                };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<JournalViewModel>("USP_VIEW_SALE_WISE_JOURNAL_LIST", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
         }
         public async Task<string> GetClosingDateAsync()
         {
@@ -105,7 +132,7 @@ namespace AccountingSystem.Repository
             }
             return result;
         }
-        public async Task<Journal> GetJournalBySIdAsync(int sId)
+        public async Task<JournalViewModel> GetJournalBySIdAsync(int sId)
         {
             var sql = "SELECT Id, Jid, Sid, Description, Debt, Credit, AccType, JDate, Tno, Notify, PostDate, Lock, UserID, ApprovedBy, ApprovalDate, UpdatedDate, UpdatedBy FROM Journal WHERE Sid = @Sid";
 
@@ -113,7 +140,7 @@ namespace AccountingSystem.Repository
             {
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    var result = await _db.QuerySingleOrDefaultAsync<Journal>(sql, new { Sid = sId });
+                    var result = await _db.QuerySingleOrDefaultAsync<JournalViewModel>(sql, new { Sid = sId });
                     return result;
                 }
             }
@@ -122,7 +149,7 @@ namespace AccountingSystem.Repository
                 throw ex;
             }
         }
-        public async Task<List<Invoice>> GetVoucherListAsync(int year, int month)
+        public async Task<List<InvoiceViewModel>> GetVoucherListAsync(int year, int month)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
@@ -133,7 +160,7 @@ namespace AccountingSystem.Repository
 
                 };
 
-                var vouchers = await _db.QueryAsync<Invoice>(
+                var vouchers = await _db.QueryAsync<InvoiceViewModel>(
                     "USP_GET_JOURNAL_VOUCHER",
                     parameters,
                     commandType: CommandType.StoredProcedure

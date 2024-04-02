@@ -1,6 +1,6 @@
-﻿namespace AccountingSystem.Models.AccountDbModels
+﻿namespace AccountingSystem.Models.AccountViewModels
 {
-    public class CashCollection
+    public class CashCollectionViewModel
     {
         public int Id { get; set; }
         public double Cash { get; set; }

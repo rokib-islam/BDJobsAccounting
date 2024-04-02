@@ -77,6 +77,27 @@ namespace AccountingSystem.Repository
             return ledgers;
         }
 
+        public async Task<List<LabelReport>> GetLabelReport(string type, string list)
+        {
+            var labels = new List<LabelReport>();
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    var result = await _db.QueryAsync<LabelReport>("USP_LIST_OF_LABEL_RPT", new { LabelType = type, listIds = list }, commandType: System.Data.CommandType.StoredProcedure);
+                    labels.AddRange(result);
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exception appropriately, maybe log it.
+                throw;
+            }
+
+            return labels;
+        }
 
     }
 }

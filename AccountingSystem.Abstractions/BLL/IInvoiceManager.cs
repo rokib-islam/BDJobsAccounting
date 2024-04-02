@@ -1,5 +1,4 @@
-﻿using AccountingSystem.Models.AccountDbModels;
-using AccountingSystem.Models.AccountViewModels;
+﻿using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingSystem.Abstractions.BLL
@@ -13,15 +12,16 @@ namespace AccountingSystem.Abstractions.BLL
         Task<string> SaveInvoice([FromBody] SaveInvoiceViewModel data);
         Task<bool> CheckInvoiceNo(string invoiceNo);
         Task<string> UpdateDeleteComments(UpdateCommentViewModel data);
-        Task<IEnumerable<Invoice>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid);
+        Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid);
         Task<string> PostToOnlineAsync(string postType, string invoiceNo, string invoiceId);
         Task<List<ProductForInvoice>> Getproducts(string cId, int type);
         Task<string> GenerateInvoiceNumberAsync(string cId, string issueDate);
-        Task<List<Invoice>> GetProductsDetails(string id);
+        Task<List<InvoiceViewModel>> GetProductsDetails(string id);
         Task<string> DeleteUndeleteInvoice(int invoiceId, bool invalid);
         Task<string> UpdateAmount(string invoiceNo, decimal amount);
-        Task<List<Invoice>> GetInvoicesAsync(GetInvoiceListParam parameters);
+        Task<List<InvoiceViewModel>> GetInvoicesAsync(GetInvoiceListParam parameters);
         Task<OnlineInvoiceResponseModel> OnlineInvcoie(OnlineInvoiceRequestModel parameters);
+        Task<List<LoadOnlineInvoiceResponseModel>> LoadOnlineInvoice(LoadOnlineInvoiceModel model);
 
     }
 }

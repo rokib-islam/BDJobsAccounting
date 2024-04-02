@@ -1,6 +1,5 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
-using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
 using Microsoft.AspNetCore.Mvc;
@@ -245,9 +244,9 @@ namespace AccountingSystem.Repository
                 return ex.ToString();
             }
         }
-        public async Task<IEnumerable<Invoice>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid)
+        public async Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid)
         {
-            var invoices = new List<Invoice>();
+            var invoices = new List<InvoiceViewModel>();
 
             var parameters = new
             {
@@ -260,7 +259,7 @@ namespace AccountingSystem.Repository
             {
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    var result = await _db.QueryAsync<Invoice>("usp_GetInvoiceList", parameters, commandType: CommandType.StoredProcedure);
+                    var result = await _db.QueryAsync<InvoiceViewModel>("usp_GetInvoiceList", parameters, commandType: CommandType.StoredProcedure);
 
                     invoices.AddRange(result);
                 }
@@ -413,16 +412,16 @@ namespace AccountingSystem.Repository
 
             return invoiceNumber;
         }
-        public async Task<List<Invoice>> GetProductsDetails(string id)
+        public async Task<List<InvoiceViewModel>> GetProductsDetails(string id)
         {
-            var invoices = new List<Invoice>();
+            var invoices = new List<InvoiceViewModel>();
 
             try
             {
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
                     var parameters = new { InvoiceID = id };
-                    invoices = (await _db.QueryAsync<Invoice>("USP_GET_INVOICE_DETAIL", parameters, commandType: CommandType.StoredProcedure)).ToList();
+                    invoices = (await _db.QueryAsync<InvoiceViewModel>("USP_GET_INVOICE_DETAIL", parameters, commandType: CommandType.StoredProcedure)).ToList();
                 }
             }
             catch (Exception ex)
@@ -483,7 +482,7 @@ namespace AccountingSystem.Repository
                 return $"Error updating amount: {ex.Message}";
             }
         }
-        public async Task<List<Invoice>> GetInvoicesAsync(GetInvoiceListParam parameters)
+        public async Task<List<InvoiceViewModel>> GetInvoicesAsync(GetInvoiceListParam parameters)
         {
             try
             {
@@ -506,7 +505,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@ToRange", parameters.ToRange);
 
 
-                    var invoices = await _db.QueryAsync<Invoice>(
+                    var invoices = await _db.QueryAsync<InvoiceViewModel>(
                         "USP_LIST_OF_INVOICE_V1",
                         dynamicParameters,
                         commandType: CommandType.StoredProcedure);
@@ -525,7 +524,7 @@ namespace AccountingSystem.Repository
         {
             try
             {
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
                     var dynamicParameters = new DynamicParameters();
                     dynamicParameters.Add("@acc_id", parameters.Acc_Id);
@@ -549,6 +548,9 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@CP_ID", parameters.Cp_Id);
                     dynamicParameters.Add("@DistrictID", parameters.DistrictId);
                     dynamicParameters.Add("@BINNo", parameters.BINNo);
+                    dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
+                    dynamicParameters.Add("@PaymentMode", parameters.PaymentMethod);
+                    dynamicParameters.Add("@JType", parameters.JType);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
@@ -566,6 +568,29 @@ namespace AccountingSystem.Repository
             }
         }
 
+        public async Task<List<LoadOnlineInvoiceResponseModel>> LoadOnlineInvoice(LoadOnlineInvoiceModel model)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    Status = model.Status,
+                    Fromdate = model.FromDate,
+                    Todate = model.ToDate,
+                };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<LoadOnlineInvoiceResponseModel>("USP_LoadOnlineInvoice", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
 
     }
 }

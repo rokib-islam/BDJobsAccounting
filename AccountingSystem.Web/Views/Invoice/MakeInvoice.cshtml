@@ -10,9 +10,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                            <script type="text/javascript">
-                                window.location.href = '@Url.Action("Index", "Home")';
-                            </script>
+                                    <script type="text/javascript">
+                                        window.location.href = '@Url.Action("Index", "Home")';
+                                    </script>
     }
     else
     {
@@ -25,8 +25,21 @@
             border: 3px solid black !important;
         }
 
-    </style>
+        .button-container {
+            position: relative;
+        }
 
+        .extra-buttons {
+            display: inline-block;
+            position: absolute;
+            top: 0;
+            right: 110px; /* Adjust this value as needed */
+        }
+
+
+    </style>
+  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
 
@@ -100,7 +113,24 @@
                             </div>
                             <div class="col-sm-6">
                                 <label class="d-flex justify-content-end"><input type="checkbox" />&nbsp; Delivery Tiger</label>
-                                <button class="btn btn-info btn-sm float-right" ng-click="" disabled>Preview Label</button>
+                                <div class="button-container">
+                                    <button class="btn btn-info btn-sm float-right" ng-click="toggleExtraButtons()">
+                                        Preview Label
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showlabelspinner"></span>
+                                    </button>
+                                    <div class="extra-buttons" ng-show="showExtraButtons">
+                                        <button class="btn btn-secondary btn-sm" ng-click="PreviewLabelreport('Pdf')">
+                                            <i class="fas fa-file-pdf" style="font-size: 20px;"></i>
+                                        </button>
+                                        <button class="btn btn-secondary btn-sm" ng-click="PreviewLabelreport('Word')">
+                                            <i class="fas fa-file-word" style="font-size: 20px;"></i>
+                                        </button>
+
+
+                                    </div>
+                                </div>
+
+                                
                             </div>
                         </div>
                         <div class="row mt-2" style="border:1px solid gray;height:120px">
@@ -255,6 +285,7 @@
         $scope.saveDisabled = true;
         $scope.showChallanButton = true;
         $scope.showInvoiceButton = true;
+        $scope.showExtraButtons = false;
 
         $scope.getIdWiseCompany = function (id) {
             let Url = '';
@@ -422,6 +453,13 @@
                     var ledgerId = shiftedProduct.ledgerId;
 
                     if (shiftedProduct.comments == "" || shiftedProduct.comments == null || shiftedProduct.comments.length < 110) {
+
+                        var partssDate = shiftedProduct.sDate.split("/");
+                        var formattedSDate = (partssDate[1].length === 1 ? '0' + partssDate[1] : partssDate[1]) + "-" + (partssDate[0].length === 1 ? '0' + partssDate[0] : partssDate[0]) + "-" + partssDate[2];
+
+                        var partseDate = shiftedProduct.eDate.split("/");
+                        var formattedeDate = (partseDate[1].length === 1 ? '0' + partseDate[1] : partseDate[1]) + "-" + (partseDate[0].length === 1 ? '0' + partseDate[0] : partseDate[0]) + "-" + partseDate[2];
+
                         if (
                             //ledgerId == 44 ||
                             ledgerId == 1165 ||
@@ -440,9 +478,9 @@
                                 "Payment for '" +
                                 shiftedProduct.sbName +
                                 "' at the classified section of Bdjobs.com from " +
-                                shiftedProduct.sDate +
+                                formattedSDate +
                                 " to " +
-                                shiftedProduct.eDate +
+                                formattedeDate +
                                 " for the following job position(s):\n\n" +
                                 shiftedProduct.product;
                         }
@@ -469,18 +507,18 @@
                                 "Payment for Web Listing Services under '" +
                                 serviceName +
                                 "' at the classified section of Bdjobs.com from " +
-                                shiftedProduct.sDate +
+                                formattedSDate +
                                 " to " +
-                                shiftedProduct.eDate +
+                                formattedeDate +
                                 " for the following job position(s):\n\nDesignation Name: " +
                                 shiftedProduct.product;
                         }
                         else if (ledgerId == 18) {
                             comments =
                                 "Payment for 'Job Announcement Display' at the Home Page of Bdjobs.com from " +
-                                shiftedProduct.sDate +
+                                formattedSDate +
                                 " to " +
-                                shiftedProduct.eDate +
+                                formattedeDate +
                                 " for the following position(s):\n\n" +
                                 shiftedProduct.product;
                         } else if (shiftedProduct.product.trim() == "Add: VAT@5% Under Service Code: S099.10 (IT Enabled Services)") {
@@ -490,9 +528,9 @@
                                 "Payment for Web Listing (" +
                                 shiftedProduct.product +
                                 ") at the classified section of www.bdjobs.com from " +
-                                shiftedProduct.sDate +
+                                formattedSDate +
                                 " to " +
-                                shiftedProduct.eDate +
+                                formattedeDate +
                                 " for the following position:\n\n" +
                                 shiftedProduct.product;
                         }
@@ -642,7 +680,16 @@
                     console.log(error);
                 });
         };
-
+        function toggleButtons() {
+            var additionalButtons = document.getElementsByClassName("additionalButton");
+            for (var i = 0; i < additionalButtons.length; i++) {
+                if (additionalButtons[i].style.display === "none") {
+                    additionalButtons[i].style.display = "inline-block";
+                } else {
+                    additionalButtons[i].style.display = "none";
+                }
+            }
+        }
 
         $scope.save = function () {
             if ($scope.searchQuery == "" || $scope.searchQuery == null || $scope.searchQuery == undefined) {
@@ -909,7 +956,63 @@
                     }
                 });
         };
+        $scope.PreviewLabelreport = function (format) {
+            $scope.toggleExtraButtons();
+            const listId = $scope.selectedRow.id;
+            if (listId == 0) { 
+                alert("select any Invoice first");
+                return;
+            }
+            
+                
+           
 
+            const params = { type: 0 ,list: listId, format };
+            const Url = window.location.hostname === 'localhost' ? '/Report/PreviewLabelReport' : '/AccountingNew/Report/PreviewLabelReport';
+
+            $scope.showlabelspinner = true;
+            $http.get(Url, { params, responseType: 'blob' })
+                .then(response => {
+                    $scope.showlabelspinner = false;
+                    const blob = new Blob([response.data], { type: response.headers('Content-Type') });
+                    const filename = response.headers('Content-Disposition').split(';')[1].split('=')[1];
+
+                    if (format === 'Word') {
+                        // Download Excel file
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } else if (format === 'Pdf') {
+                        // Open PDF file in a new window with proper user feedback
+                        try {
+                            const pdfData = URL.createObjectURL(blob);
+                            window.open(pdfData, '_blank');
+                        } catch (err) {
+                            console.error('Error opening PDF:', err);
+                            alert('An error occurred while opening the PDF. Please check your browser settings and try again.');
+                        } finally {
+                            URL.revokeObjectURL(pdfData); // Always revoke created URL objects
+                        }
+                    } else {
+                        $scope.showlabelspinner = false;
+                        console.error('Unsupported format:', format);
+                        alert('The selected format is not supported. Please choose PDF or Excel.');
+                    }
+                });
+        };
+       
+        
+
+        
+
+        $scope.toggleExtraButtons = function () {
+            $scope.showExtraButtons = !$scope.showExtraButtons;
+        };
+
+       
 
 
     });

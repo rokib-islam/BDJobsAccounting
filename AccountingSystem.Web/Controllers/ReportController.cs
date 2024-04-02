@@ -257,6 +257,61 @@ namespace AccountingSystem.Web.Controllers
             }
         }
 
+        public async Task<IActionResult> PreviewLabelReport(string type, string list, string format)
+        {
+            try
+            {
+                var reportData = await _ReportManager.GetLabelReport(type, list);
+
+                var datatable = Helpers.ListiToDataTable(reportData);
+
+
+                using var report = new LocalReport();
+
+                using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream("AccountingSystem.Web.Reports.rptLabelPrevire.rdlc");
+                report.LoadReportDefinition(rs);
+                report.DataSources.Add(new ReportDataSource("PreviewLabel", datatable));
+
+                byte[] fileContents;
+                string contentType;
+                string fileName;
+
+                if (format.ToLower() == "pdf")
+                {
+                    fileContents = report.Render("pdf");
+                    contentType = "application/pdf";
+                    fileName = "PreviewLabel.pdf";
+                }
+                else if (format.ToLower() == "excel")
+                {
+                    fileContents = report.Render("excel");
+                    contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    fileName = "PreviewLabel.xlsx";
+                }
+                else if (format.ToLower() == "word")
+                {
+                    
+                    fileContents = report.Render("WORDOPENXML"); 
+                    contentType = "application/msword";
+                    fileName = "PreviewLabel.docx";
+                }
+                else
+                {
+                    // Handle unsupported format
+                    return BadRequest("Unsupported format. Please specify either 'pdf' or 'excel'.");
+                }
+
+                return File(fileContents, contentType, fileName);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while generating the report.");
+            }
+        }
+
+
+
+
     }
 }
 

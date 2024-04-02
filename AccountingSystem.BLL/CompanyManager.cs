@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
 using AccountingSystem.Web.Models;
 
 namespace AccountingSystem.BLL
@@ -17,23 +18,23 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetDistricts();
         }
-        public async Task<List<Company>> GetOnlineCompanyList(int radio)
+        public async Task<List<CompanyViewModel>> GetOnlineCompanyList(int radio)
         {
             return await _repository.GetOnlineCompanyList(radio);
         }
-        public async Task<List<Company>> GetCompanyListByKey(string key)
+        public async Task<List<CompanyViewModel>> GetCompanyListByKey(string key)
         {
             return await _repository.GetCompanyListByKey(key);
         }
-        public async Task<List<Company>> GetOnlineCompanyInfo(int cpId)
+        public async Task<List<CompanyViewModel>> GetOnlineCompanyInfo(int cpId)
         {
             return await _repository.GetOnlineCompanyInfo(cpId);
         }
-        public async Task<List<Company>> GetCompanyById(int cpId)
+        public async Task<List<CompanyViewModel>> GetCompanyById(int cpId)
         {
             return await _repository.GetCompanyById(cpId);
         }
-        public async Task<List<Company>> CheckCompany(string name)
+        public async Task<List<CompanyViewModel>> CheckCompany(string name)
         {
             return await _repository.CheckCompany(name);
         }
@@ -45,17 +46,17 @@ namespace AccountingSystem.BLL
         {
             await _repository.UpdateProfile(FromData);
         }
-        public async Task<Company> CheckOnlineCompany(int id)
+        public async Task<CompanyViewModel> CheckOnlineCompany(int id)
         {
             return await _repository.CheckOnlineCompany(id);
         }
 
-        public async Task<Company> SMSAlertGetOnlineCompanyInfoAsync(int cpId)
+        public async Task<CompanyViewModel> SMSAlertGetOnlineCompanyInfoAsync(int cpId)
         {
             return await _repository.SMSAlertGetOnlineCompanyInfoAsync(cpId);
         }
 
-        public async Task<IEnumerable<Company>> SMSAlertGetOnlineCompanyListAsync(int radio)
+        public async Task<IEnumerable<CompanyViewModel>> SMSAlertGetOnlineCompanyListAsync(int radio)
         {
             return await _repository.SMSAlertGetOnlineCompanyListAsync(radio);
         }
@@ -85,12 +86,12 @@ namespace AccountingSystem.BLL
             return _repository.DeletePersonAsync(id);
         }
 
-        public Task<Company> GetCompanyByNameAsync(string name, int id)
+        public Task<CompanyViewModel> GetCompanyByNameAsync(string name, int id)
         {
             return _repository.GetCompanyByNameAsync(name, id);
         }
 
-        public Task<string> InsertOrUpdateCompanyAsync(Company aCompany)
+        public Task<string> InsertOrUpdateCompanyAsync(CompanyViewModel aCompany)
         {
             return _repository.InsertOrUpdateCompanyAsync(aCompany);
         }

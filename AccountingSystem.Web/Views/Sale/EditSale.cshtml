@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-        <script type="text/javascript">
-            window.location.href = '@Url.Action("Index", "Home")';
-        </script>
+                                        <script type="text/javascript">
+                                            window.location.href = '@Url.Action("Index", "Home")';
+                                        </script>
     }
     else
     {
@@ -21,33 +21,6 @@
 <style>
     .selected-row {
         border: 3px solid black !important;
-    }
-
-    #customConfirmation {
-        display: none;
-        position: fixed;
-        z-index: 1;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        overflow: auto;
-        background-color: rgba(0, 0, 0, 0.4);
-    }
-
-    .modal-content {
-        background-color: #fefefe;
-        margin: 15% auto;
-        padding: 20px;
-        border: 1px solid #888;
-        width: 50%;
-        text-align: center;
-    }
-
-    button {
-        padding: 10px;
-        margin: 5px;
-        cursor: pointer;
     }
 </style>
 
@@ -101,15 +74,15 @@
                             <label class="col-sm-2 col-form-label mt-3">Duration</label>
                             <div class="col-sm-4">
                                 <label>From Date</label>
-                                <input type="date" class="form-control form-control-sm" ng-model="fromDate">
+                                <input type="date" ng-change="updateDuration()" class="form-control form-control-sm" ng-model="fromDate">
                             </div>
                             <div class="col-sm-4">
                                 <label>To Date</label>
-                                <input type="date" class="form-control form-control-sm" ng-model="toDate">
+                                <input type="date" ng-change="updateDuration()" class="form-control form-control-sm" ng-model="toDate">
                             </div>
                             <div class="col-sm-2">
                                 <label>Duration</label>
-                                <input type="number" class="form-control form-control-sm text-center" ng-model="duration">
+                                <input class="form-control form-control-sm text-center" ng-model="duration">
                             </div>
                         </div>
                         <div class="form-group row mt-2">
@@ -216,17 +189,17 @@
                             <td style="text-align:center">{{o.from}}</td>
                             <td style="text-align:center">{{o.to}}</td>
                             <td style="text-align:center">{{o.duration}}</td>
-                            <td style="text-align:right">{{o.salesPrice}}</td>
-                            <td style="text-align:right">{{o.accReceivale}}</td>
+                            <td style="text-align:right">{{o.salesPrice | number:2}}</td>
+                            <td style="text-align:right">{{o.accReceivale | number:2}}</td>
                             <td style="text-align:center">{{o.posted ? 'Yes' : 'No'}}</td>
-                            <td style="text-align:right">{{o.tax}}</td>
+                            <td style="text-align:right">{{o.tax | number:2}}</td>
                             <td style="text-align:center">{{o.invoiceNo}}</td>
                         </tr>
                     </tbody>
                     <tr>
                         <th colspan="5" style="text-align:right">Total</th>
-                        <th style="text-align:right">{{sumTotalAmount}}</th>
-                        <th style="text-align:right">{{sumDuesAmount}}</th>
+                        <th style="text-align:right">{{sumTotalAmount | number:2}}</th>
+                        <th style="text-align:right">{{sumDuesAmount | number:2}}</th>
                         <th colspan="3"></th>
 
                     </tr>
@@ -301,17 +274,17 @@
                             <td style="text-align:center">{{$index+1}}</td>
                             <td style="text-align:center">{{o.serviceName}}</td>
                             <td style="text-align:center">{{o.invoiceNo}}</td>
-                            <td style="text-align:center">{{o.cancellationDate}}</td>
-                            <td style="text-align:right">{{o.totalPrice}}</td>
-                            <td style="text-align:right">{{o.totalVat}}</td>
+                            <td style="text-align:center">{{o.cancellationDate"}}</td>
+                            <td style="text-align:right">{{o.totalPrice | number:2}}</td>
+                            <td style="text-align:right">{{o.totalVat | number:2}}</td>
                             <td style="text-align:center">{{o.deleteReason}}</td>
                         </tr>
 
                     </tbody>
                     <tr>
                         <th colspan="4" style="text-align:right">Total</th>
-                        <th style="text-align:right">{{sumTotalPrice}}</th>
-                        <th style="text-align:right">{{sumTotalVat}}</th>
+                        <th style="text-align:right">{{sumTotalPrice | number:2}}</th>
+                        <th style="text-align:right">{{sumTotalVat | number:2}}</th>
                         <th></th>
                     </tr>
                 </table>
@@ -377,13 +350,146 @@
                 </div>
             </div>
         </div>
-        <div id="customConfirmation" class="modal">
-            <div class="modal-content">
-                <p>Are you sure you want to generate Credit Note?</p>
-                <button ng-click="confirmYes()">Yes</button>
-                <button ng-click="confirmNo()">No</button>
+      
+        <div class="modal fade" id="customConfirmation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content px-5 py-5">
+                    <p class="text-center">Are you sure you want to generate Credit Note?</p>
+                    <button ng-click="confirmYes()">Yes</button>
+                    <button class="mt-3" ng-click="confirmNo()">No</button>
+                </div>
             </div>
         </div>
+
+
+        <div class="modal fade" id="trialBalanceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-xl">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Trial Balance</h5>
+                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-12">
+                               <div class="row">
+                                    <div class="col-sm-2">
+                                        <label><input type="radio" ng-model="radio" value="0" ng-checked="radio==0" ng-change="changeDateRadio()" />&nbsp; By Date</label><br />
+                                        <label class="mt-2"><input type="radio" ng-model="radio" value="1" ng-change="changeSaleRadio()" />&nbsp; By Sale</label>
+                                    </div>
+                                    <div class="col-sm-8">
+                                        
+                                        <table ng-show="showSalesFilterTable" class="table table-bordered table-sm" style="font-size:15px">
+                                            <tr style="background-color:skyblue">
+                                                <td>Sl#</td>
+                                                <td>Company</td>
+                                                <td>Product name</td>
+                                                <td>Amount</td>
+                                                <td>Sales Date</td>
+                                            </tr>
+                                            <tbody>
+                                                <tr ng-repeat="data in trialBalanceData">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{data.name}}</td>
+                                                    <td>{{data.sbName}}</td>
+                                                    <td>{{data.salesPrice | number:2}}</td>
+                                                    <td>{{data.sDate}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label>From</label>
+                                        <input type="date" class="form-control form-control-sm" ng-model="fromDateForTrial" ng-change="fromDateWise()" ng-disabled="fromDisable"/>
+                                        <label>From</label>
+                                        <input type="date" class="form-control form-control-sm" ng-model="toDateForTrial" ng-change="toDateWise()" ng-disabled="toDisable"/>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="pull-left text-left" ng-show="isVisibleDateFilterTable">
+                                            <div class="col-sm-12 row">
+                                                <div class="col-sm-6">
+                                                    Show
+                                                    <select id="page" ng-model="itemsPerPage" ng-change="paginationChange()">
+                                                        <option value="10">10</option>
+                                                        <option value="20">20</option>
+                                                        <option value="40">40</option>
+                                                        <option value="50" selected>50</option>
+                                                        <option value="60">60</option>
+                                                        <option value="80">80</option>
+                                                        <option value="100">100</option>
+                                                        <option value="500">500</option>
+                                                        <option value="1000">1000</option>
+                                                        <option value="3000">3000</option>
+                                                        <option value="5000">5000</option>
+                                                        <option value="10000">10000</option>
+                                                        <option value="10000000">All</option>
+                                                    </select>
+                                                    entries per page. (Total:{{totalItems}} data)
+                                                </div>
+                                                <div class="col-sm-6 d-flex justify-content-end">
+                                                    <nav aria-label="...">
+                                                        <ul class="pagination">
+                                                            <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                                                <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                                                    <span aria-hidden="true">&laquo;</span>
+                                                                </a>
+                                                            </li>
+
+                                                            <!-- The ng-repeat code you provided -->
+                                                            <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                                                <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                                            </li>
+
+                                                            <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                                                <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                                                    <span aria-hidden="true">&raquo;</span>
+                                                                </a>
+                                                            </li>
+                                                        </ul>
+                                                    </nav>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-3" style="height:300px;overflow-y:auto;white-space:nowrap;">
+                                        <table ng-show="showDateFilterTable" class="table table-bordered table-striped table-sm" style="border:2px solid gray">
+                                            <tr style="font-weight:bold">
+                                                <td>Sl#</td>
+                                                <td>Id</td>
+                                                <td>Ledger name</td>
+                                                <td>Description</td>
+                                                <td>Debt</td>
+                                                <td>Credit</td>
+                                                <td>Date</td>
+                                            </tr>
+                                            <tbody>
+                                                <tr ng-repeat="data in getDateFilterData">
+                                                    <td>{{$index + 1}}</td>
+                                                    <td>{{data.id}}</td>
+                                                    <td>{{data.sbName}}</td>
+                                                    <td>{{data.description}}</td>
+                                                    <td>{{data.debt | number:2}}</td>
+                                                    <td>{{data.credit | number:2}}</td>
+                                                    <td>{{data.jDate}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+
+                                    </div>
+                               </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="ok()">OK</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
 
@@ -395,7 +501,9 @@
             $scope.billingContact = "0";
             $scope.isVisible = false;
             $scope.isVisibleDelete = false;
-            $scope.showTable = true;
+            $scope.isVisibleDateFilterTable = false;
+            $scope.showSalesFilterTable = true;
+            $scope.showDateFilterTable = true;
             $scope.showDeletedTable = false;
             $scope.makeInvoiceBtn = true;
             $scope.deleteBtn = true;
@@ -406,7 +514,33 @@
             $scope.maxPageLength = 5;
             $scope.currentPage = 1;
             $scope.totalItems = 0;
+            $scope.updateDuration();
+            $scope.duration='';
+            $scope.radio = '1';
         });
+
+        
+
+        $scope.deleteDate = new Date();
+        $scope.fromDateForTrial = new Date();
+        $scope.toDateForTrial = new Date();
+
+        $scope.updateDuration = function () {
+            var date1 = new Date($scope.fromDate);
+            var date2 = new Date($scope.toDate);
+
+            var dif = (date2 - date1) / (1000 * 60 * 60 * 24);
+            var m = parseInt(dif / 30);
+            var r = dif % 30;
+
+            if (r >= 15)
+                m = (m + 1);
+
+            if (m === 0)
+                m = m + 1;
+
+            $scope.duration = m.toString();
+        };
 
         $scope.companyList = [];
         $scope.searchCompany = function (startingKey) {
@@ -476,7 +610,6 @@
         };
 
         $scope.getSales = function (pageNo, pageSize, cId, tno) {
-
             let Url = '';
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/GetSales';
@@ -486,6 +619,7 @@
             $http.get(Url, { params: { pageNo: pageNo, pageSize: pageSize, cId: cId, tno: tno } })
                 .then(function (response) {
                     $scope.salesData = response.data.sales;
+                    $scope.trialBalanceData = response.data;
                     $scope.totalItems = response.data.sales[0].totalRecord;
                     $scope.sumTotalAmount = response.data.totalAmount;
                     $scope.sumDuesAmount = response.data.accReceivale;
@@ -582,11 +716,11 @@
             $scope.selectedRow = row;
             $scope.selectedRowIndex = rowIndex;
             $scope.salesPrice = $scope.selectedRow.salesPrice;
-            $scope.vatAmount = $scope.selectedRow.accReceivale;
+            $scope.vatAmount = $scope.selectedRow.tax;
             $scope.fromDate = new Date($scope.selectedRow.from);
             $scope.toDate = new Date($scope.selectedRow.to);
             $scope.duration = $scope.selectedRow.duration;
-            $scope.salesPerson = $scope.selectedRow.salesPerson;
+            $scope.salesPerson = $scope.selectedRow.salesPerson.toString();
             $scope.billingContact = $scope.selectedRow.billContactId.toString();
 
             if ($scope.selectedRow.posted == 0)
@@ -688,113 +822,70 @@
         }
 
         $scope.finalDelete = function () {
-            if ($scope.deleteDate == '' || $scope.deleteDate == undefined) {
+            if (!$scope.deleteDate) {
                 alert('Please give sale delete date.');
                 return false;
             }
 
-            // Show custom confirmation box
-            document.getElementById('customConfirmation').style.display = 'block';
+            // Hide the deletedReasonModal if it's currently shown
+            $('#deletedReasonModal').modal('hide');
 
-            // Handle "Yes" button click
+            // Show the customConfirmation modal
+            $('#customConfirmation').modal('show');
+
+            // Define confirmYes function within the scope
             $scope.confirmYes = function () {
-                document.getElementById('customConfirmation').style.display = 'none';
-                // Rest of your code for "Yes" scenario
-                var CNote = 1; // Assuming CNote is a boolean value
-                var tno = $scope.selectedRow.tno;
-                var deleteReason = $scope.reason;
-                var deleteDate = $scope.deleteDate;
-
-                let Url = '';
-                if (window.location.hostname == 'localhost')
-                    Url = '/Sale/DeleteSale';
-                else
-                    Url = '/AccountingNew/Sale/DeleteSale';
-
-                $http.get(Url, {
-                    params: {
-                        tno: tno,
-                        deleteReason: deleteReason,
-                        creditNote: CNote,
-                        deleteDate: deleteDate
-                    }
-                })
-                    .then(function (response) {
-                        var data = response.data;
-                        if (data == "1") {
-                            alert('Can not delete. Cash has been collected for this sale. You must delete that Cash from Cash Collection form, then delete this sale.');
-                        } else if (data == "2") {
-                            alert('Can not delete. Some of Sales journal is approved.');
-                        } else if (data == "-1") {
-                            alert('Internal Database Error.');
-                        } else if (data == "0") {
-                            alert('Delete operation has been completed successfully.');
-                            $scope.deletedate = '';
-                            $scope.deleteReason = '';
-                            $('#deletedReasonModal').modal('hide');
-                            // Call your functions to update the sales lists
-                            $scope.getSales(1, $scope.itemsPerPage, $scope.comList, 0);
-
-                            //$scope.getDeletedSales(1, $scope.itemsPerPage, $scope.comList);
-                        }
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    });
+                $('#customConfirmation').modal('hide');
+                deleteSale(1);
             };
 
-            // Handle "No" button click
+            // Define confirmNo function within the scope
             $scope.confirmNo = function () {
-                document.getElementById('customConfirmation').style.display = 'none';
-                // Rest of your code for "No" scenario
-                // ...
+                $('#customConfirmation').modal('hide');
+                deleteSale(0);
             };
         };
 
-        // $scope.finalDelete = function () {
-        //     if ($scope.deleteDate == '' || $scope.deleteDate == undefined) {
-        //         alert('Please give sale delete date.');
-        //         return false;
-        //     }
-        //     var confirmation = confirm('Are you sure you want to generate Credit Note?');
 
-        //     if (confirmation) {
-        //         var CNote = confirmation ? 1 : 0;
-        //         var tno = $scope.selectedRow.tno;
-        //         var deleteReason = $scope.reason;
-        //         var deleteDate = $scope.deleteDate;
 
-        //         let Url = '';
-        //         if (window.location.hostname == 'localhost')
-        //             Url = '/Sale/DeleteSale';
-        //         else
-        //             Url = '/AccountingNew/Sale/DeleteSale';
 
-        //         $http.get(Url, { params: { tno: tno, deleteReason: deleteReason, creditNote: CNote, deleteDate: deleteDate } })
-        //             .then(function (response) {
-        //                 var data = response.data;
-        //                 if (data == "1") {
-        //                     alert('Can not delete. Cash has been collected for this sale. You must delete that Cash from Cash Collection form, then delete this sale.');
-        //                 } else if (data == "2") {
-        //                     alert('Can not delete. Some of Sales journal is approved.');
-        //                 } else if (data == "-1") {
-        //                     alert('Internal Database Error.');
-        //                 } else if (data == "0") {
-        //                     alert('Delete operation has been completed successfully.');
-        //                     $scope.deletedate = '';
-        //                     $scope.deleteReason = '';
-        //                     $('#deletedReasonModal').modal('hide');
-        //                     // Call your functions to update the sales lists
-        //                     $scope.getSales(1, $scope.itemsPerPage, $scope.comList, 0);
 
-        //                     //$scope.getDeletedSales(1, $scope.itemsPerPage, $scope.comList);
-        //                 }
-        //             })
-        //             .catch(function (error) {
-        //                 console.log(error);
-        //             })
-        //     }
-        // }
+
+        function deleteSale(CNote) {
+            var tno = $scope.selectedRow.tno;
+            var deleteReason = $scope.reason;
+            var deleteDate = $scope.deleteDate;
+
+            var Url = window.location.hostname == 'localhost' ? '/Sale/DeleteSale' : '/AccountingNew/Sale/DeleteSale';
+
+            $http.get(Url, {
+                params: {
+                    tno: tno,
+                    deleteReason: deleteReason,
+                    creditNote: CNote,
+                    deleteDate: deleteDate
+                }
+            })
+                .then(function (response) {
+                    var data = response.data;
+                    if (data == "1") {
+                        alert('Can not delete. Cash has been collected for this sale. You must delete that Cash from Cash Collection form, then delete this sale.');
+                    } else if (data == "2") {
+                        alert('Can not delete. Some of Sales journal is approved.');
+                    } else if (data == "-1") {
+                        alert('Internal Database Error.');
+                    } else if (data == "0") {
+                        alert('Delete operation has been completed successfully.');
+                        $scope.deletedate = '';
+                        $scope.deleteReason = '';
+                        $('#deletedReasonModal').modal('hide');
+                        $scope.getSales(1, $scope.itemsPerPage, $scope.comList, 0);
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
 
         $scope.update = function () {
             if ('@accessRights.Contains("2")' !== "True") {
@@ -932,7 +1023,7 @@
                                                 $http.post(Url, JSON.stringify(requestBodyModel2), { headers: { 'Content-Type': 'application/json' } })
                                                     .then(function (response) {
                                                         if (response.data == "Success") {
-                                                            $scope.forTrialBalance(tno);
+                                                            $scope.forTrialBalance($scope.selectedRow.tno);
                                                         }
                                                     });
                                             } else {
@@ -963,7 +1054,7 @@
                                                     $http.post(Url, JSON.stringify(requestBodyModel3), { headers: { 'Content-Type': 'application/json' } })
                                                         .then(function (response) {
                                                             if (response.data == 'Success') {
-                                                                $scope.forTrialBalance(tno);
+                                                                $scope.forTrialBalance($scope.selectedRow.tno);
                                                             }
                                                         });
                                                 }
@@ -1055,9 +1146,13 @@
         $scope.forTrialBalance = function (tnoNo) {
             var isConfirmed = confirm("All Journal entries have been completed.\nDo you want to view these Journals now?");
             if (isConfirmed) {
-                return false;
+                $("#trialBalanceModal").modal('show');
+                $scope.getSales('1', '100', 0, $scope.selectedRow.tno);
+                $scope.getDateFilterData = [];
+                $scope.fromDisable = true;
+                $scope.toDisable = true;
             } else {
-                //window.open('../Home/TrialBalance?tno=' + tnoNo, '_blank', 'width=1000,height=570,scrollbars=yes,innerWidth=545');
+                return false;
             }
         };
 
@@ -1074,6 +1169,57 @@
             }
         }
 
+        $scope.getJournals=function(pageNo, pageSize, tno, from, end){
+            $scope.from = new Date(from);
+            $scope.end = new Date(end);
+            $scope.formatedFromDateForTrial = $scope.from.toISOString().split('T')[0];
+            $scope.FromatedToDateForTrial = $scope.end.toISOString().split('T')[0];
+            var json3 = {
+                PageNo: pageNo.toString(),
+                PageSize: pageSize,
+                Tno: tno,
+                FromDate: $scope.formatedFromDateForTrial,
+                EndDate: $scope.FromatedToDateForTrial
+            };
 
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Journal/GetJournalsForTrialBalance';
+            else
+                Url = '/AccountingNew/Journal/GetJournalsForTrialBalance';
+
+            $http.post(Url, JSON.stringify(json3), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    $scope.getDateFilterData = response.data;
+                    $scope.totalItems = response.data[0].totalRecord;
+                    $scope.isVisibleDateFilterTable = true;
+                });
+        }
+
+        $scope.fromDateWise = function () {
+            $scope.getJournals($scope.currentPage, $scope.itemsPerPage, '-1', $scope.fromDateForTrial, $scope.toDateForTrial);
+        }
+
+        $scope.toDateWise = function () {
+            $scope.getJournals($scope.currentPage, $scope.itemsPerPage, '-1', $scope.fromDateForTrial, $scope.toDateForTrial);
+        }
+        
+        $scope.changeDateRadio = function () {
+            $scope.getJournals($scope.currentPage, $scope.itemsPerPage, '-1', $scope.fromDateForTrial, $scope.toDateForTrial);
+            $scope.trialBalanceData = [];
+            $scope.fromDisable = false;
+            $scope.toDisable = false;
+        }
+
+        $scope.changeSaleRadio = function () {
+            $scope.getSales('1', '100', 0, $scope.selectedRow.tno);
+            $scope.getDateFilterData = [];
+            $scope.fromDisable = true;
+            $scope.toDisable = true;
+        }
+
+        $scope.paginationChange = function () {
+            $scope.getJournals($scope.currentPage, $scope.itemsPerPage, '-1', $scope.fromDateForTrial, $scope.toDateForTrial);
+        }
     });
 </script>

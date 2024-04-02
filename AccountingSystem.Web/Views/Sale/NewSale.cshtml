@@ -22,9 +22,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                    <script type="text/javascript">
-                                        window.location.href = '@Url.Action("Index", "Home")';
-                                    </script>
+        <script type="text/javascript">
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
     }
     else
     {
@@ -90,7 +90,7 @@
                             <label class="col-sm-4 col-form-label">Job Title</label>
                             <div class="col-sm-8">
                                 <select class="form-control form-control-sm" ng-model="jobTitle">
-                                    <option ng-repeat="o in jobTitleData" value="{{o.title}}">{{o.title}}</option>
+                                    <option ng-repeat="o in jobTitleData" value="{{o.jp_Id}}" data-title="{{o.title}}">{{o.title}}</option>
                                 </select>
                             </div>
                         </div>
@@ -276,7 +276,7 @@
                 $scope.getSalesPerson();
                 $scope.taxTypeAmountDisable();
                 $scope.saveButtonDisabled = false;
-                $scope.billingPersonListVisible = false;
+                $scope.billingPersonListVisible = false;                
                 //$scope.makeInvoiceDisable = true;
             } else {
 
@@ -400,8 +400,7 @@
             $scope.selectedProduct = product;
             $scope.searchQueryProduct = product.ladgerName;
             $scope.getProductList = [];
-        }
-
+        }    
 
         $scope.getSalesPerson = function () {
             let Url = '';
@@ -532,8 +531,15 @@
                 Url = '/AccountingNew/Company/GetContactPersonsOrJobTitle';
             $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
+                    var onlineJpId = @onlineJobId;
                     $scope.jobTitleData = response.data;
-                    $scope.jobTitle = $scope.jobTitleData[0].title;                   
+                    if (@onlineJobId == 0) {
+                        $scope.jobTitle = "";
+                    } else {
+                        // $scope.jobTitle = $scope.jobTitleData[0].jp_Id.toString();
+                        $scope.jobTitle = onlineJpId.toString();
+                    }
+                                   
                     $scope.dateFrom = new Date($scope.jobTitleData[0].postingDate);
                     $scope.dateTo = new Date($scope.jobTitleData[0].validDate);
                     if ($scope.getBillingPersonData.length == 0) {
@@ -652,13 +658,15 @@
                     $("#closejournal").modal('show');
                 }
             }
-        };
+        };        
 
         $scope.ok = function () {
             $scope.formattedFromDate = $scope.dateFrom.toISOString().split('T')[0];
             $scope.formattedToDate = $scope.dateTo.toISOString().split('T')[0];
             $scope.formattedJournalDate = $scope.journalDate.toISOString().split('T')[0];
-            //$scope.jpId2 = @onlineJobId;
+            var selectedJpId = $scope.jobTitleData.find(function (s) {
+                return s.jp_Id == $scope.jobTitle;
+            });
             let requestBodyModel = {
                 UserId: @userId,
                 CId: $scope.selectedCompany.id,
@@ -676,8 +684,8 @@
                 RefNo: $scope.referenceNo || "",
                 TypeId: $scope.taxType ? $scope.taxType.toString() : "",
                 Vat: $scope.amount || 0,
-                JpId: @onlineJobId == 0 ? 0 : @onlineJobId,
-                JobTitle: $scope.jobTitle ? $scope.jobTitle.toString() : "",
+                JpId: $scope.jobTitle ? $scope.jobTitle : 0,
+                JobTitle: selectedJpId == undefined ? "" : selectedJpId.title,
                 // workshopDate: $scope.workshopdateDiv ? $scope.workshopdate : "",
                 SPerson: $scope.salesPerson
             };

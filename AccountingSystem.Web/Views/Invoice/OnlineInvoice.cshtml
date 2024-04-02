@@ -1,0 +1,127 @@
+﻿@{
+    ViewData["Title"] = "OnlineInvoice";
+}
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+</head>
+
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="text-center alert-primary" style="margin-top:-10px">Online Invoice</h4>
+                <div class="row justify-content-center">
+                    <div class="col-sm-3">
+                        <label>Status</label>
+                        <select class="form-control form-control-sm" ng-model="status">
+                            <option value="Success">Success</option>
+                            <option value="Failed">Failed</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>From Date</label>
+                        <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label>To Date</label>
+                        <input type="date" class="form-control form-control-sm" ng-model="toDate" />
+                    </div>
+                    <div class="col-sm-1 mt-4">
+                        <button class="btn btn-success btn-sm px-4" ng-click="load()">Load</button>
+                    </div>
+                </div>
+            </div>
+            <table ng-show="showTable" class="table table-bordered table-sm mt-3" style="font-size:15px">
+                <tr style="background-color:skyblue">
+                    <td class="text-center">Sl#</td>
+                    <td class="text-center">Company Name</td>
+                    <td class="text-center">Job Title</td>
+                    <td class="text-center">Price</td>
+                    <td class="text-center">Vat</td>
+                    <td class="text-center">Status</td>
+                    <td class="text-center">Invoice No</td>
+                    <td class="text-center">Post Date</td>
+                    <td class="text-center">Transaction No</td>
+                    <td class="text-center">Action</td>
+                </tr>
+                <tbody>
+                    <tr ng-repeat="data in onlineData">
+                        <td class="text-center">{{$index + 1}}</td>
+                        <td class="text-center">{{data.companyName}}</td>
+                        <td class="text-center">{{data.title}}</td>
+                        <td class="text-end">{{data.price | number}}</td>
+                        <td class="text-end">{{data.vat | number}}</td>
+                        <td class="text-center">{{data.status}}</td>
+                        <td class="text-center">{{data.invoiceNo}}</td>
+                        <td class="text-center">{{data.postDate | date: "dd-MM-yyyy"}}</td>
+                        <td class="text-center">{{data.transactionNo}}</td>
+                        <td class="text-center">
+                            <button class="btn btn-success btn-sm" ng-click="Rick(data.jP_ID)">Reconcile</button>
+                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+            $scope.showTable = false;
+            
+        })
+        $scope.status = 'Success';
+        $scope.fromDate = new Date();
+        $scope.toDate = new Date();
+
+        $scope.load=function(){
+            let requestBodyModel = {
+                Status: $scope.status,
+                FromDate: $scope.fromDate,
+                ToDate: $scope.toDate
+            }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/LoadOnlineInvoice';
+            else
+                Url = '/AccountingNew/Invoice/LoadOnlineInvoice';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                   
+                    $scope.onlineData = response.data;
+                    $scope.showTable = true;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        $scope.Rick = function (JP_ID) {
+            $scope.reconcileSpinner = true;
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/OIvoiceReconc';
+            else
+                Url = '/AccountingNew/Invoice/OIvoiceReconc';
+
+            $http.get(Url, { params: { JP_ID: JP_ID } })
+            
+                .then(function (response) {
+                    alert(response.data);
+                    $scope.reconcileSpinner = false;
+                    $scope.load();
+                    
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    $scope.reconcileSpinner = false;
+                })
+        }
+    })
+</script>
+
+

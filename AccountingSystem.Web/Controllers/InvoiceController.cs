@@ -1,6 +1,8 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Models.AccountViewModels;
+using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Security.Claims;
 
 namespace AccountingSystem.Web.Controllers
@@ -8,10 +10,13 @@ namespace AccountingSystem.Web.Controllers
     public class InvoiceController : Controller
     {
         private readonly IInvoiceManager _InvoiceManager;
+        private readonly HttpClient _httpClient;
 
-        public InvoiceController(IInvoiceManager InvoiceManagerManager)
+
+        public InvoiceController(IInvoiceManager InvoiceManagerManager, HttpClient httpClient)
         {
             _InvoiceManager = InvoiceManagerManager;
+            _httpClient = httpClient;
         }
         public IActionResult Index()
         {
@@ -139,5 +144,158 @@ namespace AccountingSystem.Web.Controllers
             return await Task.FromResult(Ok(responseList));
         }
 
+        public IActionResult ViewJournal()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult OnlineInvoice()
+        {
+            ClaimsPrincipal claimsPrincipal = HttpContext.User;
+            if (claimsPrincipal.Identity.IsAuthenticated)
+                return View();
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+
+        public async Task<IActionResult> LoadOnlineInvoice([FromBody] LoadOnlineInvoiceModel model)
+        {
+            var result = await _InvoiceManager.LoadOnlineInvoice(model);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> OIvoiceReconc(int JP_ID)
+        {
+            var url = "https://corporate3.bdjobs.com/InvoiceReconciliation.asp";
+
+            // No conversion needed, JP_ID remains an integer
+            var content = new FormUrlEncodedContent(new[]
+            {
+                 new KeyValuePair<string, string>("ItemId", JP_ID.ToString())
+             });
+
+            try
+            {
+                var response = await _httpClient.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    // Handle successful response with potential API-specific processing
+                    string responseMessage;
+                    using (var responseStream = await response.Content.ReadAsStreamAsync())
+                    {
+                        using (var reader = new StreamReader(responseStream))
+                        {
+                            responseMessage = reader.ReadToEnd();
+                            ApiResponseReconc responseObjectTyped = JsonConvert.DeserializeObject<ApiResponseReconc>(responseMessage);
+
+                            if (responseObjectTyped.Status == 200)
+                                return Json("Successfully posted");
+                            else
+                                return Json(responseObjectTyped.Message);
+                        }
+                    }
+                }
+                else
+                {
+                    return Json($"Invoice reconciliation failed (HTTP status code: {response.StatusCode})");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+
+        public IActionResult OnlinePaymentVarification()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> LoadOnlinePaymentVarificationData([FromBody] loadOnlinePaymentVarificationDataModel model)
+        {
+            var url = "https://corporate3.bdjobs.com/api/GetBillingsForAccouting.asp";
+
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("fromDate", model.FromDate),
+                new KeyValuePair<string, string>("toDate", model.ToDate),
+                new KeyValuePair<string, string>("verified", model.Verified),
+                new KeyValuePair<string, string>("pageNo", model.PageNo.ToString()),
+                new KeyValuePair<string, string>("pageSize", model.PageSize.ToString())
+            });
+
+            try
+            {
+                var response = await _httpClient.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseMessage = await response.Content.ReadAsStringAsync();
+                    ApiResponseModel responseObjectTyped = JsonConvert.DeserializeObject<ApiResponseModel>(responseMessage);
+
+                    return Json(responseObjectTyped);
+                }
+                else
+                {
+                    return Json($"Onlin Payment Varification failed (HTTP status code: {response.StatusCode})");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
+        }
+
+
+        public async Task<IActionResult> VarifyOrReject([FromBody] VarifyOrReject model)
+        {
+            var url = "https://corporate3.bdjobs.com/api/GetBillingsForAccouting.asp";
+
+            var content = new FormUrlEncodedContent(new[]
+            {
+                new KeyValuePair<string, string>("QID", model.QID.ToString()),
+                new KeyValuePair<string, string>("verified", model.verified.ToString()),
+                new KeyValuePair<string, string>("verifiedBy", model.verifiedBy.ToString()),
+                
+            });
+
+            try
+            {
+                var response = await _httpClient.PostAsync(url, content);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    string responseMessage = await response.Content.ReadAsStringAsync();
+                    ApiResponseModel responseObjectTyped = JsonConvert.DeserializeObject<ApiResponseModel>(responseMessage);
+
+                    return Json(responseObjectTyped);
+                }
+                else
+                {
+                    return Json($"Onlin Payment Varification failed (HTTP status code: {response.StatusCode})");
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+
+        }
     }
+
+
 }

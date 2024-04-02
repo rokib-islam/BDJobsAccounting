@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Models.AccountDbModels;
+using AccountingSystem.Models.AccountViewModels;
 using Microsoft.EntityFrameworkCore;
 
 namespace AccountingSystem.AppLicationDbContext.AccountingDatabase
@@ -10,14 +11,12 @@ namespace AccountingSystem.AppLicationDbContext.AccountingDatabase
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.Entity<Users>().HasKey(u => u.UserID);
-
             base.OnModelCreating(modelBuilder);
         }
 
-        public DbSet<Journal> Journals { get; set; }
+        public DbSet<JournalViewModel> Journals { get; set; }
         public DbSet<Users> Users { get; set; }
-        public DbSet<Company> Company { get; set; }
+        public DbSet<CompanyViewModel> Company { get; set; }
 
     }
 }

@@ -15,13 +15,13 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<SalesPersonViewModel>> GetSalesPersons(int productID);
         Task<string> SaveSale(SaveSalesDataViewModel data);
         Task<int[]> CheckOnlineJobsAsync(string tnolist, string cId);
-        Task<IEnumerable<Sale>> GetSalesInfoAsync(string invoiceNo);
+        Task<IEnumerable<SaleViewModel>> GetSalesInfoAsync(string invoiceNo);
         Task<int> DownloadSMSAlertAsync(int serviceId, string fDate, string tDate);
         Task<List<PostingOPIDs>> PostSMSAlertApplyLimitSalePosting(PostSMSAlertApplyLimitSale Data);
         Task<List<PostingOPIDs>> GetSMSAlertApplyLimitForOnlinePost(string OPIDs);
         Task<List<PostingOPIDs>> PostSMSAlertApplyLimitToOnline(string OPIDs, int CMorJS, int Type);
         Task<List<PostingOPIDs>> GetSMSAlertApplyLimit(GetSMSApplyLimit Data);
-        Task<List<Ledger>> CheckJobTitle(int productId);
+        Task<List<LedgerViewModel>> CheckJobTitle(int productId);
         Task<object> GetSales(string pageNo, string pageSize, int cId, int tno);
         Task<IEnumerable<DeletedSalesViewModel>> GetDeletedSales(string pageNo, string pageSize, int cId);
         Task<string> UpdateSaleProduct(string oldSid, string tno, string newSid);

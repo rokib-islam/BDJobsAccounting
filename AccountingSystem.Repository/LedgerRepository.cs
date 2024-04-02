@@ -70,9 +70,9 @@ namespace AccountingSystem.Repository
                 throw ex;
             }
         }
-        public async Task<List<Ledger>> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType)
+        public async Task<List<LedgerViewModel>> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType)
         {
-            var ledgers = new List<Ledger>();
+            var ledgers = new List<LedgerViewModel>();
 
             try
             {
@@ -88,7 +88,7 @@ namespace AccountingSystem.Repository
                         Tax = isVatType
                     };
 
-                    var result = await _db.QueryAsync<Ledger>("USP_LedgerList", parameters, commandType: CommandType.StoredProcedure);
+                    var result = await _db.QueryAsync<LedgerViewModel>("USP_LedgerList", parameters, commandType: CommandType.StoredProcedure);
 
                     ledgers = result.ToList();
                 }
@@ -100,9 +100,9 @@ namespace AccountingSystem.Repository
 
             return ledgers;
         }
-        public async Task<List<Ledger>> GetLedgersWithBalance()
+        public async Task<List<LedgerViewModel>> GetLedgersWithBalance()
         {
-            var ledgers = new List<Ledger>();
+            var ledgers = new List<LedgerViewModel>();
 
             try
             {
@@ -110,7 +110,7 @@ namespace AccountingSystem.Repository
 
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    var result = await _db.QueryAsync<Ledger>(sqlQuery);
+                    var result = await _db.QueryAsync<LedgerViewModel>(sqlQuery);
                     ledgers.AddRange(result);
                 }
             }
@@ -121,9 +121,9 @@ namespace AccountingSystem.Repository
 
             return ledgers;
         }
-        public async Task<List<Ledger>> GetAllLedgers()
+        public async Task<List<LedgerViewModel>> GetAllLedgers()
         {
-            var ledgers = new List<Ledger>();
+            var ledgers = new List<LedgerViewModel>();
             try
             {
                 string sqlQuery = "SELECT Id, SBName AS GroupName, Under, MGroup AS MaingroupName, LevelNo, " +
@@ -132,7 +132,7 @@ namespace AccountingSystem.Repository
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
 
-                    ledgers = (await _db.QueryAsync<Ledger>(sqlQuery)).AsList();
+                    ledgers = (await _db.QueryAsync<LedgerViewModel>(sqlQuery)).AsList();
                 }
 
                 return ledgers;
@@ -142,7 +142,7 @@ namespace AccountingSystem.Repository
                 throw ex;
             }
         }
-        public async Task SaveLedgerAsync(Ledger aLedger)
+        public async Task SaveLedgerAsync(LedgerViewModel aLedger)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
@@ -161,7 +161,7 @@ namespace AccountingSystem.Repository
             }
 
         }
-        public async Task<int> UpdateLedgerAsync(Ledger aLedger)
+        public async Task<int> UpdateLedgerAsync(LedgerViewModel aLedger)
         {
             var sqlQuery = @"
                             UPDATE dbo.Ledger 
@@ -209,27 +209,27 @@ namespace AccountingSystem.Repository
         }
 
 
-        public async Task<List<Ledger>> GetProductListByKey(string Key)
+        public async Task<List<LedgerViewModel>> GetProductListByKey(string Key)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
                 var query = "SELECT id, SBName As LadgerName FROM ledger WHERE ledgerAcc=1 and MGroup='Revenue' and SBName LIKE @Key ORDER BY SBName";
                 var parameters = new { Key = "%" + Key + "%" };
 
-                var result = await _db.QueryAsync<Ledger>(query, parameters);
+                var result = await _db.QueryAsync<LedgerViewModel>(query, parameters);
                 return result.ToList();
             }
 
         }
 
-        public async Task<List<Ledger>> GetProductById(int pId)
+        public async Task<List<LedgerViewModel>> GetProductById(int pId)
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
                 var query = "SELECT Id, SBName FROM Ledger WHERE Id=@PId";
                 var parameters = new { PId = pId };
 
-                var result = await _db.QueryAsync<Ledger>(query, parameters);
+                var result = await _db.QueryAsync<LedgerViewModel>(query, parameters);
                 return result.ToList();
             }
 

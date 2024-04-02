@@ -1,6 +1,6 @@
-﻿namespace AccountingSystem.Models.AccountDbModels
+﻿namespace AccountingSystem.Models.AccountViewModels
 {
-    public class Sale
+    public class SaleViewModel
     {
         public int Id { get; set; }
         public string Tno { get; set; }
@@ -10,7 +10,9 @@
         public string Comment { get; set; }
 
         public string CompanyName { get; set; }
+        public string name { get; set; }
         public string SDate { get; set; }
+
         public int TotalRecords { get; set; }
         public int TotalRecord { get; set; }
 

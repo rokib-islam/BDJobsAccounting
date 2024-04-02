@@ -1,6 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
-using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
 
@@ -34,12 +33,12 @@ namespace AccountingSystem.BLL
             return await _repository.GetInvoices(cpId, sDate, ledgerId);
         }
 
-        public Task<List<Invoice>> GetInvoicesAsync(GetInvoiceListParam parameters)
+        public Task<List<InvoiceViewModel>> GetInvoicesAsync(GetInvoiceListParam parameters)
         {
             return _repository.GetInvoicesAsync(parameters);
         }
 
-        public Task<IEnumerable<Invoice>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid)
+        public Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid)
         {
             return _repository.GetInvoicesForCashCollectionAsync(CompanyId, FullPayment, Invalid);
         }
@@ -54,7 +53,7 @@ namespace AccountingSystem.BLL
             return _repository.Getproducts(cId, type);
         }
 
-        public Task<List<Invoice>> GetProductsDetails(string id)
+        public Task<List<InvoiceViewModel>> GetProductsDetails(string id)
         {
             return _repository.GetProductsDetails(id);
         }
@@ -94,7 +93,9 @@ namespace AccountingSystem.BLL
             return await _repository.UploadInvoiceOnline(cpId, invoiceNo, serviceNo, invSendDt, billingContact, price, opId, jpIdList, serviceID, companyID, companyName, saleDate);
         }
 
-
-
+        public async Task<List<LoadOnlineInvoiceResponseModel>> LoadOnlineInvoice(LoadOnlineInvoiceModel model)
+        {
+            return await _repository.LoadOnlineInvoice(model);
+        }
     }
 }

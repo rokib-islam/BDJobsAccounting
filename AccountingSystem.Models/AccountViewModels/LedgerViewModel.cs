@@ -2,7 +2,7 @@
 
 namespace AccountingSystem.Models.AccountViewModels
 {
-    public class Ledger
+    public class LedgerViewModel
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "Group Name is required")]

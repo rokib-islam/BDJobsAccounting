@@ -334,8 +334,12 @@
                                     <div class="col-sm-6">
                                         <div class="row px-2">
                                             <label>List of Companies in local database</label>
-                                            <input class="form-control form-control-sm" style="margin-top:15px" ng-model="txtCompanies" />
-                                            <input class="form-control form-control-sm mt-2" ng-model="localCompanies" style="height:90px;" />
+                                            <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="localCompanies" ng-keyup="searchCompany(localCompanies)">
+                                            <select class="form-control form-control-sm" size="10" ng-model="comList" style="height:115px;">
+                                                <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                                            </select>
+                                            @* <input class="form-control form-control-sm" style="margin-top:15px" ng-model="txtCompanies" />
+                                            <input class="form-control form-control-sm mt-2" ng-model="localCompanies" style="height:90px;" /> *@
                                             <div class="mt-1">
                                                 Details of local inserted company
                                             </div>
@@ -380,7 +384,7 @@
                                                 <div class="form-group row" style="margin-top:-10px">
                                                     <label class="col-sm-4">Email:</label>
                                                     <div class="col-sm-8">
-                                                        <input class="form-control form-control-sm" ng-model="phoneExist" disabled />
+                                                        <input class="form-control form-control-sm" ng-model="emailExist" disabled />
                                                     </div>
                                                 </div>
                                                 <div class="form-group row" style="margin-top:-10px">
@@ -462,6 +466,34 @@
         })
         $scope.from = new Date();
         $scope.to = new Date();
+
+
+        $scope.companyList = [];
+        $scope.searchCompany = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Company/GetCompanyListByKey';
+                else
+                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.companyList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.companyList = [];
+            }
+        };
+
+        $scope.selectedCompany = null;
+        $scope.selectCompany = function (company) {
+            $scope.selectedCompany = company;
+            $scope.localCompanies = company.name;
+            $scope.GetLocalCompanyInfo(company.id, 1);
+        }
 
         $scope.getRowStyle = function (o) {
             var rowStyle = {};
@@ -562,7 +594,6 @@
         $scope.jobData = [];
 
         $scope.refreshData = function () {
-            
             var selectedService = $scope.services.find(function (s) {
                 return s.serviceId == $scope.service;
             });
@@ -1025,7 +1056,7 @@
                     $scope.cityExist = $scope.localCompanyInfoData[0].city;
                     $scope.phoneExist = $scope.localCompanyInfoData[0].phone;
                     $scope.emailExist = $scope.localCompanyInfoData[0].email;
-                    $scope.contactPersonExist = $scope.localCompanyInfoData[0].accContactName;
+                    $scope.contactPersonExist = $scope.localCompanyInfoData[0].contact_Person;
                     $scope.designationExist = $scope.localCompanyInfoData[0].designation;
                     $scope.localCompanyIdExist = $scope.localCompanyInfoData[0].id;
                     $scope.district = $scope.localCompanyInfoData[0].districtId.toString();
@@ -1048,6 +1079,7 @@
             $scope.contactPersonExist = "";
             $scope.designationExist = "";
             $scope.localCompanyIdExist = "";
+            $scope.emailExist = "";
         };
 
 

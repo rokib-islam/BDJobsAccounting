@@ -2,10 +2,10 @@
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 
-namespace AccountingSystem.Models.AccountDbModels
+namespace AccountingSystem.Models.AccountViewModels
 {
     [Keyless]
-    public class Company
+    public class CompanyViewModel
     {
         public int Id { get; set; }
         public int acc_id { get; set; }
@@ -19,6 +19,7 @@ namespace AccountingSystem.Models.AccountDbModels
         public string e_mail { get; set; }
         public string Fax { get; set; }
         public string ContactPerson { get; set; }
+        public string Contact_Person { get; set; }
         public string ContactName { get; set; }
         public string Designation { get; set; }
         public double Balance { get; set; }
