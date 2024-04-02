@@ -524,7 +524,7 @@ namespace AccountingSystem.Repository
         {
             try
             {
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
                     var dynamicParameters = new DynamicParameters();
                     dynamicParameters.Add("@acc_id", parameters.Acc_Id);
@@ -578,7 +578,7 @@ namespace AccountingSystem.Repository
                     Fromdate = model.FromDate,
                     Todate = model.ToDate,
                 };
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
                     var result = await _db.QueryAsync<LoadOnlineInvoiceResponseModel>("USP_LoadOnlineInvoice", parameters, commandType: CommandType.StoredProcedure);
                     return result.ToList();
