@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                        <script type="text/javascript">
-                                            window.location.href = '@Url.Action("Index", "Home")';
-                                        </script>
+                                                <script type="text/javascript">
+                                                    window.location.href = '@Url.Action("Index", "Home")';
+                                                </script>
     }
     else
     {
@@ -339,13 +339,13 @@
                     </div>
                     <div class="modal-body">
                         <div class="row px-5">
-                            <p class="text-center">Give the journal date.</p>
-                            <input type="date" ng-model="journalDate" class="col-sm-8 offset-2 form-control form-control-sm" />
+                            <p class="text-center">Give the journal date</p>
+                            <input type="date" ng-model="journalDate" class="col-sm-8 form-control form-control-sm" />
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary btn-sm" ng-click="ok()">OK</button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="okForMakeJournal()">OK</button>
                     </div>
                 </div>
             </div>
@@ -498,6 +498,7 @@
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.getSalesPerson();
+            $scope.getClosingDate();
             $scope.billingContact = "0";
             $scope.isVisible = false;
             $scope.isVisibleDelete = false;
@@ -524,6 +525,7 @@
         $scope.deleteDate = new Date();
         $scope.fromDateForTrial = new Date();
         $scope.toDateForTrial = new Date();
+        $scope.journalDate = new Date();
 
         $scope.updateDuration = function () {
             var date1 = new Date($scope.fromDate);
@@ -1061,7 +1063,7 @@
                                             }
                                         }
                                     });
-                                //$("#companyList").trigger('change');
+                                $scope.getSales($scope.currentPage, $scope.itemsPerPage, $scope.comList, 0);
                             }
                         }
                     })
@@ -1134,7 +1136,7 @@
                         .then(function (response) {
                             if (response.data === 'Update successful') {
                                 alert('Update Sales successfully.');
-                                //$("#companyList").trigger('change');
+                                $scope.getSales($scope.currentPage, $scope.itemsPerPage, $scope.comList, 0);
                             }
                         });
                 } else {
@@ -1220,6 +1222,60 @@
 
         $scope.paginationChange = function () {
             $scope.getJournals($scope.currentPage, $scope.itemsPerPage, '-1', $scope.fromDateForTrial, $scope.toDateForTrial);
+        }
+
+
+        $scope.getClosingDate = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Journal/GetClosingDate';
+            else
+                Url = '/AccountingNew/Journal/GetClosingDate';
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.closingDate = response.data;
+                   
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+        $scope.okForMakeJournal = function () {
+            var from = $scope.journalDate;
+            var to = new Date($scope.closingDate);
+           
+            if (from <= to) {
+                confirm("You cannot post journal on or before '" + $scope.closingDate + "'.\nPlease give another date.");
+            }
+            else{
+                var jsonData = {
+                    SId: $scope.selectedRow.id.toString(),
+                    Amount: $scope.selectedRow.salesPrice.toString(),
+                    JDate: $scope.journalDate,
+                    Duration: $scope.selectedRow.duration.toString(),
+                    TNO: $scope.selectedRow.tno,
+                    Description: "Company: " + $scope.selectedCompany.name + ", Item: " + $scope.selectedRow.sbName,
+                    SalesDate: $scope.selectedRow.from,
+                    TaxId: $scope.selectedRow.taxId.toString(),
+                    Tax: $scope.selectedRow.tax.toString(),
+                    UserId: '@userId'
+                };
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Sale/MakeJournalOfSale';
+                else
+                    Url = '/AccountingNew/Sale/MakeJournalOfSale';
+
+                $http.post(Url, jsonData)
+                    .then(function (response) {
+                        if (response.data == 'Success') {
+                            $("#makeJournalModal").modal('hide');
+                            $scope.getSales($scope.currentPage, $scope.itemsPerPage, $scope.comList, 0);
+                            alert("All Journal entry have been completed.")
+                            
+                        }
+                    });
+            }
         }
     });
 </script>
