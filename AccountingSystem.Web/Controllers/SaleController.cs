@@ -150,7 +150,7 @@ namespace AccountingSystem.Web.Controllers
             var result = await _SaleManager.DeleteSale(tno, deleteReason, creditNote, deleteDate);
             return Json(result);
         }
-        public async Task<IActionResult> MakeJournalOfSale(MakeJournalOfSales saleInfo)
+        public async Task<IActionResult> MakeJournalOfSale([FromBody] MakeJournalOfSales saleInfo)
         {
             var result = await _SaleManager.MakeJournalOfSale(saleInfo);
             return Json(result);
