@@ -295,7 +295,17 @@ namespace AccountingSystem.Web.Controllers
             }
 
         }
+
+        public IActionResult CashCollection()
+        {
+            ClaimsPrincipal claimsPrincipal = HttpContext.User;
+            if (claimsPrincipal.Identity.IsAuthenticated)
+                return View();
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+
+
     }
-
-
 }

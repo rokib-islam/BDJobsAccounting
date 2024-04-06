@@ -1,0 +1,95 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "CashCollection";
+    var userId = Context.Session.GetInt32("UserID");
+    var accessRight = Context.Session.GetString("AccessRight");
+
+    var accessRights = new string[0];
+
+    if (string.IsNullOrEmpty(accessRight))
+    {
+        <script type="text/javascript">
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
+    }
+    else
+    {
+        accessRights = accessRight.Split(',');
+    }
+}
+
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="row">
+            <h4 class="alert-primary text-center">Cash Collection</h4>
+
+            <div class="col-sm-6">
+                <div class="form-group row">
+                    <label class="col-sm-3 col-form-label">Company</label>
+                    <div class="col-sm-9">
+                        <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="company" ng-keyup="searchCompany(company)">
+                    </div>
+                </div>
+                <div>Select a company</div>
+                <select class="form-control form-control-sm" size="10" ng-model="comList" style="height:225px;border:2px solid gray">
+                    <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                </select>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>Show due invoices &nbsp; <input type="checkbox"/></label>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="float-end"><input type="checkbox"/>&nbsp; Show paid invoices </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+
+        })
+
+        $scope.companyList = [];
+        $scope.searchCompany = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Company/GetCompanyListByKey';
+                else
+                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.companyList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.companyList = [];
+            }
+        };
+
+        $scope.selectedCompany = null;
+        $scope.selectCompany = function (company) {
+            sbName = null;
+            row = null;
+
+            $scope.selectedCompany = company;
+            $scope.company = company.name;
+
+            $scope.showTable = true;
+            $scope.makeInvoiceBtn = false;
+        }
+    })
+</script>
