@@ -28,6 +28,25 @@
                         </select>
                     </div>
                     <div class="col-sm-2">
+                        <label>Service Name</label>
+                        <select class="form-control form-control-sm" ng-model="serviceName">
+                            <option value="All">All</option>
+                            <option value="Hot Jobs Listing (Blue Collar)">Hot Jobs Listing (Blue Collar)</option>
+                            <option value="Hot Jobs Listing">Hot Jobs Listing</option>
+                            <option value="Online Job Posting-Stand-out (Blue Color)">Online Job Posting-Stand-out (Blue Color)</option>
+                            <option value="Online Job Posting (Stand-out)">Online Job Posting (Stand-out)</option>
+                            <option value="Job Posting-Stand-out (BCP)">Job Posting-Stand-out (BCP)</option>
+                            <option value="Online Job Posting (Stand-out Premium)">Online Job Posting (Stand-out Premium)</option>
+                            <option value="Online Job Posting-Basic (Uddokta BC)">Online Job Posting-Basic (Uddokta BC)</option>
+                            <option value="Online Job Posting-Basic (Uddokta)">Online Job Posting-Basic (Uddokta)</option>
+                            <option value="Online Job Posting (PNPL)">Online Job Posting (PNPL)</option>
+                            <option value="Online Job Posting-Basic-Regional (Blue Color)">Online Job Posting-Basic-Regional (Blue Color)</option>
+                            <option value="Online Job Posting (Basic) Regional">Online Job Posting (Basic) Regional</option>
+                            <option value="Online Job Posting-Basic (Blue Color)">Online Job Posting-Basic (Blue Color)</option>
+                            <option value="Online Job Posting (Basic)">Online Job Posting (Basic)</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
                         <label>From Date</label>
                         <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
                     </div>
@@ -44,6 +63,7 @@
                 <tr style="background-color:skyblue">
                     <td class="text-center">Sl#</td>
                     <td class="text-center">Company Name</td>
+                    <td class="text-center">Service Name</td>
                     <td class="text-center">Job Title</td>
                     <td class="text-center">Price</td>
                     <td class="text-center">Vat</td>
@@ -59,6 +79,7 @@
                     <tr ng-repeat="data in onlineData">
                         <td class="text-center">{{$index + 1}}</td>
                         <td class="text-center">{{data.companyName}}</td>
+                        <td class="text-center">{{data.serviceName}}</td>
                         <td class="text-center">{{data.title}}</td>
                         <td class="text-end">{{data.price | number}}</td>
                         <td class="text-end">{{data.vat | number}}</td>
@@ -71,8 +92,16 @@
                             <button class="btn btn-success btn-sm" ng-click="Rick(data.jP_ID)">Reconcile</button>
                             &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner"></span>
                         </td>
-                    </tr>
+                    </tr>                   
                 </tbody>
+                <tfoot>
+                    <tr style="font-weight:bold">
+                        <td colspan="4" style="text-align:right">Total</td>
+                        <td>{{totalPrice | number}}</td>
+                        <td>{{totalVat | number}}</td>
+                        <td colspan="6"></td>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -83,17 +112,22 @@
         angular.element(document).ready(function () {
             $scope.showTable = false;
             
+            
         })
         $scope.status = 'Success';
+        $scope.paymentMode = 'All';
+        $scope.serviceName = 'All';
         $scope.fromDate = new Date();
         $scope.toDate = new Date();
 
         $scope.load=function(){
+            debugger
             let requestBodyModel = {
                 Status: $scope.status,
                 FromDate: $scope.fromDate,
                 ToDate: $scope.toDate,
-                paymentMode: $scope.paymentMode
+                paymentMode: $scope.paymentMode == 'All' ? "" : $scope.paymentMode,
+                ServiceName: $scope.serviceName == "All" ? "" : $scope.serviceName,
             }
 
             let Url = '';
@@ -104,8 +138,10 @@
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
-                   
+                   debugger
                     $scope.onlineData = response.data;
+                    $scope.totalPrice = response.data.reduce((a, b) => a + b.price, 0);
+                    $scope.totalVat = response.data.reduce((a, b) => a + b.vat, 0);
                     $scope.showTable = true;
                 })
                 .catch(function (error) {

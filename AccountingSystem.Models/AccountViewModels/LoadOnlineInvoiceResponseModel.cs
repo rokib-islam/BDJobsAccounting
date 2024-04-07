@@ -12,5 +12,6 @@
         public string TransactionNo { get; set; }
         public int JP_ID { get; set; }
         public string paymentMode { get; set; }
+        public string ServiceName { get; set; }
     }
 }
