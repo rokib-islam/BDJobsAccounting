@@ -55,26 +55,30 @@
                         <input type="date" class="form-control form-control-sm" ng-model="toDate" />
                     </div>
                     <div class="col-sm-1 mt-4">
-                        <button class="btn btn-success btn-sm px-4" ng-click="load()">Load</button>
+                        <button class="btn btn-primary btn-sm px-4" ng-click="load()">Load</button>
+                    </div>
+                    <div class="col-sm-1 mt-4">
+                        <button class="btn btn-success btn-sm px-4" ng-disabled="disableExcelButton" ng-click="excel()">Excel</button>
                     </div>
                 </div>
             </div>
-            <table ng-show="showTable" class="table table-bordered table-sm mt-3" style="font-size:15px">
-                <tr style="background-color:skyblue">
-                    <td class="text-center">Sl#</td>
-                    <td class="text-center">Company Name</td>
-                    <td class="text-center">Service Name</td>
-                    <td class="text-center">Job Title</td>
-                    <td class="text-center">Price</td>
-                    <td class="text-center">Vat</td>
-                    <td class="text-center">Status</td>
-                    <td class="text-center">Invoice No</td>
-                    <td class="text-center">Post Date</td>
-                    <td class="text-center">Transaction No</td>
-                    <td class="text-center">Payment Mode</td>
-
-                    <td class="text-center">Action</td>
-                </tr>
+            <table ng-show="showTable" class="table table-bordered table-sm mt-3" style="font-size:15px" id="tableData">
+                <thead>
+                    <tr style="background-color:skyblue">
+                        <th class="text-center">Sl#</th>
+                        <th class="text-center">Company Name</th>
+                        <th class="text-center">Service Name</th>
+                        <th class="text-center">Job Title</th>
+                        <th class="text-center">Price</th>
+                        <th class="text-center">Vat</th>
+                        <th class="text-center">Status</th>
+                        <th class="text-center">Invoice No</th>
+                        <th class="text-center">Post Date</th>
+                        <th class="text-center">Transaction No</th>
+                        <th class="text-center">Payment Mode</th>
+                        <th class="text-center">Action</th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr ng-repeat="data in onlineData">
                         <td class="text-center">{{$index + 1}}</td>
@@ -106,14 +110,14 @@
         </div>
     </div>
 </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.4/xlsx.full.min.js"></script>
+
 <script>
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
-        angular.element(document).ready(function () {
-            $scope.showTable = false;
-            
-            
-        })
+        
+        $scope.disableExcelButton = true;
+        $scope.showTable = false;
         $scope.status = 'Success';
         $scope.paymentMode = 'All';
         $scope.serviceName = 'All';
@@ -121,7 +125,6 @@
         $scope.toDate = new Date();
 
         $scope.load=function(){
-            debugger
             let requestBodyModel = {
                 Status: $scope.status,
                 FromDate: $scope.fromDate,
@@ -138,11 +141,12 @@
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
-                   debugger
                     $scope.onlineData = response.data;
                     $scope.totalPrice = response.data.reduce((a, b) => a + b.price, 0);
                     $scope.totalVat = response.data.reduce((a, b) => a + b.vat, 0);
                     $scope.showTable = true;
+                    $scope.disableExcelButton = false;
+
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -169,6 +173,12 @@
                     $scope.reconcileSpinner = false;
                 })
         }
+
+        $scope.excel = function () {
+            var wb = XLSX.utils.table_to_book(document.getElementById('tableData'), { sheet: "Sheet1" });
+            XLSX.writeFile(wb, 'Online Invoice.xlsx');
+        }
+
     })
 </script>
 

@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-        <script type="text/javascript">
-            window.location.href = '@Url.Action("Index", "Home")';
-        </script>
+            <script type="text/javascript">
+                window.location.href = '@Url.Action("Index", "Home")';
+            </script>
     }
     else
     {
@@ -42,10 +42,10 @@
             <div class="col-sm-6">
                 <div class="row">
                     <div class="col-sm-6">
-                        <label>Show due invoices &nbsp; <input type="checkbox"/></label>
+                        <label>Show due invoices &nbsp; <input type="checkbox" ng-model="due" ng-change="getInvoices()" /></label>
                     </div>
                     <div class="col-sm-6">
-                        <label class="float-end"><input type="checkbox"/>&nbsp; Show paid invoices </label>
+                        <label class="float-end"><input type="checkbox" ng-model="paid" ng-change="getInvoices()" />&nbsp; Show paid invoices </label>
                     </div>
                 </div>
             </div>
@@ -90,6 +90,34 @@
 
             $scope.showTable = true;
             $scope.makeInvoiceBtn = false;
+        }
+
+        $scope.getInvoices = function () {
+            debugger
+            var companyId = $scope.selectedCompany.id;
+            var fullPayment = $scope.due && !$scope.paid ? 0 : 1;
+            var invalid = $scope.due && !$scope.paid ? 0 : null;
+
+            let requestBodyModel = {
+                CompanyId: companyId,
+                FullPayment: fullPayment,
+                Invalid: invalid,
+            }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/GetInvoicesForCashCollection';
+            else
+                Url = '/AccountingNew/Invoice/GetInvoicesForCashCollection';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    debugger
+                    $scope.invoiceData = response.data;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
         }
     })
 </script>
