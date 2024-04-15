@@ -97,5 +97,10 @@ namespace AccountingSystem.BLL
         {
             return await _repository.LoadOnlineInvoice(model);
         }
+
+        public async Task<CashCollectionAutoReponse> AutoCashCollection(CashCollectionAutoViewModel parameters)
+        {
+            return await _repository.AutoCashCollection(parameters);
+        }
     }
 }

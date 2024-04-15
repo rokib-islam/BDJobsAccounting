@@ -144,6 +144,15 @@ namespace AccountingSystem.Web.Controllers
             return await Task.FromResult(Ok(responseList));
         }
 
+        [HttpPost]
+        [Route("api/AutoCashCollection")]
+        public async Task<IActionResult> AutoCashCollection([FromBody] CashCollectionAutoViewModel OnlineInvoice)
+        {
+            var responseList = await _InvoiceManager.AutoCashCollection(OnlineInvoice);
+
+            return await Task.FromResult(Ok(responseList));
+        }
+
         public IActionResult ViewJournal()
         {
             ClaimsPrincipal claimusers = HttpContext.User;
@@ -270,7 +279,7 @@ namespace AccountingSystem.Web.Controllers
                 new KeyValuePair<string, string>("QID", model.QID.ToString()),
                 new KeyValuePair<string, string>("verified", model.verified.ToString()),
                 new KeyValuePair<string, string>("verifiedBy", model.verifiedBy.ToString()),
-                
+
             });
 
             try

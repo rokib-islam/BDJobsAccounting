@@ -22,6 +22,7 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<InvoiceViewModel>> GetInvoicesAsync(GetInvoiceListParam parameters);
         Task<OnlineInvoiceResponseModel> OnlineInvcoie(OnlineInvoiceRequestModel parameters);
         Task<List<LoadOnlineInvoiceResponseModel>> LoadOnlineInvoice(LoadOnlineInvoiceModel model);
+        Task<CashCollectionAutoReponse> AutoCashCollection(CashCollectionAutoViewModel parameters);
 
     }
 }
