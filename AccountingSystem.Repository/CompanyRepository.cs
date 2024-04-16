@@ -293,7 +293,9 @@ namespace AccountingSystem.Repository
                             PostingDate = Convert.ToDateTime(r.postingDate).ToShortDateString(),
                             ValidDate = Convert.ToDateTime(r.ValidDate).ToShortDateString(),
                             Title = r.title,
-                            Type = r.designation
+                            Type = r.designation,
+                            Email = r.Email,
+                            Mobile = r.Mobile
                         }).ToList();
 
                         return jobList;
