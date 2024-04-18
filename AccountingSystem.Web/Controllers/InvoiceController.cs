@@ -272,7 +272,7 @@ namespace AccountingSystem.Web.Controllers
 
         public async Task<IActionResult> VarifyOrReject([FromBody] VarifyOrReject model)
         {
-            var url = "https://corporate3.bdjobs.com/api/GetBillingsForAccouting.asp";
+            var url = "https://corporate3.bdjobs.com/api/VerifyInvoiceForAccouting.asp";
 
             var content = new FormUrlEncodedContent(new[]
             {
