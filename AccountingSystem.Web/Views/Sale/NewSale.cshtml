@@ -252,7 +252,7 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary btn-sm" ng-click="ok()">OK</button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-disabled="okButtonDisabled" ng-click="ok()">OK</button>
                     </div>
                 </div>
             </div>
@@ -678,6 +678,7 @@
         };        
 
         $scope.ok = function () {
+            $scope.okButtonDisabled = true;
             $scope.formattedFromDate = $scope.dateFrom.toISOString().split('T')[0];
             $scope.formattedToDate = $scope.dateTo.toISOString().split('T')[0];
             $scope.formattedJournalDate = $scope.journalDate.toISOString().split('T')[0];
@@ -723,6 +724,7 @@
                         $("#closejournal").modal('hide');
                         $scope.makeInvoiceDisable = false;
                         $scope.spinner = false;
+                        $scope.okButtonDisabled = false;
                     }
                     else {
                         alert(response.data);
