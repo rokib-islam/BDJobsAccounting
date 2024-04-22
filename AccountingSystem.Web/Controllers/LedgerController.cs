@@ -35,6 +35,12 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
+
+        public async Task<IActionResult> GetAllEveryLedger(string isCashCollection)
+        {
+            var result = await _LedgerManager.GetAllEveryLedger(isCashCollection);
+            return Json(result);
+        }
         public async Task<IActionResult> GetOnlineLedgerId(string onlineProduct)
         {
             var data = await _LedgerManager.GetOnlineLedgerId(onlineProduct);

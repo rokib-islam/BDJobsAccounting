@@ -64,9 +64,9 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(results);
         }
-        public async Task<IActionResult> GetInvoicesForCashCollection([FromBody] GetInvoicesForCashCollection_Request model)
+        public async Task<IActionResult> GetInvoicesForCashCollection(string query)
         {
-            var results = await _InvoiceManager.GetInvoicesForCashCollectionAsync(model.CompanyId, model.FullPayment, model.Invalid);
+            var results = await _InvoiceManager.GetInvoicesForCashCollectionAsync(query);
 
             return Json(results);
         }

@@ -46,6 +46,20 @@ namespace AccountingSystem.Repository
                 return result.ToList();
             }
         }
+
+        public async Task<List<LedgerListViewModel>> GetAllEveryLedger(string isCashCollection)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = await _db.QueryAsync<LedgerListViewModel>(
+                    "[dbo].[USP_LedgerList]",
+                    new { IsCashCollection = isCashCollection },
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return result.ToList();
+            }
+        }
         public async Task<int> GetOnlineLedgerId(string onlineProduct)
         {
             try

@@ -143,7 +143,7 @@
                                 <input class="form-control form-control-sm" ng-model="designation" ng-disabled="designationDisabled" />
                             </div>
                         </div>
-                        
+
                         <div class="row mt-2">
                             <label class="col-sm-3">Acc. Person Mail</label>
                             <div class="col-sm-9">
@@ -164,7 +164,21 @@
                         </div>
                     </div>
                     <div class="col-sm-5 mt-2">
-                        <div class="px-3 py-4" style="border:2px solid gray">
+                        <div class="row mt-2">
+                            <label class="col-sm-3">Any VAT Exemption</label>
+                            <div class="col-sm-9">
+                                <select class="form-control form-control-sm" ng-model="accperson">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <fieldset class="border p-2">
+                            <legend class="float-none w-auto p-2 fs-5">
+                                Billing Person
+                            </legend>
+
                             <div class="row">
                                 <div class="col-sm-4">
                                     <label class="float-end"><input type="radio" name="radio" ng-model="radioBtn" value="1" ng-change="radioChange()" />&nbsp; Add</label>
@@ -214,7 +228,7 @@
                                     <button class="btn btn-info btn-sm px-4" ng-click="billingAdd()" ng-disabled="billingAddDisabled">Add</button>
                                 </div>
                             </div>
-                        </div>
+                        </fieldset>
                     </div>
                 </div>
             </div>

@@ -8,6 +8,7 @@ namespace AccountingSystem.Abstractions.BLL
 
         Task<List<ServiceViewModel>> GetService(int sTypy);
         Task<List<LedgerListViewModel>> GetAllLedger(string isAdmin, string isAccount);
+        Task<List<LedgerListViewModel>> GetAllEveryLedger(string isCashCollection);
         Task<int> GetOnlineLedgerId(string onlineProduct);
         Task<List<LedgerViewModel>> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType);
         Task<List<LedgerViewModel>> GetLedgersWithBalance();
