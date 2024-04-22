@@ -112,7 +112,7 @@
                                 <label>Labels of Companies</label>
                             </div>
                             <div class="col-sm-6">
-                                <label class="d-flex justify-content-end"><input type="checkbox" />&nbsp; Delivery Tiger</label>
+                                <label class="d-flex justify-content-end"><input type="checkbox" ng-model="dtChk" />&nbsp; Delivery Tiger</label>
                                 <div class="button-container">
                                     <button class="btn btn-info btn-sm float-right" ng-click="toggleExtraButtons()">
                                         Preview Label
@@ -959,15 +959,13 @@
         $scope.PreviewLabelreport = function (format) {
             $scope.toggleExtraButtons();
             const listId = $scope.selectedRow.id;
+            const invoiceId = $scope.selectedRow.sbName;
             if (listId == 0) { 
                 alert("select any Invoice first");
                 return;
             }
-            
-                
-           
 
-            const params = { type: 0 ,list: listId, format };
+            const params = { type: 0, list: listId, format, dtChk: $scope.dtChk, invoiceId };
             const Url = window.location.hostname === 'localhost' ? '/Report/PreviewLabelReport' : '/AccountingNew/Report/PreviewLabelReport';
 
             $scope.showlabelspinner = true;

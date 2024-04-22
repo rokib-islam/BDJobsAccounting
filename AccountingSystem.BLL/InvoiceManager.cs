@@ -102,5 +102,16 @@ namespace AccountingSystem.BLL
         {
             return await _repository.AutoCashCollection(parameters);
         }
+
+        public async Task<int> CheckOrderIdCountAsync(string invoiceNo)
+        {
+            return await _repository.CheckOrderIdCountAsync(invoiceNo);
+        }
+
+        public async Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId)
+        {
+            //return await _repository.UpdateOrderInvoiceTableAsync(invoiceNo, courierOrderId);
+            await _repository.UpdateOrderInvoiceTableAsync(invoiceNo, courierOrderId);
+        }
     }
 }

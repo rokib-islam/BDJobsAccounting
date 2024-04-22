@@ -50,6 +50,7 @@ namespace AccountingSystem.Repository
             var isOk = true;
             var isExist = false;
             var message = "";
+            var ChallanInfo = new ChallandetailsForOnlinePosting();
 
             try
             {
@@ -71,8 +72,56 @@ namespace AccountingSystem.Repository
                             else
                                 serviceNo = 11;
 
+
+                            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                            {
+                                ChallanInfo = await _db.QueryFirstOrDefaultAsync<ChallandetailsForOnlinePosting>("USP_ChallanInfo_For_OnlinePosting", new { InvoiceNo = invoiceNo }, commandType: CommandType.StoredProcedure);
+                            }
+
+
+
+
                             var insertSql = "INSERT INTO dbo_Invoice(Cp_id,Inv_Date,Invoice_No,ServiceId,Bill_Contact,Amount,OPID) VALUES(@CpId, @InvSendDt, @InvoiceNo, @ServiceNo, @BillingContact, @Price, @OpId)";
-                            await onlineSqlConnection.ExecuteAsync(insertSql, new { CpId = cpId, InvSendDt = invSendDt, InvoiceNo = invoiceNo, ServiceNo = serviceNo, BillingContact = billingContact, Price = price, OpId = opId });
+                            await onlineSqlConnection.ExecuteAsync(insertSql, new
+                            {
+                                CpId = cpId,
+                                InvSendDt = invSendDt,
+                                InvoiceNo = invoiceNo,
+                                ServiceNo = serviceNo,
+                                BillingContact = billingContact,
+                                Price = price,
+                                OpId = opId
+                            });
+
+
+                            var ChallaninsertSql = "INSERT INTO ChallanInfo(ChallanNo,CP_ID,CompanyName,CompanyVatAddress,CompanyBINNo,IssueDate,InvoiceNo,CreatedBy,CreaterDesignation ,ServiceName,UnitSupply,Quantity,UnitPrice, UnitTotalPrice,VatRate,VatAmount,UnitTotalPriceAll,TotalPrice,TotalVatPrice,TotalPriceAll,IsActive,PostedOn,PQ_ID)  VALUES (@ChallanNo,@CP_ID, @CompanyName,@CompanyVatAddress, @CompanyBINNo,  @IssueDate,  @InvoiceNo, @CreatedBy,  @CreaterDesignation,@ServiceName,  @UnitSupply,  @Quantity, @UnitPrice,        @UnitTotalPrice,  @VatRate,  @VatAmount, @UnitTotalPriceAll, @TotalPrice, @TotalVatPrice, @TotalPriceAll,  @IsActive, @PostedOn,@PQ_ID )";
+                            await onlineSqlConnection.ExecuteAsync(ChallaninsertSql, new
+                            {
+                                ChallanNo = ChallanInfo.ChallanNo,
+                                CP_ID = cpId,
+                                CompanyName = ChallanInfo.Contact_Person,
+                                CompanyVatAddress = ChallanInfo.Address,
+                                CompanyBINNo = ChallanInfo.VATRegNo,
+                                IssueDate = ChallanInfo.Date,
+                                InvoiceNo = ChallanInfo.InvoiceNo,
+                                CreatedBy = ChallanInfo.UserName,
+                                CreaterDesignation = ChallanInfo.UserDegignation,
+                                ServiceName = ChallanInfo.ServiceName,
+                                UnitSupply = ChallanInfo.ServiceType,
+                                Quantity = ChallanInfo.Quantity,
+                                UnitPrice = ChallanInfo.OneItemPrice,
+                                UnitTotalPrice = ChallanInfo.TotalPrice,
+                                VatRate = ChallanInfo.VatRate,
+                                VatAmount = ChallanInfo.TotalVat,
+                                UnitTotalPriceAll = ChallanInfo.TotalPriceAll,
+                                TotalPrice = ChallanInfo.PriceWithVat,
+                                TotalVatPrice = ChallanInfo.TotalVatAll,
+                                TotalPriceAll = ChallanInfo.priceWithVatAll,
+                                IsActive = 1,
+                                PostedOn = ChallanInfo.Date,
+                                PQ_ID = 0
+                            });
+
 
                             var IntjpIdList = jpIdList.Split(',').Select(int.Parse).ToList();
 
@@ -626,8 +675,41 @@ namespace AccountingSystem.Repository
             }
 
         }
+        public async Task<int> CheckOrderIdCountAsync(string invoiceNo)
+        {
+            int orderCount = 0;
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    orderCount = await _db.QueryFirstOrDefaultAsync<int>("SELECT COUNT(*) FROM dbo.InvoiceList WHERE Invoice_No = @InvoiceNo AND DtOrderCode IS NOT NULL", new { InvoiceNo = invoiceNo });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return orderCount;
+        }
+        public async Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId)
+        {
+            try
+            {
+                string sqlQuery = "UPDATE dbo.InvoiceList SET DtOrderCode = @CourierOrderId WHERE Invoice_No = @InvoiceNo;";
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    await _db.ExecuteAsync(sqlQuery, new { CourierOrderId = courierOrderId, InvoiceNo = invoiceNo });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
 
     }
+
 }
+
 
 

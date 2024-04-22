@@ -4,8 +4,10 @@ using AccountingSystem.Web.HelperMethod;
 using Microsoft.AspNetCore.Mvc;
 //using AspNetCore.Reporting;
 using Microsoft.Reporting.NETCore;
+using Newtonsoft.Json;
 using System.Reflection;
 using System.Security.Claims;
+using System.Text;
 
 
 
@@ -258,13 +260,67 @@ namespace AccountingSystem.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> PreviewLabelReport(string type, string list, string format)
+        public async Task<IActionResult> PreviewLabelReport(string type, string list, string format, bool dtChk, string invoiceId)
         {
             try
             {
                 var reportData = await _ReportManager.GetLabelReport(type, list);
 
                 var datatable = Helpers.ListiToDataTable(reportData);
+
+
+                var checkOrderCode = await _InvoiceManager.CheckOrderIdCountAsync(invoiceId);
+                if (checkOrderCode == 0 && dtChk == true)
+                {
+                    var result = await CallApiAsync();
+                    dynamic responseModel = JsonConvert.DeserializeObject<dynamic>(result);
+                    var token = responseModel.model.token.ToString();
+                    var payload = new[]
+                    {
+                        new
+                        {
+                            customerName = reportData[0].pname + ", " +  reportData[0].designation,
+                            customerMobile = "01752495580",
+                            customerAltMobile = "",
+                            customerAddress = reportData[0].cname + ", " + reportData[0].address + ", " + reportData[0].city,
+                            districtId = reportData[0].DistrictID,
+                            thanaId = 0,
+                            areaId = 0,
+                            collectAddressDistrictId = 14,
+                            collectAddressThanaId = 16060,
+                            collectAddress = "8th Floor - West BDBL Building Old BSRS 12 Kawran Bazar CA Dhaka-1215 Bangladesh",
+                            referenceName = "",
+                            collectionAmount = 0,
+                            WeightRangeId = 32,
+                            isBigParcel = false,
+                            actualPackagePrice = 30,
+                            collectionTimeSlotId = 2,
+                            serviceType = "alltoall",
+                            orderFrom = "BdJobs",
+                            version = "",
+                            note = ""
+                        }
+                    };
+
+                    var jsonPayload = JsonConvert.SerializeObject(payload);
+                    using (var httpClient = new HttpClient())
+                    {
+                        var apiEndpoint = "https://coreapi.deliverytiger.com.bd/api/ThirdParty/AddBulkOrder";
+                        var apiKey = "7C4479ED-4539-488C-B6B8-20D4911AC04A";
+                        httpClient.DefaultRequestHeaders.Add("x-api-key", apiKey);
+                        httpClient.DefaultRequestHeaders.Add("Authorization", "Bearer " + token);
+                        var content = new StringContent(jsonPayload, Encoding.UTF8, "application/json");
+                        var response = await httpClient.PostAsync(apiEndpoint, content);
+                        response.EnsureSuccessStatusCode();
+                        var jsonResponse = await response.Content.ReadAsStringAsync();
+
+                        dynamic responseObject = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
+                        var courierOrderId = responseObject.model[0].courierOrderId.ToString();
+
+                        await _InvoiceManager.UpdateOrderInvoiceTableAsync(invoiceId, courierOrderId);
+                    }
+                }
+
 
 
                 using var report = new LocalReport();
@@ -307,6 +363,33 @@ namespace AccountingSystem.Web.Controllers
             catch (Exception ex)
             {
                 return StatusCode(500, "An error occurred while generating the report.");
+            }
+        }
+        private async Task<string> CallApiAsync()
+        {
+            using (var httpClient = new HttpClient())
+            {
+                try
+                {
+                    var apiEndpoint = "https://coreapi.deliverytiger.com.bd/api/Accounts/ThirdPartyUserLogin";
+                    var apiKey = "7C4479ED-4539-488C-B6B8-20D4911AC04A";
+                    httpClient.DefaultRequestHeaders.Add("x-api-key", apiKey);
+                    var requestBody = new
+                    {
+                        mobile = "01811410859",
+                        password = "12345"
+                    };
+                    var jsonBody = JsonConvert.SerializeObject(requestBody);
+                    var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+                    var response = await httpClient.PostAsync(apiEndpoint, content);
+                    response.EnsureSuccessStatusCode();
+                    return await response.Content.ReadAsStringAsync();
+                }
+                catch (HttpRequestException e)
+                {
+                    Console.WriteLine($"Request error: {e.Message}");
+                    return null;
+                }
             }
         }
 
