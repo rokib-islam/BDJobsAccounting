@@ -291,8 +291,8 @@ namespace AccountingSystem.Web.Controllers
                 }
                 else if (format.ToLower() == "word")
                 {
-                    
-                    fileContents = report.Render("WORDOPENXML"); 
+
+                    fileContents = report.Render("WORDOPENXML");
                     contentType = "application/msword";
                     fileName = "PreviewLabel.docx";
                 }

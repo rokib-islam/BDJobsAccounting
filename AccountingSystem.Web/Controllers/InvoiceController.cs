@@ -144,6 +144,15 @@ namespace AccountingSystem.Web.Controllers
             return await Task.FromResult(Ok(responseList));
         }
 
+        [HttpPost]
+        [Route("api/AutoCashCollection")]
+        public async Task<IActionResult> AutoCashCollection([FromBody] CashCollectionAutoViewModel OnlineInvoice)
+        {
+            var responseList = await _InvoiceManager.AutoCashCollection(OnlineInvoice);
+
+            return await Task.FromResult(Ok(responseList));
+        }
+
         public IActionResult ViewJournal()
         {
             ClaimsPrincipal claimusers = HttpContext.User;
@@ -263,14 +272,14 @@ namespace AccountingSystem.Web.Controllers
 
         public async Task<IActionResult> VarifyOrReject([FromBody] VarifyOrReject model)
         {
-            var url = "https://corporate3.bdjobs.com/api/GetBillingsForAccouting.asp";
+            var url = "https://corporate3.bdjobs.com/api/VerifyInvoiceForAccouting.asp";
 
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("QID", model.QID.ToString()),
                 new KeyValuePair<string, string>("verified", model.verified.ToString()),
                 new KeyValuePair<string, string>("verifiedBy", model.verifiedBy.ToString()),
-                
+
             });
 
             try

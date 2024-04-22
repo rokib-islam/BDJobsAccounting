@@ -568,6 +568,39 @@ namespace AccountingSystem.Repository
             }
         }
 
+        public async Task<CashCollectionAutoReponse> AutoCashCollection(CashCollectionAutoViewModel parameters)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {
+                    var dynamicParameters = new DynamicParameters();
+                    dynamicParameters.Add("@InvoiceNo", parameters.InvoiceNo);
+                    dynamicParameters.Add("@SalesPrice", parameters.SalesPrice);
+                    dynamicParameters.Add("@DiscountedPrice", parameters.DiscountedPrice);
+                    dynamicParameters.Add("@Vat", parameters.Vat);
+                    dynamicParameters.Add("@PaymentMode", parameters.PaymentMode);
+                    dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
+                    dynamicParameters.Add("@SDate", parameters.SDate);
+                    dynamicParameters.Add("@CP_Id", parameters.CP_Id);
+
+
+
+                    var invoices = await _db.QueryAsync<CashCollectionAutoReponse>(
+                        "USP_Auto_CashCollection",
+                        dynamicParameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return invoices.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions accordingly
+                throw new Exception("Error retrieving invoices.", ex);
+            }
+        }
+
         public async Task<List<LoadOnlineInvoiceResponseModel>> LoadOnlineInvoice(LoadOnlineInvoiceModel model)
         {
             try
