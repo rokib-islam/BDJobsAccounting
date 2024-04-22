@@ -46,7 +46,7 @@ namespace AccountingSystem.Repository
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
                     var result = await _db.QueryAsync<Users>(
-                        "SELECT UserID, Name FROM Users WHERE CanApprove = 0 AND AccessRight LIKE '%1%' ORDER BY Name;",
+                        "SELECT UserID, Name FROM Users WHERE CanApprove = 0 AND AccountDep=1 AND AccessRight LIKE '%1%' ORDER BY Name;",
                         new { }
                     );
 
