@@ -26,7 +26,7 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     option =>
     {
         option.LoginPath = "/Home/Index";
-        option.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+        option.ExpireTimeSpan = TimeSpan.FromHours(6);
     });
 
 // **Register HttpClient service**
