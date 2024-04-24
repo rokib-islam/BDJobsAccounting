@@ -627,7 +627,6 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@InvoiceNo", parameters.InvoiceNo);
                     dynamicParameters.Add("@SalesPrice", parameters.SalesPrice);
                     dynamicParameters.Add("@DiscountedPrice", parameters.DiscountedPrice);
-                    dynamicParameters.Add("@Vat", parameters.Vat);
                     dynamicParameters.Add("@PaymentMode", parameters.PaymentMode);
                     dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
                     dynamicParameters.Add("@SDate", parameters.SDate);
