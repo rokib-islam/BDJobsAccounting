@@ -5,7 +5,6 @@
         public string InvoiceNo { get; set; }
         public double SalesPrice { get; set; }
         public double DiscountedPrice { get; set; }
-        public double Vat { get; set; }
         public int PaymentMode { get; set; }
         public string TransactionNo { get; set; }
         public string SDate { get; set; }
