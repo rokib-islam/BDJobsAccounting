@@ -16,7 +16,8 @@ namespace AccountingSystem.Abstractions.BLL
         Task SaveLedgerAsync(LedgerViewModel aLedger);
         Task<int> UpdateLedgerAsync(LedgerViewModel aLedger);
         Task<string> DeleteLedgerAsync(int ledgerId);
-        Task<List<LedgerViewModel>> GetProductListByKey(string Key);
+        //Task<List<LedgerViewModel>> GetProductListByKey(string Key);
+        Task<List<LedgerViewModel>> GetProductListByKey();
         Task<List<LedgerViewModel>> GetProductById(int pId);
     }
 }
