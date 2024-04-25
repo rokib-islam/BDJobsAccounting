@@ -24,6 +24,6 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<LoadOnlineInvoiceResponseModel>> LoadOnlineInvoice(LoadOnlineInvoiceModel model);
         Task<CashCollectionAutoReponse> AutoCashCollection(CashCollectionAutoViewModel parameters);
         Task<int> CheckOrderIdCountAsync(string invoiceNo);
-        Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId);
+        Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId, int userId);
     }
 }

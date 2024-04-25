@@ -690,14 +690,14 @@ namespace AccountingSystem.Repository
             }
             return orderCount;
         }
-        public async Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId)
+        public async Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId, int userId)
         {
             try
             {
-                string sqlQuery = "UPDATE dbo.InvoiceList SET DtOrderCode = @CourierOrderId WHERE Invoice_No = @InvoiceNo;";
+                string sqlQuery = "UPDATE dbo.InvoiceList SET DtOrderCode = @CourierOrderId WHERE Invoice_No = @InvoiceNo,DtOrderUseId=@UserId;";
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    await _db.ExecuteAsync(sqlQuery, new { CourierOrderId = courierOrderId, InvoiceNo = invoiceNo });
+                    await _db.ExecuteAsync(sqlQuery, new { CourierOrderId = courierOrderId, InvoiceNo = invoiceNo, UserId = userId });
                 }
             }
             catch (Exception ex)

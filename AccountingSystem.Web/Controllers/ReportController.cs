@@ -268,6 +268,7 @@ namespace AccountingSystem.Web.Controllers
 
                 var datatable = Helpers.ListiToDataTable(reportData);
 
+                var userId = User.FindFirstValue("Id");
 
                 var checkOrderCode = await _InvoiceManager.CheckOrderIdCountAsync(invoiceId);
                 if (checkOrderCode == 0 && dtChk == true)
@@ -317,7 +318,7 @@ namespace AccountingSystem.Web.Controllers
                         dynamic responseObject = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
                         var courierOrderId = responseObject.model[0].courierOrderId.ToString();
 
-                        await _InvoiceManager.UpdateOrderInvoiceTableAsync(invoiceId, courierOrderId);
+                        await _InvoiceManager.UpdateOrderInvoiceTableAsync(invoiceId, courierOrderId, int.Parse(userId));
                     }
                 }
 
