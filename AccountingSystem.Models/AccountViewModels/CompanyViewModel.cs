@@ -49,5 +49,9 @@ namespace AccountingSystem.Models.AccountViewModels
 
         [DisplayName("Acc. Person Contact No")]
         public string AccPersonContactNo { get; set; }
+        public bool AnyVatExemption { get; set; }
+        public string VatExemptionReason { get; set; }
+        public bool CustomizeRate { get; set; }
+        public bool AutoMail { get; set; }
     }
 }

@@ -293,22 +293,19 @@ namespace AccountingSystem.Repository
                 return ex.ToString();
             }
         }
-        public async Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid)
+        public async Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(string query)
         {
             var invoices = new List<InvoiceViewModel>();
 
-            var parameters = new
-            {
-                CompanyId = CompanyId,
-                FullPayment = FullPayment,
-                Invalid = Invalid
-            };
+            var sqquery = "usp_GetInvoiceList " + query;
+
+            var parameters = new { };
 
             try
             {
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    var result = await _db.QueryAsync<InvoiceViewModel>("usp_GetInvoiceList", parameters, commandType: CommandType.StoredProcedure);
+                    var result = await _db.QueryAsync<InvoiceViewModel>(sqquery, parameters, commandType: CommandType.Text);
 
                     invoices.AddRange(result);
                 }
@@ -320,6 +317,9 @@ namespace AccountingSystem.Repository
 
             return invoices;
         }
+
+
+
 
         public async Task<string> PostToOnlineAsync(string postType, string invoiceNo, string invoiceId)
         {

@@ -20,6 +20,11 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetAllLedger(isAdmin, isAccount);
         }
+
+        public async Task<List<LedgerListViewModel>> GetAllEveryLedger(string isCashCollection)
+        {
+            return await _repository.GetAllEveryLedger(isCashCollection);
+        }
         public async Task<int> GetOnlineLedgerId(string onlineProduct)
         {
             return await _repository.GetOnlineLedgerId(onlineProduct);
@@ -54,9 +59,14 @@ namespace AccountingSystem.BLL
             return _repository.DeleteLedgerAsync(ledgerId);
         }
 
-        public async Task<List<LedgerViewModel>> GetProductListByKey(string Key)
+        //public async Task<List<LedgerViewModel>> GetProductListByKey(string Key)
+        //{
+        //    return await _repository.GetProductListByKey(Key);
+        //}
+
+        public async Task<List<LedgerViewModel>> GetProductListByKey()
         {
-            return await _repository.GetProductListByKey(Key);
+            return await _repository.GetProductListByKey();
         }
 
         public async Task<List<LedgerViewModel>> GetProductById(int pId)

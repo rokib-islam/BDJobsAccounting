@@ -35,6 +35,12 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
+
+        public async Task<IActionResult> GetAllEveryLedger(string isCashCollection)
+        {
+            var result = await _LedgerManager.GetAllEveryLedger(isCashCollection);
+            return Json(result);
+        }
         public async Task<IActionResult> GetOnlineLedgerId(string onlineProduct)
         {
             var data = await _LedgerManager.GetOnlineLedgerId(onlineProduct);
@@ -165,17 +171,23 @@ namespace AccountingSystem.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> GetProductListByKey(string startingKey)
+        //public async Task<IActionResult> GetProductListByKey(string startingKey)
+        //{
+        //    var result = await _LedgerManager.GetProductListByKey(startingKey);
+        //    return Json(result);
+        //}
+
+        public async Task<IActionResult> GetProductListByKey()
         {
-            var result = await _LedgerManager.GetProductListByKey(startingKey);
+            var result = await _LedgerManager.GetProductListByKey();
             return Json(result);
         }
 
-        public async Task<IActionResult> GetProductById(int pId)
-        {
-            var resp = await _LedgerManager.GetProductById(pId);
-            return Json(resp);
-        }
+        //public async Task<IActionResult> GetProductById(int pId)
+        //{
+        //    var resp = await _LedgerManager.GetProductById(pId);
+        //    return Json(resp);
+        //}
 
 
     }

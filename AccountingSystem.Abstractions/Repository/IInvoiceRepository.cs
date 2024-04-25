@@ -12,7 +12,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task<string> SaveInvoice([FromBody] SaveInvoiceViewModel data);
         Task<bool> CheckInvoiceNo(string invoiceNo);
         Task<string> UpdateDeleteComments(UpdateCommentViewModel data);
-        Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid);
+        Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(string query);
         Task<string> PostToOnlineAsync(string postType, string invoiceNo, string invoiceId);
         Task<List<ProductForInvoice>> Getproducts(string cId, int type);
         Task<string> GenerateInvoiceNumberAsync(string cId, string issueDate);

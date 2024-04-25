@@ -15,16 +15,38 @@
     {
         onlineJobId = ViewBag.OnlineJobId;
     }
+
+
+    var onlineledger = 0;
     var onlineLedgerId = ViewBag.OnlineLedgerId;
+    if (onlineLedgerId == null)
+    {
+        onlineledger = 0;
+    }
+    else
+    {
+        onlineledger = onlineLedgerId;
+    }
+
+
     var onlineCompanyId = ViewBag.OnlineCompanyId;
+    var onlineCompany = 0;
+    if (onlineCompanyId == null)
+    {
+        onlineCompany = 0;
+    }
+    else
+    {
+        onlineCompany = onlineCompanyId;
+    }
 
     var accessRights = new string[0];
 
     if (string.IsNullOrEmpty(accessRight))
     {
-        <script type="text/javascript">
-            window.location.href = '@Url.Action("Index", "Home")';
-        </script>
+                                            <script type="text/javascript">
+                                                window.location.href = '@Url.Action("Index", "Home")';
+                                            </script>
     }
     else
     {
@@ -55,23 +77,25 @@
                             </select>
                         </div>
                     </div>
-                    <div class="mt-4" style="border:1px solid lightgray;padding:10px">
-                        <div class="text-left fw-bold headingSpace">Sales Information :</div>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto fs-5">
+                            Sales Information
+                        </legend>
                         <div class="form-group row mt-4">
                             <label class="col-sm-4 col-form-label">Sales Price</label>
                             <div class="col-sm-8">
-                                <input type="text" class="form-control form-control-sm text-right" ng-model="salesPrice" ng-change="updateTableValues()" />
+                                <input type="text" class="form-control form-control-sm text-right" ng-model="salesPrice" ng-change="updateTableValues()" ng-disabled="salesPriceDisabled" />
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-sm-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Tax Type</label>
-                                    <div class="col-sm-8">
-                                        <select class="form-control form-control-sm" ng-model="taxType" ng-change="taxTypeAmountDisable()">
-                                            <option value="0">Select</option>
-                                            <option ng-repeat="o in taxTypes" value="{{o.id}}">{{o.sbName}}</option>
-                                        </select>
+                                    <label class="col-sm-5 col-form-label">VAT Rate</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control form-control-sm text-right" ng-model="taxType" ng-disabled="taxTypeDisabled" />
+                                        @* <select class="form-select form-select-sm text-right" ng-model="taxType">
+                                        <option ng-repeat="o in taxTypes" value="{{o.id}}">{{selectedVatRate}} %</option>
+                                        </select> *@
                                     </div>
                                 </div>
                             </div>
@@ -89,7 +113,7 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Job Title</label>
                             <div class="col-sm-8">
-                                <select class="form-control form-control-sm" ng-model="jobTitle">
+                                <select class="form-select form-select-sm" ng-model="jobTitle">
                                     <option ng-repeat="o in jobTitleData" value="{{o.jp_Id}}" data-title="{{o.title}}">{{o.title}}</option>
                                 </select>
                             </div>
@@ -98,8 +122,12 @@
                             <label class="col-sm-4 col-form-label">Billing Person</label>
                             <div class="col-sm-8">
                                 <input class="form-control form-control-sm" placeholder="Search Billing Person Here" autocomplete="off" ng-model="searchKeyword" ng-keyup="searchBillingPerson()">
-                                <select class="form-control form-control-sm" size="10" ng-model="billingPersonList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="billingPersonListVisible && (getBillingPersonData && getBillingPersonData.length > 0 && getBillingPersonData[0].name !== '')" ng-change="loadDesignation()">
+                                @* <select class="form-select form-select-sm" size="10" ng-model="billingPersonList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="billingPersonListVisible && (getBillingPersonData && getBillingPersonData.length > 0 && getBillingPersonData[0].name !== '')" ng-change="loadDesignation()">
                                     <option ng-repeat="o in getBillingPersonData | filter:searchFilter" value="{{o.name}}" ng-click="selectBillingPerson(o)">{{o.name}}</option>
+                                </select> *@
+
+                                <select class="form-select form-select-sm" size="10" ng-model="billingPersonList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="dropdownVisible" ng-change="loadDesignation()">
+                                    <option ng-repeat="o in searchFilter()" value="{{o.name}}" ng-click="selectBillingPerson(o)">{{o.name}}</option>
                                 </select>
                             </div>
                         </div>
@@ -127,16 +155,19 @@
                         <div class="form-group row">
                             <label class="col-sm-4 col-form-label">Sales Person</label>
                             <div class="col-sm-8">
-                                <select class="form-control form-control-sm" ng-model="salesPerson">
+                                <select class="form-select form-select-sm" ng-model="salesPerson">
                                     <option value="0" selected>select</option>
                                     <option ng-repeat="o in salesPersons" value="{{o.salesPersonID}}">{{o.salesPersonName}}</option>
                                 </select>
                             </div>
                         </div>
-                        <div>
-                            <label>Comments</label>
-                            <textarea class="form-control form-control-sm" ng-model="comments"></textarea>
+                        <div class="form-group row">
+                            <label class="col-sm-4 col-form-label">Comments</label>
+                            <div class="col-sm-8">
+                                <textarea class="form-control form-control-sm" ng-model="comments"></textarea>
+                            </div>
                         </div>
+
                         <div class="row mt-2">
                             <div class="col-sm-6 d-flex justify-content-end">
                                 <button class="btn btn-success btn-sm px-5" ng-disabled="saveButtonDisabled" ng-click="save()">
@@ -148,22 +179,31 @@
                                 <button class="btn btn-primary btn-sm px-4" ng-click="makeInvoice()" ng-disabled="makeInvoiceDisable">Make Invoice</button>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
 
                 </div>
                 <div class="col-sm-6">
                     <div class="form-group row">
                         <label class="col-sm-3 col-form-label">Product Name</label>
+                        @* <div class="col-sm-9">
+                        <input class="form-control form-control-sm" placeholder="Search Product Here" autocomplete="off" ng-model="searchQueryProduct" ng-keyup="searchProduct(searchQueryProduct)">
+                        <select class="form-control form-control-sm" size="10" ng-model="proList" style="position:absolute;z-index:999;width: 400px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="getProductList.length > 0">
+                        <option ng-repeat="product in getProductList" value="{{product.id}}" ng-click="selectProduct(product)">{{product.ladgerName}}</option>
+                        </select>
+                        </div> *@
+
                         <div class="col-sm-9">
-                            <input class="form-control form-control-sm" placeholder="Search Product Here" autocomplete="off" ng-model="searchQueryProduct" ng-keyup="searchProduct(searchQueryProduct)">
-                            <select class="form-control form-control-sm" size="10" ng-model="proList" style="position:absolute;z-index:999;width: 400px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="getProductList.length > 0">
-                                <option ng-repeat="product in getProductList" value="{{product.id}}" ng-click="selectProduct(product)">{{product.ladgerName}}</option>
+                            <select class="form-select form-select-sm" ng-model="proList" ng-change="updateVatRate()">
+                                <option value="0">List of Products</option>
+                                <option ng-repeat="product in getProductList" value="{{product.id}}" data-vatRate="{{product.vatRate}}" ng-click="selectProduct(product)">{{product.ladgerName}}</option>
                             </select>
                         </div>
                     </div>
 
-                    <div class="mt-4" style="border:1px solid lightgray;padding:10px">
-                        <div class="text-left fw-bold headingSpace">This Product is valid for :</div>
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto fs-5">
+                            This Product is valid for
+                        </legend>
                         <div class="row mt-4">
                             <div class="col-sm-6">
                                 <label>
@@ -196,11 +236,15 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </fieldset>
 
 
-                    <div class="mt-3" style="border:1px solid lightgray;padding:10px">
-                        <div class="text-left fw-bold headingSpace">Invoice scheduling :</div>
+
+
+                    <fieldset class="border p-2 mt-3">
+                        <legend class="float-none w-auto fs-5">
+                            Sales Information
+                        </legend>
                         <div class="row mt-4">
                             <div class="col-sm-6">
                                 <label>No. fo invoice(s) would be created</label>
@@ -230,7 +274,7 @@
                                 </tbody>
                             </table>
                         </div>
-                    </div>
+                    </fieldset>
                 </div>
             </div>
         </div>
@@ -272,32 +316,38 @@
                 $scope.getBillingPerson('C', onlineCompanyId);
                 $scope.getJobTitle('T', onlineCompanyId);
                 $scope.getIdWiseCompany(onlineCompanyId);
-                $scope.getIdWiseProduct(onlineLedgerId);
+                // $scope.getIdWiseProduct(onlineLedgerId);
                 $scope.getTaxType();
-                $scope.taxType = '672';
+                $scope.loadProduct();
+                //$scope.taxType = '672';
                 $scope.updateDuration();
                 $scope.getSalesPerson();
-                $scope.taxTypeAmountDisable();
+                //$scope.taxTypeAmountDisable();
                 $scope.saveButtonDisabled = false;
-                //$scope.billingPersonListVisible = false;                
+                $scope.taxTypeDisabled = true;
+                //$scope.billingPersonListVisible = false;
                 //$scope.makeInvoiceDisable = true;
+               
 
                 $scope.amount = '0.00';
                 $scope.salesPrice = '0.00';
             } else {
-
+                $scope.loadProduct();
                 $scope.amount = '0.00';
                 $scope.salesPrice = '0.00';
                 $scope.salesPerson = '0';
                 $scope.billingPerson = '0';
-                $scope.taxType = '672';
+                //$scope.taxType = '672';
                 $scope.month = '1';
+                $scope.proList = '0';
                 $scope.invoiceNo = 0;
                 //$scope.amountDisable = true;
                 $scope.getSalesPerson();
                 $scope.getTaxType();
                 $scope.saveButtonDisabled = true;
-                $scope.makeInvoiceDisable = true;                
+                $scope.makeInvoiceDisable = true;
+                $scope.salesPriceDisabled = true;  
+                $scope.taxTypeDisabled = true;
             }
 
 
@@ -307,13 +357,15 @@
         $scope.dateTo = new Date();
         $scope.journalDate = new Date();
 
-        $scope.taxTypeAmountDisable = function () {
-            if ($scope.taxType == '0') {
-                $scope.amountDisable = true;
-            } else {
-                $scope.amountDisable = false;
-            }
-        };
+        // $scope.taxTypeAmountDisable = function () {
+        //     if ($scope.taxType == '0') {
+        //         $scope.amountDisable = true;
+        //     } else {
+        //         $scope.amountDisable = false;
+        //     }
+        // };
+
+        
 
         $scope.radioValue = "1";
         $scope.updateDuration = function () {
@@ -360,9 +412,18 @@
             $scope.selectedCompany = company;
             $scope.searchQuery = company.name;
             $scope.companyList = [];
+            $scope.salesPriceDisabledEnabled();           
 
             $scope.setOption();
             $scope.saveButtonDisabled = false;
+        }
+        
+        $scope.salesPriceDisabledEnabled = function () {
+            if ($scope.proList > 0 && $scope.selectedCompany) {
+                $scope.salesPriceDisabled = false;
+            } else {
+                $scope.salesPriceDisabled = true;
+            }
         }
 
         $scope.selectCompanyBillPerson = function (company) {
@@ -380,33 +441,67 @@
 
 
 
-        $scope.getProductList = [];
-        $scope.selectedProduct = null;
+        // $scope.getProductList = [];
+        // $scope.selectedProduct = null;
 
-        $scope.searchProduct = function (startingKey) {
-            if (startingKey && startingKey.length > 1) {
-                let Url = '';
-                if (window.location.hostname == 'localhost')
-                    Url = '/Ledger/GetProductListByKey';
-                else
-                    Url = '/AccountingNew/Ledger/GetProductListByKey';
+        // $scope.searchProduct = function (startingKey) {
+        //     if (startingKey && startingKey.length > 1) {
+        //         let Url = '';
+        //         if (window.location.hostname == 'localhost')
+        //             Url = '/Ledger/GetProductListByKey';
+        //         else
+        //             Url = '/AccountingNew/Ledger/GetProductListByKey';
 
-                $http.get(Url, { params: { startingKey: startingKey } })
-                    .then(function (response) {
+        //         $http.get(Url, { params: { startingKey: startingKey } })
+        //             .then(function (response) {
+        //                 $scope.getProductList = response.data;
+        //             }, function (error) {
+        //                 console.error(error);
+        //             })
+        //     } else {
+        //         $scope.getProductList = [];
+        //     }
+        // };
+
+        // $scope.selectProduct = function (product) {
+        //     $scope.selectedProduct = product;
+        //     $scope.searchQueryProduct = product.ladgerName;
+        //     $scope.getProductList = [];
+        // }
+
+
+        $scope.loadProduct = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Ledger/GetProductListByKey';
+            else
+                Url = '/AccountingNew/Ledger/GetProductListByKey';
+
+            $http.get(Url)
+                .then(function (response) {
+                    if (@onlineledger > 0 ) {
+                        $scope.proList = '@onlineledger';
                         $scope.getProductList = response.data;
-                    }, function (error) {
-                        console.error(error);
-                    })
+                        $scope.taxType = $scope.getProductList.find(product => product.id == @onlineledger).vatRate + '%';
+                    }
+                    $scope.getProductList = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.updateVatRate = function () {
+            $scope.salesPriceDisabledEnabled();
+            if ($scope.proList) {
+                $scope.taxType = $scope.getProductList.find(product => product.id == $scope.proList).vatRate + '%';
             } else {
-                $scope.getProductList = [];
+                $scope.taxType = null;
             }
         };
 
-        $scope.selectProduct = function (product) {
-            $scope.selectedProduct = product;
-            $scope.searchQueryProduct = product.ladgerName;
-            $scope.getProductList = [];
-        }    
+        
+
 
         $scope.getSalesPerson = function () {
             let Url = '';
@@ -449,33 +544,35 @@
                 });
         };
 
-        $scope.getIdWiseProduct = function (id) {
+        // $scope.getIdWiseProduct = function (id) {
 
-            let Url = '';
-            if (window.location.hostname == 'localhost')
-                Url = '/Ledger/GetProductById';
-            else
-                Url = '/AccountingNew/Ledger/GetProductById';
+        //     let Url = '';
+        //     if (window.location.hostname == 'localhost')
+        //         Url = '/Ledger/GetProductById';
+        //     else
+        //         Url = '/AccountingNew/Ledger/GetProductById';
 
-            $http.get(Url, { params: { pId: id } })
-                .then(function (response) {
-                    $scope.products = response.data;
-                    $scope.onlineLedgerId = @onlineLedgerId
+        //     $http.get(Url, { params: { pId: id } })
+        //         .then(function (response) {
+        //             $scope.products = response.data;
 
-                        $scope.selectedProduct = $scope.products.find(function (o) {
-                            return o.id === $scope.onlineLedgerId;
-                        });
 
-                    // Set the searchQuery and other related variables
-                    if ($scope.selectedProduct) {
-                        $scope.searchQueryProduct = $scope.selectedProduct.sbName;
-                    } else {
-                        $scope.searchQueryProduct = 'Select';
-                    }
-                }, function (error) {
-                    console.error(error);
-                });
-        };
+        //             $scope.onlineLedgerId = @onlineLedgerId
+
+        //                 $scope.selectedProduct = $scope.products.find(function (o) {
+        //                     return o.id === $scope.onlineLedgerId;
+        //                 });
+
+        //             // Set the searchQuery and other related variables
+        //             if ($scope.selectedProduct) {
+        //                 $scope.proList = $scope.selectedProduct.id.toString();
+        //             } else {
+        //                 $scope.proList = 'Select';
+        //             }
+        //         }, function (error) {
+        //             console.error(error);
+        //         });
+        // };
 
         $scope.setOption = function () {
             $scope.getBillingPerson('C', $scope.comList);
@@ -492,11 +589,28 @@
             $scope.getBillingPersonData = [];
         }
 
+        // $scope.searchFilter = function (billingPerson) {
+        //     var keyword = $scope.searchKeyword || ''; // Get the search keyword from a model variable
+        //     var matched = billingPerson.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
+        //     $scope.billingPersonListVisible = keyword === '' || matched;
+        //     return matched;
+        // };
+
+        $scope.dropdownVisible = false;
+
         $scope.searchFilter = function (billingPerson) {
-            var keyword = $scope.searchKeyword || ''; // Get the search keyword from a model variable
-            var matched = billingPerson.name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1;
-            $scope.billingPersonListVisible = keyword === '' || matched;
-            return matched;
+            var keyword = $scope.searchKeyword || ''; // Get the search keyword
+            var matched = []; // Array to store matched objects
+
+            for (var i = 0; i < $scope.getBillingPersonData.length; i++) {
+                if ($scope.getBillingPersonData[i].name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1) {
+                    matched.push($scope.getBillingPersonData[i]); // Add matching object to the array
+                }
+            }
+
+            $scope.dropdownVisible = matched.length > 0; // Set dropdown visibility based on matches
+
+            return matched; // Return the array of matched objects
         };
 
 
@@ -513,11 +627,11 @@
                     if ($scope.getBillingPersonData.length > 0 || $scope.getBillingPersonData[0].name == "") {
                         $scope.billingPersonListVisible = false;
                     }
-                    else{
+                    else {
                         $scope.billingPersonListVisible = true;
                     }
-                    
-                    
+
+
                 }, function (error) {
                     console.error(error);
                 })
@@ -550,7 +664,7 @@
                         // $scope.jobTitle = $scope.jobTitleData[0].jp_Id.toString();
                         $scope.jobTitle = onlineJpId.toString();
                     }
-                                   
+
                     $scope.dateFrom = new Date($scope.jobTitleData[0].postingDate);
                     $scope.dateTo = new Date($scope.jobTitleData[0].validDate);
                     if ($scope.getBillingPersonData.length == 0) {
@@ -572,9 +686,9 @@
                             $scope.Email = $scope.jobTitleData[0].email;
                             $scope.Mobile = $scope.jobTitleData[0].mobile;
                         }
-                       
+
                     }
-                    
+
 
                 }, function (error) {
                     console.error(error);
@@ -621,11 +735,43 @@
                 $scope.invoiceNo = 1;
                 $scope.generateRows(); // Update rows based on the new invoiceNo
             }
+            if (@onlineCompany > 0) {
+                $scope.VatExemptionVariableForOnline = $scope.idWiseCompany[0].anyVatExemption;
+                if ($scope.VatExemptionVariableForOnline == false) {
+                    $scope.amountDisable = false;
+                    var taxRate = parseFloat($scope.taxType) / 100;
+                    if ($scope.salesPrice) {
+                        $scope.amount = ($scope.salesPrice * taxRate).toFixed(2); // Assuming you want the amount rounded to 2 decimal places
+                    } else {
+                        $scope.amount = ''; // Clear the amount if salesPrice is empty
+                    }
+                } else {
+                    $scope.amountDisable = true;
+                }
+            }
+            else {
+                $scope.VatExemptionVariable = $scope.selectedCompany.anyVatExemption;
+                if ($scope.VatExemptionVariable == false) {
+                    $scope.amountDisable = false;
+                    var taxRate = parseFloat($scope.taxType) / 100;
+                    if ($scope.salesPrice) {
+                        $scope.amount = ($scope.salesPrice * taxRate).toFixed(2); // Assuming you want the amount rounded to 2 decimal places
+                    } else {
+                        $scope.amount = ''; // Clear the amount if salesPrice is empty
+                    }
+                } else{
+                    $scope.amountDisable = true;
+                }
+            }
+
+            
+            
 
             angular.forEach($scope.rows, function (row) {
                 row.salesPrice = $scope.salesPrice;
                 row.taxAmount = $scope.amount;
             });
+            
         };
 
         $scope.save = function () {
@@ -649,8 +795,8 @@
                 else if ($scope.radioValue == '2' && $scope.dateFrom >= $scope.dateTo) {
                     alert("'From date' should not be greater than or equal to 'To date'");
                 }
-                else if ($scope.salesPrice == "" || $scope.salesPrice == undefined) {
-                    alert("You must give the name of 'Sales Price'.");
+                else if ($scope.salesPrice == "" || $scope.salesPrice == "0.00" || $scope.salesPrice == undefined) {
+                    alert("You must give the 'Sales Price'.");
                 }
                 // else if ($scope.rows.length <= 0) {
                 //     alert("You must fulfill Schedule of Invoice first, then save this sales information.");
@@ -664,7 +810,7 @@
                 else if ($scope.salesPerson == 0 || $scope.salesPerson == "") {
                     alert("You must select a 'Sales Person'.");
                 }
-                else if ($scope.searchQueryProduct == 0 || $scope.searchQueryProduct == "" || $scope.searchQueryProduct == undefined) {
+                else if ($scope.proList == 0 || $scope.proList == "" || $scope.proList == undefined) {
                     alert("You must select a 'Product Name'.");
                 }
                 // else if ($scope.taxType != '0' && parseFloat($scope.rows[0].taxAmount) === 0 || $scope.rows[0].taxAmount == undefined) {
@@ -675,7 +821,7 @@
                     $("#closejournal").modal('show');
                 }
             }
-        };        
+        };
 
         $scope.ok = function () {
             $scope.okButtonDisabled = true;
@@ -688,7 +834,8 @@
             let requestBodyModel = {
                 UserId: @userId,
                 CId: $scope.selectedCompany.id,
-                PCode: parseInt($scope.selectedProduct.id) || 0,
+                // PCode: parseInt($scope.selectedProduct.id) || 0,
+                PCode: parseInt($scope.proList) || 0,
                 FromDate: $scope.formattedFromDate ? $scope.formattedFromDate : "",
                 ToDate: $scope.formattedToDate ? $scope.formattedToDate : "",
                 JournalDate: $scope.formattedJournalDate ? $scope.formattedJournalDate : "",
@@ -702,7 +849,8 @@
                 Duration: $scope.month,
                 NoOfInvoice: $scope.invoiceNo,
                 RefNo: $scope.referenceNo || "",
-                TypeId: $scope.taxType ? $scope.taxType.toString() : "",
+                // TypeId: $scope.taxType ? $scope.taxType.toString() : "",
+                TypeId: "672",
                 Vat: $scope.amount || 0,
                 JpId: $scope.jobTitle ? $scope.jobTitle : 0,
                 JobTitle: selectedJpId == undefined ? "" : selectedJpId.title,

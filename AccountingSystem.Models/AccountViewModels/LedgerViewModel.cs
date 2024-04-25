@@ -24,5 +24,6 @@ namespace AccountingSystem.Models.AccountViewModels
         public double Total { get; set; }
         public int ServiceID { get; set; }
         public string Title { get; set; }
+        public double VatRate { get; set; }
     }
 }

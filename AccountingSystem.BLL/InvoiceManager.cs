@@ -38,9 +38,9 @@ namespace AccountingSystem.BLL
             return _repository.GetInvoicesAsync(parameters);
         }
 
-        public Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid)
+        public Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(string query)
         {
-            return _repository.GetInvoicesForCashCollectionAsync(CompanyId, FullPayment, Invalid);
+            return _repository.GetInvoicesForCashCollectionAsync(query);
         }
 
         public async Task<string> GetInvSendDt(string invoiceNo)
