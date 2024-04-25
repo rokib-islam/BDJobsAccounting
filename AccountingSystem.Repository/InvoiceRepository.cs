@@ -93,6 +93,21 @@ namespace AccountingSystem.Repository
                                 OpId = opId
                             });
 
+                            var dbo_Invoice_Id = await onlineSqlConnection.QueryFirstOrDefaultAsync<int>("SELECT InvoiceId FROM dbo_Invoice where INVOICE_NO=@InvoiceNo", new { InvoiceNo = invoiceNo });
+
+                            var UniqueQuationNo = await onlineSqlConnection.QueryFirstOrDefaultAsync<string>("SELECT CONVERT(varchar, GETDATE(), 112) + '-' +CAST(SUM(CASE WHEN CP_ID = 112846 THEN 1 ELSE 0 END) + 1 AS varchar) AS totalCompanyQuotationSerial FROM PaymentQuotation", new { InvoiceNo = invoiceNo });
+
+                            var QuatationinsertSql = "INSERT INTO PaymentQuotation(CP_ID, QuotationNo, ItemID, ItemType, TotalAmount)  VALUES (@CP_ID, @QuotationNo,@ItemID, @ItemType,  @TotalAmount)";
+                            await onlineSqlConnection.ExecuteAsync(QuatationinsertSql, new
+                            {
+                                CP_ID = cpId,
+                                QuotationNo = UniqueQuationNo,
+                                ItemID = dbo_Invoice_Id,
+                                ItemType = "Invoice",
+                                TotalAmount = price,
+                            });
+
+                            var Quation_Id = await onlineSqlConnection.QueryFirstOrDefaultAsync<int>("select PQ_ID from PaymentQuotation where QuotationNo=@QuationNo", new { QuationNo = UniqueQuationNo });
 
                             var ChallaninsertSql = "INSERT INTO ChallanInfo(ChallanNo,CP_ID,CompanyName,CompanyVatAddress,CompanyBINNo,IssueDate,InvoiceNo,CreatedBy,CreaterDesignation ,ServiceName,UnitSupply,Quantity,UnitPrice, UnitTotalPrice,VatRate,VatAmount,UnitTotalPriceAll,TotalPrice,TotalVatPrice,TotalPriceAll,IsActive,PostedOn,PQ_ID)  VALUES (@ChallanNo,@CP_ID, @CompanyName,@CompanyVatAddress, @CompanyBINNo,  @IssueDate,  @InvoiceNo, @CreatedBy,  @CreaterDesignation,@ServiceName,  @UnitSupply,  @Quantity, @UnitPrice,        @UnitTotalPrice,  @VatRate,  @VatAmount, @UnitTotalPriceAll, @TotalPrice, @TotalVatPrice, @TotalPriceAll,  @IsActive, @PostedOn,@PQ_ID )";
                             await onlineSqlConnection.ExecuteAsync(ChallaninsertSql, new
@@ -119,7 +134,7 @@ namespace AccountingSystem.Repository
                                 TotalPriceAll = ChallanInfo.priceWithVatAll,
                                 IsActive = 1,
                                 PostedOn = ChallanInfo.Date,
-                                PQ_ID = 0
+                                PQ_ID = Quation_Id
                             });
 
 
