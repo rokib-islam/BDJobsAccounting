@@ -103,7 +103,7 @@
                                 <div class="form-group row">
                                     <label class="col-sm-4 col-form-label">Amount</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm text-right" ng-model="amount" ng-change="updateTableValues()" ng-disabled="amountDisable" />
+                                        <input type="text" class="form-control form-control-sm text-right" ng-model="amount"  ng-disabled="amountDisable" />
                                     </div>
                                 </div>
                             </div>
@@ -850,7 +850,7 @@
                 NoOfInvoice: $scope.invoiceNo,
                 RefNo: $scope.referenceNo || "",
                 // TypeId: $scope.taxType ? $scope.taxType.toString() : "",
-                TypeId: "672",
+                TypeId: $scope.amount == 0 ? "0" : "672" ,// "672",
                 Vat: $scope.amount || 0,
                 JpId: $scope.jobTitle ? $scope.jobTitle : 0,
                 JobTitle: selectedJpId == undefined ? "" : selectedJpId.title,
