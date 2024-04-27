@@ -107,9 +107,9 @@ namespace AccountingSystem.Repository
                                 TotalAmount = price,
                             });
 
-                            var Quation_Id = await onlineSqlConnection.QueryFirstOrDefaultAsync<int>("select PQ_ID from PaymentQuotation where QuotationNo=@QuationNo", new { QuationNo = UniqueQuationNo });
+                            var Quation_Id = await onlineSqlConnection.QueryFirstOrDefaultAsync<int>("select PQ_ID from PaymentQuotation where ItemID=@Invoice_Id", new { Invoice_Id = dbo_Invoice_Id });
 
-                            var ChallaninsertSql = "INSERT INTO ChallanInfo(ChallanNo,CP_ID,CompanyName,CompanyVatAddress,CompanyBINNo,IssueDate,InvoiceNo,CreatedBy,CreaterDesignation ,ServiceName,UnitSupply,Quantity,UnitPrice, UnitTotalPrice,VatRate,VatAmount,UnitTotalPriceAll,TotalPrice,TotalVatPrice,TotalPriceAll,IsActive,PostedOn,PQ_ID)  VALUES (@ChallanNo,@CP_ID, @CompanyName,@CompanyVatAddress, @CompanyBINNo,  @IssueDate,  @InvoiceNo, @CreatedBy,  @CreaterDesignation,@ServiceName,  @UnitSupply,  @Quantity, @UnitPrice,        @UnitTotalPrice,  @VatRate,  @VatAmount, @UnitTotalPriceAll, @TotalPrice, @TotalVatPrice, @TotalPriceAll,  @IsActive, @PostedOn,@PQ_ID )";
+                            var ChallaninsertSql = "INSERT INTO ChallanInfo(ChallanNo,CP_ID,CompanyName,CompanyVatAddress,CompanyBINNo,IssueDate,InvoiceNo,CreatedBy,CreaterDesignation ,ServiceName,UnitSupply,Quantity,UnitPrice, UnitTotalPrice,VatRate,VatAmount,UnitTotalPriceAll,TotalPrice,TotalVatPrice,TotalPriceAll,IsActive,PostedOn,PQ_ID,InvoiceComments)  VALUES (@ChallanNo,@CP_ID, @CompanyName,@CompanyVatAddress, @CompanyBINNo,  @IssueDate,  @InvoiceNo, @CreatedBy,  @CreaterDesignation,@ServiceName,  @UnitSupply,  @Quantity, @UnitPrice,        @UnitTotalPrice,  @VatRate,  @VatAmount, @UnitTotalPriceAll, @TotalPrice, @TotalVatPrice, @TotalPriceAll,  @IsActive, @PostedOn,@PQ_ID,@InvoiceComments )";
                             await onlineSqlConnection.ExecuteAsync(ChallaninsertSql, new
                             {
                                 ChallanNo = ChallanInfo.ChallanNo,
@@ -134,7 +134,8 @@ namespace AccountingSystem.Repository
                                 TotalPriceAll = ChallanInfo.priceWithVatAll,
                                 IsActive = 1,
                                 PostedOn = ChallanInfo.Date,
-                                PQ_ID = Quation_Id
+                                PQ_ID = Quation_Id,
+                                InvoiceComments = ChallanInfo.Comments,
                             });
 
 
