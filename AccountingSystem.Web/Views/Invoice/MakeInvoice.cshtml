@@ -521,8 +521,8 @@
                                 formattedeDate +
                                 " for the following position(s):\n\n" +
                                 shiftedProduct.product;
-                        } else if (shiftedProduct.product.trim() == "Add: VAT@5% Under Service Code: S099.10 (IT Enabled Services)") {
-                            comments = "VAT";
+                        } if (shiftedProduct.product.trim() === "VAT (AP)" ) {
+                            comments = "Add: VAT@5% Under Service Code: S099.10 (IT Enabled Services)";
                         } else {
                             comments =
                                 "Payment for Web Listing (" +
