@@ -93,8 +93,23 @@ namespace AccountingSystem.Repository
                                 OpId = opId
                             });
 
+                            var dbo_Invoice_Id = await onlineSqlConnection.QueryFirstOrDefaultAsync<int>("SELECT InvoiceId FROM dbo_Invoice where INVOICE_NO=@InvoiceNo", new { InvoiceNo = invoiceNo });
 
-                            var ChallaninsertSql = "INSERT INTO ChallanInfo(ChallanNo,CP_ID,CompanyName,CompanyVatAddress,CompanyBINNo,IssueDate,InvoiceNo,CreatedBy,CreaterDesignation ,ServiceName,UnitSupply,Quantity,UnitPrice, UnitTotalPrice,VatRate,VatAmount,UnitTotalPriceAll,TotalPrice,TotalVatPrice,TotalPriceAll,IsActive,PostedOn,PQ_ID)  VALUES (@ChallanNo,@CP_ID, @CompanyName,@CompanyVatAddress, @CompanyBINNo,  @IssueDate,  @InvoiceNo, @CreatedBy,  @CreaterDesignation,@ServiceName,  @UnitSupply,  @Quantity, @UnitPrice,        @UnitTotalPrice,  @VatRate,  @VatAmount, @UnitTotalPriceAll, @TotalPrice, @TotalVatPrice, @TotalPriceAll,  @IsActive, @PostedOn,@PQ_ID )";
+                            var UniqueQuationNo = await onlineSqlConnection.QueryFirstOrDefaultAsync<string>("SELECT CONVERT(varchar, GETDATE(), 112) + '-' +CAST(SUM(CASE WHEN CP_ID = 112846 THEN 1 ELSE 0 END) + 1 AS varchar) AS totalCompanyQuotationSerial FROM PaymentQuotation", new { InvoiceNo = invoiceNo });
+
+                            var QuatationinsertSql = "INSERT INTO PaymentQuotation(CP_ID, QuotationNo, ItemID, ItemType, TotalAmount)  VALUES (@CP_ID, @QuotationNo,@ItemID, @ItemType,  @TotalAmount)";
+                            await onlineSqlConnection.ExecuteAsync(QuatationinsertSql, new
+                            {
+                                CP_ID = cpId,
+                                QuotationNo = UniqueQuationNo,
+                                ItemID = dbo_Invoice_Id,
+                                ItemType = "Invoice",
+                                TotalAmount = price,
+                            });
+
+                            var Quation_Id = await onlineSqlConnection.QueryFirstOrDefaultAsync<int>("select PQ_ID from PaymentQuotation where ItemID=@Invoice_Id", new { Invoice_Id = dbo_Invoice_Id });
+
+                            var ChallaninsertSql = "INSERT INTO ChallanInfo(ChallanNo,CP_ID,CompanyName,CompanyVatAddress,CompanyBINNo,IssueDate,InvoiceNo,CreatedBy,CreaterDesignation ,ServiceName,UnitSupply,Quantity,UnitPrice, UnitTotalPrice,VatRate,VatAmount,UnitTotalPriceAll,TotalPrice,TotalVatPrice,TotalPriceAll,IsActive,PostedOn,PQ_ID,InvoiceComments)  VALUES (@ChallanNo,@CP_ID, @CompanyName,@CompanyVatAddress, @CompanyBINNo,  @IssueDate,  @InvoiceNo, @CreatedBy,  @CreaterDesignation,@ServiceName,  @UnitSupply,  @Quantity, @UnitPrice,        @UnitTotalPrice,  @VatRate,  @VatAmount, @UnitTotalPriceAll, @TotalPrice, @TotalVatPrice, @TotalPriceAll,  @IsActive, @PostedOn,@PQ_ID,@InvoiceComments )";
                             await onlineSqlConnection.ExecuteAsync(ChallaninsertSql, new
                             {
                                 ChallanNo = ChallanInfo.ChallanNo,
@@ -119,7 +134,8 @@ namespace AccountingSystem.Repository
                                 TotalPriceAll = ChallanInfo.priceWithVatAll,
                                 IsActive = 1,
                                 PostedOn = ChallanInfo.Date,
-                                PQ_ID = 0
+                                PQ_ID = Quation_Id,
+                                InvoiceComments = ChallanInfo.Comments,
                             });
 
 
@@ -690,14 +706,14 @@ namespace AccountingSystem.Repository
             }
             return orderCount;
         }
-        public async Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId)
+        public async Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId, int userId)
         {
             try
             {
-                string sqlQuery = "UPDATE dbo.InvoiceList SET DtOrderCode = @CourierOrderId WHERE Invoice_No = @InvoiceNo;";
+                string sqlQuery = "UPDATE dbo.InvoiceList SET DtOrderCode = @CourierOrderId,DtOrderUseId=@UserId WHERE Invoice_No = @InvoiceNo";
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    await _db.ExecuteAsync(sqlQuery, new { CourierOrderId = courierOrderId, InvoiceNo = invoiceNo });
+                    await _db.ExecuteAsync(sqlQuery, new { CourierOrderId = courierOrderId, InvoiceNo = invoiceNo, UserId = userId });
                 }
             }
             catch (Exception ex)

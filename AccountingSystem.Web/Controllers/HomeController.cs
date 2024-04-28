@@ -51,8 +51,8 @@ namespace AccountingSystem.Web.Controllers
 
                 List<Claim> claims = new List<Claim>() {
 
-                    new Claim(ClaimTypes.NameIdentifier,user.UName),
-                    //new Claim("Id",user.UserID.ToString())
+                    new Claim(ClaimTypes.NameIdentifier ,user.UName),
+                    new Claim("Id",user.UserID.ToString())
                 };
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
