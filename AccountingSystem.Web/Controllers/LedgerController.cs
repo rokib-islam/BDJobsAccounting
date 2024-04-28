@@ -2,6 +2,7 @@
 using AccountingSystem.BLL;
 using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AccountingSystem.Web.Controllers
 {
@@ -189,7 +190,21 @@ namespace AccountingSystem.Web.Controllers
         //    return Json(resp);
         //}
 
+        public IActionResult ListOfServices()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
 
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> LoadServiceList([FromBody] LoadServiceListModel model)
+        {
+            var result = await _LedgerManager.LoadServiceList(model);
+            return Json(result);
+        }
     }
 
 

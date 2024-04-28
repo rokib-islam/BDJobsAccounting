@@ -73,5 +73,10 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetProductById(pId);
         }
+
+        public async Task<List<LoadServiceListModel>> LoadServiceList(LoadServiceListModel model)
+        {
+            return await _repository.LoadServiceList(model);
+        }
     }
 }

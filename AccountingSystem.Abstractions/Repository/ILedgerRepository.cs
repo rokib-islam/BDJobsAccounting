@@ -18,5 +18,6 @@ namespace AccountingSystem.Abstractions.Repository
         //Task<List<LedgerViewModel>> GetProductListByKey(string Key);
         Task<List<LedgerViewModel>> GetProductListByKey();
         Task<List<LedgerViewModel>> GetProductById(int pId);
+        Task<List<LoadServiceListModel>> LoadServiceList(LoadServiceListModel model);
     }
 }

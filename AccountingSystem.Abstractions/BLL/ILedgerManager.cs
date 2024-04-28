@@ -19,5 +19,6 @@ namespace AccountingSystem.Abstractions.BLL
         //Task<List<LedgerViewModel>> GetProductListByKey(string Key);
         Task<List<LedgerViewModel>> GetProductListByKey();
         Task<List<LedgerViewModel>> GetProductById(int pId);
+        Task<List<LoadServiceListModel>> LoadServiceList(LoadServiceListModel model);
     }
 }

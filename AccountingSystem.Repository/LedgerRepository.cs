@@ -2,6 +2,7 @@
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
+using Azure;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -261,6 +262,34 @@ namespace AccountingSystem.Repository
                 return result.ToList();
             }
 
+        }
+
+        
+        public async Task<List<LoadServiceListModel>> LoadServiceList(LoadServiceListModel model)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    PageNo = model.PageNo,
+                    PageSize = model.PageSize,
+                    Id = model.Id,
+                    ServiceName = model.ServiceName,
+                    VatRate = model.VatRate,
+                    UnitPrice = model.UnitPrice,
+                    Type = model.Type,
+                };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<LoadServiceListModel>("USP_VIEW_ADD_SERVICE", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
     }
 
