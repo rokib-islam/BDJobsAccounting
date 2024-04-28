@@ -710,7 +710,7 @@ namespace AccountingSystem.Repository
         {
             try
             {
-                string sqlQuery = "UPDATE dbo.InvoiceList SET DtOrderCode = @CourierOrderId WHERE Invoice_No = @InvoiceNo,DtOrderUseId=@UserId;";
+                string sqlQuery = "UPDATE dbo.InvoiceList SET DtOrderCode = @CourierOrderId,DtOrderUseId=@UserId WHERE Invoice_No = @InvoiceNo";
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
                     await _db.ExecuteAsync(sqlQuery, new { CourierOrderId = courierOrderId, InvoiceNo = invoiceNo, UserId = userId });
