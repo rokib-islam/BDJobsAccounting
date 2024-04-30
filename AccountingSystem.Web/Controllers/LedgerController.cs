@@ -178,9 +178,9 @@ namespace AccountingSystem.Web.Controllers
         //    return Json(result);
         //}
 
-        public async Task<IActionResult> GetProductListByKey()
+        public async Task<IActionResult> GetProductList()
         {
-            var result = await _LedgerManager.GetProductListByKey();
+            var result = await _LedgerManager.GetProductList();
             return Json(result);
         }
 

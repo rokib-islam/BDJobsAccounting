@@ -16,7 +16,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task<int> UpdateLedgerAsync(LedgerViewModel aLedger);
         Task<string> DeleteLedgerAsync(int ledgerId);
         //Task<List<LedgerViewModel>> GetProductListByKey(string Key);
-        Task<List<LedgerViewModel>> GetProductListByKey();
+        Task<List<LedgerViewModel>> GetProductList();
         Task<List<LedgerViewModel>> GetProductById(int pId);
         Task<List<LoadServiceListModel>> LoadServiceList(LoadServiceListModel model);
     }

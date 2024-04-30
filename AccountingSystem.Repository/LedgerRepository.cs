@@ -237,11 +237,11 @@ namespace AccountingSystem.Repository
 
         //}
 
-        public async Task<List<LedgerViewModel>> GetProductListByKey()
+        public async Task<List<LedgerViewModel>> GetProductList()
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                var query = "SELECT Id, SBName As LadgerName, s.VatRate FROM Ledger l INNER JOIN SevicewiseVatRate s on s.ServiceId = l.ServiceID WHERE ledgerAcc=1 and MGroup='Revenue' and l.ServiceID IS NOT NULL ORDER BY SBName";
+                var query = "SELECT Id, SBName As LadgerName, s.VatRate, s.UnitPrice FROM Ledger l INNER JOIN SevicewiseVatRate s on s.ServiceId = l.ServiceID WHERE ledgerAcc=1 and MGroup='Revenue' and l.ServiceID IS NOT NULL ORDER BY SBName";
                 var parameters = new { };
 
                 var result = await _db.QueryAsync<LedgerViewModel>(query, parameters);

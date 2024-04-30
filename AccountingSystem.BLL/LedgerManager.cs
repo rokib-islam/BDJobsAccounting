@@ -64,9 +64,9 @@ namespace AccountingSystem.BLL
         //    return await _repository.GetProductListByKey(Key);
         //}
 
-        public async Task<List<LedgerViewModel>> GetProductListByKey()
+        public async Task<List<LedgerViewModel>> GetProductList()
         {
-            return await _repository.GetProductListByKey();
+            return await _repository.GetProductList();
         }
 
         public async Task<List<LedgerViewModel>> GetProductById(int pId)

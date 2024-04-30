@@ -24,7 +24,7 @@
     <div ng-controller="myController">
         <div class="row">
             <div class="col-sm-12">
-                <h5 class="alert-primary text-center" style="margin-top:-10px">Company Information</h5>
+                <h4 class="alert-primary text-center" style="margin-top:-10px">Company Information</h4>
                 <div class="row">
                     <label class="col-sm-2 col-form-label">List of Companies</label>
                     <div class="col-sm-7">
@@ -163,7 +163,14 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-5">
+                    <div class="col-sm-5 mt-5">
+                        <div class="row mt-2">
+                            <label class="col-sm-5">Remarks</label>
+                            <div class="col-sm-7">
+                                <textarea class="form-control form-control-sm bg-info p-2 bg-opacity-10" style="color:orangered" ng-model="remarks"></textarea>
+                            </div>
+                        </div>
+
                         <div class="row mt-2">
                             <label class="col-sm-5">Any VAT Exemption</label>
                             <div class="col-sm-7">
@@ -198,7 +205,7 @@
                             </div>
                         </div>
 
-                        <fieldset class="border p-2 mt-5">
+                        <fieldset class="border p-2 mt-4">
                             <legend class="float-none w-auto p-2 fs-5">
                                 Billing Person
                             </legend>
@@ -293,7 +300,7 @@
             $scope.vatExemptionReasonDisabled = true;
             $scope.vatExemption = "0";
             $scope.customizeRate = "0";
-            $scope.autoMail = "0";
+            $scope.autoMail = "1";
         })
 
         $scope.radioChange = function () {
@@ -440,6 +447,7 @@
             $scope.customizeRate = $scope.allCompanyData.customizeRate == false ? "0" : "1";
             $scope.autoMail = $scope.allCompanyData.autoMail == false ? "0" : "1";
             $scope.vatExemptionReason = $scope.allCompanyData.vatExemptionReason;
+            $scope.remarks = $scope.allCompanyData.remarks;
         }
 
 
@@ -716,6 +724,7 @@
             var customizeRate = $scope.customizeRate == undefined ? 0 : $scope.customizeRate;
             var autoMail = $scope.autoMail == undefined ? 0 : $scope.autoMail;
             var vatExemptionReason = $scope.vatExemptionReason == undefined ? "" : $scope.vatExemptionReason;
+            var remarks = $scope.remarks == undefined ? "" : $scope.remarks;
             if (name == "" || name == undefined || $scope.checkAllAreSpaces(name)) {
                 alert("Company name required.");
                 return;
@@ -768,7 +777,8 @@
                             AccPersonMail: accPersonMail,
                             AccPersonContactNo: accPersonContactNo,
                             AnyVatExemption: anyVatExemption == "0" ? false : true,
-                            VatExemptionReason: vatExemptionReason
+                            VatExemptionReason: vatExemptionReason,
+                            Remarks: remarks
                         };
 
                         let Url = '';
@@ -873,6 +883,7 @@
             $scope.customizeRate = '';
             $scope.autoMail = '';
             $scope.vatExemptionReason = '';
+            $scope.remarks = '';
         }
     })
 </script>

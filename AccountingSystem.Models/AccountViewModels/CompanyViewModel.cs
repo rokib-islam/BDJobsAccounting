@@ -53,5 +53,6 @@ namespace AccountingSystem.Models.AccountViewModels
         public string VatExemptionReason { get; set; }
         public bool CustomizeRate { get; set; }
         public bool AutoMail { get; set; }
+        public string Remarks { get; set; }
     }
 }

@@ -410,6 +410,7 @@ namespace AccountingSystem.Repository
                     parameters.Add("@VatExemptionReason", aCompany.VatExemptionReason);
                     parameters.Add("@CustomizeRate", aCompany.CustomizeRate);
                     parameters.Add("@AutoMail", aCompany.AutoMail);
+                    parameters.Add("@Remarks", aCompany.Remarks);
 
                     await _db.ExecuteAsync(
                         "INSERT_UPDATE_COMPANY",
