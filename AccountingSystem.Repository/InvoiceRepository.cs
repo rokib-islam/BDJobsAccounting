@@ -637,7 +637,7 @@ namespace AccountingSystem.Repository
         {
             try
             {
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
                     var dynamicParameters = new DynamicParameters();
                     dynamicParameters.Add("@InvoiceNo", parameters.InvoiceNo);
