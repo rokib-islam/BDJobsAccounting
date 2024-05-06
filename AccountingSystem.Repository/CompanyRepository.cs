@@ -129,7 +129,7 @@ namespace AccountingSystem.Repository
                     Phone = FromData.Phone,
                     Email = FromData.Email,
                     Contact_Person = FromData.CPerson,
-                    Designation = FromData.Designation,
+                    Designation = "te",//FromData.Designation,
                     CompanyID = FromData.CompanyId,
                     DistrictID = FromData.DistrictId,
                     Type = FromData.Type

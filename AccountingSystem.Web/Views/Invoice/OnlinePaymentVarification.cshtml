@@ -124,7 +124,8 @@
                             <div ng-if="!data.verified">
                                 <input type="radio" ng-model="data.verification" value="1"> Verify Payment
                                 <input type="radio" ng-model="data.verification" value="2"> Reject
-                                <button class="btn btn-success btn-sm mt-1" ng-click="submit(data.quotationID, data.verification)">Submit</button>
+                                <input type="text" ng-model="data.Comment" placeholder="Reject Comment" >
+                                <button class="btn btn-success btn-sm mt-1" ng-click="submit(data.quotationID, data.verification,data.Comment )">Submit</button>
                             </div>
                         </td>
 
@@ -149,11 +150,12 @@
             $scope.totalItems = 0;
         })
         
-        $scope.submit = function (qId, verification) {
+        $scope.submit = function (qId, verification, Comment) {
             var requestData = {
                 QID: qId,
                 verified: verification,
-                verifiedBy: @userId
+                verifiedBy: @userId,
+                Comment: Comment
             };
 
             let Url = '';
@@ -164,7 +166,7 @@
 
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
-                    
+                   alert(response);
                 }, function (error) {
                     console.error(error);
                 })

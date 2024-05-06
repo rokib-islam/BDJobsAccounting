@@ -279,6 +279,9 @@ namespace AccountingSystem.Web.Controllers
                 new KeyValuePair<string, string>("QID", model.QID.ToString()),
                 new KeyValuePair<string, string>("verified", model.verified.ToString()),
                 new KeyValuePair<string, string>("verifiedBy", model.verifiedBy.ToString()),
+                new KeyValuePair<string, string>("comment", model.Comment),
+
+
 
             });
 
@@ -289,9 +292,9 @@ namespace AccountingSystem.Web.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     string responseMessage = await response.Content.ReadAsStringAsync();
-                    ApiResponseModel responseObjectTyped = JsonConvert.DeserializeObject<ApiResponseModel>(responseMessage);
+                    VarificationResponseModel responseObjectTyped = JsonConvert.DeserializeObject<VarificationResponseModel>(responseMessage);
 
-                    return Json(responseObjectTyped);
+                    return Json(responseObjectTyped.Message);
                 }
                 else
                 {
