@@ -1160,7 +1160,7 @@
 
         $scope.makeJournal = function () {
             if ('@accessRights.Contains("1")' !== "True") {
-                alert("Sorry, You have no permission to update a record.");
+                alert("Sorry, You have no permission to make a journal.");
             } else {
                 var isConfirmed = confirm("Are you sure you want to make journal of this sale?");
                 if (isConfirmed) {

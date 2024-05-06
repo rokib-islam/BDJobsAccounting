@@ -111,9 +111,10 @@
 
 
                         <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Job Title</label>
+                            <label class="col-sm-4 col-form-label">{{titleChange}}</label>
                             <div class="col-sm-8">
-                                <select class="form-select form-select-sm" ng-model="jobTitle">
+                                <input class="form-control form-control-sm" ng-model="jobTitle" ng-hide="inputTitleDisabled">
+                                <select class="form-select form-select-sm" ng-model="jobTitleList" ng-show="titleDisabled">
                                     <option ng-repeat="o in jobTitleData" value="{{o.jp_Id}}" data-title="{{o.title}}">{{o.title}}</option>
                                 </select>
                             </div>
@@ -140,10 +141,10 @@
                                 <input type="text" class="form-control form-control-sm" ng-model="Mobile" hidden />
                             </div>
                         </div>
-                        <div class="form-group row" hidden>
+                        <div class="form-group row" ng-show="showWorkshopDate">
                             <label class="col-sm-4 col-form-label">Workshop Date</label>
                             <div class="col-sm-8">
-                                <input class="form-control form-control-sm" ng-model="workshopDate" />
+                                <input type="date" class="form-control form-control-sm" ng-model="workshopDate" />
                             </div>
                         </div>
                         <div class="form-group row">
@@ -327,7 +328,8 @@
                 $scope.taxTypeDisabled = true;
                 //$scope.billingPersonListVisible = false;
                 //$scope.makeInvoiceDisable = true;
-
+                $scope.titleDisabled = true;
+                $scope.inputTitleDisabled = true;
 
                 $scope.amount = '0.00';
                 $scope.salesPrice = '0.00';
@@ -348,6 +350,8 @@
                 $scope.makeInvoiceDisable = true;
                 $scope.salesPriceDisabled = true;
                 $scope.taxTypeDisabled = true;
+                $scope.titleDisabled = true;
+                $scope.inputTitleDisabled = true;
             }
 
 
@@ -356,6 +360,7 @@
         $scope.dateFrom = new Date();
         $scope.dateTo = new Date();
         $scope.journalDate = new Date();
+        $scope.workshopDate = new Date();
 
         // $scope.taxTypeAmountDisable = function () {
         //     if ($scope.taxType == '0') {
@@ -491,7 +496,35 @@
 
         };
 
+        $scope.titleChange = 'Job Title';
+
         $scope.updateVatRate = function () {
+            if (@onlineCompany !== 0 || @onlineCompany !== 0) {
+                if ($scope.proList == '301' || $scope.proList == '21203') {
+                    $scope.titleChange = 'Workshop Title';
+                    $scope.titleDisabled = false;
+                    $scope.inputTitleDisabled = false;
+                    $scope.showWorkshopDate = true;
+                } else {
+                    $scope.titleChange = 'Job Title'; 
+                    $scope.titleDisabled = false;
+                    $scope.inputTitleDisabled = false;
+                    $scope.showWorkshopDate = false;
+                }
+            } else {
+                if ($scope.proList == '301' || $scope.proList == '21203') {
+                    $scope.titleChange = 'Workshop Title';
+                    $scope.titleDisabled = false;
+                    $scope.inputTitleDisabled = false;
+                    $scope.showWorkshopDate = true;
+                } else {
+                    $scope.titleChange = 'Job Title';
+                    $scope.titleDisabled = true;
+                    $scope.inputTitleDisabled = true; 
+                    $scope.showWorkshopDate = false;
+                }
+            }
+
             $scope.salesPriceDisabledEnabled();
             if ($scope.proList) {
                 $scope.taxType = $scope.getProductList.find(product => product.id == $scope.proList).vatRate + '%';
@@ -502,8 +535,6 @@
                 $scope.salesPrice = null;
             }
         };
-
-
 
 
         $scope.getSalesPerson = function () {
@@ -605,12 +636,6 @@
             var keyword = $scope.searchKeyword || ''; // Get the search keyword
             var matched = []; // Array to store matched objects
 
-            // for (var i = 0; i < $scope.getBillingPersonData.length; i++) {
-            //     if ($scope.getBillingPersonData[i].name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1) {
-            //         matched.push($scope.getBillingPersonData[i]); // Add matching object to the array
-            //     }
-            // }
-
             if ($scope.getBillingPersonData && $scope.getBillingPersonData.length) {
                 for (var i = 0; i < $scope.getBillingPersonData.length; i++) {
                     if ($scope.getBillingPersonData[i].name.toLowerCase().indexOf(keyword.toLowerCase()) !== -1) {
@@ -618,8 +643,6 @@
                     }
                 }
             }
-
-
             $scope.dropdownVisible = matched.length > 0; // Set dropdown visibility based on matches
 
             return matched; // Return the array of matched objects
@@ -670,6 +693,7 @@
                 Url = '/AccountingNew/Company/GetContactPersonsOrJobTitle';
             $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
+                    debugger
                     var onlineJpId = @onlineJobId;
                     $scope.jobTitleData = response.data;
                     //$scope.searchKeyword = $scope.jobTitleData[0].companyName;
@@ -677,7 +701,7 @@
                         $scope.jobTitle = "";
                     } else {
                         // $scope.jobTitle = $scope.jobTitleData[0].jp_Id.toString();
-                        $scope.jobTitle = onlineJpId.toString();
+                        $scope.jobTitleList = onlineJpId.toString();
                     }
 
                     $scope.dateFrom = new Date($scope.jobTitleData[0].postingDate);
@@ -839,7 +863,7 @@
             $scope.formattedToDate = $scope.dateTo.toISOString().split('T')[0];
             $scope.formattedJournalDate = $scope.journalDate.toISOString().split('T')[0];
             var selectedJpId = $scope.jobTitleData.find(function (s) {
-                return s.jp_Id == $scope.jobTitle;
+                return s.jp_Id == $scope.jobTitleList;
             });
             let requestBodyModel = {
                 UserId: @userId,
@@ -862,9 +886,9 @@
                 // TypeId: $scope.taxType ? $scope.taxType.toString() : "",
                 TypeId: $scope.amount == 0 ? "0" : "672",// "672",
                 Vat: $scope.amount || 0,
-                JpId: $scope.jobTitle ? $scope.jobTitle : 0,
-                JobTitle: selectedJpId == undefined ? "" : selectedJpId.title,
-                // workshopDate: $scope.workshopdateDiv ? $scope.workshopdate : "",
+                JobTitle: $scope.jobTitle ? $scope.jobTitle : "",
+                JpId: selectedJpId == undefined ? 0 : selectedJpId.jp_Id,
+                workshopDate: $scope.workshopdateDiv ? $scope.workshopdate : "",
                 SPerson: $scope.salesPerson
             };
             let Url = '';
