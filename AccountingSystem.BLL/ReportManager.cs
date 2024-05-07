@@ -30,5 +30,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetLabelReport(type, list);
         }
+
+        public async Task<List<LoadVatTaxCollectionDataModel_Response>> LoadVatTaxCollectionData(LoadVatTaxCollectionDataModel_Request model)
+        {
+            return await _repository.LoadVatTaxCollectionData(model);
+        }
     }
 }

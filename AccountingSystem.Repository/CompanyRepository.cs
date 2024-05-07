@@ -57,7 +57,7 @@ namespace AccountingSystem.Repository
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                var query = "SELECT TOP 10 Id, Name, BlackListed FROM Company WHERE Name LIKE @Key ORDER BY Name";
+                var query = "SELECT TOP 10 Id,Name + ' (' + CONVERT(varchar, Cp_id) + ')' Name, BlackListed, AnyVatExemption FROM Company WHERE Name LIKE @Key ORDER BY Name";
                 var parameters = new { Key = "%" + Key + "%" };
 
                 var result = await _db.QueryAsync<CompanyViewModel>(query, parameters);
@@ -129,7 +129,7 @@ namespace AccountingSystem.Repository
                     Phone = FromData.Phone,
                     Email = FromData.Email,
                     Contact_Person = FromData.CPerson,
-                    Designation = FromData.Designation,
+                    Designation = "te",//FromData.Designation,
                     CompanyID = FromData.CompanyId,
                     DistrictID = FromData.DistrictId,
                     Type = FromData.Type
@@ -293,7 +293,9 @@ namespace AccountingSystem.Repository
                             PostingDate = Convert.ToDateTime(r.postingDate).ToShortDateString(),
                             ValidDate = Convert.ToDateTime(r.ValidDate).ToShortDateString(),
                             Title = r.title,
-                            Type = r.designation
+                            Type = r.designation,
+                            Email = r.Email,
+                            Mobile = r.Mobile
                         }).ToList();
 
                         return jobList;
@@ -404,6 +406,11 @@ namespace AccountingSystem.Repository
                     parameters.Add("@VatChallanName", aCompany.VatChallanName);
                     parameters.Add("@AccPersonMail", aCompany.AccPersonMail);
                     parameters.Add("@AccPersonContactNo", aCompany.AccPersonContactNo);
+                    parameters.Add("@AnyVatExemption", aCompany.AnyVatExemption);
+                    parameters.Add("@VatExemptionReason", aCompany.VatExemptionReason);
+                    parameters.Add("@CustomizeRate", aCompany.CustomizeRate);
+                    parameters.Add("@AutoMail", aCompany.AutoMail);
+                    parameters.Add("@Remarks", aCompany.Remarks);
 
                     await _db.ExecuteAsync(
                         "INSERT_UPDATE_COMPANY",

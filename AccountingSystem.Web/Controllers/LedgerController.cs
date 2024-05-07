@@ -2,6 +2,7 @@
 using AccountingSystem.BLL;
 using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AccountingSystem.Web.Controllers
 {
@@ -33,6 +34,12 @@ namespace AccountingSystem.Web.Controllers
             var result = await _LedgerManager.GetAllLedger(isAdmin, isAccount);
 
 
+            return Json(result);
+        }
+
+        public async Task<IActionResult> GetAllEveryLedger(string isCashCollection)
+        {
+            var result = await _LedgerManager.GetAllEveryLedger(isCashCollection);
             return Json(result);
         }
         public async Task<IActionResult> GetOnlineLedgerId(string onlineProduct)
@@ -165,19 +172,39 @@ namespace AccountingSystem.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> GetProductListByKey(string startingKey)
+        //public async Task<IActionResult> GetProductListByKey(string startingKey)
+        //{
+        //    var result = await _LedgerManager.GetProductListByKey(startingKey);
+        //    return Json(result);
+        //}
+
+        public async Task<IActionResult> GetProductList()
         {
-            var result = await _LedgerManager.GetProductListByKey(startingKey);
+            var result = await _LedgerManager.GetProductList();
             return Json(result);
         }
 
-        public async Task<IActionResult> GetProductById(int pId)
+        //public async Task<IActionResult> GetProductById(int pId)
+        //{
+        //    var resp = await _LedgerManager.GetProductById(pId);
+        //    return Json(resp);
+        //}
+
+        public IActionResult ListOfServices()
         {
-            var resp = await _LedgerManager.GetProductById(pId);
-            return Json(resp);
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
         }
 
-
+        public async Task<IActionResult> LoadServiceList([FromBody] LoadServiceListModel model)
+        {
+            var result = await _LedgerManager.LoadServiceList(model);
+            return Json(result);
+        }
     }
 
 

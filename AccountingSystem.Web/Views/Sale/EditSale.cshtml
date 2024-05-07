@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                        <script type="text/javascript">
-                                            window.location.href = '@Url.Action("Index", "Home")';
-                                        </script>
+                                                <script type="text/javascript">
+                                                    window.location.href = '@Url.Action("Index", "Home")';
+                                                </script>
     }
     else
     {
@@ -43,7 +43,7 @@
                         </div>
                     </div>
                     <div>Select a company</div>
-                    <select class="form-control form-control-sm" size="10" ng-model="comList" style="height:225px;border:2px solid gray">
+                    <select class="form-control form-control-sm" size="10" ng-model="comList" style="height:225px;border:1px solid lightgray">
                         <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
                     </select>
 
@@ -57,59 +57,66 @@
                     </div>
                 </div>
                 <div class="col-sm-6">
-                    <div class="px-3 py-3" style="border:2px solid gray">
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Sales Price</label>
-                            <div class="col-sm-9">
-                                <input type="number" class="form-control form-control-sm text-end" ng-model="salesPrice">
+                    <fieldset class="border p-2">
+                        <legend class="float-none w-auto fs-5">
+                            Sale Information
+                        </legend>
+
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Sales Price</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control form-control-sm text-end" ng-model="salesPrice">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">VAT Amount</label>
-                            <div class="col-sm-9">
-                                <input type="number" class="form-control form-control-sm text-end" ng-model="vatAmount">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">VAT Amount</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control form-control-sm text-end" ng-model="vatAmount">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-2 col-form-label mt-3">Duration</label>
-                            <div class="col-sm-4">
-                                <label>From Date</label>
-                                <input type="date" ng-change="updateDuration()" class="form-control form-control-sm" ng-model="fromDate">
+                            <div class="form-group row">
+                                <label class="col-sm-2 col-form-label mt-3">Duration</label>
+                                <div class="col-sm-4">
+                                    <label>From Date</label>
+                                    <input type="date" ng-change="updateDuration()" class="form-control form-control-sm" ng-model="fromDate">
+                                </div>
+                                <div class="col-sm-4">
+                                    <label>To Date</label>
+                                    <input type="date" ng-change="updateDuration()" class="form-control form-control-sm" ng-model="toDate">
+                                </div>
+                                <div class="col-sm-2">
+                                    <label>Duration</label>
+                                    <input class="form-control form-control-sm text-center" ng-model="duration">
+                                </div>
                             </div>
-                            <div class="col-sm-4">
-                                <label>To Date</label>
-                                <input type="date" ng-change="updateDuration()" class="form-control form-control-sm" ng-model="toDate">
+                            <div class="form-group row mt-2">
+                                <label class="col-sm-3 col-form-label">Billing Contact</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control form-control-sm" ng-model="billingContact">
+                                        <option value="0" selected>Select</option>
+                                        <option ng-repeat="o in getBillingPersonData" value="{{o.id}}">{{o.name}}</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-sm-2">
-                                <label>Duration</label>
-                                <input class="form-control form-control-sm text-center" ng-model="duration">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Ref No.</label>
+                                <div class="col-sm-9">
+                                    <input type="number" class="form-control form-control-sm" ng-model="refNo">
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row mt-2">
-                            <label class="col-sm-3 col-form-label">Billing Contact</label>
-                            <div class="col-sm-9">
-                                <select class="form-control form-control-sm" ng-model="billingContact">
-                                    <option value="0" selected>Select</option>
-                                    <option ng-repeat="o in getBillingPersonData" value="{{o.id}}">{{o.name}}</option>
-                                </select>
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Sales Person</label>
+                                <div class="col-sm-9">
+                                    <select class="form-control form-control-sm" ng-model="salesPerson">
+                                        <option value="0" selected>select</option>
+                                        <option ng-repeat="o in salesPersons" value="{{o.salesPersonID}}">{{o.salesPersonName}}</option>
+                                    </select>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Ref No.</label>
-                            <div class="col-sm-9">
-                                <input type="number" class="form-control form-control-sm" ng-model="refNo">
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-3 col-form-label">Sales Person</label>
-                            <div class="col-sm-9">
-                                <select class="form-control form-control-sm" ng-model="salesPerson">
-                                    <option value="0" selected>select</option>
-                                    <option ng-repeat="o in salesPersons" value="{{o.salesPersonID}}">{{o.salesPersonName}}</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
+                    </fieldset>
+
+
+                   
 
                 </div>
 
@@ -270,14 +277,14 @@
                         </tr>
                     </thead>
                     <tbody style="height:130px">
-                        <tr ng-repeat="o in deletedSalesData">
+                        <tr ng-repeat="data in deletedSalesData">
                             <td style="text-align:center">{{$index+1}}</td>
-                            <td style="text-align:center">{{o.serviceName}}</td>
-                            <td style="text-align:center">{{o.invoiceNo}}</td>
-                            <td style="text-align:center">{{o.cancellationDate"}}</td>
-                            <td style="text-align:right">{{o.totalPrice | number:2}}</td>
-                            <td style="text-align:right">{{o.totalVat | number:2}}</td>
-                            <td style="text-align:center">{{o.deleteReason}}</td>
+                            <td style="text-align:center">{{data.serviceName}}</td>
+                            <td style="text-align:center">{{data.invoiceNo}}</td>
+                            <td style="text-align:center">{{data.cancellationDate}}</td>
+                            <td style="text-align:right">{{data.totalPrice | number:2}}</td>
+                            <td style="text-align:right">{{data.totalVat | number:2}}</td>
+                            <td style="text-align:center">{{data.deleteReason}}</td>
                         </tr>
 
                     </tbody>
@@ -339,13 +346,13 @@
                     </div>
                     <div class="modal-body">
                         <div class="row px-5">
-                            <p class="text-center">Give the journal date.</p>
-                            <input type="date" ng-model="journalDate" class="col-sm-8 offset-2 form-control form-control-sm" />
+                            <p class="text-center">Give the journal date</p>
+                            <input type="date" ng-model="journalDate" class="col-sm-8 form-control form-control-sm" />
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary btn-sm" ng-click="ok()">OK</button>
+                        <button type="button" class="btn btn-primary btn-sm" ng-click="okForMakeJournal()">OK</button>
                     </div>
                 </div>
             </div>
@@ -498,6 +505,7 @@
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.getSalesPerson();
+            $scope.getClosingDate();
             $scope.billingContact = "0";
             $scope.isVisible = false;
             $scope.isVisibleDelete = false;
@@ -505,6 +513,7 @@
             $scope.showSalesFilterTable = true;
             $scope.showDateFilterTable = true;
             $scope.showDeletedTable = false;
+            $scope.showTable = true;
             $scope.makeInvoiceBtn = true;
             $scope.deleteBtn = true;
             $scope.updateBtn = true;
@@ -524,6 +533,7 @@
         $scope.deleteDate = new Date();
         $scope.fromDateForTrial = new Date();
         $scope.toDateForTrial = new Date();
+        $scope.journalDate = new Date();
 
         $scope.updateDuration = function () {
             var date1 = new Date($scope.fromDate);
@@ -1061,7 +1071,7 @@
                                             }
                                         }
                                     });
-                                //$("#companyList").trigger('change');
+                                $scope.getSales($scope.currentPage, $scope.itemsPerPage, $scope.comList, 0);
                             }
                         }
                     })
@@ -1134,7 +1144,7 @@
                         .then(function (response) {
                             if (response.data === 'Update successful') {
                                 alert('Update Sales successfully.');
-                                //$("#companyList").trigger('change');
+                                $scope.getSales($scope.currentPage, $scope.itemsPerPage, $scope.comList, 0);
                             }
                         });
                 } else {
@@ -1158,7 +1168,7 @@
 
         $scope.makeJournal = function () {
             if ('@accessRights.Contains("1")' !== "True") {
-                alert("Sorry, You have no permission to update a record.");
+                alert("Sorry, You have no permission to make a journal.");
             } else {
                 var isConfirmed = confirm("Are you sure you want to make journal of this sale?");
                 if (isConfirmed) {
@@ -1220,6 +1230,60 @@
 
         $scope.paginationChange = function () {
             $scope.getJournals($scope.currentPage, $scope.itemsPerPage, '-1', $scope.fromDateForTrial, $scope.toDateForTrial);
+        }
+
+
+        $scope.getClosingDate = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Journal/GetClosingDate';
+            else
+                Url = '/AccountingNew/Journal/GetClosingDate';
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.closingDate = response.data;
+                   
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+        $scope.okForMakeJournal = function () {
+            var from = $scope.journalDate;
+            var to = new Date($scope.closingDate);
+           
+            if (from <= to) {
+                confirm("You cannot post journal on or before '" + $scope.closingDate + "'.\nPlease give another date.");
+            }
+            else{
+                var jsonData = {
+                    SId: $scope.selectedRow.id.toString(),
+                    Amount: $scope.selectedRow.salesPrice.toString(),
+                    JDate: $scope.journalDate,
+                    Duration: $scope.selectedRow.duration.toString(),
+                    TNO: $scope.selectedRow.tno,
+                    Description: "Company: " + $scope.selectedCompany.name + ", Item: " + $scope.selectedRow.sbName,
+                    SalesDate: $scope.selectedRow.from,
+                    TaxId: $scope.selectedRow.taxId.toString(),
+                    Tax: $scope.selectedRow.tax.toString(),
+                    UserId: '@userId'
+                };
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Sale/MakeJournalOfSale';
+                else
+                    Url = '/AccountingNew/Sale/MakeJournalOfSale';
+
+                $http.post(Url, jsonData)
+                    .then(function (response) {
+                        if (response.data == 'Success') {
+                            $("#makeJournalModal").modal('hide');
+                            $scope.getSales($scope.currentPage, $scope.itemsPerPage, $scope.comList, 0);
+                            alert("All Journal entry have been completed.")
+                            
+                        }
+                    });
+            }
         }
     });
 </script>

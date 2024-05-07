@@ -1,0 +1,278 @@
+﻿@{
+    ViewData["Title"] = "ListOfServices";
+}
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 class="text-center alert-primary" style="margin-top:-10px">List of Services</h4>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="col-sm-12">
+                            <div class="pull-left text-left">
+                                Show
+                                <select id="page" ng-model="itemsPerPage">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="40">40</option>
+                                    <option value="50" selected>50</option>
+                                    <option value="60">60</option>
+                                    <option value="80">80</option>
+                                    <option value="100">100</option>
+                                    <option value="500">500</option>
+                                    <option value="1000">1000</option>
+                                    <option value="3000">3000</option>
+                                    <option value="5000">5000</option>
+                                    <option value="10000">10000</option>
+                                    <option value="10000000">All</option>
+                                </select>
+                                entries per page. (Total:{{totalItems}} data)
+
+                                @* section paging *@
+                                <nav aria-label="..." class="mt-2">
+                                    <ul class="pagination">
+                                        <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                            <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+
+                                        <!-- The ng-repeat code you provided -->
+                                        <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                            <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                        </li>
+
+                                        <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                            <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                                @* section paging end *@
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 text-end">
+                        <button class="btn btn-success px-4" ng-click="openAddModal()">Add New</button>
+                    </div>
+                </div>
+                <div class="table-responsive" style="height: 390px;">
+                    <table ng-show="showTable" class="table table-bordered table-hover table-sm">
+                        <thead>
+                            <tr style="background-color:skyblue">
+                                <th class="text-center">Sl#</th>
+                                <th class="text-center">Service Name</th>
+                                <th class="text-center">Vat Rate</th>
+                                <th class="text-center">Unit Price</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in serviceListData" ng-click="selectRow(data)" ng-class="{ 'selected-row': o === selectedRow }">
+                                <td class="text-center">{{$index + 1}}</td>
+                                <td>{{data.serviceName}}</td>
+                                <td class="text-center">{{data.vatRate | number}}</td>
+                                <td class="text-end">{{data.unitPrice}}</td>
+                                <td class="text-center">
+                                    <button class="btn btn-primary btn-sm px-4" ng-click="openUpdateModal(data.serviceId,data.serviceName,data.vatRate,data.unitPrice)">Edit</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+                <div class="modal" tabindex="-1" id="openModal">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{modalTitle}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body mt-3">
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label>Service Name</label>
+                                            <input type="text" class="form-control form-control-sm" ng-model="serviceName" />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label>VAT Rate</label>
+                                            <input type="text" class="form-control form-control-sm" ng-model="vatRate" />
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label>Unit Price</label>
+                                            <input type="text" class="form-control form-control-sm" ng-model="unitPrice" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer mt-4">
+                                <button type="button" class="btn btn-primary btn-sm px-5" ng-bind="actionButton" ng-click="save()">Update</button>
+                                <button type="button" class="btn btn-secondary btn-sm px-3" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+            $scope.itemsPerPage = '20';
+            $scope.maxPageLength = 5;
+            $scope.currentPage = 1;
+            $scope.totalItems = 0;
+            $scope.load($scope.currentPage, $scope.itemsPerPage, 0, "", 0, 0, "view"); 
+        });
+        $scope.load = function (pageNo, pageSize, id, serviceName, vatRate, unitPrice, type) {
+            let requestBodyModel = {
+                PageNo: pageNo,
+                PageSize: pageSize,
+                Id: id,
+                ServiceName: serviceName,
+                VatRate: vatRate,
+                UnitPrice: unitPrice,
+                Type: type,
+            }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Ledger/LoadServiceList';
+            else
+                Url = '/AccountingNew/Ledger/LoadServiceList';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    $scope.serviceListData = response.data;
+                    $scope.totalItems = response.data[0].totalRecords;
+                    $scope.showTable = true;
+
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        $scope.openAddModal = function () {            
+            $("#openModal").modal('show');
+            $scope.serviceId = "";
+            $scope.serviceName = "";
+            $scope.vatRate = "";
+            $scope.unitPrice = "";
+            $scope.modalTitle = "Add Service";
+            $scope.actionButton = "Add";
+        }
+
+        $scope.openUpdateModal = function (serviceId, serviceName, vatRate, unitPrice) {
+            $scope.serviceId = serviceId;
+            $scope.serviceName = serviceName;
+            $scope.vatRate = vatRate;
+            $scope.unitPrice = unitPrice;
+            $("#openModal").modal('show');
+            $scope.modalTitle = "Update Service";
+            $scope.actionButton = "Update";
+        }
+
+        $scope.selectedRow = null;
+        $scope.selectRow = function (row) {
+            if ($scope.selectedRow === row) {
+                $scope.selectedRow = null;
+            } else {
+                $scope.selectedRow = row;
+
+            }
+        };
+
+        $scope.insertOrUpdateService = function (pageNo, pageSize, id, serviceName, vatRate, unitPrice, type) {
+            let requestBodyModel = {
+                PageNo: pageNo,
+                PageSize: pageSize,
+                Id: id,
+                ServiceName: serviceName,
+                VatRate: vatRate,
+                UnitPrice: unitPrice,
+                Type: type,
+            }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Ledger/LoadServiceList';
+            else
+                Url = '/AccountingNew/Ledger/LoadServiceList';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    alert("Data Updated Successfully.");
+                    $("#openModal").modal('hide');
+                    $scope.load($scope.currentPage, $scope.itemsPerPage, 0, "", 0, 0, "view");
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        
+        $scope.save = function () {
+            $scope.serviceId = $scope.selectedRow == null ? 0 : $scope.selectedRow.serviceId;
+            $scope.insertOrUpdateService(0, 0, $scope.serviceId, $scope.serviceName, $scope.vatRate, $scope.unitPrice, "addedit");
+        }
+
+
+
+        // paging code
+        $scope.$watch('totalItems', function () {
+            $scope.calculatePages();
+        });
+
+        $scope.$watch('itemsPerPage', function () {
+            $scope.calculatePages();
+            $scope.load($scope.currentPage, $scope.itemsPerPage, 0, "", 0, 0, "view");
+        });
+
+        $scope.$watch('currentPage', function () {
+            if ($scope.currentPage > 1) {
+                $scope.calculatePages();
+                $scope.load($scope.currentPage, $scope.itemsPerPage, 0, "", 0, 0, "view");
+            }
+            else {
+                $scope.calculatePages();
+            }
+
+        });
+
+        $scope.calculatePages = function () {
+            $scope.totalPages = Math.ceil($scope.totalItems / $scope.itemsPerPage);
+            $scope.pages = [];
+
+            var startPage = Math.max(1, $scope.currentPage - Math.floor($scope.maxPageLength / 2));
+            var endPage = Math.min($scope.totalPages, startPage + $scope.maxPageLength - 1);
+
+            for (var i = startPage; i <= endPage; i++) {
+                $scope.pages.push(i);
+            }
+            
+        };
+
+        $scope.getPages = function () {
+            return $scope.pages || [];
+        };
+
+        $scope.setCurrentPage = function (page) {
+            if (page >= 1 && page <= $scope.totalPages) {
+                $scope.currentPage = page;
+            }
+        };
+        //paging code end
+    });
+</script>

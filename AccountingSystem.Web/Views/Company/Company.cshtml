@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-        <script type="text/javascript">
-            window.location.href = '@Url.Action("Index", "Home")';
-        </script>
+                    <script type="text/javascript">
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    </script>
     }
     else
     {
@@ -24,12 +24,12 @@
     <div ng-controller="myController">
         <div class="row">
             <div class="col-sm-12">
-                <h5 class="alert-primary text-center" style="margin-top:-10px">Company Information</h5>
+                <h4 class="alert-primary text-center" style="margin-top:-10px">Company Information</h4>
                 <div class="row">
                     <label class="col-sm-2 col-form-label">List of Companies</label>
                     <div class="col-sm-7">
                         <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
-                        <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                        <select class="form-select form-select-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
                             <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
                         </select>
                     </div>
@@ -87,7 +87,7 @@
                         <div class="row mt-2">
                             <label class="col-sm-3">District</label>
                             <div class="col-sm-9">
-                                <select class="form-control form-control-sm" ng-model="district">
+                                <select class="form-select form-select-sm" ng-model="district">
                                     <option value="-1">Select</option>
                                     <option ng-repeat="data in districtData" value="{{data.districtID}}">{{data.districtName}}</option>
                                 </select>
@@ -96,7 +96,7 @@
                         <div class="row mt-2">
                             <label class="col-sm-3">Bank Information</label>
                             <div class="col-sm-9">
-                                <select class="form-control form-control-sm" ng-model="bankInfo">
+                                <select class="form-select form-select-sm" ng-model="bankInfo">
                                     <option ng-repeat="data in bankInformationData" value="{{data.bankID}}">{{data.bankName}}</option>
                                 </select>
                             </div>
@@ -143,12 +143,7 @@
                                 <input class="form-control form-control-sm" ng-model="designation" ng-disabled="designationDisabled" />
                             </div>
                         </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Acc. Person</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="accperson" />
-                            </div>
-                        </div>
+
                         <div class="row mt-2">
                             <label class="col-sm-3">Acc. Person Mail</label>
                             <div class="col-sm-9">
@@ -161,10 +156,60 @@
                                 <input class="form-control form-control-sm" ng-model="accMobile" />
                             </div>
                         </div>
-
+                        <div class="row mt-2">
+                            <label class="col-sm-3">HR Person</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" ng-model="accperson" />
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-5 mt-2">
-                        <div class="px-3 py-4" style="border:2px solid gray">
+                    <div class="col-sm-5 mt-5">
+                        <div class="row mt-2">
+                            <label class="col-sm-5">Remarks</label>
+                            <div class="col-sm-7">
+                                <textarea class="form-control form-control-sm bg-info p-2 bg-opacity-10" style="color:orangered" ng-model="remarks"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="row mt-2">
+                            <label class="col-sm-5">Any VAT Exemption</label>
+                            <div class="col-sm-7">
+                                <select class="form-select form-select-sm" ng-model="vatExemption" ng-change="disableReason()">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-5">VAT Exemption Reason</label>
+                            <div class="col-sm-7">
+                                <input class="form-control form-control-sm" ng-model="vatExemptionReason" ng-disabled="vatExemptionReasonDisabled" />
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-5">Customize Rate</label>
+                            <div class="col-sm-7">
+                                <select class="form-select form-select-sm" ng-model="customizeRate">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <label class="col-sm-5">Auto Mail</label>
+                            <div class="col-sm-7">
+                                <select class="form-select form-select-sm" ng-model="autoMail">
+                                    <option value="1">Yes</option>
+                                    <option value="0">No</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <fieldset class="border p-2 mt-4">
+                            <legend class="float-none w-auto p-2 fs-5">
+                                Billing Person
+                            </legend>
+
                             <div class="row">
                                 <div class="col-sm-4">
                                     <label class="float-end"><input type="radio" name="radio" ng-model="radioBtn" value="1" ng-change="radioChange()" />&nbsp; Add</label>
@@ -180,7 +225,7 @@
                                 <label class="col-sm-3">Name</label>
                                 <div class="col-sm-9">
                                     <input type="text" class="form-control form-control-sm" ng-model="billingNameInput" ng-show="billingNameInputShow" />
-                                    <select class="form-control form-control-sm" ng-model="billingName" ng-change="loadDesignation()" ng-show="billingNameShow">
+                                    <select class="form-select form-select-sm" ng-model="billingName" ng-change="loadDesignation()" ng-show="billingNameShow">
                                         <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}" data-name="{{data.name}}">{{data.name}}</option>
                                     </select>
                                 </div>
@@ -214,12 +259,12 @@
                                     <button class="btn btn-info btn-sm px-4" ng-click="billingAdd()" ng-disabled="billingAddDisabled">Add</button>
                                 </div>
                             </div>
-                        </div>
+                        </fieldset>
                     </div>
                 </div>
             </div>
 
-            <div class="row offset-1">
+            <div class="row offset-1 mt-2">
                 <div class="col-sm-4">
                     <button class="btn btn-info btn-sm px-3" ng-click="delete()" ng-disabled="deleteDisabled">Delete</button>
                 </div>
@@ -252,6 +297,10 @@
             $scope.companyIdDisabled = true;
             $scope.contactPersonDisabled = false;
             $scope.designationDisabled = false;
+            $scope.vatExemptionReasonDisabled = true;
+            $scope.vatExemption = "0";
+            $scope.customizeRate = "0";
+            $scope.autoMail = "1";
         })
 
         $scope.radioChange = function () {
@@ -280,6 +329,13 @@
             }
         };
 
+        $scope.disableReason = function () {
+            if ($scope.vatExemption == 1) {
+                $scope.vatExemptionReasonDisabled = false;
+            } else {
+                $scope.vatExemptionReasonDisabled = true
+            }
+        };
 
 
 
@@ -360,7 +416,7 @@
                 .then(function (response) {
                     $scope.allCompanyData = response.data[0];
 
-                    $scope.loadCompanyDataWithId()
+                    $scope.loadCompanyDataWithId();
                     $scope.getContactPersonByCompanyId($scope.selectedCompany.id);
                 }, function (error) {
                     console.error(error);
@@ -387,6 +443,11 @@
             $scope.accperson = $scope.allCompanyData.accContactName;
             $scope.accMail = $scope.allCompanyData.accPersonMail;
             $scope.accMobile = $scope.allCompanyData.accPersonContactNo;
+            $scope.vatExemption = $scope.allCompanyData.anyVatExemption == false ? "0" : "1";
+            $scope.customizeRate = $scope.allCompanyData.customizeRate == false ? "0" : "1";
+            $scope.autoMail = $scope.allCompanyData.autoMail == false ? "0" : "1";
+            $scope.vatExemptionReason = $scope.allCompanyData.vatExemptionReason;
+            $scope.remarks = $scope.allCompanyData.remarks;
         }
 
 
@@ -416,6 +477,8 @@
                 .then(function (response) {
                     $scope.contactPersonData = response.data;
                     $scope.billingDesignation = $scope.contactPersonData.designation;
+                    $scope.billingEmail = $scope.contactPersonData.email;
+                    $scope.billingPhone = $scope.contactPersonData.phone;
                 }, function (error) {
                     console.error(error);
                 });
@@ -552,6 +615,8 @@
                     .then(function (response) {
                         alert("Billing Person Updated successfully.");
                         $scope.radioChange();
+
+                        $scope.getAllCompanyInfoById($scope.selectedCompany.id);
                     }, function (error) {
                         console.error(error);
                     })
@@ -655,6 +720,11 @@
             var accName = $scope.accperson == undefined ? "" : $scope.accperson;
             var accPersonMail = $scope.accMail == undefined ? "" : $scope.accMail;
             var accPersonContactNo = $scope.accMobile == undefined ? "" : $scope.accMobile;
+            var anyVatExemption = $scope.vatExemption == undefined ? 0 : $scope.vatExemption;
+            var customizeRate = $scope.customizeRate == undefined ? 0 : $scope.customizeRate;
+            var autoMail = $scope.autoMail == undefined ? 0 : $scope.autoMail;
+            var vatExemptionReason = $scope.vatExemptionReason == undefined ? "" : $scope.vatExemptionReason;
+            var remarks = $scope.remarks == undefined ? "" : $scope.remarks;
             if (name == "" || name == undefined || $scope.checkAllAreSpaces(name)) {
                 alert("Company name required.");
                 return;
@@ -705,7 +775,10 @@
                             VatChallanName: vatChallanName,
                             AccContactName: accName,
                             AccPersonMail: accPersonMail,
-                            AccPersonContactNo: accPersonContactNo
+                            AccPersonContactNo: accPersonContactNo,
+                            AnyVatExemption: anyVatExemption == "0" ? false : true,
+                            VatExemptionReason: vatExemptionReason,
+                            Remarks: remarks
                         };
 
                         let Url = '';
@@ -719,7 +792,7 @@
                                 var strMessage = "";
                                 if (response.data == "Success") {
                                     strMessage = "Success.";
-                                    $scope.clearFields();
+                                    //$scope.clearFields();
                                     // $scope.getAllCompanyInfoById($scope.selectedCompany.id);
                                 }
                                 alert(strMessage);
@@ -806,6 +879,11 @@
             $scope.accperson = '';
             $scope.accMail = '';
             $scope.accMobile = '';
+            $scope.vatExemption = '';
+            $scope.customizeRate = '';
+            $scope.autoMail = '';
+            $scope.vatExemptionReason = '';
+            $scope.remarks = '';
         }
     })
 </script>

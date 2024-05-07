@@ -133,7 +133,7 @@ namespace AccountingSystem.Repository
                         using (var Connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                         {
                             await Connection.ExecuteAsync("USP_Download_Online_Jobs",
-                                new { DownloadOnlineJob = dataTable.AsTableValuedParameter("dbo.DownloadOnlineJob") },
+                                new { DownloadOnlineJob = dataTable.AsTableValuedParameter("dbo.DownloadOnlineJob_v2") },
                                 commandType: CommandType.StoredProcedure);
                         }
 
@@ -169,6 +169,8 @@ namespace AccountingSystem.Repository
             dataTable.Columns.Add("RegionalJob", typeof(int));
             dataTable.Columns.Add("BlueCollar", typeof(int));
             dataTable.Columns.Add("VerifiedCompany", typeof(int));
+            dataTable.Columns.Add("Email", typeof(string));
+            dataTable.Columns.Add("Mobile", typeof(string));
             // Add other columns as needed
             return dataTable;
         }
@@ -192,7 +194,9 @@ namespace AccountingSystem.Repository
                     item.AdType,
                     item.RegionalJob,
                     item.BlueCollar,
-                    item.VerifiedCompany
+                    item.VerifiedCompany,
+                    item.Email,
+                    item.Mobile
                 );
             }
         }
@@ -244,7 +248,9 @@ namespace AccountingSystem.Repository
                     JP_ID = data.JpId,
                     Title = data.JobTitle.Replace("'", "`"),
                     WorkshopDate = data.WorkshopDate,
-                    SalesPerson = data.SPerson
+                    SalesPerson = data.SPerson,
+                    Email = data.Email,
+                    Mobile = data.Mobile
                 };
 
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
@@ -314,6 +320,40 @@ namespace AccountingSystem.Repository
         }
 
         #region download sms alert
+        public async Task<int> DownloadCandidateMonetizationAsync()
+        {
+            int row = 0;
+
+            try
+            {
+                using (var _Onlinedb = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+                {
+                    var result = await _Onlinedb.QueryAsync<SMSAlertApplyLimit>("Accounting.USP_ACC_Candidate_Monetization_Download", commandType: CommandType.StoredProcedure);
+
+                    if (result.Any())
+                    {
+                        var dataTable = CreateSMSAlertDataTable();
+                        PopulateSMSAlertDataTable(dataTable, result);
+
+                        using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                        {
+                            await _db.ExecuteAsync("USP_Candidate_Monetization_Download",
+                                new { SMSAlertApplyLimt = dataTable.AsTableValuedParameter("dbo.SMSAlertApplyLimt") },
+                                commandType: CommandType.StoredProcedure);
+                        }
+
+                        row = result.Count();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                row = -1;
+            }
+
+            return row;
+        }
+
         public async Task<int> DownloadSMSAlertAsync(int serviceId, string fDate, string tDate)
         {
             int row = 0;

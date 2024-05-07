@@ -33,5 +33,6 @@ namespace AccountingSystem.Abstractions.Repository
         Task<string> UpdateSalePosted(MakeJournalOfSales saleInfo);
         Task<string> UpdateSaleContactPersonAndRefNo(string personId, string refNo, int salesPerson, string tno);
         Task<List<SalesPerson>> GetSalesPersonListByKey(string startingKey);
+        Task<int> DownloadCandidateMonetizationAsync();
     }
 }

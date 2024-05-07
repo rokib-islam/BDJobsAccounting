@@ -2,6 +2,7 @@
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
+using Azure;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
@@ -40,6 +41,20 @@ namespace AccountingSystem.Repository
                 var result = await _db.QueryAsync<LedgerListViewModel>(
                     "[dbo].[USP_LedgerList]",
                     new { UserAdmin = isAdmin, AccountsDep = isAccount },
+                    commandType: CommandType.StoredProcedure
+                );
+
+                return result.ToList();
+            }
+        }
+
+        public async Task<List<LedgerListViewModel>> GetAllEveryLedger(string isCashCollection)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = await _db.QueryAsync<LedgerListViewModel>(
+                    "[dbo].[USP_LedgerList]",
+                    new { IsCashCollection = isCashCollection },
                     commandType: CommandType.StoredProcedure
                 );
 
@@ -209,12 +224,25 @@ namespace AccountingSystem.Repository
         }
 
 
-        public async Task<List<LedgerViewModel>> GetProductListByKey(string Key)
+        //public async Task<List<LedgerViewModel>> GetProductListByKey(string Key)
+        //{
+        //    using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+        //    {
+        //        var query = "SELECT id, SBName As LadgerName FROM ledger WHERE ledgerAcc=1 and MGroup='Revenue' and SBName LIKE @Key ORDER BY SBName";
+        //        var parameters = new { Key = "%" + Key + "%" };
+
+        //        var result = await _db.QueryAsync<LedgerViewModel>(query, parameters);
+        //        return result.ToList();
+        //    }
+
+        //}
+
+        public async Task<List<LedgerViewModel>> GetProductList()
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                var query = "SELECT id, SBName As LadgerName FROM ledger WHERE ledgerAcc=1 and MGroup='Revenue' and SBName LIKE @Key ORDER BY SBName";
-                var parameters = new { Key = "%" + Key + "%" };
+                var query = "SELECT Id, SBName As LadgerName, s.VatRate, s.UnitPrice FROM Ledger l INNER JOIN SevicewiseVatRate s on s.ServiceId = l.ServiceID WHERE ledgerAcc=1 and MGroup='Revenue' and l.ServiceID IS NOT NULL ORDER BY SBName";
+                var parameters = new { };
 
                 var result = await _db.QueryAsync<LedgerViewModel>(query, parameters);
                 return result.ToList();
@@ -226,13 +254,42 @@ namespace AccountingSystem.Repository
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                var query = "SELECT Id, SBName FROM Ledger WHERE Id=@PId";
+                //var query = "SELECT Id, SBName FROM Ledger WHERE Id=@PId";
+                var query = "SELECT Id, SBName As LadgerName, s.VatRate FROM Ledger l INNER JOIN SevicewiseVatRate s on s.ServiceId = l.ServiceID WHERE Id=@PId";
                 var parameters = new { PId = pId };
 
                 var result = await _db.QueryAsync<LedgerViewModel>(query, parameters);
                 return result.ToList();
             }
 
+        }
+
+        
+        public async Task<List<LoadServiceListModel>> LoadServiceList(LoadServiceListModel model)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    PageNo = model.PageNo,
+                    PageSize = model.PageSize,
+                    Id = model.Id,
+                    ServiceName = model.ServiceName,
+                    VatRate = model.VatRate,
+                    UnitPrice = model.UnitPrice,
+                    Type = model.Type,
+                };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<LoadServiceListModel>("USP_VIEW_ADD_SERVICE", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
         }
     }
 

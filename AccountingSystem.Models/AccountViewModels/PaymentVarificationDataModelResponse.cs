@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
-
-namespace AccountingSystem.Models.AccountViewModels
+﻿namespace AccountingSystem.Models.AccountViewModels
 {
     public class PaymentVarificationDataModelResponse
     {
@@ -28,6 +21,8 @@ namespace AccountingSystem.Models.AccountViewModels
         public string referenceNo { get; set; }
         public string paymentDocumentLink { get; set; }
         public int verified { get; set; }
+        public string InvoiceNo { get; set; }
+        public string Comment { get; set; }
     }
 
     public class ApiResponseModel
@@ -38,5 +33,10 @@ namespace AccountingSystem.Models.AccountViewModels
         public string pageNo { get; set; }
         public string pageSize { get; set; }
         public int totalRecords { get; set; }
+    }
+    public class VarificationResponseModel
+    {
+        public string Message { get; set; }
+        public string Error { get; set; }
     }
 }

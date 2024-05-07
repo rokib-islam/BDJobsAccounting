@@ -21,5 +21,7 @@
         public string JobTitle { get; set; }
         public string WorkshopDate { get; set; }
         public string SPerson { get; set; }
+        public string Email { get; set; }
+        public string Mobile { get; set; }
     }
 }

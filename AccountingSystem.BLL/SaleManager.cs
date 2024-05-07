@@ -136,5 +136,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetSalesPersonListByKey(startingKey);
         }
+
+        public Task<int> DownloadCandidateMonetizationAsync()
+        {
+            return _repository.DownloadCandidateMonetizationAsync();
+        }
     }
 }

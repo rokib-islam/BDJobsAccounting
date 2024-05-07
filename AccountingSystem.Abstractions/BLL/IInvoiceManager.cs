@@ -12,7 +12,7 @@ namespace AccountingSystem.Abstractions.BLL
         Task<string> SaveInvoice([FromBody] SaveInvoiceViewModel data);
         Task<bool> CheckInvoiceNo(string invoiceNo);
         Task<string> UpdateDeleteComments(UpdateCommentViewModel data);
-        Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid);
+        Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(string query);
         Task<string> PostToOnlineAsync(string postType, string invoiceNo, string invoiceId);
         Task<List<ProductForInvoice>> Getproducts(string cId, int type);
         Task<string> GenerateInvoiceNumberAsync(string cId, string issueDate);
@@ -22,6 +22,9 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<InvoiceViewModel>> GetInvoicesAsync(GetInvoiceListParam parameters);
         Task<OnlineInvoiceResponseModel> OnlineInvcoie(OnlineInvoiceRequestModel parameters);
         Task<List<LoadOnlineInvoiceResponseModel>> LoadOnlineInvoice(LoadOnlineInvoiceModel model);
-
+        Task<CashCollectionAutoReponse> AutoCashCollection(CashCollectionAutoViewModel parameters);
+        Task<int> CheckOrderIdCountAsync(string invoiceNo);
+        Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId, int userId);
+        Task<List<LoadBouncedCheckDataModel>> LoadBouncedCheckData(LoadBouncedCheckDataModel model);
     }
 }

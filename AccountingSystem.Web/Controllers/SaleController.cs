@@ -96,6 +96,7 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
+
         public async Task<IActionResult> PostSMSAlertApplyLimitSalePosting([FromBody] PostSMSAlertApplyLimitSale Data)
         {
             var result = await _SaleManager.PostSMSAlertApplyLimitSalePosting(Data);
@@ -150,7 +151,7 @@ namespace AccountingSystem.Web.Controllers
             var result = await _SaleManager.DeleteSale(tno, deleteReason, creditNote, deleteDate);
             return Json(result);
         }
-        public async Task<IActionResult> MakeJournalOfSale(MakeJournalOfSales saleInfo)
+        public async Task<IActionResult> MakeJournalOfSale([FromBody] MakeJournalOfSales saleInfo)
         {
             var result = await _SaleManager.MakeJournalOfSale(saleInfo);
             return Json(result);
@@ -209,6 +210,12 @@ namespace AccountingSystem.Web.Controllers
 
             else
                 return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> DownloadCandidateMonetizationAsync()
+        {
+            var result = await _SaleManager.DownloadCandidateMonetizationAsync();
+
+            return Json(result);
         }
 
     }

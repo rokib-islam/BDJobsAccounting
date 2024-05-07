@@ -64,9 +64,9 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(results);
         }
-        public async Task<IActionResult> GetInvoicesForCashCollection(int CompanyId, int FullPayment, int Invalid)
+        public async Task<IActionResult> GetInvoicesForCashCollection(string query)
         {
-            var results = await _InvoiceManager.GetInvoicesForCashCollectionAsync(CompanyId, FullPayment, Invalid);
+            var results = await _InvoiceManager.GetInvoicesForCashCollectionAsync(query);
 
             return Json(results);
         }
@@ -140,6 +140,15 @@ namespace AccountingSystem.Web.Controllers
         public async Task<IActionResult> OnlineInvocie([FromBody] OnlineInvoiceRequestModel OnlineInvoice)
         {
             var responseList = await _InvoiceManager.OnlineInvcoie(OnlineInvoice);
+
+            return await Task.FromResult(Ok(responseList));
+        }
+
+        [HttpPost]
+        [Route("api/AutoCashCollection")]
+        public async Task<IActionResult> AutoCashCollection([FromBody] CashCollectionAutoViewModel OnlineInvoice)
+        {
+            var responseList = await _InvoiceManager.AutoCashCollection(OnlineInvoice);
 
             return await Task.FromResult(Ok(responseList));
         }
@@ -263,14 +272,17 @@ namespace AccountingSystem.Web.Controllers
 
         public async Task<IActionResult> VarifyOrReject([FromBody] VarifyOrReject model)
         {
-            var url = "https://corporate3.bdjobs.com/api/GetBillingsForAccouting.asp";
+            var url = "https://corporate3.bdjobs.com/api/VerifyInvoiceForAccouting.asp";
 
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("QID", model.QID.ToString()),
                 new KeyValuePair<string, string>("verified", model.verified.ToString()),
                 new KeyValuePair<string, string>("verifiedBy", model.verifiedBy.ToString()),
-                
+                new KeyValuePair<string, string>("comment", model.Comment),
+
+
+
             });
 
             try
@@ -280,9 +292,9 @@ namespace AccountingSystem.Web.Controllers
                 if (response.IsSuccessStatusCode)
                 {
                     string responseMessage = await response.Content.ReadAsStringAsync();
-                    ApiResponseModel responseObjectTyped = JsonConvert.DeserializeObject<ApiResponseModel>(responseMessage);
+                    VarificationResponseModel responseObjectTyped = JsonConvert.DeserializeObject<VarificationResponseModel>(responseMessage);
 
-                    return Json(responseObjectTyped);
+                    return Json(responseObjectTyped.Message);
                 }
                 else
                 {
@@ -295,7 +307,30 @@ namespace AccountingSystem.Web.Controllers
             }
 
         }
+
+        public IActionResult CashCollection()
+        {
+            ClaimsPrincipal claimsPrincipal = HttpContext.User;
+            if (claimsPrincipal.Identity.IsAuthenticated)
+                return View();
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public IActionResult BouncedCheckReport()
+        {
+            ClaimsPrincipal claimsPrincipal = HttpContext.User;
+            if (claimsPrincipal.Identity.IsAuthenticated)
+                return View();
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> LoadBouncedCheckData([FromBody] LoadBouncedCheckDataModel model)
+        {
+            var result = await _InvoiceManager.LoadBouncedCheckData(model);
+            return Json(result);
+        }
+
     }
-
-
 }

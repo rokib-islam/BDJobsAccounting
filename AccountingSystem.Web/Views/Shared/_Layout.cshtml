@@ -49,6 +49,16 @@
                         <li class="nav-item dropdown">
                             <!-- Add dropdown class to the list item -->
                             <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Ledger
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Ledger" asp-action="ListOfServices">List of Service</a>
+
+                            </div>
+                        </li>
+                        <li class="nav-item dropdown">
+                            <!-- Add dropdown class to the list item -->
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Journal
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
@@ -65,9 +75,11 @@
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="OnlineJobs">Online Jobs</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="NewSale">New Sale</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="EditSale">Edit Sale</a>
+                                @* <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="CashCollection">Cash Collection</a> *@
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="MakeInvoice">Make Invoice</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="OnlineInvoice">Online Invoice</a>
-                                @* <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="OnlinePaymentVarification">Online Payment Varification</a> *@
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="OnlinePaymentVarification">Online Payment Varification</a>
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="BouncedCheckReport">Bounced Check Report</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -85,7 +97,8 @@
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Report" asp-action="TrailBalance">Trail Balance</a>
-                                
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Report" asp-action="VatTaxCollectionReport">Vat Tax Collection</a>
+
                             </div>
                         </li>
                         

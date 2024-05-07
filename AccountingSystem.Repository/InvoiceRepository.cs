@@ -50,6 +50,7 @@ namespace AccountingSystem.Repository
             var isOk = true;
             var isExist = false;
             var message = "";
+            var ChallanInfo = new ChallandetailsForOnlinePosting();
 
             try
             {
@@ -71,8 +72,72 @@ namespace AccountingSystem.Repository
                             else
                                 serviceNo = 11;
 
+
+                            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                            {
+                                ChallanInfo = await _db.QueryFirstOrDefaultAsync<ChallandetailsForOnlinePosting>("USP_ChallanInfo_For_OnlinePosting", new { InvoiceNo = invoiceNo }, commandType: CommandType.StoredProcedure);
+                            }
+
+
+
+
                             var insertSql = "INSERT INTO dbo_Invoice(Cp_id,Inv_Date,Invoice_No,ServiceId,Bill_Contact,Amount,OPID) VALUES(@CpId, @InvSendDt, @InvoiceNo, @ServiceNo, @BillingContact, @Price, @OpId)";
-                            await onlineSqlConnection.ExecuteAsync(insertSql, new { CpId = cpId, InvSendDt = invSendDt, InvoiceNo = invoiceNo, ServiceNo = serviceNo, BillingContact = billingContact, Price = price, OpId = opId });
+                            await onlineSqlConnection.ExecuteAsync(insertSql, new
+                            {
+                                CpId = cpId,
+                                InvSendDt = invSendDt,
+                                InvoiceNo = invoiceNo,
+                                ServiceNo = serviceNo,
+                                BillingContact = billingContact,
+                                Price = price,
+                                OpId = opId
+                            });
+
+                            var dbo_Invoice_Id = await onlineSqlConnection.QueryFirstOrDefaultAsync<int>("SELECT InvoiceId FROM dbo_Invoice where INVOICE_NO=@InvoiceNo", new { InvoiceNo = invoiceNo });
+
+                            var UniqueQuationNo = await onlineSqlConnection.QueryFirstOrDefaultAsync<string>("SELECT CONVERT(varchar, GETDATE(), 112) + '-' +CAST(SUM(CASE WHEN CP_ID = 112846 THEN 1 ELSE 0 END) + 1 AS varchar) AS totalCompanyQuotationSerial FROM PaymentQuotation", new { InvoiceNo = invoiceNo });
+
+                            var QuatationinsertSql = "INSERT INTO PaymentQuotation(CP_ID, QuotationNo, ItemID, ItemType, TotalAmount)  VALUES (@CP_ID, @QuotationNo,@ItemID, @ItemType,  @TotalAmount)";
+                            await onlineSqlConnection.ExecuteAsync(QuatationinsertSql, new
+                            {
+                                CP_ID = cpId,
+                                QuotationNo = UniqueQuationNo,
+                                ItemID = dbo_Invoice_Id,
+                                ItemType = "Invoice",
+                                TotalAmount = price,
+                            });
+
+                            var Quation_Id = await onlineSqlConnection.QueryFirstOrDefaultAsync<int>("select PQ_ID from PaymentQuotation where ItemID=@Invoice_Id", new { Invoice_Id = dbo_Invoice_Id });
+
+                            var ChallaninsertSql = "INSERT INTO ChallanInfo(ChallanNo,CP_ID,CompanyName,CompanyVatAddress,CompanyBINNo,IssueDate,InvoiceNo,CreatedBy,CreaterDesignation ,ServiceName,UnitSupply,Quantity,UnitPrice, UnitTotalPrice,VatRate,VatAmount,UnitTotalPriceAll,TotalPrice,TotalVatPrice,TotalPriceAll,IsActive,PostedOn,PQ_ID,InvoiceComments)  VALUES (@ChallanNo,@CP_ID, @CompanyName,@CompanyVatAddress, @CompanyBINNo,  @IssueDate,  @InvoiceNo, @CreatedBy,  @CreaterDesignation,@ServiceName,  @UnitSupply,  @Quantity, @UnitPrice,        @UnitTotalPrice,  @VatRate,  @VatAmount, @UnitTotalPriceAll, @TotalPrice, @TotalVatPrice, @TotalPriceAll,  @IsActive, @PostedOn,@PQ_ID,@InvoiceComments )";
+                            await onlineSqlConnection.ExecuteAsync(ChallaninsertSql, new
+                            {
+                                ChallanNo = ChallanInfo.ChallanNo,
+                                CP_ID = cpId,
+                                CompanyName = ChallanInfo.Contact_Person,
+                                CompanyVatAddress = ChallanInfo.Address,
+                                CompanyBINNo = ChallanInfo.VATRegNo,
+                                IssueDate = ChallanInfo.Date,
+                                InvoiceNo = ChallanInfo.InvoiceNo,
+                                CreatedBy = ChallanInfo.UserName,
+                                CreaterDesignation = ChallanInfo.UserDegignation,
+                                ServiceName = ChallanInfo.ServiceName,
+                                UnitSupply = ChallanInfo.ServiceType,
+                                Quantity = ChallanInfo.Quantity,
+                                UnitPrice = ChallanInfo.OneItemPrice,
+                                UnitTotalPrice = ChallanInfo.TotalPrice,
+                                VatRate = ChallanInfo.VatRate,
+                                VatAmount = ChallanInfo.TotalVat,
+                                UnitTotalPriceAll = ChallanInfo.TotalPriceAll,
+                                TotalPrice = ChallanInfo.PriceWithVat,
+                                TotalVatPrice = ChallanInfo.TotalVatAll,
+                                TotalPriceAll = ChallanInfo.priceWithVatAll,
+                                IsActive = 1,
+                                PostedOn = ChallanInfo.Date,
+                                PQ_ID = Quation_Id,
+                                InvoiceComments = ChallanInfo.Comments,
+                            });
+
 
                             var IntjpIdList = jpIdList.Split(',').Select(int.Parse).ToList();
 
@@ -244,22 +309,19 @@ namespace AccountingSystem.Repository
                 return ex.ToString();
             }
         }
-        public async Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid)
+        public async Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(string query)
         {
             var invoices = new List<InvoiceViewModel>();
 
-            var parameters = new
-            {
-                CompanyId = CompanyId,
-                FullPayment = FullPayment,
-                Invalid = Invalid
-            };
+            var sqquery = "usp_GetInvoiceList " + query;
+
+            var parameters = new { };
 
             try
             {
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    var result = await _db.QueryAsync<InvoiceViewModel>("usp_GetInvoiceList", parameters, commandType: CommandType.StoredProcedure);
+                    var result = await _db.QueryAsync<InvoiceViewModel>(sqquery, parameters, commandType: CommandType.Text);
 
                     invoices.AddRange(result);
                 }
@@ -271,6 +333,9 @@ namespace AccountingSystem.Repository
 
             return invoices;
         }
+
+
+
 
         public async Task<string> PostToOnlineAsync(string postType, string invoiceNo, string invoiceId)
         {
@@ -568,6 +633,38 @@ namespace AccountingSystem.Repository
             }
         }
 
+        public async Task<CashCollectionAutoReponse> AutoCashCollection(CashCollectionAutoViewModel parameters)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var dynamicParameters = new DynamicParameters();
+                    dynamicParameters.Add("@InvoiceNo", parameters.InvoiceNo);
+                    dynamicParameters.Add("@SalesPrice", parameters.SalesPrice);
+                    dynamicParameters.Add("@DiscountedPrice", parameters.DiscountedPrice);
+                    dynamicParameters.Add("@PaymentMode", parameters.PaymentMode);
+                    dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
+                    dynamicParameters.Add("@SDate", parameters.SDate);
+                    dynamicParameters.Add("@CP_Id", parameters.CP_Id);
+
+
+
+                    var invoices = await _db.QueryAsync<CashCollectionAutoReponse>(
+                        "USP_Auto_CashCollection",
+                        dynamicParameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return invoices.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions accordingly
+                throw new Exception("Error retrieving invoices.", ex);
+            }
+        }
+
         public async Task<List<LoadOnlineInvoiceResponseModel>> LoadOnlineInvoice(LoadOnlineInvoiceModel model)
         {
             try
@@ -577,6 +674,8 @@ namespace AccountingSystem.Repository
                     Status = model.Status,
                     Fromdate = model.FromDate,
                     Todate = model.ToDate,
+                    PaymentMode = model.paymentMode,
+                    ServiceName = model.ServiceName
                 };
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
@@ -591,8 +690,66 @@ namespace AccountingSystem.Repository
             }
 
         }
+        public async Task<int> CheckOrderIdCountAsync(string invoiceNo)
+        {
+            int orderCount = 0;
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    orderCount = await _db.QueryFirstOrDefaultAsync<int>("SELECT COUNT(*) FROM dbo.InvoiceList WHERE Invoice_No = @InvoiceNo AND DtOrderCode IS NOT NULL", new { InvoiceNo = invoiceNo });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return orderCount;
+        }
+        public async Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId, int userId)
+        {
+            try
+            {
+                string sqlQuery = "UPDATE dbo.InvoiceList SET DtOrderCode = @CourierOrderId,DtOrderUseId=@UserId WHERE Invoice_No = @InvoiceNo";
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    await _db.ExecuteAsync(sqlQuery, new { CourierOrderId = courierOrderId, InvoiceNo = invoiceNo, UserId = userId });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public async Task<List<LoadBouncedCheckDataModel>> LoadBouncedCheckData(LoadBouncedCheckDataModel model)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    Fromdate = model.FromDate,
+                    Todate = model.ToDate,
+                    CId = model.CId,
+                    
+                };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<LoadBouncedCheckDataModel>("USP_LoadAllBouncedCheckData", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
 
     }
+
 }
+
 
 

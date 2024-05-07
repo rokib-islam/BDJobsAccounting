@@ -38,9 +38,9 @@ namespace AccountingSystem.BLL
             return _repository.GetInvoicesAsync(parameters);
         }
 
-        public Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(int CompanyId, int FullPayment, int Invalid)
+        public Task<IEnumerable<InvoiceViewModel>> GetInvoicesForCashCollectionAsync(string query)
         {
-            return _repository.GetInvoicesForCashCollectionAsync(CompanyId, FullPayment, Invalid);
+            return _repository.GetInvoicesForCashCollectionAsync(query);
         }
 
         public async Task<string> GetInvSendDt(string invoiceNo)
@@ -96,6 +96,27 @@ namespace AccountingSystem.BLL
         public async Task<List<LoadOnlineInvoiceResponseModel>> LoadOnlineInvoice(LoadOnlineInvoiceModel model)
         {
             return await _repository.LoadOnlineInvoice(model);
+        }
+
+        public async Task<CashCollectionAutoReponse> AutoCashCollection(CashCollectionAutoViewModel parameters)
+        {
+            return await _repository.AutoCashCollection(parameters);
+        }
+
+        public async Task<int> CheckOrderIdCountAsync(string invoiceNo)
+        {
+            return await _repository.CheckOrderIdCountAsync(invoiceNo);
+        }
+
+        public async Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId, int userId)
+        {
+            //return await _repository.UpdateOrderInvoiceTableAsync(invoiceNo, courierOrderId);
+            await _repository.UpdateOrderInvoiceTableAsync(invoiceNo, courierOrderId, userId);
+        }
+
+        public async Task<List<LoadBouncedCheckDataModel>> LoadBouncedCheckData(LoadBouncedCheckDataModel model)
+        {
+            return await _repository.LoadBouncedCheckData(model);
         }
     }
 }
