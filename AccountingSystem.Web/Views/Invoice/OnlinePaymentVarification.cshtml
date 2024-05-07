@@ -103,6 +103,7 @@
                         </td>
                         <td>{{data.serviceName}} <br /> 
                             {{data.jobTitle}} <br /> 
+                            Invoice No: {{data.invoiceNo}} <br />
                             Job ID: {{data.jobID}} <br /> 
                             Total Cost: {{data.totalCost}}
                         </td>
@@ -120,7 +121,8 @@
                         </td> *@
                         <td>
                             <span ng-if="data.verified == 1">Verified</span>
-                            <span ng-if="data.verified == 2">Rejected</span>
+                            <span ng-if="data.verified == 2">Rejected.  <br /> 
+                                comment: {{data.comment}}</span>
                             <div ng-if="!data.verified">
                                 <input type="radio" ng-model="data.verification" value="1"> Verify Payment
                                 <input type="radio" ng-model="data.verification" value="2"> Reject
@@ -166,6 +168,7 @@
 
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
+                    $scope.search();
                    alert(response);
                 }, function (error) {
                     console.error(error);

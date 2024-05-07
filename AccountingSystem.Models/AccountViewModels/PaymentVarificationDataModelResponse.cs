@@ -21,6 +21,8 @@
         public string referenceNo { get; set; }
         public string paymentDocumentLink { get; set; }
         public int verified { get; set; }
+        public string InvoiceNo { get; set; }
+        public string Comment { get; set; }
     }
 
     public class ApiResponseModel
