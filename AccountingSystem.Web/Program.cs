@@ -1,5 +1,7 @@
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Configurations.Extentions;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 
@@ -18,7 +20,7 @@ builder.Services.AddDbContextPool<AccountingDbContext>(x =>
 });
 builder.Services.AddSession(options =>
 {
-    options.IdleTimeout = TimeSpan.FromMinutes(30);
+    options.IdleTimeout = TimeSpan.FromHours(6);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -30,9 +32,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 // **Register HttpClient service**
-builder.Services.AddHttpClient();  // Register basic HttpClient instance
+builder.Services.AddHttpClient();  
 
-builder.Services.ConfigureServices();  // This line is likely unnecessary
+builder.Services.ConfigureServices(); 
 
 builder.Services.AddCors(options =>
 {
@@ -44,6 +46,20 @@ builder.Services.AddCors(options =>
                 .AllowAnyHeader();
         });
 });
+
+builder.Services.AddHangfire(configuration =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+
+    configuration
+        .SetDataCompatibilityLevel(CompatibilityLevel.Version_170) 
+        .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
+        {
+            CommandTimeout = TimeSpan.FromMinutes(10) 
+        });
+});
+
+builder.Services.AddHangfireServer();
 
 var app = builder.Build();
 
@@ -71,7 +87,7 @@ app.UseStaticFiles();
 
 app.UseCors("AllowAll");
 
-// Modify InvoiceController to inject HttpClient
+app.UseHangfireDashboard();
 
 
 app.MapControllerRoute(
