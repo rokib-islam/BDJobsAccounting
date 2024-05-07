@@ -107,6 +107,7 @@
 
         $scope.selectCompany = function (company) {
             $scope.selectedCompany = company;
+            $scope.cid = $scope.selectedCompany.id;
             $scope.searchQuery = company.name;
             $scope.companyList = [];
         }
@@ -116,9 +117,9 @@
 
         $scope.load = function () {
             let requestBodyModel = {
-                CId: $scope.comList == undefined ? 0 : $scope.comList,
-                FromDate: $scope.fromDate,
-                ToDate: $scope.toDate
+                CId: $scope.cid == undefined ? 0 : $scope.cid,
+                FromDate: $scope.fromDate.toISOString().split('T')[0],
+                ToDate: $scope.toDate.toISOString().split('T')[0]
             }
 
             let Url = '';

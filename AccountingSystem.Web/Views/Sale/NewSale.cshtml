@@ -693,7 +693,6 @@
                 Url = '/AccountingNew/Company/GetContactPersonsOrJobTitle';
             $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
-                    debugger
                     var onlineJpId = @onlineJobId;
                     $scope.jobTitleData = response.data;
                     //$scope.searchKeyword = $scope.jobTitleData[0].companyName;

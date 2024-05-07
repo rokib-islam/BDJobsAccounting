@@ -1,0 +1,122 @@
+﻿@{
+    ViewData["Title"] = "BouncedCheckReport";
+}
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+</head>
+
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="row">
+            <h4 class="text-center alert-primary" style="margin-top:-10px">Bounced Check Report</h4>
+            <div class="col-sm-3">
+                <label>From Date</label>
+                <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
+            </div>
+            <div class="col-sm-3">
+                <label>To Date</label>
+                <input type="date" class="form-control form-control-sm" ng-model="toDate" />
+            </div>
+            <div class="col-sm-3">
+                <label>Company</label>
+                <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
+                <select class="form-select form-select-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                    <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                </select>
+            </div>
+            <div class="col-sm-3 mt-4">
+                <button class="btn btn-success btn-sm px-5" ng-click="load()">Load</button>
+            </div>
+
+            <table ng-show="showTable" class="table table-bordered table-sm mt-3" style="font-size:15px" id="tableData">
+                <thead>
+                    <tr style="background-color:skyblue">
+                        <th class="text-center">Sl#</th>
+                        <th class="text-center">Date of Return</th>
+                        <th class="text-center">Customer Name</th>
+                        <th class="text-center">Invoice No</th>
+                        <th class="text-center">Cheque No</th>
+                        <th class="text-center">Cheque Value (Tk.)</th>
+                        <th class="text-center">Note</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="data in bouncedCheckData">
+                        <td class="text-center">{{$index + 1}}</td>
+                        <td class="text-center">{{data.bouncedCheckDate | date: "dd-MM-yyyy"}}</td>
+                        <td class="text-center">{{data.name}}</td>
+                        <td class="text-center">{{data.invoice_No}}</td>
+                        <td class="text-center">{{data.bouncedCheckNo}}</td>
+                        <td class="text-end">{{data.bouncedAmount | number}}</td>
+                        <td>{{data.bouncedNote}}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        $scope.showTable = false;
+        $scope.fromDate = new Date();
+        $scope.toDate = new Date();
+
+        $scope.companyList = [];
+        $scope.selectedCompany = null;
+        $scope.searchCompany = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Company/GetCompanyListByKey';
+                else
+                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.companyList = response.data;
+                        $scope.list = $scope.companyList;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.companyList = [];
+            }
+        };
+
+        $scope.selectCompany = function (company) {
+            $scope.selectedCompany = company;
+            $scope.cid = $scope.selectedCompany.id;
+            $scope.searchQuery = company.name;
+            $scope.companyList = [];
+        }
+
+
+        $scope.load = function () {
+           
+            let requestBodyModel = {
+                FromDate: $scope.fromDate.toISOString().split('T')[0],
+                ToDate: $scope.toDate.toISOString().split('T')[0],
+                CId: $scope.cid == undefined ? 0 : $scope.cid
+            }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/LoadBouncedCheckData';
+            else
+                Url = '/AccountingNew/Invoice/LoadBouncedCheckData';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    $scope.bouncedCheckData = response.data;
+                    $scope.showTable = true;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+    })
+</script>

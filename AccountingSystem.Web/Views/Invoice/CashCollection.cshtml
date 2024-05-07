@@ -529,7 +529,6 @@
 
         // Function to toggle the visibility of fieldsets
         $scope.toggleFieldset = function (divName) {
-            debugger
             $scope.showFieldset = divName === $scope.showFieldset ? '' : divName;
         };
 
@@ -700,7 +699,6 @@
 
             $http.get(Url)
                 .then(function (response) {
-                    debugger
                     $scope.closingDateData = response.data;
                 }, function (error) {
                     console.error(error);
@@ -709,7 +707,6 @@
         };
        
         $scope.performAction = function (action) {
-            debugger
             var amount = $scope.amount;
             var date1 = new Date($scope.receivedDate);
             var date2 = new Date($scope.closingDateData);

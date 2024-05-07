@@ -113,5 +113,10 @@ namespace AccountingSystem.BLL
             //return await _repository.UpdateOrderInvoiceTableAsync(invoiceNo, courierOrderId);
             await _repository.UpdateOrderInvoiceTableAsync(invoiceNo, courierOrderId, userId);
         }
+
+        public async Task<List<LoadBouncedCheckDataModel>> LoadBouncedCheckData(LoadBouncedCheckDataModel model)
+        {
+            return await _repository.LoadBouncedCheckData(model);
+        }
     }
 }

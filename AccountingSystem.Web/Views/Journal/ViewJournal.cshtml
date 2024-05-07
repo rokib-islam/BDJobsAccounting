@@ -156,21 +156,29 @@
                 <td>Id</td>
                 <td>Ledger name</td>
                 <td>Description</td>
-                <td>Debt</td>
+                <td>Debit</td>
                 <td>Credit</td>
                 <td>Date</td>
             </tr>
             <tbody>
                 <tr ng-repeat="data in journalData">
-                    <td>{{$index + 1}}</td>
-                    <td>{{data.id}}</td>
+                    <td class ="text-center">{{$index + 1}}</td>
+                    <td class="text-center">{{data.id}}</td>
                     <td>{{data.sbName}}</td>
                     <td>{{data.description}}</td>
                     <td class="text-right">{{numberToAmount(data.debt)}}</td>
                     <td class="text-right">{{numberToAmount(data.credit)}}</td>
-                    <td>{{data.jDate}}</td>
+                    <td class="text-center">{{data.jDate}}</td>
                 </tr>
             </tbody>
+            <tfoot>
+                <tr style="font-weight:bold">
+                    <td colspan="4" style="text-align:right">Total</td>
+                    <td class="text-right">{{totalDebit | number}}</td>
+                    <td class="text-right">{{totalCredit | number}}</td>
+                    <td></td>
+                </tr>
+            </tfoot>
         </table>
     </div>
 </div>
@@ -281,8 +289,8 @@
                 PageSize: $scope.itemsPerPage,
                 IsPreview: 0,
                 DateType: $scope.dateType,
-                StartDate: $scope.from,
-                EndDate: $scope.to,
+                StartDate: $scope.from.toISOString().split('T')[0],
+                EndDate: $scope.to.toISOString().split('T')[0],
                 LedgerId: $scope.ledger,
                 LedgerName: '',
                 CompanyId: $scope.selectedCompany ? $scope.selectedCompany.id : 0,
@@ -306,6 +314,8 @@
                         $scope.showTable = false;
                     }
                     $scope.journalData = response.data;
+                    $scope.totalDebit = $scope.journalData.reduce((a, b) => a + b.debt, 0);
+                    $scope.totalCredit = $scope.journalData.reduce((a, b) => a + b.credit, 0);
                     $scope.totalItems = response.data[0].totalRecords;
                     $scope.showTable = true;
                     $scope.isVisible = true;

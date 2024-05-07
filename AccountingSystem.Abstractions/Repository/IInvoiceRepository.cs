@@ -25,6 +25,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task<CashCollectionAutoReponse> AutoCashCollection(CashCollectionAutoViewModel parameters);
         Task<int> CheckOrderIdCountAsync(string invoiceNo);
         Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId, int userId);
+        Task<List<LoadBouncedCheckDataModel>> LoadBouncedCheckData(LoadBouncedCheckDataModel model);
 
     }
 
