@@ -320,6 +320,40 @@ namespace AccountingSystem.Repository
         }
 
         #region download sms alert
+        public async Task<int> DownloadCandidateMonetizationAsync()
+        {
+            int row = 0;
+
+            try
+            {
+                using (var _Onlinedb = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+                {
+                    var result = await _Onlinedb.QueryAsync<SMSAlertApplyLimit>("Accounting.USP_ACC_Candidate_Monetization_Download", commandType: CommandType.StoredProcedure);
+
+                    if (result.Any())
+                    {
+                        var dataTable = CreateSMSAlertDataTable();
+                        PopulateSMSAlertDataTable(dataTable, result);
+
+                        using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                        {
+                            await _db.ExecuteAsync("USP_Candidate_Monetization_Download",
+                                new { SMSAlertApplyLimt = dataTable.AsTableValuedParameter("dbo.SMSAlertApplyLimt") },
+                                commandType: CommandType.StoredProcedure);
+                        }
+
+                        row = result.Count();
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                row = -1;
+            }
+
+            return row;
+        }
+
         public async Task<int> DownloadSMSAlertAsync(int serviceId, string fDate, string tDate)
         {
             int row = 0;

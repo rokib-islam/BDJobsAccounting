@@ -1,6 +1,5 @@
 ﻿using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
-using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingSystem.Abstractions.BLL
 {
@@ -33,5 +32,6 @@ namespace AccountingSystem.Abstractions.BLL
         Task<string> UpdateSalePosted(MakeJournalOfSales saleInfo);
         Task<string> UpdateSaleContactPersonAndRefNo(UpdateSaleContactPersonAndRefNoModel model);
         Task<List<SalesPerson>> GetSalesPersonListByKey(string startingKey);
+        Task<int> DownloadCandidateMonetizationAsync();
     }
 }

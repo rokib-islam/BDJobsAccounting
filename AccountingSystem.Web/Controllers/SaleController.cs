@@ -96,6 +96,7 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
+
         public async Task<IActionResult> PostSMSAlertApplyLimitSalePosting([FromBody] PostSMSAlertApplyLimitSale Data)
         {
             var result = await _SaleManager.PostSMSAlertApplyLimitSalePosting(Data);
@@ -209,6 +210,12 @@ namespace AccountingSystem.Web.Controllers
 
             else
                 return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> DownloadCandidateMonetizationAsync()
+        {
+            var result = await _SaleManager.DownloadCandidateMonetizationAsync();
+
+            return Json(result);
         }
 
     }
