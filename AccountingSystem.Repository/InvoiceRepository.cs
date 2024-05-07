@@ -722,6 +722,31 @@ namespace AccountingSystem.Repository
             }
         }
 
+        public async Task<List<LoadBouncedCheckDataModel>> LoadBouncedCheckData(LoadBouncedCheckDataModel model)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    Fromdate = model.FromDate,
+                    Todate = model.ToDate,
+                    CId = model.CId,
+                    
+                };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<LoadBouncedCheckDataModel>("USP_LoadAllBouncedCheckData", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
     }
 
 }

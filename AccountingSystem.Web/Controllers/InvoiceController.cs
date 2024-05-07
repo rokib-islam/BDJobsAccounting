@@ -317,7 +317,20 @@ namespace AccountingSystem.Web.Controllers
                 return RedirectToAction("Index", "Home");
         }
 
+        public IActionResult BouncedCheckReport()
+        {
+            ClaimsPrincipal claimsPrincipal = HttpContext.User;
+            if (claimsPrincipal.Identity.IsAuthenticated)
+                return View();
+            else
+                return RedirectToAction("Index", "Home");
+        }
 
+        public async Task<IActionResult> LoadBouncedCheckData([FromBody] LoadBouncedCheckDataModel model)
+        {
+            var result = await _InvoiceManager.LoadBouncedCheckData(model);
+            return Json(result);
+        }
 
     }
 }

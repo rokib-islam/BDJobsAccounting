@@ -70,7 +70,7 @@
                         <th class="text-center">Service Name</th>
                         <th class="text-center">Job Title</th>
                         <th class="text-center">Price</th>
-                        <th class="text-center">Vat</th>
+                        @* <th class="text-center">Vat</th> *@
                         <th class="text-center">Status</th>
                         <th class="text-center">Invoice No</th>
                         <th class="text-center">Post Date</th>
@@ -85,8 +85,8 @@
                         <td class="text-center">{{data.companyName}}</td>
                         <td class="text-center">{{data.serviceName}}</td>
                         <td class="text-center">{{data.title}}</td>
-                        <td class="text-end">{{data.price | number}}</td>
-                        <td class="text-end">{{data.vat | number}}</td>
+                        <td class="text-end">{{(data.price + data.vat) | number}}</td>
+                        @* <td class="text-end">{{data.vat | number}}</td> *@
                         <td class="text-center">{{data.status}}</td>
                         <td class="text-center">{{data.invoiceNo}}</td>
                         <td class="text-center">{{data.postDate | date: "dd-MM-yyyy"}}</td>
@@ -101,8 +101,8 @@
                 <tfoot>
                     <tr style="font-weight:bold">
                         <td colspan="4" style="text-align:right">Total</td>
-                        <td>{{totalPrice | number}}</td>
-                        <td>{{totalVat | number}}</td>
+                        <td>{{totalSumPriceVat | number}}</td>
+                        @* <td>{{totalVat | number}}</td> *@
                         <td colspan="6"></td>
                     </tr>
                 </tfoot>
@@ -127,8 +127,8 @@
         $scope.load=function(){
             let requestBodyModel = {
                 Status: $scope.status,
-                FromDate: $scope.fromDate,
-                ToDate: $scope.toDate,
+                FromDate: $scope.fromDate.toISOString().split('T')[0],
+                ToDate: $scope.toDate.toISOString().split('T')[0],
                 paymentMode: $scope.paymentMode == 'All' ? "" : $scope.paymentMode,
                 ServiceName: $scope.serviceName == "All" ? "" : $scope.serviceName,
             }
@@ -144,6 +144,7 @@
                     $scope.onlineData = response.data;
                     $scope.totalPrice = response.data.reduce((a, b) => a + b.price, 0);
                     $scope.totalVat = response.data.reduce((a, b) => a + b.vat, 0);
+                    $scope.totalSumPriceVat = $scope.totalPrice + $scope.totalVat;
                     $scope.showTable = true;
                     $scope.disableExcelButton = false;
 
