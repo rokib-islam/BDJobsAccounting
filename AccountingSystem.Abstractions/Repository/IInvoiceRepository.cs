@@ -21,8 +21,10 @@ namespace AccountingSystem.Abstractions.Repository
         Task<string> UpdateAmount(string invoiceNo, decimal amount);
         Task<List<InvoiceViewModel>> GetInvoicesAsync(GetInvoiceListParam parameters);
         Task<OnlineInvoiceResponseModel> OnlineInvcoie(OnlineInvoiceRequestModel parameters);
+        Task<OnlineInvoiceResponseModel> OnlineInvcoietest(OnlineInvoiceRequestModel parameters);
         Task<List<LoadOnlineInvoiceResponseModel>> LoadOnlineInvoice(LoadOnlineInvoiceModel model);
         Task<CashCollectionAutoReponse> AutoCashCollection(CashCollectionAutoViewModel parameters);
+        Task<CashCollectionAutoReponse> AutoCashCollectiontest(CashCollectionAutoViewModel parameters);
         Task<int> CheckOrderIdCountAsync(string invoiceNo);
         Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId, int userId);
         Task<List<LoadBouncedCheckDataModel>> LoadBouncedCheckData(LoadBouncedCheckDataModel model);

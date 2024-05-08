@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                        <script type="text/javascript">
-                                            window.location.href = '@Url.Action("Index", "Home")';
-                                        </script>
+                                                <script type="text/javascript">
+                                                    window.location.href = '@Url.Action("Index", "Home")';
+                                                </script>
     }
     else
     {
@@ -149,9 +149,6 @@
                 <fieldset class="border p-2">
                     <legend class="float-none w-auto p-2 fs-5">Payment Nature</legend>
                     <div class="row">
-
-                        <input type="hidden" id="payment" ng-model="payment" ng-init="payment = 1" />
-
                         <div class="col-sm-6">
                             <div class="form-group row">
                                 <label class="col-sm-4">Date</label>
@@ -177,9 +174,9 @@
                         <div class="col-sm-12 mt-2">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <div class="pb-1" ng-class="{ 'selected-div': === 'Cash' }" data-value="1" data-id="46">
+                                    <div class="pb-1" ng-class="{ 'selected-div': === 'Cash' }" data-id="46">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-12 px-1" ng-class="{ 'selected-div': showFieldset === 'Cash' }" ng-click="toggleFieldset('Cash')">
+                                            <div class="payment_div col-12 px-1" ng-class="{ 'selected-div': showFieldset === 'Cash' }" ng-click="toggleFieldset('Cash', 1)">
                                                 <div class="col-sm-12">
                                                     Cash
                                                 </div>
@@ -187,9 +184,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'BankInfo' }" data-value="2">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'BankInfo' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('BankInfo')">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('BankInfo', 2)">
                                                 <div class="col-sm-12">
                                                     Cheque
                                                 </div>
@@ -205,7 +202,7 @@
                                                         <div class="col-sm-12">
                                                             <div class="row">
                                                                 <div class="col-sm-12">
-                                                                    <select class="form-control form-control-sm" ng-model="ledgerList">
+                                                                    <select class="form-select form-select-sm" ng-model="ledgerList">
                                                                         <option value=""></option>
                                                                         <option ng-repeat="ledger in allLedgerData" value="{{ledger.id}}">{{ledger.ladgerName}}</option>
                                                                     </select>
@@ -226,9 +223,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'VATType' }" data-value="3">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'VATType' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('VATType')">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('VATType', 3)">
                                                 <div class="col-sm-12">
                                                     VAT
                                                 </div>
@@ -256,9 +253,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="pb-1" ng-class="{ 'selected-div': === 'BadDebt' }" data-value="4" data-id="378">
+                                    <div class="pb-1" ng-class="{ 'selected-div': === 'BadDebt' }" data-id="378">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-12 px-1" ng-class="{ 'selected-div': showFieldset === 'BadDebt' }" ng-click="toggleFieldset('BadDebt')">
+                                            <div class="payment_div col-12 px-1" ng-class="{ 'selected-div': showFieldset === 'BadDebt' }" ng-click="toggleFieldset('BadDebt', 4)">
                                                 <div class="col-sm-12">
                                                     Bad Debt
                                                 </div>
@@ -266,9 +263,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'Nagad' }" data-value="5" data-id="28724">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'Nagad' }" data-id="28724">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('Nagad')">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('Nagad', 5)">
                                                 <div class="col-sm-12">
                                                     Nagad Mobile A/C
                                                 </div>
@@ -290,9 +287,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SSL' }" data-value="6" data-id="849">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SSL' }" data-id="849">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('SSL')">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('SSL', 6)">
                                                 <div class="col-sm-12">
                                                     SSL Marchant A/C
                                                 </div>
@@ -314,9 +311,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'bKash' }" data-value="7" data-id="1030">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'bKash' }" data-id="1030">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('bKash')">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('bKash', 7)">
                                                 <div class="col-sm-12">
                                                     bKash Marchant A/C
                                                 </div>
@@ -338,9 +335,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="pb-1" ng-class="{ 'selected-div': === 'DiscountOfSales' }" data-value="8" data-id="850">
+                                    <div class="pb-1" ng-class="{ 'selected-div': === 'DiscountOfSales' }" data-id="850">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-12 px-1" ng-class="{ 'selected-div': showFieldset === 'DiscountOfSales' }" ng-click="toggleFieldset('DiscountOfSales')">
+                                            <div class="payment_div col-12 px-1" ng-class="{ 'selected-div': showFieldset === 'DiscountOfSales' }" ng-click="toggleFieldset('DiscountOfSales', 8)">
                                                 <div class="col-sm-12">
                                                     Discount of Sales
                                                 </div>
@@ -348,9 +345,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="pb-1" ng-class="{ 'selected-div': === 'OnlineCollection' }" data-value="9" data-id="3342">
+                                    <div class="pb-1" ng-class="{ 'selected-div': === 'OnlineCollection' }" data-id="3342">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-12 px-1" ng-class="{ 'selected-div': showFieldset === 'OnlineCollection' }" ng-click="toggleFieldset('OnlineCollection')">
+                                            <div class="payment_div col-12 px-1" ng-class="{ 'selected-div': showFieldset === 'OnlineCollection' }" ng-click="toggleFieldset('OnlineCollection', 9)">
                                                 <div class="col-sm-12">
                                                     Online Collection Charges
                                                 </div>
@@ -360,9 +357,9 @@
                                 </div>
 
                                 <div class="col-sm-6">
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'AmarPay' }" data-value="15" data-id="31237">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'AmarPay' }" data-id="31237">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('AmarPay')">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('AmarPay', 15)">
                                                 <div class="col-sm-12">
                                                     AmarPay Marchant A/C
                                                 </div>
@@ -384,9 +381,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SouthEast' }" data-value="10" data-id="411">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SouthEast' }" data-id="411">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('SouthEast')">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('SouthEast', 10)">
                                                 <div class="col-sm-12">
                                                     Southeast
                                                 </div>
@@ -408,9 +405,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'Brac' }" data-value="11" data-id="851">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'Brac' }" data-id="851">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('Brac')">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('Brac', 11)">
                                                 <div class="col-sm-12">
                                                     Brac
                                                 </div>
@@ -432,9 +429,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SCB' }" data-value="12" data-id="647">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SCB' }" data-id="647">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('SCB')">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('SCB', 12)">
                                                 <div class="col-sm-12">
                                                     SCB
                                                 </div>
@@ -456,9 +453,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'UCB' }" data-value="13" data-id="28816">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'UCB' }" data-id="28816">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('UCB')">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('UCB', 13)">
                                                 <div class="col-sm-12">
                                                     UCB
                                                 </div>
@@ -480,9 +477,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'OnlinePayment' }" data-value="14" data-id="2262">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'OnlinePayment' }" data-id="2262">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('OnlinePayment')">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('OnlinePayment', 14)">
                                                 <div class="col-sm-12">
                                                     Online Payment Payable
                                                 </div>
@@ -525,12 +522,19 @@
             $scope.loadClosingDate();
         })
 
-        $scope.showFieldset = ''; // Initialize to empty string
-
-        // Function to toggle the visibility of fieldsets
-        $scope.toggleFieldset = function (divName) {
+        $scope.showFieldset = '';
+        $scope.toggleFieldset = function (divName, dataValue) {
             $scope.showFieldset = divName === $scope.showFieldset ? '' : divName;
+            $scope.passValue = dataValue;
         };
+
+        if ($scope.passValue == 2 || $scope.passValue == 3 || $scope.passValue == 5 || $scope.passValue == 6 || $scope.passValue == 7 || $scope.passValue == 10 || $scope.passValue == 11 || $scope.passValue == 12 || $scope.passValue == 13 || $scope.passValue == 14 || $scope.passValue == 15) {
+            if ($scope.passValue != 2) {
+                $scope.ledgerList = '411';
+                $scope.chequeNo = '';
+            }
+        }
+        
 
         $scope.companyList = [];
         $scope.searchCompany = function (startingKey) {
