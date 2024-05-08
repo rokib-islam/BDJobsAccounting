@@ -44,9 +44,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-        <script type="text/javascript">
-            window.location.href = '@Url.Action("Index", "Home")';
-        </script>
+            <script type="text/javascript">
+                window.location.href = '@Url.Action("Index", "Home")';
+            </script>
     }
     else
     {
@@ -507,8 +507,8 @@
                     $scope.showWorkshopDate = true;
                 } else {
                     $scope.titleChange = 'Job Title'; 
-                    $scope.titleDisabled = false;
-                    $scope.inputTitleDisabled = false;
+                    $scope.titleDisabled = true;
+                    $scope.inputTitleDisabled = true;
                     $scope.showWorkshopDate = false;
                 }
             } else {
@@ -701,6 +701,7 @@
                     } else {
                         // $scope.jobTitle = $scope.jobTitleData[0].jp_Id.toString();
                         $scope.jobTitleList = onlineJpId.toString();
+                        
                     }
 
                     $scope.dateFrom = new Date($scope.jobTitleData[0].postingDate);
@@ -864,6 +865,16 @@
             var selectedJpId = $scope.jobTitleData.find(function (s) {
                 return s.jp_Id == $scope.jobTitleList;
             });
+            var jobTitle="";
+            var jobId=0;
+            var onlineJpId = @onlineJobId;
+            if (onlineJpId != 0) {
+                jobTitle = selectedJpId.title;
+                jobId = selectedJpId ? selectedJpId.jp_Id : 0;
+            } else {
+                jobTitle= $scope.jobTitle ? $scope.jobTitle : "";
+                jobId = selectedJpId ? selectedJpId.jp_Id : 0;
+            }
             let requestBodyModel = {
                 UserId: @userId,
                 CId: $scope.selectedCompany.id,
@@ -885,8 +896,8 @@
                 // TypeId: $scope.taxType ? $scope.taxType.toString() : "",
                 TypeId: $scope.amount == 0 ? "0" : "672",// "672",
                 Vat: $scope.amount || 0,
-                JobTitle: $scope.jobTitle ? $scope.jobTitle : "",
-                JpId: selectedJpId == undefined ? 0 : selectedJpId.jp_Id,
+                JobTitle: jobTitle,
+                JpId: jobId,
                 workshopDate: $scope.workshopdateDiv ? $scope.workshopdate : "",
                 SPerson: $scope.salesPerson
             };
