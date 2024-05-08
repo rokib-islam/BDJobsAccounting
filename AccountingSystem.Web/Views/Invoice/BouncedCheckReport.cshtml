@@ -44,7 +44,7 @@
                 <tbody>
                     <tr ng-repeat="data in bouncedCheckData">
                         <td class="text-center">{{$index + 1}}</td>
-                        <td class="text-center">{{data.bouncedCheckDate | date: "dd-MM-yyyy"}}</td>
+                        <td class="text-center">{{ formatDate(data.bouncedCheckDate) }}</td>
                         <td class="text-center">{{data.name}}</td>
                         <td class="text-center">{{data.invoice_No}}</td>
                         <td class="text-center">{{data.bouncedCheckNo}}</td>
@@ -61,8 +61,6 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         $scope.showTable = false;
-        $scope.fromDate = new Date();
-        $scope.toDate = new Date();
 
         $scope.companyList = [];
         $scope.selectedCompany = null;
@@ -94,11 +92,24 @@
         }
 
 
+        $scope.formatDate = function (dateString) {
+            if (!dateString) return ''
+            var dateParts = dateString.split(' ')[0].split('/');
+            var formattedDate = dateParts[1] + '-' + dateParts[0] + '-' + dateParts[2];
+            return formattedDate;
+        };
+
         $scope.load = function () {
-           
+            var fromDate = $scope.fromDate == undefined ? "" : new Date($scope.fromDate);
+            var toDate = $scope.toDate == undefined ? "" : new Date($scope.toDate);
+
+            if (fromDate !== "" && toDate !== "") {
+                fromDate.setDate(fromDate.getDate() + 1);
+                toDate.setDate(toDate.getDate() + 1);
+            }
             let requestBodyModel = {
-                FromDate: $scope.fromDate.toISOString().split('T')[0],
-                ToDate: $scope.toDate.toISOString().split('T')[0],
+                FromDate: fromDate === "" ? "" : fromDate.toISOString().split('T')[0],
+                ToDate: toDate === "" ? "" : toDate.toISOString().split('T')[0],
                 CId: $scope.cid == undefined ? 0 : $scope.cid
             }
 
