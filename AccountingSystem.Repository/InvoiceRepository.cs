@@ -768,14 +768,14 @@ namespace AccountingSystem.Repository
             }
 
         }
-        public async Task<int> CheckOrderIdCountAsync(string invoiceNo)
+        public async Task<string> CheckOrderIdCountAsync(string invoiceNo)
         {
-            int orderCount = 0;
+            string orderCount = "";
             try
             {
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    orderCount = await _db.QueryFirstOrDefaultAsync<int>("SELECT COUNT(*) FROM dbo.InvoiceList WHERE Invoice_No = @InvoiceNo AND DtOrderCode IS NOT NULL", new { InvoiceNo = invoiceNo });
+                    orderCount = await _db.QueryFirstOrDefaultAsync<string>("SELECT isnull(DtOrderCode,'') FROM dbo.InvoiceList WHERE Invoice_No=@InvoiceNo", new { InvoiceNo = invoiceNo });
                 }
             }
             catch (Exception ex)
