@@ -320,6 +320,7 @@ namespace AccountingSystem.Web.Controllers
                         dynamic responseObject = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
                         courierOrderId = responseObject.model[0].courierOrderId.ToString();
 
+
                         await _InvoiceManager.UpdateOrderInvoiceTableAsync(invoiceId, courierOrderId, int.Parse(userId));
                     }
                 }
@@ -327,10 +328,16 @@ namespace AccountingSystem.Web.Controllers
                 {
                     courierOrderId = checkOrderCode;
                 }
+
+                if (courierOrderId != "")
+                {
+                    courierOrderId = "Order ID# " + courierOrderId;
+                }
+
                 using var report = new LocalReport();
                 var parameters = new[]
                 {
-                    new ReportParameter("DTCode", "Order ID# "+ courierOrderId),
+                    new ReportParameter("DTCode", courierOrderId),
                 };
 
                 using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream("AccountingSystem.Web.Reports.rptLabelPrevire.rdlc");
