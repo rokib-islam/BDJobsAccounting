@@ -32,9 +32,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 // **Register HttpClient service**
-builder.Services.AddHttpClient();  
+builder.Services.AddHttpClient();
 
-builder.Services.ConfigureServices(); 
+builder.Services.ConfigureServices();
 
 builder.Services.AddCors(options =>
 {
@@ -52,10 +52,10 @@ builder.Services.AddHangfire(configuration =>
     var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
     configuration
-        .SetDataCompatibilityLevel(CompatibilityLevel.Version_170) 
+        .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
         .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
         {
-            CommandTimeout = TimeSpan.FromMinutes(10) 
+            CommandTimeout = TimeSpan.FromMinutes(10)
         });
 });
 
@@ -89,9 +89,11 @@ app.UseCors("AllowAll");
 
 app.UseHangfireDashboard();
 
+app.UseHangfireServer();
+
+
 
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-
 app.Run();
