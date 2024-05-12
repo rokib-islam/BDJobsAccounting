@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                                <script type="text/javascript">
-                                                    window.location.href = '@Url.Action("Index", "Home")';
-                                                </script>
+                                                                                    <script type="text/javascript">
+                                                                                        window.location.href = '@Url.Action("Index", "Home")';
+                                                                                    </script>
     }
     else
     {
@@ -78,7 +78,7 @@
                                 <td class="border text-end">{{o.cash}}</td>
                                 <td class="border text-end">{{o.salesTax}}</td>
                                 <td class="border text-center">{{o.receivedDate}}</td>
-                                <td class="border text-center">{{item.Posted ? 'Yes' : 'No'}}</td>
+                                <td class="border text-center">{{o.posted ? 'Yes' : 'No'}}</td>
 
                             </tr>
                         </tbody>
@@ -90,7 +90,9 @@
                         <button class="btn btn-primary btn-sm px-4" ng-click="performAction('UPDATE')" ng-disabled="showBtnUpdate">Update</button>
                     </div>
                     <div class="col-sm-4">
-                        <button class="btn btn-success btn-sm px-4" ng-click="performAction('INSERT')" ng-disabled="showBtnInsert">Insert</button>
+                        <button class="btn btn-success btn-sm px-4" ng-click="performAction('INSERT')" ng-disabled="showBtnInsert">Insert
+                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
+                        </button>
                     </div>
                     <div class="col-sm-4">
                         <button class="btn btn-info btn-sm" ng-click="postToOnline()">Post to Online</button>
@@ -174,9 +176,9 @@
                         <div class="col-sm-12 mt-2">
                             <div class="row">
                                 <div class="col-sm-6">
-                                    <div class="pb-1" ng-class="{ 'selected-div': === 'Cash' }" data-id="46">
+                                    <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'Cash' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-12 px-1" ng-class="{ 'selected-div': showFieldset === 'Cash' }" ng-click="toggleFieldset('Cash', 1)">
+                                            <div class="payment_div col-12 px-1"  ng-click="toggleFieldset('Cash', 1, 46)">
                                                 <div class="col-sm-12">
                                                     Cash
                                                 </div>
@@ -186,7 +188,7 @@
 
                                     <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'BankInfo' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('BankInfo', 2)">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('BankInfo', 2, 0)">
                                                 <div class="col-sm-12">
                                                     Cheque
                                                 </div>
@@ -225,7 +227,7 @@
 
                                     <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'VATType' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('VATType', 3)">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('VATType', 3, 0)">
                                                 <div class="col-sm-12">
                                                     VAT
                                                 </div>
@@ -253,9 +255,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="pb-1" ng-class="{ 'selected-div': === 'BadDebt' }" data-id="378">
+                                    <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'BadDebt' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-12 px-1" ng-class="{ 'selected-div': showFieldset === 'BadDebt' }" ng-click="toggleFieldset('BadDebt', 4)">
+                                            <div class="payment_div col-12 px-1"  ng-click="toggleFieldset('BadDebt', 4, 378)">
                                                 <div class="col-sm-12">
                                                     Bad Debt
                                                 </div>
@@ -263,9 +265,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'Nagad' }" data-id="28724">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'Nagad' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('Nagad', 5)">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('Nagad', 5, 28724)">
                                                 <div class="col-sm-12">
                                                     Nagad Mobile A/C
                                                 </div>
@@ -287,9 +289,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SSL' }" data-id="849">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SSL' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('SSL', 6)">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('SSL', 6, 849)">
                                                 <div class="col-sm-12">
                                                     SSL Marchant A/C
                                                 </div>
@@ -311,9 +313,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'bKash' }" data-id="1030">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'bKash' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('bKash', 7)">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('bKash', 7, 1030)">
                                                 <div class="col-sm-12">
                                                     bKash Marchant A/C
                                                 </div>
@@ -335,9 +337,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="pb-1" ng-class="{ 'selected-div': === 'DiscountOfSales' }" data-id="850">
+                                    <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'DiscountOfSales' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-12 px-1" ng-class="{ 'selected-div': showFieldset === 'DiscountOfSales' }" ng-click="toggleFieldset('DiscountOfSales', 8)">
+                                            <div class="payment_div col-12 px-1"  ng-click="toggleFieldset('DiscountOfSales', 8, 850)">
                                                 <div class="col-sm-12">
                                                     Discount of Sales
                                                 </div>
@@ -345,9 +347,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="pb-1" ng-class="{ 'selected-div': === 'OnlineCollection' }" data-id="3342">
+                                    <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'OnlineCollection' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-12 px-1" ng-class="{ 'selected-div': showFieldset === 'OnlineCollection' }" ng-click="toggleFieldset('OnlineCollection', 9)">
+                                            <div class="payment_div col-12 px-1"  ng-click="toggleFieldset('OnlineCollection', 9, 3342)">
                                                 <div class="col-sm-12">
                                                     Online Collection Charges
                                                 </div>
@@ -357,9 +359,9 @@
                                 </div>
 
                                 <div class="col-sm-6">
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'AmarPay' }" data-id="31237">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'AmarPay' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('AmarPay', 15)">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('AmarPay', 15, 31237)">
                                                 <div class="col-sm-12">
                                                     AmarPay Marchant A/C
                                                 </div>
@@ -373,7 +375,7 @@
                                                     </legend>
                                                     <div class="row custom-margin-top">
                                                         <div class="col-sm-12">
-                                                            <input type="text" ng-model="refAmarPayNo" class="form-control input-sm">
+                                                            <input type="text" ng-model="refAmarNo" class="form-control input-sm">
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -381,9 +383,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SouthEast' }" data-id="411">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SouthEast' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('SouthEast', 10)">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('SouthEast', 10, 411)">
                                                 <div class="col-sm-12">
                                                     Southeast
                                                 </div>
@@ -397,7 +399,7 @@
                                                     </legend>
                                                     <div class="row custom-margin-top">
                                                         <div class="col-sm-12">
-                                                            <input type="text" ng-model="refSouthEastNo" class="form-control input-sm">
+                                                            <input type="text" ng-model="refSoutheastNo" class="form-control input-sm">
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -405,9 +407,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'Brac' }" data-id="851">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'Brac' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('Brac', 11)">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('Brac', 11, 851)">
                                                 <div class="col-sm-12">
                                                     Brac
                                                 </div>
@@ -429,9 +431,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SCB' }" data-id="647">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SCB' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('SCB', 12)">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('SCB', 12, 647)">
                                                 <div class="col-sm-12">
                                                     SCB
                                                 </div>
@@ -453,9 +455,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'UCB' }" data-id="28816">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'UCB' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('UCB', 13)">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('UCB', 13, 28816)">
                                                 <div class="col-sm-12">
                                                     UCB
                                                 </div>
@@ -477,9 +479,9 @@
                                         </div>
                                     </div>
 
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'OnlinePayment' }" data-id="2262">
+                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'OnlinePayment' }">
                                         <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('OnlinePayment', 14)">
+                                            <div class="payment_div col-sm-12" ng-click="toggleFieldset('OnlinePayment', 14, 2262)">
                                                 <div class="col-sm-12">
                                                     Online Payment Payable
                                                 </div>
@@ -493,7 +495,7 @@
                                                     </legend>
                                                     <div class="row custom-margin-top">
                                                         <div class="col-sm-12">
-                                                            <input type="text" ng-model="refOnlinePaymentNo" class="form-control input-sm">
+                                                            <input type="text" ng-model="refONLNo" class="form-control input-sm">
                                                         </div>
                                                     </div>
                                                 </fieldset>
@@ -501,6 +503,10 @@
                                         </div>
                                     </div>
 
+                                    <input type="hidden" ng-model="payment" />
+                                    <input type="hidden" ng-model="paymentId" />
+                                    <input type="hidden" ng-model="accountReceivable" />
+                                    <input type="hidden" ng-model="invoiceNo" />
                                 </div>
                             </div>
                         </div>
@@ -515,25 +521,95 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
+            $scope.payment = 1;
+            $scope.paymentId = 46;
             $scope.getAllLedger();
             $scope.receivedDate = new Date();
             $scope.showBtnInsert = true;
             $scope.showBtnUpdate = true;
             $scope.loadClosingDate();
+            $scope.showFieldset = 'Cash';
         })
 
         $scope.showFieldset = '';
-        $scope.toggleFieldset = function (divName, dataValue) {
+        $scope.toggleFieldset = function (divName, dataValue, dataId) {
             $scope.showFieldset = divName === $scope.showFieldset ? '' : divName;
             $scope.passValue = dataValue;
+            $scope.passId = dataId;
+            $scope.divIdWiseSelect();
         };
+        var previousValue = 0;
+        $scope.divIdWiseSelect = function () {
+            if ($scope.passValue == 2 || $scope.passValue == 3 || $scope.passValue == 5 || $scope.passValue == 6 || $scope.passValue == 7 || $scope.passValue == 10 || $scope.passValue == 11 || $scope.passValue == 12 || $scope.passValue == 13 || $scope.passValue == 14 || $scope.passValue == 15) {
+                if ($scope.passValue == 2) {
+                    if (previousValue != 2) {
+                        $scope.ledgerList = '411';
+                        $scope.chequeNo = '';
+                    }
+                    $scope.vatType = '';
 
-        if ($scope.passValue == 2 || $scope.passValue == 3 || $scope.passValue == 5 || $scope.passValue == 6 || $scope.passValue == 7 || $scope.passValue == 10 || $scope.passValue == 11 || $scope.passValue == 12 || $scope.passValue == 13 || $scope.passValue == 14 || $scope.passValue == 15) {
-            if ($scope.passValue != 2) {
+                    $scope.refSSLNo = '';
+                    $scope.refAmarNo = '';
+                    $scope.refbKashNo = '';
+                    $scope.refNagadNo = '';
+                    $scope.refBracNo = '';
+                    $scope.refSoutheastNo = '';
+                    $scope.refSCBNo = '';
+                    $scope.refUCBNo = '';
+                    $scope.refONLNo = '';
+                }
+                if ($scope.passValue == 3) {
+                    if ($scope.vatType == '') {
+                        $scope.vatType == '';
+                    }
+                    $scope.ledgerList = '411';
+                    $scope.chequeNo = '';
+                    
+                    $scope.refSSLNo = '';
+                    $scope.refAmarNo = '';
+                    $scope.refbKashNo = '';
+                    $scope.refNagadNo = '';
+                    $scope.refBracNo = '';
+                    $scope.refSoutheastNo = '';
+                    $scope.refSCBNo = '';
+                    $scope.refUCBNo = '';
+                    $scope.refONLNo = '';
+                }
+                if ($scope.passValue == 5 || $scope.passValue == 6 || $scope.passValue == 7 || $scope.passValue == 10 || $scope.passValue == 11 || $scope.passValue == 12 || $scope.passValue == 13 || $scope.passValue == 14 || $scope.passValue == 15) {
+                    $scope.vatType == '';
+                    $scope.ledgerList = '411';
+
+                    $scope.refSSLNo = '';
+                    $scope.refAmarNo = '';
+                    $scope.refbKashNo = '';
+                    $scope.refNagadNo = '';
+                    $scope.refBracNo = '';
+                    $scope.refSoutheastNo = '';
+                    $scope.refSCBNo = '';
+                    $scope.refUCBNo = '';
+                    $scope.refONLNo = '';
+                }                
+            }
+            else {
+                $scope.vatType == '';
                 $scope.ledgerList = '411';
                 $scope.chequeNo = '';
+
+                $scope.refSSLNo = '';
+                $scope.refAmarNo = '';
+                $scope.refbKashNo = '';
+                $scope.refNagadNo = '';
+                $scope.refBracNo = '';
+                $scope.refSoutheastNo = '';
+                $scope.refSCBNo = '';
+                $scope.refUCBNo = '';
+                $scope.refONLNo = '';
             }
-        }
+            $scope.payment = $scope.passValue;
+            $scope.paymentId = $scope.passId;
+            previousValue = $scope.passValue;
+        };
+        
         
 
         $scope.companyList = [];
@@ -611,7 +687,6 @@
             } else {
                 $scope.selectedRow = row;
                 $scope.getSalesList();
-                // $scope.getPaymentList($scope.selectedRowForSalesList.id);
             }
         };
 
@@ -639,10 +714,12 @@
                 var salesTax = parseFloat($scope.selectedRowForpaymentList.salesTax);
                 $scope.amount = (cash + salesTax).toFixed(2);
                 $scope.receivedDate = new Date($scope.selectedRowForpaymentList.receivedDate);
+                $scope.vatType = $scope.payment;
             }
         };
 
         $scope.getSalesList = function () {
+            $scope.invoiceNo = $scope.selectedRow.invoice_No.trim();
             var no = $scope.selectedRow.invoice_No;
             let Url = '';
             if (window.location.hostname == 'localhost')
@@ -653,6 +730,7 @@
             $http.get(Url, { params: { InvoiceNo: no } })
                 .then(function (response) {
                     $scope.salesListData = response.data;
+                    $scope.getPaymentList($scope.salesListData[0].id);
                 }, function (error) {
                     console.error(error);
                 })
@@ -689,6 +767,7 @@
                         $scope.total += (parseFloat(item.cash) + parseFloat(item.salesTax));
                     });
                     $scope.amount = parseFloat($scope.selectedRowForSalesList.amount - $scope.total).toFixed(2);
+                    $scope.accountReceivable = parseFloat($scope.selectedRowForSalesList.amount - $scope.total).toFixed(2);
                 }, function (error) {
                     console.error(error);
                 })
@@ -707,7 +786,6 @@
                 }, function (error) {
                     console.error(error);
                 })
-
         };
        
         $scope.performAction = function (action) {
@@ -727,18 +805,104 @@
                     alert("Sorry, You have no permission to update a record.");
                 }
                 
-            }
-            var element = document.querySelector('[data-value]');
-            var value = element.getAttribute('data-value');
-
-            // Assign the retrieved value to $scope.value
-            $scope.value = value;
+            }          
             if (isvalid = true){
                 if (amount == "" || amount == "0.00") {
                     alert("Balance is 0, so it is no need to insert this amount.");
                 }
-                else if ($scope.value == 8) {
+                else if ($scope.payment == 2 && ($scope.ledgerList == "" || $scope.ledgerList == null)) {
                     alert("You must select a Bank Account.");
+                }
+                else if ($scope.payment == 2 && $scope.chequeNo == "") {
+                    alert("You must give the cheque number.");
+                }
+                else if ($scope.payment == 3 && ($scope.vatType == "" || $scope.vatType == null)) {
+                    alert("'You must select a Tax type.'");
+                }
+                else if ($scope.payment == 5 && ($scope.refNagadNo == "" || $scope.refNagadNo == null)) {
+                    alert("You must give the Nagad reference number.");
+                }
+                else if ($scope.payment == 6 && ($scope.refSSLNo == "" || $scope.refSSLNo == null)) {
+                    alert("You must give the SSL reference number.");
+                }
+                else if ($scope.payment == 15 && ($scope.refAmarNo == "" || $scope.refAmarNo == null)) {
+                    alert("You must give the AmarPay reference number.");
+                }
+                else if ($scope.payment == 7 && ($scope.refbKashNo == "" || $scope.refbKashNo == null)) {
+                    alert("You must give the bKash reference number.");
+                }
+                else if ($scope.payment == 10 && ($scope.refSoutheastNo == "" || $scope.refSoutheastNo == null)) {
+                    alert("You must give the Southeast Bank reference number.");
+                }
+                else if ($scope.payment == 11 && ($scope.refBracNo == "" || $scope.refBracNo == null)) {
+                    alert("You must give the Brac Bank reference number.");
+                }
+                else if ($scope.payment == 12 && ($scope.refSCBNo == "" || $scope.refSCBNo == null)) {
+                    alert("You must give the SCB reference number.");
+                }
+                else if ($scope.payment == 13 && ($scope.refUCBNo == "" || $scope.refUCBNo == null)) {
+                    alert("You must give the UCB reference number.");
+                }
+                else if ($scope.payment == 14 && ($scope.refONLNo == "" || $scope.refONLNo == null)) {
+                    alert("You must give the Online Payment reference number.");
+                }
+                else if ($scope.date1 <= $scope.date2) {
+                    alert("Date must be given after journal Closing date.");
+                }
+                else if (action == 'INSERT' && parseFloat(amount) > parseFloat($scope.accountReceivable)) {
+                    alert("The amount that you have given is greater than the balance of the sales.<br/>You must give the correct amount.");
+                }
+                else if (action == 'UPDATE' && parseFloat(parseFloat(amount) - parseFloat(selectedRowForpaymentList.cash.substring(4)) + parseFloat(selectedRowForpaymentList.salesTax.substring(4))) > parseFloat($scope.accountReceivable)) {
+                    alert('The amount that you have given is greater than the balance of the sales.\nYou must give the correct amount.');
+                }
+                else {
+                    var cheque = $scope.payment == 2 ? $scope.chequeNo : $scope.payment == 6 ? $scope.refSSLNo : $scope.payment == 15 ? $scope.refAmarNo : $scope.payment == 7 ? $scope.refbKashNo : $scope.payment == 5 ? $scope.refNagadNo : $scope.payment == 10 ? $scope.refSoutheastNo : $scope.payment == 11 ? $scope.refBracNo : $scope.payment == 12 ? $scope.refSCBNo : $scope.payment == 13 ? $scope.refUCBNo : $scope.payment == 14 ? $scope.refONLNo : '';
+                    var ledgerId = $scope.paymentId;
+                    if ($scope.payment == 2) {
+                        ledgerId = $scope.ledgerList;
+                    } else if ($scope.payment == 3) {
+                        ledgerId = $scope.vatType;
+                    }
+                    if (action == 'INSERT') {
+                        $scope.spinner = true;
+                        var userId = @userId;
+
+                        var jsonData = {
+                            type: ($scope.payment - 1).toString(),
+                            userId: userId.toString(),
+                            invoiceNo: $scope.invoiceNo,
+                            cash: amount,
+                            date: $scope.receivedDate.toISOString().split('T')[0],
+                            tno: $scope.selectedRowForSalesList.tno,
+                            invoiceSchedulerId: $scope.selectedRowForSalesList.id.toString(),
+                            ledgerId: ledgerId.toString(),
+                            chequeDetails: cheque,
+                            companyName: $scope.selectedCompany.name
+                        }
+
+                        let Url = '';
+                        if (window.location.hostname == 'localhost')
+                            Url = '/Payment/InsertCashCollection';
+                        else
+                            Url = '/AccountingNew/Payment/InsertCashCollection';
+
+                        $http.post(Url, JSON.stringify(jsonData), { headers: { 'Content-Type': 'application/json' } })
+                            .then(function (response) {
+                                if (response.data == "Success") {
+                                    alert("Success.");
+                                    $scope.spinner = false;
+                                    $scope.getInvoices();
+
+                                    var confirmed = confirm('Do you want to upload this cash information to online?');
+                                    if (confirmed) {
+                                        // postToOnline("", $("#invoiceNo").val(), $("#invoiceId").val());
+                                    }
+                                }
+
+                            }, function (error) {
+                                console.error(error);
+                            })
+                    }
                 }
                 
             }

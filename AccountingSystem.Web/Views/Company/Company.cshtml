@@ -720,9 +720,9 @@
             var accName = $scope.accperson == undefined ? "" : $scope.accperson;
             var accPersonMail = $scope.accMail == undefined ? "" : $scope.accMail;
             var accPersonContactNo = $scope.accMobile == undefined ? "" : $scope.accMobile;
-            var anyVatExemption = $scope.vatExemption == undefined ? 0 : $scope.vatExemption;
-            var customizeRate = $scope.customizeRate == undefined ? 0 : $scope.customizeRate;
-            var autoMail = $scope.autoMail == undefined ? 0 : $scope.autoMail;
+            var anyVatExemption = $scope.vatExemption == 0 ? false : true;
+            var customizeRate = $scope.customizeRate == 0 ? false : true;
+            var autoMail = $scope.autoMail == 0 ? false : true;
             var vatExemptionReason = $scope.vatExemptionReason == undefined ? "" : $scope.vatExemptionReason;
             var remarks = $scope.remarks == undefined ? "" : $scope.remarks;
             if (name == "" || name == undefined || $scope.checkAllAreSpaces(name)) {
@@ -778,7 +778,9 @@
                             AccPersonContactNo: accPersonContactNo,
                             AnyVatExemption: anyVatExemption == "0" ? false : true,
                             VatExemptionReason: vatExemptionReason,
-                            Remarks: remarks
+                            CustomizeRate: customizeRate,
+                            Remarks: remarks,
+                            AutoMail: autoMail
                         };
 
                         let Url = '';
