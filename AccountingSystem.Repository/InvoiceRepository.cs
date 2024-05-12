@@ -725,6 +725,8 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
                     dynamicParameters.Add("@SDate", parameters.SDate);
                     dynamicParameters.Add("@CP_Id", parameters.CP_Id);
+                    dynamicParameters.Add("@TDS", parameters.TDS);
+                    dynamicParameters.Add("@VDS", parameters.VDS);
 
 
 
