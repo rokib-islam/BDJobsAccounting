@@ -1,4 +1,6 @@
 ﻿using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.BLL;
+using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingSystem.Web.Controllers
@@ -14,6 +16,18 @@ namespace AccountingSystem.Web.Controllers
         public IActionResult Index()
         {
             return View();
+        }
+
+        public async Task<IActionResult> GetEmployeeListByKey(string startingKey)
+        {
+            var result = await _EmployeeManager.GetEmployeeListByKey(startingKey);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> InsertProvidentFundPayment([FromBody] InsertProvidentFundPaymentModel model)
+        {
+            var resp = await _EmployeeManager.InsertProvidentFundPayment(model);
+            return Json(resp);
         }
     }
 }
