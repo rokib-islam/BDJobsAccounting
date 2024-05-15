@@ -221,9 +221,9 @@ namespace AccountingSystem.Web.Controllers
         public void ScheduleRecurringJob()
         {
             RecurringJob.AddOrUpdate(
-                "jobId",
+                "DownloadCandidateMonetizationJob",
                 () => DownloadCandidateMonetizationAsync().GetAwaiter().GetResult(),
-                Cron.MinuteInterval(1)
+                Cron.Hourly
             );
         }
 
