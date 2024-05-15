@@ -632,6 +632,55 @@ namespace AccountingSystem.Repository
                 throw new Exception("Error retrieving invoices.", ex);
             }
         }
+        public async Task<OnlineInvoiceResponseModel> OnlineInvcoietest(OnlineInvoiceRequestModel parameters)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {
+                    var dynamicParameters = new DynamicParameters();
+                    dynamicParameters.Add("@acc_id", parameters.Acc_Id);
+                    dynamicParameters.Add("@JP_ID", parameters.Jp_Id);
+                    dynamicParameters.Add("@AddType", parameters.AddType);
+                    dynamicParameters.Add("@Regional", parameters.Regional);
+                    dynamicParameters.Add("@BlueCollar", parameters.BlueCollar);
+                    dynamicParameters.Add("@SalesPrice", parameters.SalesPrice);
+                    dynamicParameters.Add("@Tax", parameters.Tax);
+                    dynamicParameters.Add("@SDate", parameters.SDate);
+                    dynamicParameters.Add("@EDate", parameters.EDate);
+                    dynamicParameters.Add("@SalesPersonName", parameters.SalesPersonName);
+                    dynamicParameters.Add("@billingContact", parameters.BillingContact);
+                    dynamicParameters.Add("@Designation", parameters.Designation);
+                    dynamicParameters.Add("@Title", parameters.Title);
+                    dynamicParameters.Add("@companyName", parameters.CompanyName);
+                    dynamicParameters.Add("@address", parameters.Address);
+                    dynamicParameters.Add("@city", parameters.City);
+                    dynamicParameters.Add("@phone", parameters.Phone);
+                    dynamicParameters.Add("@email", parameters.Email);
+                    dynamicParameters.Add("@CP_ID", parameters.Cp_Id);
+                    dynamicParameters.Add("@DistrictID", parameters.DistrictId);
+                    dynamicParameters.Add("@BINNo", parameters.BINNo);
+                    dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
+                    dynamicParameters.Add("@PaymentMode", parameters.PaymentMethod);
+                    dynamicParameters.Add("@JType", parameters.JType);
+                    dynamicParameters.Add("@TDS", parameters.TDS);
+                    dynamicParameters.Add("@VDS", parameters.VDS);
+
+
+                    var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
+                        "USP_OnlineInvoice",
+                        dynamicParameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return invoices.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions accordingly
+                throw new Exception("Error retrieving invoices.", ex);
+            }
+        }
 
         public async Task<CashCollectionAutoReponse> AutoCashCollection(CashCollectionAutoViewModel parameters)
         {
@@ -647,6 +696,39 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
                     dynamicParameters.Add("@SDate", parameters.SDate);
                     dynamicParameters.Add("@CP_Id", parameters.CP_Id);
+
+
+
+                    var invoices = await _db.QueryAsync<CashCollectionAutoReponse>(
+                        "USP_Auto_CashCollection",
+                        dynamicParameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return invoices.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions accordingly
+                throw new Exception("Error retrieving invoices.", ex);
+            }
+        }
+        public async Task<CashCollectionAutoReponse> AutoCashCollectiontest(CashCollectionAutoViewModel parameters)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {
+                    var dynamicParameters = new DynamicParameters();
+                    dynamicParameters.Add("@InvoiceNo", parameters.InvoiceNo);
+                    dynamicParameters.Add("@SalesPrice", parameters.SalesPrice);
+                    dynamicParameters.Add("@DiscountedPrice", parameters.DiscountedPrice);
+                    dynamicParameters.Add("@PaymentMode", parameters.PaymentMode);
+                    dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
+                    dynamicParameters.Add("@SDate", parameters.SDate);
+                    dynamicParameters.Add("@CP_Id", parameters.CP_Id);
+                    dynamicParameters.Add("@TDS", parameters.TDS);
+                    dynamicParameters.Add("@VDS", parameters.VDS);
 
 
 
@@ -690,14 +772,14 @@ namespace AccountingSystem.Repository
             }
 
         }
-        public async Task<int> CheckOrderIdCountAsync(string invoiceNo)
+        public async Task<string> CheckOrderIdCountAsync(string invoiceNo)
         {
-            int orderCount = 0;
+            string orderCount = "";
             try
             {
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    orderCount = await _db.QueryFirstOrDefaultAsync<int>("SELECT COUNT(*) FROM dbo.InvoiceList WHERE Invoice_No = @InvoiceNo AND DtOrderCode IS NOT NULL", new { InvoiceNo = invoiceNo });
+                    orderCount = await _db.QueryFirstOrDefaultAsync<string>("SELECT isnull(DtOrderCode,'') FROM dbo.InvoiceList WHERE Invoice_No=@InvoiceNo", new { InvoiceNo = invoiceNo });
                 }
             }
             catch (Exception ex)
@@ -731,7 +813,7 @@ namespace AccountingSystem.Repository
                     Fromdate = model.FromDate,
                     Todate = model.ToDate,
                     CId = model.CId,
-                    
+
                 };
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {

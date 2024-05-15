@@ -26,6 +26,8 @@
         public string JType { get; set; }
         public string TransactionNo { get; set; }
         public int PaymentMethod { get; set; }
+        public decimal TDS { get; set; }
+        public decimal VDS { get; set; }
 
     }
 }

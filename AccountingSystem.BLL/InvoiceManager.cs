@@ -62,6 +62,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.OnlineInvcoie(parameters);
         }
+        public Task<OnlineInvoiceResponseModel> OnlineInvcoietest(OnlineInvoiceRequestModel parameters)
+        {
+            return _repository.OnlineInvcoietest(parameters);
+        }
 
         public Task<string> PostToOnlineAsync(string postType, string invoiceNo, string invoiceId)
         {
@@ -102,8 +106,12 @@ namespace AccountingSystem.BLL
         {
             return await _repository.AutoCashCollection(parameters);
         }
+        public async Task<CashCollectionAutoReponse> AutoCashCollectiontest(CashCollectionAutoViewModel parameters)
+        {
+            return await _repository.AutoCashCollectiontest(parameters);
+        }
 
-        public async Task<int> CheckOrderIdCountAsync(string invoiceNo)
+        public async Task<string> CheckOrderIdCountAsync(string invoiceNo)
         {
             return await _repository.CheckOrderIdCountAsync(invoiceNo);
         }

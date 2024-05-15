@@ -264,6 +264,8 @@ namespace AccountingSystem.Web.Controllers
         {
             try
             {
+                var courierOrderId = "";
+
                 var reportData = await _ReportManager.GetLabelReport(type, list);
 
                 var datatable = Helpers.ListiToDataTable(reportData);
@@ -271,7 +273,7 @@ namespace AccountingSystem.Web.Controllers
                 var userId = User.FindFirstValue("Id");
 
                 var checkOrderCode = await _InvoiceManager.CheckOrderIdCountAsync(invoiceId);
-                if (checkOrderCode == 0 && dtChk == true)
+                if (checkOrderCode == "" && dtChk == true)
                 {
                     var result = await CallApiAsync();
                     dynamic responseModel = JsonConvert.DeserializeObject<dynamic>(result);
@@ -316,19 +318,32 @@ namespace AccountingSystem.Web.Controllers
                         var jsonResponse = await response.Content.ReadAsStringAsync();
 
                         dynamic responseObject = JsonConvert.DeserializeObject<dynamic>(jsonResponse);
-                        var courierOrderId = responseObject.model[0].courierOrderId.ToString();
+                        courierOrderId = responseObject.model[0].courierOrderId.ToString();
+
 
                         await _InvoiceManager.UpdateOrderInvoiceTableAsync(invoiceId, courierOrderId, int.Parse(userId));
                     }
                 }
+                else
+                {
+                    courierOrderId = checkOrderCode;
+                }
 
-
+                if (courierOrderId != "")
+                {
+                    courierOrderId = "Order ID# " + courierOrderId;
+                }
 
                 using var report = new LocalReport();
+                var parameters = new[]
+                {
+                    new ReportParameter("DTCode", courierOrderId),
+                };
 
                 using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream("AccountingSystem.Web.Reports.rptLabelPrevire.rdlc");
                 report.LoadReportDefinition(rs);
                 report.DataSources.Add(new ReportDataSource("PreviewLabel", datatable));
+                report.SetParameters(parameters);
 
                 byte[] fileContents;
                 string contentType;

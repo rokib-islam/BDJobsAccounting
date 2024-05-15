@@ -143,12 +143,28 @@ namespace AccountingSystem.Web.Controllers
 
             return await Task.FromResult(Ok(responseList));
         }
+        [HttpPost]
+        [Route("api/OnlineInvocie-test")]
+        public async Task<IActionResult> OnlineInvocietest([FromBody] OnlineInvoiceRequestModel OnlineInvoice)
+        {
+            var responseList = await _InvoiceManager.OnlineInvcoietest(OnlineInvoice);
+
+            return await Task.FromResult(Ok(responseList));
+        }
 
         [HttpPost]
         [Route("api/AutoCashCollection")]
         public async Task<IActionResult> AutoCashCollection([FromBody] CashCollectionAutoViewModel OnlineInvoice)
         {
             var responseList = await _InvoiceManager.AutoCashCollection(OnlineInvoice);
+
+            return await Task.FromResult(Ok(responseList));
+        }
+        [HttpPost]
+        [Route("api/AutoCashCollection-test")]
+        public async Task<IActionResult> AutoCashCollectiontestTest([FromBody] CashCollectionAutoViewModel OnlineInvoice)
+        {
+            var responseList = await _InvoiceManager.AutoCashCollectiontest(OnlineInvoice);
 
             return await Task.FromResult(Ok(responseList));
         }

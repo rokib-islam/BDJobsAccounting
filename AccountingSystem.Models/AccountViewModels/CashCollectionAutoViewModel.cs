@@ -9,6 +9,8 @@
         public string TransactionNo { get; set; }
         public string SDate { get; set; }
         public int CP_Id { get; set; }
+        public double TDS { get; set; }
+        public double VDS { get; set; }
     }
     public class CashCollectionAutoReponse
     {
