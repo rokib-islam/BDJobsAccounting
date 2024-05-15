@@ -86,6 +86,10 @@
                     <th>Company</th>
                     <th>Service</th>
                     <th>Billing Contact Info</th>
+                    <th>Paid Amount</th>
+                    <th>Claient Comment</th>
+                    <th>TDS & VDS</th>
+                   
                     <th>Payment Info</th>
                     <th>Action</th>
                 </tr>
@@ -111,6 +115,21 @@
                             {{data.billerEmail}} <br /> 
                             {{data.billerMobile}}
                         </td>
+
+
+                        <td style="text-align: right;">
+                            {{data.paidAmount}}
+                        </td>
+                        <td>
+                            {{data.clientComment}}
+                        </td>
+                        <td>
+                            TDS : {{data.tds}} <br />
+                            VDS : {{data.vds}} <br />
+                            
+                        </td>
+
+
                         <td>
                             {{data.referenceNo}} <br />
                             <a href="{{data.paymentDocumentLink}}" target="_blank">Payment Document Link</a>
