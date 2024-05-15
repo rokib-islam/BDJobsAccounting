@@ -296,6 +296,8 @@ namespace AccountingSystem.Web.Controllers
                 new KeyValuePair<string, string>("verified", model.verified.ToString()),
                 new KeyValuePair<string, string>("verifiedBy", model.verifiedBy.ToString()),
                 new KeyValuePair<string, string>("comment", model.Comment),
+                new KeyValuePair<string, string>("TDS", model.TDS),
+                new KeyValuePair<string, string>("VDS", model.VDS),
 
 
 
