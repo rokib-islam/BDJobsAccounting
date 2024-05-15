@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AccountingSystem.Web.Controllers
 {
@@ -47,6 +48,14 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
+        public IActionResult ProvidentFundPayment()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
 
+            else
+                return RedirectToAction("Index", "Home");
+        }
     }
 }

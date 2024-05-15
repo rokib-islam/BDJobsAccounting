@@ -291,6 +291,19 @@ namespace AccountingSystem.Repository
                 throw ex;
             }
         }
+
+        public async Task<List<LedgerViewModel>> GetStaffPFIAccountList()
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var query = "SELECT * FROM Ledger WHERE Under LIKE '%15761%'";
+                var parameters = new { };
+
+                var result = await _db.QueryAsync<LedgerViewModel>(query, parameters);
+                return result.ToList();
+            }
+
+        }
     }
 
 

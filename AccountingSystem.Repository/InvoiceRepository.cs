@@ -663,6 +663,8 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
                     dynamicParameters.Add("@PaymentMode", parameters.PaymentMethod);
                     dynamicParameters.Add("@JType", parameters.JType);
+                    dynamicParameters.Add("@TDS", parameters.TDS);
+                    dynamicParameters.Add("@VDS", parameters.VDS);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
@@ -725,6 +727,8 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
                     dynamicParameters.Add("@SDate", parameters.SDate);
                     dynamicParameters.Add("@CP_Id", parameters.CP_Id);
+                    dynamicParameters.Add("@TDS", parameters.TDS);
+                    dynamicParameters.Add("@VDS", parameters.VDS);
 
 
 
@@ -768,14 +772,14 @@ namespace AccountingSystem.Repository
             }
 
         }
-        public async Task<int> CheckOrderIdCountAsync(string invoiceNo)
+        public async Task<string> CheckOrderIdCountAsync(string invoiceNo)
         {
-            int orderCount = 0;
+            string orderCount = "";
             try
             {
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    orderCount = await _db.QueryFirstOrDefaultAsync<int>("SELECT COUNT(*) FROM dbo.InvoiceList WHERE Invoice_No = @InvoiceNo AND DtOrderCode IS NOT NULL", new { InvoiceNo = invoiceNo });
+                    orderCount = await _db.QueryFirstOrDefaultAsync<string>("SELECT isnull(DtOrderCode,'') FROM dbo.InvoiceList WHERE Invoice_No=@InvoiceNo", new { InvoiceNo = invoiceNo });
                 }
             }
             catch (Exception ex)

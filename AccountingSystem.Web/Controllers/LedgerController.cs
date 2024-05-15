@@ -205,6 +205,12 @@ namespace AccountingSystem.Web.Controllers
             var result = await _LedgerManager.LoadServiceList(model);
             return Json(result);
         }
+
+        public async Task<IActionResult> GetStaffPFIAccountList()
+        {
+            var result = await _LedgerManager.GetStaffPFIAccountList();
+            return Json(result);
+        }
     }
 
 

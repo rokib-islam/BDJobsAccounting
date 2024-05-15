@@ -1,0 +1,223 @@
+﻿
+@{
+    ViewData["Title"] = "ProvidentFundPayment";
+
+    var userId = Context.Session.GetInt32("UserID");
+}
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+
+
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="row">
+            <h4 class="text-center alert-primary" style="margin-top:-10px">Provident Fund Payment</h4>
+            <div class="col-sm-6">
+                <div class="row">
+                    <label class="col-sm-4">Payment Date</label>
+                    <div class="col-sm-7">
+                        <input type="date" class="form-control form-control-sm" ng-model="paymentDate" />
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <label class="col-sm-4">Employee Name</label>
+                    <div class="col-sm-7">
+                        <input class="form-control form-control-sm" placeholder="Search Employee Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchEmployee(searchQuery)">
+                        <select class="form-select form-select-sm" size="10" ng-model="empList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="employeeList.length > 0">
+                            <option ng-repeat="employee in employeeList" value="{{employee.employeeId}}" ng-click="selectEmployee(employee)">{{employee.employeeName}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6">
+                <div class="row">
+                    <label class="col-sm-4">Ledger Name</label>
+                    <div class="col-sm-7">
+                        <select class="form-select form-select-sm" ng-model="ledgerName">
+                            <option ng-repeat="o in ledgerList" value="{{o.id}}">{{o.sbName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <label class="col-sm-4">Payment Reference</label>
+                    <div class="col-sm-7">
+                        <input type="text" class="form-control form-control-sm" ng-model="paymentRef" />
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-10 offset-1 mt-3">
+                <table class="table table-bordered table-sm">
+                    <thead>
+                        <tr class="text-center">
+                            <th>Payment Details</th>
+                            <th>Payment(TK)</th>
+                            <th>Adjustment(TK)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Employee Contribution</td>
+                            <td><input class="form-control form-control-sm" ng-model="empContribution_pay" ng-click="setContribution('empPay')" /></td>
+                            <td><input class="form-control form-control-sm" ng-model="empContribution_adj" ng-click="setContribution('empAdj')" /></td>
+
+
+                        </tr>
+                        <tr>
+                            <td>Company Contribution</td>
+                            <td><input class="form-control form-control-sm" ng-model="comContribution_pay" ng-click="setContribution('comPay')" /></td>
+                            <td><input class="form-control form-control-sm" ng-model="comContribution_adj" ng-click="setContribution('comAdj')" /></td>
+                        </tr>
+                        <tr>
+                            <td>Shared Profit for Employee Contribution</td>
+                            <td><input class="form-control form-control-sm" ng-model="empProfitCont_pay" ng-click="setContribution('empProfitPay')" /></td>
+                            <td><input class="form-control form-control-sm" ng-model="empProfitCont_adj" ng-click="setContribution('empProfitAdj')" /></td>
+                        </tr>
+                        <tr>
+                            <td>Shared Profit for Company Contribution</td>
+                            <td><input class="form-control form-control-sm" ng-model="comProfitCont_pay" ng-click="setContribution('comProfitPay')" /></td>
+                            <td><input class="form-control form-control-sm" ng-model="comProfitCont_adj" ng-click="setContribution('comProfitAdj')" /></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="text-end">
+                    <button class="btn btn-success px-5" ng-click="save()">Save</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+            $scope.loadLedgerList();
+        })
+        $scope.ledgerName = '14761';
+
+        $scope.employeeList = [];
+        $scope.selectedEmployee = null;
+        $scope.searchEmployee = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Employee/GetEmployeeListByKey';
+                else
+                    Url = '/AccountingNew/Employee/GetEmployeeListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.employeeList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.employeeList = [];
+            }
+        };
+
+        $scope.selectEmployee = function (employee) {
+            $scope.selectedEmployee = employee;
+            $scope.searchQuery = employee.employeeName;
+            $scope.empId = employee.employeeId;
+            $scope.employeeList = [];
+        }
+
+        $scope.loadLedgerList = function () {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Ledger/GetStaffPFIAccountList';
+                else
+                    Url = '/AccountingNew/Ledger/GetStaffPFIAccountList';
+
+                $http.get(Url)
+                    .then(function (response) {
+                        $scope.ledgerList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+        };
+       
+        $scope.setContribution = function (type) {
+            if (type === 'empPay') {
+                $scope.empContribution_adj = 0;
+            } 
+            else if (type === 'empAdj') {
+                $scope.empContribution_pay = 0;
+            } 
+            else if (type === 'comPay') {
+                $scope.comContribution_adj = 0;
+            } 
+            else if (type === 'comAdj') {
+                $scope.comContribution_pay = 0;
+            }
+            else if (type === 'empProfitPay') {
+                $scope.empProfitCont_adj = 0;
+            }
+            else if (type === 'empProfitAdj') {
+                $scope.empProfitCont_pay = 0;
+            }
+            else if (type === 'comProfitPay') {
+                $scope.comProfitCont_adj = 0;
+            }
+            else if (type === 'comProfitAdj') {
+                $scope.comProfitCont_pay = 0;
+            }
+            
+        };
+
+
+
+        $scope.save = function () {
+
+            let requestBodyModel = {
+                PaymentDate: $scope.paymentDate,
+                EmployeeId: $scope.empId,
+                LedgerId: $scope.ledgerName,
+                PaymentRef: $scope.paymentRef,
+                EmpContribution_pay: $scope.empContribution_pay,
+                EmpContribution_adj: $scope.empContribution_adj,
+                ComContribution_pay: $scope.comContribution_pay,
+                ComContribution_adj: $scope.comContribution_adj,
+                EmpProfitCont_pay: $scope.empProfitCont_pay,
+                EmpProfitCont_adj: $scope.empProfitCont_adj,
+                ComProfitCont_pay: $scope.comProfitCont_pay,
+                ComProfitCont_adj: $scope.comProfitCont_adj,
+                UserId: @userId
+            }
+
+            if (requestBodyModel.PaymentDate == undefined) {
+                alert("Payment Date Required.");
+                return false;
+            } else if (requestBodyModel.EmployeeId == undefined) {
+                alert("Employee Name Required.");
+                return false;
+            } else if (requestBodyModel.LedgerId == undefined) {
+                alert("Ledger Name Required.");
+                return false;
+            } else if (requestBodyModel.PaymentRef == undefined) {
+                alert("Payment Reference Required.");
+                return false;
+            }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/InsertProvidentFundPayment';
+            else
+                Url = '/AccountingNew/Employee/InsertProvidentFundPayment';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    if(response.data == 'Success'){
+                        alert("Data Saved Successfully.");
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+    })
+</script>
+

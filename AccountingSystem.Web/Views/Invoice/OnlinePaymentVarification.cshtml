@@ -86,6 +86,10 @@
                     <th>Company</th>
                     <th>Service</th>
                     <th>Billing Contact Info</th>
+                    <th>Paid Amount</th>
+                    <th>Claient Comment</th>
+                    <th>TDS & VDS</th>
+                   
                     <th>Payment Info</th>
                     <th>Action</th>
                 </tr>
@@ -111,6 +115,21 @@
                             {{data.billerEmail}} <br /> 
                             {{data.billerMobile}}
                         </td>
+
+
+                        <td style="text-align: right;">
+                            {{data.paidAmount}}
+                        </td>
+                        <td>
+                            {{data.clientComment}}
+                        </td>
+                        <td>
+                            TDS : {{data.tds}} <br />
+                            VDS : {{data.vds}} <br />
+                            
+                        </td>
+
+
                         <td>
                             {{data.referenceNo}} <br />
                             <a href="{{data.paymentDocumentLink}}" target="_blank">Payment Document Link</a>
@@ -121,13 +140,19 @@
                         </td> *@
                         <td>
                             <span ng-if="data.verified == 1">Verified</span>
-                            <span ng-if="data.verified == 2">Rejected.  <br /> 
+                            <span ng-if="data.verified == 2">Rejected <br /> 
                                 comment: {{data.comment}}</span>
                             <div ng-if="!data.verified">
-                                <input type="radio" ng-model="data.verification" value="1"> Verify Payment
+                                <input type="radio" ng-model="data.verification" value="1"> Verify<br />
                                 <input type="radio" ng-model="data.verification" value="2"> Reject
-                                <input type="text" ng-model="data.Comment" placeholder="Reject Comment" >
-                                <button class="btn btn-success btn-sm mt-1" ng-click="submit(data.quotationID, data.verification,data.Comment )">Submit</button>
+                                <div ng-show="data.verification == 1">
+                                    <input type="text" class="form-control form-control-sm" ng-model="data.TDS" placeholder="TDS"><br />
+                                    <input type="text" class="form-control form-control-sm" ng-model="data.VDS" placeholder="VDS">
+                                </div>
+                                <div ng-show="data.verification == 2">
+                                    <input type="text" class="form-control form-control-sm" ng-model="data.Comment" placeholder="Reject Comment">
+                                </div>
+                                <button class="btn btn-success btn-sm mt-1" ng-click="submit(data.quotationID, data.verification,data.Comment,data.TDS,data.VDS )">Submit</button>
                             </div>
                         </td>
 
@@ -152,12 +177,14 @@
             $scope.totalItems = 0;
         })
         
-        $scope.submit = function (qId, verification, Comment) {
+        $scope.submit = function (qId, verification, Comment,TDS,VDS) {
             var requestData = {
                 QID: qId,
                 verified: verification,
                 verifiedBy: @userId,
-                Comment: Comment
+                Comment: Comment,
+                TDS: TDS,
+                VDS: VDS
             };
 
             let Url = '';

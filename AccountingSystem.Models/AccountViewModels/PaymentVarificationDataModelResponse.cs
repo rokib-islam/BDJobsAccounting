@@ -23,6 +23,10 @@
         public int verified { get; set; }
         public string InvoiceNo { get; set; }
         public string Comment { get; set; }
+        public string ClientComment { get; set; }
+        public decimal PaidAmount { get; set; }
+        public decimal TDS { get; set; }
+        public decimal VDS { get; set; }
     }
 
     public class ApiResponseModel

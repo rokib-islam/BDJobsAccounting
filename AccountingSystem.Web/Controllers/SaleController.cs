@@ -1,5 +1,6 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Models.AccountViewModels;
+using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
@@ -214,8 +215,16 @@ namespace AccountingSystem.Web.Controllers
         public async Task<IActionResult> DownloadCandidateMonetizationAsync()
         {
             var result = await _SaleManager.DownloadCandidateMonetizationAsync();
-
             return Json(result);
+        }
+
+        public void ScheduleRecurringJob()
+        {
+            RecurringJob.AddOrUpdate(
+                "DownloadCandidateMonetizationJob",
+                () => DownloadCandidateMonetizationAsync().GetAwaiter().GetResult(),
+                Cron.Hourly
+            );
         }
 
     }

@@ -1,5 +1,6 @@
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Configurations.Extentions;
+using AccountingSystem.Web.Controllers;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -32,9 +33,9 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 // **Register HttpClient service**
-builder.Services.AddHttpClient();  
+builder.Services.AddHttpClient();
 
-builder.Services.ConfigureServices(); 
+builder.Services.ConfigureServices();
 
 builder.Services.AddCors(options =>
 {
@@ -47,19 +48,24 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddHangfire(configuration =>
-{
-    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+builder.Services.AddHangfire(configuration => configuration
+    .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+    .UseSimpleAssemblyNameTypeSerializer()
+    .UseDefaultTypeSerializer()
+    .UseSqlServerStorage(builder.Configuration.GetConnectionString("DefaultConnection"), new SqlServerStorageOptions
+    {
+        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+        QueuePollInterval = TimeSpan.Zero,
+        UseRecommendedIsolationLevel = true,
+        UsePageLocksOnDequeue = true,
+        DisableGlobalLocks = true
+    }));
 
-    configuration
-        .SetDataCompatibilityLevel(CompatibilityLevel.Version_170) 
-        .UseSqlServerStorage(connectionString, new SqlServerStorageOptions
-        {
-            CommandTimeout = TimeSpan.FromMinutes(10) 
-        });
-});
-
+// Add the Hangfire server
 builder.Services.AddHangfireServer();
+builder.Services.AddScoped<SaleController>();
+
 
 var app = builder.Build();
 
@@ -89,9 +95,15 @@ app.UseCors("AllowAll");
 
 app.UseHangfireDashboard();
 
-
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
+using (var scope = app.Services.CreateScope())
+{
+    var saleController = scope.ServiceProvider.GetRequiredService<SaleController>();
+    saleController.ScheduleRecurringJob();
+}
+
 
 app.Run();

@@ -153,8 +153,16 @@ namespace AccountingSystem.Web.Controllers
         }
 
         [HttpPost]
+        [Route("api/AutoCashCollection")]
+        public async Task<IActionResult> AutoCashCollection([FromBody] CashCollectionAutoViewModel OnlineInvoice)
+        {
+            var responseList = await _InvoiceManager.AutoCashCollection(OnlineInvoice);
+
+            return await Task.FromResult(Ok(responseList));
+        }
+        [HttpPost]
         [Route("api/AutoCashCollection-test")]
-        public async Task<IActionResult> AutoCashCollectiontest([FromBody] CashCollectionAutoViewModel OnlineInvoice)
+        public async Task<IActionResult> AutoCashCollectiontestTest([FromBody] CashCollectionAutoViewModel OnlineInvoice)
         {
             var responseList = await _InvoiceManager.AutoCashCollectiontest(OnlineInvoice);
 
@@ -288,6 +296,8 @@ namespace AccountingSystem.Web.Controllers
                 new KeyValuePair<string, string>("verified", model.verified.ToString()),
                 new KeyValuePair<string, string>("verifiedBy", model.verifiedBy.ToString()),
                 new KeyValuePair<string, string>("comment", model.Comment),
+                new KeyValuePair<string, string>("TDS", model.TDS),
+                new KeyValuePair<string, string>("VDS", model.VDS),
 
 
 

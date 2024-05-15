@@ -111,7 +111,7 @@ namespace AccountingSystem.BLL
             return await _repository.AutoCashCollectiontest(parameters);
         }
 
-        public async Task<int> CheckOrderIdCountAsync(string invoiceNo)
+        public async Task<string> CheckOrderIdCountAsync(string invoiceNo)
         {
             return await _repository.CheckOrderIdCountAsync(invoiceNo);
         }
