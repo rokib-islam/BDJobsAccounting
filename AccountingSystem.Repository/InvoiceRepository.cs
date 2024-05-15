@@ -663,6 +663,8 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
                     dynamicParameters.Add("@PaymentMode", parameters.PaymentMethod);
                     dynamicParameters.Add("@JType", parameters.JType);
+                    dynamicParameters.Add("@TDS", parameters.TDS);
+                    dynamicParameters.Add("@VDS", parameters.VDS);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
