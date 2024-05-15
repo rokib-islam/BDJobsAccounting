@@ -48,7 +48,7 @@ namespace AccountingSystem.Repository
             var res = "";
             try
             {
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
                 {
                     var parameters = new DynamicParameters();
                     parameters.Add("@PaymentDate", model.PaymentDate);
@@ -64,7 +64,7 @@ namespace AccountingSystem.Repository
                     parameters.Add("@ComProfitCont_pay", model.ComProfitCont_pay);
                     parameters.Add("@ComProfitCont_adj", model.ComProfitCont_adj);
                     parameters.Add("@UserId", model.UserId);
-                    
+
 
                     await _db.ExecuteAsync(
                         "USP_InsertProvidentFundPayment",
