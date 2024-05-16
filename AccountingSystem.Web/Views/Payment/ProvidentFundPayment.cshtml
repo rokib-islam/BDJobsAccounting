@@ -170,9 +170,10 @@
 
 
         $scope.save = function () {
-
+            var incrementedPaymentDate = new Date($scope.paymentDate);
+            incrementedPaymentDate.setDate(incrementedPaymentDate.getDate() + 1);
             let requestBodyModel = {
-                PaymentDate: $scope.paymentDate,
+                PaymentDate: incrementedPaymentDate,
                 EmployeeId: $scope.empId,
                 LedgerId: $scope.ledgerName,
                 PaymentRef: $scope.paymentRef,
@@ -211,12 +212,28 @@
                 .then(function (response) {
                     if(response.data == 'Success'){
                         alert("Data Saved Successfully.");
+                        $scope.fieldsEmpty();
                     }
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
         }
+
+        $scope.fieldsEmpty = function () {
+            $scope.searchQuery = '';
+            $scope.ledgerName = '14761';
+            $scope.paymentRef = '';
+            $scope.paymentDate = '';
+            $scope.empContribution_pay = '';
+            $scope.empContribution_adj = '';
+            $scope.comContribution_pay = '';
+            $scope.comContribution_adj = '';
+            $scope.empProfitCont_pay = '';
+            $scope.empProfitCont_adj = '';
+            $scope.comProfitCont_pay = '';
+            $scope.comProfitCont_adj = '';
+        };
 
     })
 </script>

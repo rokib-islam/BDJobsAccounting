@@ -44,9 +44,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-            <script type="text/javascript">
-                window.location.href = '@Url.Action("Index", "Home")';
-            </script>
+                    <script type="text/javascript">
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    </script>
     }
     else
     {
@@ -416,6 +416,11 @@
         $scope.selectCompany = function (company) {
             $scope.selectedCompany = company;
             $scope.searchQuery = company.name;
+
+            if ($scope.selectedCompany.blackListed == true) {
+                alert("This Company is Blacklisted.\nYou can't give a sale for this Company.");
+                return false;
+            }
             $scope.companyList = [];
             $scope.salesPriceDisabledEnabled();
 
@@ -570,6 +575,11 @@
                     // Set the searchQuery and other related variables
                     if ($scope.selectedCompany) {
                         $scope.searchQuery = $scope.selectedCompany.name;
+                        if ($scope.selectedCompany.blackListed == true) {
+                            $scope.saveButtonDisabled = true;
+                            alert("This Company is Blacklisted.\nYou can't give a sale for this Company.");
+                            return false;
+                        }
                     } else {
                         $scope.searchQuery = 'Select';
                     }

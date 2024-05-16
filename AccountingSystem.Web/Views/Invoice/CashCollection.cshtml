@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                                                                            <script type="text/javascript">
-                                                                                                window.location.href = '@Url.Action("Index", "Home")';
-                                                                                            </script>
+                                                                                                            <script type="text/javascript">
+                                                                                                                window.location.href = '@Url.Action("Index", "Home")';
+                                                                                                            </script>
     }
     else
     {
@@ -503,6 +503,16 @@
                                         </div>
                                     </div>
 
+                                    <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'bKashAgentCollection' }">
+                                        <div class="col-sm-12 border-bottom border-1 pb-2">
+                                            <div class="col-12 px-1" ng-click="toggleFieldset('bKashAgentCollection', 16, 31259)">
+                                                <div class="col-sm-12">
+                                                    bKash Agent Collection
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
                                     <input type="hidden" ng-model="payment" />
                                     <input type="hidden" ng-model="paymentId" />
                                     <input type="hidden" ng-model="accountReceivable" />
@@ -726,13 +736,16 @@
                 } else if ($scope.selectedRowForpaymentList.paymentType == 'bKash') {
                     $scope.refbKashNo = $scope.selectedRowForpaymentList.chequeDetails;
                     $scope.showFieldset = 'bKash';
-                } else if ($scope.selectedRowForpaymentList.paymentType == 'Accounts Receivable-VDS') {
+                } else if ($scope.selectedRowForpaymentList.paymentType == 'VAT' || $scope.selectedRowForpaymentList.paymentType == 'AIT' || $scope.selectedRowForpaymentList.paymentType == 'Accounts Receivable-VDS' || $scope.selectedRowForpaymentList.paymentType == 'Accounts Receivable-TDS') {
                     $scope.showFieldset = 'VATType';
-                    $scope.vatType = "28747";
-                } else if ($scope.selectedRowForpaymentList.paymentType == 'Accounts Receivable-TDS') {
-                    $scope.showFieldset = 'VATType';
-                    $scope.vatType = "31074";
-                } else if ($scope.selectedRowForpaymentList.bankId != 0) {
+                    // $scope.vatType = "28747";
+                    $scope.selectedRowForpaymentList.paymentType;
+                } 
+                // else if ($scope.selectedRowForpaymentList.paymentType == 'Accounts Receivable-TDS') {
+                //     $scope.showFieldset = 'VATType';
+                //     $scope.vatType = "31074";
+                // } 
+                else if ($scope.selectedRowForpaymentList.bankId != 0) {
 
                     cheque = $scope.selectedRowForpaymentList.chequeDetails;
                     bankId = $scope.selectedRowForpaymentList.bankId;
@@ -767,11 +780,34 @@
                     $scope.showFieldset = "Nagad";
                     cheque = $scope.selectedRowForpaymentList.chequeDetails;
                 }
+                else if ($scope.selectedRowForpaymentList.paymentType == "Brac")
+                    $scope.showFieldset = "Nagad";
+                else if ($scope.selectedRowForpaymentList.paymentType == "Discount")
+                    $scope.showFieldset = "DiscountOfSales";
+                else if ($scope.selectedRowForpaymentList.paymentType == "bAgent")
+                    $scope.showFieldset = "bKashAgentCollection";
+                else if ($scope.selectedRowForpaymentList.paymentType == "OnlineCharges")
+                    $scope.showFieldset = "OnlineCollection";
+                else if ($scope.selectedRowForpaymentList.paymentType.toLowerCase() == "bkash") {
+                    $scope.showFieldset = "bKash";
+                    cheque = $scope.selectedRowForpaymentList.chequeDetails;
+                }
+                if ($scope.showFieldset != "") {
+                    if ($scope.passValue == 2 || $scope.passValue == 3 || $scope.passValue == 6 || $scope.passValue == 15 || $scope.passValue == 16 || $scope.passValue == 7 || $scope.passValue == 5 || $scope.passValue == 10 || $scope.passValue == 11 || $scope.passValue == 12 || $scope.passValue == 13 || $scope.passValue == 14) {
+                        $scope.showFieldset == true;
+                    }
+                    if ($scope.passValue == 2) {
+                        $scope.ledgerList = bankId;
+                        
+                        $scope.vatType = '';
+                        $scope.paymentId = bankId;
+                    }
+                }
             }
         };
 
         $scope.getSalesList = function () {
-            $scope.invoiceNo = $scope.selectedRow.invoice_No.trim();
+            $scope.invoiceNo = $scope.selectedRow.invoice_No;
             var no = $scope.selectedRow.invoice_No;
             let Url = '';
             if (window.location.hostname == 'localhost')
