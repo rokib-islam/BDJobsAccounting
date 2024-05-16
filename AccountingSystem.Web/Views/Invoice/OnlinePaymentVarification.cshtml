@@ -146,8 +146,8 @@
                                 <input type="radio" ng-model="data.verification" value="1"> Verify<br />
                                 <input type="radio" ng-model="data.verification" value="2"> Reject
                                 <div ng-show="data.verification == 1">
-                                    <input type="text" class="form-control form-control-sm" ng-model="data.TDS" placeholder="TDS"><br />
-                                    <input type="text" class="form-control form-control-sm" ng-model="data.VDS" placeholder="VDS">
+                                    <input type="text" class="form-control form-control-sm" ng-model="data.TDS" placeholder="TDS" ng-disabled="data.totalCost === data.paidAmount" ng-change="updateTDS(data)"><br />
+                                    <input type="text" class="form-control form-control-sm" ng-model="data.VDS" placeholder="VDS" ng-disabled="data.totalCost === data.paidAmount" ng-change="updateVDS(data)">
                                 </div>
                                 <div ng-show="data.verification == 2">
                                     <input type="text" class="form-control form-control-sm" ng-model="data.Comment" placeholder="Reject Comment">
@@ -177,6 +177,20 @@
             $scope.totalItems = 0;
         })
         
+        $scope.updateVDS = function (data) {
+            var balance = data.totalCost - data.paidAmount;
+            if (data.VDS !== balance) {
+                data.TDS = balance - data.VDS;
+            }
+        };
+
+        $scope.updateTDS = function (data) {
+            var balance = data.totalCost - data.paidAmount;
+            if (data.TDS !== balance) {
+                data.VDS = balance - data.TDS;
+            }
+        };
+
         $scope.submit = function (qId, verification, Comment,TDS,VDS) {
             var requestData = {
                 QID: qId,
