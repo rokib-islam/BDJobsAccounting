@@ -312,11 +312,11 @@ namespace AccountingSystem.Web.Controllers
                     string responseMessage = await response.Content.ReadAsStringAsync();
                     VarificationResponseModel responseObjectTyped = JsonConvert.DeserializeObject<VarificationResponseModel>(responseMessage);
 
-                    return Json(responseObjectTyped.Message);
+                    return Json($"Success");
                 }
                 else
                 {
-                    return Json($"Onlin Payment Varification failed (HTTP status code: {response.StatusCode})");
+                    return Json($"Failed (status code: {response.StatusCode})");
                 }
             }
             catch (Exception ex)

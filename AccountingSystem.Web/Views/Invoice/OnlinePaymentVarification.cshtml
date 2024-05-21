@@ -212,7 +212,7 @@
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
                     $scope.search();
-                   alert(response);
+                    alert(response.data);
                 }, function (error) {
                     console.error(error);
                 })
