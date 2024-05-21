@@ -144,6 +144,28 @@ namespace AccountingSystem.Repository
             }
         }
 
+        public async Task<List<LoadPfPaymentDataResponseModel>> LoadPfPaymentData(LoadPfPaymentDataModel model)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    Fromdate = model.FromDate,
+                    Todate = model.ToDate,
+                    EmployeeId = model.EmployeeId,
+                };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<LoadPfPaymentDataResponseModel>("USP_LoadProvidentFundPaymentData", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
 
+                throw ex;
+            }
+
+        }
     }
 }

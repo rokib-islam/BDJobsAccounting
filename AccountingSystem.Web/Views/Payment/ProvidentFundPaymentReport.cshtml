@@ -1,0 +1,160 @@
+﻿@{
+    ViewData["title"] = "ProvidentFundPaymentReport";
+}
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+</head>
+
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="row">
+            <h4 class="text-center alert-primary" style="margin-top:-10px">Provident Fund Payment Report</h4>
+            <div class="col-sm-3">
+                <label>From Date</label>
+                <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
+            </div>
+            <div class="col-sm-3">
+                <label>To Date</label>
+                <input type="date" class="form-control form-control-sm" ng-model="toDate" />
+            </div>
+            <div class="col-sm-4">
+                <label>Employee Name</label>
+                    <input class="form-control form-control-sm" placeholder="Search Employee Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchEmployee(searchQuery)">
+                    <select class="form-select form-select-sm" size="10" ng-model="empList" style="position:absolute;z-index:999;width: 360px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="employeeList.length > 0">
+                        <option ng-repeat="employee in employeeList" value="{{employee.employeeId}}" ng-click="selectEmployee(employee)">{{employee.employeeName}}</option>
+                    </select>
+            </div>
+            <div class="col-sm-2 mt-4">
+                <button class="btn btn-success btn-sm px-4" ng-click="load()">Load</button>
+            </div>
+            <div class="mt-3">
+                <table ng-show="showTable" class="table table-bordered table-sm mt-3" style="font-size:15px">
+                    <thead>
+                        <tr class="text-center align-top" style="background-color:skyblue">
+                            <td rowspan="3">SL</td>
+                            <td rowspan="3">Name of Staff</td>
+                            <td rowspan="3">Designation</td>
+                            <td rowspan="3">Department</td>
+                            <td rowspan="3">PF Start Date</td>
+                            <td rowspan="3">PF End Date</td>
+                            <td colspan="6">Employees & Employers Provident Fund</td>
+                            <td rowspan="3">Employees Contribution</td>
+                            <td rowspan="3">Employers Contribution</td>
+                            <td colspan="2" rowspan="2">Amount Paid</td>
+                            <td rowspan="3">Closing Balance Before Profit Distribution</td>
+                            <td rowspan="3">Investment Income (Employee Cont.)</td>
+                            <td rowspan="3">Investment Income (Company Cont.)</td>
+                            <td colspan="2" rowspan="2">Closing Balance</td>
+                        </tr>
+                        <tr class="text-center align-top" style="background-color:skyblue">
+                            <td colspan="2">Opening Balance</td>
+                            <td colspan="2">For the year</td>
+                            <td colspan="2">Total</td>
+                        </tr>
+                        <tr class="text-center  align-top" style="background-color:skyblue">
+                            <td>Employees Contribution</td>
+                            <td>Employers Contribution</td>
+                            <td>Employees Contribution</td>
+                            <td>Employers Contribution</td>
+                            <td>Total Contribution</td>
+                            <td>Transferred to Forfeiture Account</td>
+                            <td>Employees Contribution</td>
+                            <td>Employers Contribution</td>
+                            <td>Employees Contribution</td>
+                            <td>Employers Contribution</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="data in pfPaymentData">
+                            <td>{{$index+1}}</td>
+                            <td>{{data.employeeName}}</td>
+                            <td>{{data.designation}}</td>
+                            <td>{{data.department}}</td>
+                            <td style="white-space:nowrap">{{data.pdfActivationStartDate}}</td>
+                            <td style="white-space:nowrap">{{data.pdfActivationEndDate}}</td>
+                            <td class="text-end">{{data.empOpeningBal}}</td>
+                            <td class="text-end">{{data.comOpeningBal}}</td>
+                            <td class="text-end">{{data.empRangeContribution}}</td>
+                            <td class="text-end">{{data.comRangeContribution}}</td>
+                            <td class="text-end">{{data.totalEmpContribution}}</td>
+                            <td class="text-end">{{data.totalComContribution}}</td>
+                            <td class="text-end">{{data.totalContribution}}</td>
+                            <td class="text-end">{{data.forfeitureAmount}}</td>
+                            <td class="text-end">{{data.paidEmpContribution}}</td>
+                            <td class="text-end">{{data.paidComContribution}}</td>
+                            <td class="text-end">{{data.closingBalanceBeforeProfit}}</td>
+                            <td class="text-end">{{data.empInvestmentIncome}}</td>
+                            <td class="text-end">{{data.comInvestmentIncome}}</td>
+                            <td class="text-end">{{data.closingEmpContribution}}</td>
+                            <td class="text-end">{{data.closingComContribution}}</td>
+                            
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        $scope.toDate = new Date();
+        $scope.fromDate = new Date();
+        $scope.fromDate.setDate($scope.toDate.getDate() - 30);
+
+        $scope.employeeList = [];
+        $scope.selectedEmployee = null;
+        $scope.searchEmployee = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Employee/GetEmployeeListByKey';
+                else
+                    Url = '/AccountingNew/Employee/GetEmployeeListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.employeeList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.employeeList = [];
+            }
+        };
+
+        $scope.selectEmployee = function (employee) {
+            $scope.selectedEmployee = employee;
+            $scope.searchQuery = employee.employeeName;
+            $scope.empId = employee.employeeId;
+            $scope.employeeList = [];
+        }
+
+        $scope.load = function () {
+            let requestBodyModel = {
+                FromDate: $scope.fromDate.toISOString().split('T')[0],
+                ToDate: $scope.toDate.toISOString().split('T')[0],
+                EmployeeId: $scope.searchQuery == undefined ? 0 : $scope.selectedEmployee.employeeId,
+            }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Payment/LoadPfPaymentData';
+            else
+                Url = '/AccountingNew/Payment/LoadPfPaymentData';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    $scope.pfPaymentData = response.data;
+                    $scope.showTable = true;                   
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+    });
+</script>
