@@ -10,5 +10,6 @@ namespace AccountingSystem.Abstractions.BLL
         Task<string> UnpaidCashCollectionAsync(UnpaidCashCollection model);
 
         Task<List<BankInformationModel>> GetBankInformation();
+        Task<List<LoadPfPaymentDataResponseModel>> LoadPfPaymentData(LoadPfPaymentDataModel model);
     }
 }

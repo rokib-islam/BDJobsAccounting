@@ -9,5 +9,6 @@ namespace AccountingSystem.Abstractions.Repository
         Task<string> UpdateCashCollection(InsertCashCollectionViewModel cashCollection);
         Task<string> UnpaidCashCollectionAsync(UnpaidCashCollection model);
         Task<List<BankInformationModel>> GetBankInformation();
+        Task<List<LoadPfPaymentDataResponseModel>> LoadPfPaymentData(LoadPfPaymentDataModel model);
     }
 }

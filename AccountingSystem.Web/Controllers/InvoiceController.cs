@@ -70,9 +70,9 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(results);
         }
-        public async Task<IActionResult> PostToOnline(string postType, string invoiceNo, string invoiceId)
+        public async Task<IActionResult> PostToOnline([FromBody] PostToOnlineModel model)
         {
-            var results = await _InvoiceManager.PostToOnlineAsync(postType, invoiceNo, invoiceId);
+            var results = await _InvoiceManager.PostToOnlineAsync(model.postType, model.invoiceNo, model.invoiceId);
 
             return Json(results);
         }

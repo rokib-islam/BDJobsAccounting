@@ -18,14 +18,14 @@
                 <label>To Date</label>
                 <input type="date" class="form-control form-control-sm" ng-model="toDate" />
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-4">
                 <label>Company</label>
                 <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
-                <select class="form-select form-select-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                <select class="form-select form-select-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 360px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
                     <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
                 </select>
             </div>
-            <div class="col-sm-3 mt-4">
+            <div class="col-sm-2 mt-4">
                 <button class="btn btn-success btn-sm px-5" ng-click="load()">Load</button>
             </div>
 

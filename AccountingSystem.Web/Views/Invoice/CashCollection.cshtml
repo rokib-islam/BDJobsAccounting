@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                                                                                            <script type="text/javascript">
-                                                                                                                window.location.href = '@Url.Action("Index", "Home")';
-                                                                                                            </script>
+                                                                                                                                                                <script type="text/javascript">
+                                                                                                                                                                    window.location.href = '@Url.Action("Index", "Home")';
+                                                                                                                                                                </script>
     }
     else
     {
@@ -95,7 +95,7 @@
                         </button>
                     </div>
                     <div class="col-sm-4">
-                        <button class="btn btn-info btn-sm" ng-click="postToOnline()">Post to Online</button>
+                        <button class="btn btn-info btn-sm" ng-click="postToOnlineBtn()">Post to Online</button>
                     </div>
                 </div>
             </div>
@@ -715,7 +715,6 @@
 
         $scope.selectedRowForpaymentList = null;
         $scope.selectRowForpaymentList = function (row) {
-            $scope.showBtnUpdate = false;
             if ($scope.selectedRowForpaymentList === row) {
                 $scope.selectedRowForpaymentList = null;
             } else {
@@ -726,21 +725,30 @@
                 $scope.amount = (cash + salesTax).toFixed(2);
                 $scope.receivedDate = new Date($scope.selectedRowForpaymentList.receivedDate);
 
-
+                var vattype = "";
                 var cheque = "";
                 var bankId = 0;
                 if ($scope.selectedRowForpaymentList.badDebt == 'true') {
                     $scope.showFieldset = 'BadDebt';
-                } else if ($scope.selectedRowForpaymentList.paymentType == '' || $scope.selectedRowForpaymentList.paymentType == null || $scope.selectedRowForpaymentList.paymentType == 'Cash') {
+                    $scope.payment = 4;
+                    $scope.paymentId = 378;
+                }
+                else if ($scope.selectedRowForpaymentList.paymentType == '' || $scope.selectedRowForpaymentList.paymentType == null || $scope.selectedRowForpaymentList.paymentType == 'Cash') {
                     $scope.showFieldset = 'Cash';
-                } else if ($scope.selectedRowForpaymentList.paymentType == 'bKash') {
-                    $scope.refbKashNo = $scope.selectedRowForpaymentList.chequeDetails;
-                    $scope.showFieldset = 'bKash';
-                } else if ($scope.selectedRowForpaymentList.paymentType == 'VAT' || $scope.selectedRowForpaymentList.paymentType == 'AIT' || $scope.selectedRowForpaymentList.paymentType == 'Accounts Receivable-VDS' || $scope.selectedRowForpaymentList.paymentType == 'Accounts Receivable-TDS') {
+                    $scope.payment = 1;
+                    $scope.paymentId = 46;
+                }
+                // else if ($scope.selectedRowForpaymentList.paymentType == 'bKash') {
+                //     $scope.refbKashNo = $scope.selectedRowForpaymentList.chequeDetails;
+                //     $scope.showFieldset = 'bKash';
+                // }
+                else if ($scope.selectedRowForpaymentList.paymentType == 'VAT' || $scope.selectedRowForpaymentList.paymentType == 'AIT' || $scope.selectedRowForpaymentList.paymentType == 'Accounts Receivable-VDS' || $scope.selectedRowForpaymentList.paymentType == 'Accounts Receivable-TDS') {
                     $scope.showFieldset = 'VATType';
+                    $scope.payment = 3;
+                    $scope.paymentId = 0;
                     // $scope.vatType = "28747";
-                    $scope.selectedRowForpaymentList.paymentType;
-                } 
+                    vattype = $scope.selectedRowForpaymentList.paymentType;
+                }
                 // else if ($scope.selectedRowForpaymentList.paymentType == 'Accounts Receivable-TDS') {
                 //     $scope.showFieldset = 'VATType';
                 //     $scope.vatType = "31074";
@@ -752,55 +760,117 @@
 
                     if (bankId == 411) {
                         $scope.showFieldset = 'SouthEast';
+                        $scope.payment = 10;
+                        $scope.paymentId = bankId;
+                        $scope.refSoutheastNo = cheque;
                     }
                     else if (bankId == 851) {
                         $scope.showFieldset = 'Brac';
+                        $scope.payment = 11;
+                        $scope.paymentId = bankId;
+                        $scope.refBracNo = cheque;
                     }
                     else if (bankId == 647) {
                         $scope.showFieldset = 'SCB';
+                        $scope.payment = 12;
+                        $scope.paymentId = bankId;
+                        $scope.refSCBNo = cheque;
                     }
                     else if (bankId == 28816) {
                         $scope.showFieldset = 'UCB';
+                        $scope.payment = 13;
+                        $scope.paymentId = bankId;
+                        $scope.refUCBNo = cheque;
                     }
                     else if (bankId == 2262) {
                         $scope.showFieldset = 'OnlinePayment';
+                        $scope.payment = 14;
+                        $scope.paymentId = bankId;
+                        $scope.refONLNo = cheque;
                     }
                     else {
                         $scope.showFieldset = 'BankInfo';
+                        $scope.payment = 2;
+                        $scope.paymentId = bankId;
                     }
                 }
                 else if ($scope.selectedRowForpaymentList.paymentType == "SSL") {
                     $scope.showFieldset = 'SSL';
+                    $scope.payment = 6;
+                    $scope.paymentId = 849;
+                    $scope.refSSLNo = $scope.selectedRowForpaymentList.chequeDetails;
                     cheque = $scope.selectedRowForpaymentList.chequeDetails;
-                } else if ($scope.selectedRowForpaymentList.paymentType == "Amar") {
+                }
+                else if ($scope.selectedRowForpaymentList.paymentType == "Amar") {
                     $scope.showFieldset = "AmarPay";
+                    $scope.payment = 15;
+                    $scope.paymentId = 31237;
+                    $scope.refAmarNo = $scope.selectedRowForpaymentList.chequeDetails;
                     cheque = $scope.selectedRowForpaymentList.chequeDetails;
                 }
                 else if ($scope.selectedRowForpaymentList.paymentType == "Nagad") {
                     $scope.showFieldset = "Nagad";
+                    $scope.payment = 5;
+                    $scope.paymentId = 28724;
+                    $scope.refNagadNo = $scope.selectedRowForpaymentList.chequeDetails;
                     cheque = $scope.selectedRowForpaymentList.chequeDetails;
                 }
-                else if ($scope.selectedRowForpaymentList.paymentType == "Brac")
-                    $scope.showFieldset = "Nagad";
-                else if ($scope.selectedRowForpaymentList.paymentType == "Discount")
+                else if ($scope.selectedRowForpaymentList.paymentType == "Brac") {
+                    $scope.showFieldset = "Brac";
+                    $scope.payment = 11;
+                }
+                else if ($scope.selectedRowForpaymentList.paymentType == "Discount") {
                     $scope.showFieldset = "DiscountOfSales";
-                else if ($scope.selectedRowForpaymentList.paymentType == "bAgent")
+                    $scope.payment = 8;
+                }
+                else if ($scope.selectedRowForpaymentList.paymentType == "bAgent") {
                     $scope.showFieldset = "bKashAgentCollection";
-                else if ($scope.selectedRowForpaymentList.paymentType == "OnlineCharges")
+                    $scope.payment = 16;
+                    $scope.paymentId = 31259;
+                }
+                else if ($scope.selectedRowForpaymentList.paymentType == "OnlineCharges") {
                     $scope.showFieldset = "OnlineCollection";
+                    $scope.payment = 9;
+                    $scope.paymentId = 3342;
+                }
                 else if ($scope.selectedRowForpaymentList.paymentType.toLowerCase() == "bkash") {
                     $scope.showFieldset = "bKash";
+                    $scope.payment = 7;
+                    $scope.paymentId = 1030;
+                    $scope.refbKashNo = $scope.selectedRowForpaymentList.chequeDetails;
                     cheque = $scope.selectedRowForpaymentList.chequeDetails;
                 }
                 if ($scope.showFieldset != "") {
-                    if ($scope.passValue == 2 || $scope.passValue == 3 || $scope.passValue == 6 || $scope.passValue == 15 || $scope.passValue == 16 || $scope.passValue == 7 || $scope.passValue == 5 || $scope.passValue == 10 || $scope.passValue == 11 || $scope.passValue == 12 || $scope.passValue == 13 || $scope.passValue == 14) {
+                    if ($scope.showFieldset == 'BankInfo' || $scope.showFieldset == 'VATType' || $scope.showFieldset == 'SSL' || $scope.showFieldset == 'AmarPay' || $scope.showFieldset == 'bKashAgentCollection' || $scope.showFieldset == 'bKash' || $scope.showFieldset == 'Nagad' || $scope.showFieldset == 'SouthEast' || $scope.showFieldset == 'Brac' || $scope.showFieldset == 'SCB' || $scope.showFieldset == 'UCB' || $scope.showFieldset == 'OnlinePayment') {
                         $scope.showFieldset == true;
                     }
-                    if ($scope.passValue == 2) {
-                        $scope.ledgerList = bankId;
-                        
+                    if ($scope.showFieldset == 'BankInfo') {
+                        $scope.ledgerList = bankId.toString();
+                        $scope.chequeNo = $scope.selectedRowForpaymentList.chequeDetails;
+                        cheque = $scope.selectedRowForpaymentList.chequeDetails;
                         $scope.vatType = '';
                         $scope.paymentId = bankId;
+                    }
+                    if ($scope.showFieldset == 'VATType') {
+                        var vat_id = "";
+                        if (vattype == "VAT")
+                            vat_id = '847';
+                        if (vattype == "AIT" || vattype == "TDS by Customer")
+                            vat_id = '1189';
+                        if (vattype == "Accounts Receivable-TDS")
+                            vat_id = '31074';
+                        if (vattype == "Accounts Receivable-VDS")
+                            vat_id = '28747';
+                        $scope.vatType = vat_id;
+                        $scope.ledgerList = '411';
+                        $scope.chequeNo = '';
+                        $scope.paymentId = vat_id;
+                    }
+                    if ($scope.showFieldset == "SSL" || $scope.showFieldset == "bKash" || $scope.showFieldset == "AmarPay" || $scope.showFieldset == "bKashAgentCollection" || $scope.showFieldset == "Nagad" || $scope.showFieldset == "SouthEast" || $scope.showFieldset == "Brac" || $scope.showFieldset == "SCB" || $scope.showFieldset == "UCB" || $scope.showFieldset == "OnlinePayment") {
+                        cheque = $scope.selectedRowForpaymentList.chequeDetails;
+                        $scope.vatType = vat_id;
+                        $scope.ledgerList = '411';
+                        $scope.chequeNo = '';
                     }
                 }
             }
@@ -818,7 +888,7 @@
             $http.get(Url, { params: { InvoiceNo: no } })
                 .then(function (response) {
                     $scope.salesListData = response.data;
-                    $scope.getPaymentList($scope.salesListData[0].id);
+                    //$scope.getPaymentList($scope.salesListData[0].id);
                 }, function (error) {
                     console.error(error);
                 })
@@ -875,13 +945,43 @@
                     console.error(error);
                 })
         };
+
+        $scope.postToOnline = function (postType, invoiceNo, invoiceId) {  
+            var jsonData = {
+                postType: postType,
+                invoiceNo: invoiceNo,
+                invoiceId: invoiceId,
+                
+            }
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/PostToOnline';
+            else
+                Url = '/AccountingNew/Invoice/PostToOnline';
+
+
+            $http.post(Url, JSON.stringify(jsonData), { headers: { 'Content-Type': 'application/json' } })
+            .then(function (response) {
+                var data = response.data;
+                alert(data.Message);
+
+                if (data.Connection == true && $scope.postType == "All") {
+                    location.reload();
+                }
+            }, function (error) {
+                console.error(error);
+            })
+        }
+
+        $scope.postToOnlineBtn = function () {
+            $scope.postToOnline("All", 0, 0);
+        }
        
         $scope.performAction = function (action) {
             var amount = $scope.amount;
             var date1 = new Date($scope.receivedDate);
             var date2 = new Date($scope.closingDateData);
             var isvalid = true;
-
             if (action == 'INSERT') {
                 var access = '@accessRights.Contains("1")';
                 if (access == 'False') {
@@ -940,7 +1040,7 @@
                 else if (action == 'INSERT' && parseFloat(amount) > parseFloat($scope.accountReceivable)) {
                     alert("The amount that you have given is greater than the balance of the sales.<br/>You must give the correct amount.");
                 }
-                else if (action == 'UPDATE' && parseFloat(parseFloat(amount) - parseFloat(selectedRowForpaymentList.cash.substring(4)) + parseFloat(selectedRowForpaymentList.salesTax.substring(4))) > parseFloat($scope.accountReceivable)) {
+                else if (action == 'UPDATE' && parseFloat(parseFloat(amount) - parseFloat($scope.selectedRowForpaymentList.cash) + parseFloat($scope.selectedRowForpaymentList.salesTax)) > parseFloat($scope.accountReceivable)) {
                     alert('The amount that you have given is greater than the balance of the sales.\nYou must give the correct amount.');
                 }
                 else {
@@ -981,10 +1081,44 @@
                                     $scope.spinner = false;
                                     $scope.getInvoices();
 
-                                    var confirmed = confirm('Do you want to upload this cash information to online?');
-                                    if (confirmed) {
-                                        // postToOnline("", $("#invoiceNo").val(), $("#invoiceId").val());
+                                    var userConfirmed = confirm('Do you want to upload this cash information to online?');
+
+                                    if (userConfirmed) {
+                                        $scope.postToOnline("", $scope.selectedRow.invoice_No, $scope.selectedRow.id.toString());
                                     }
+
+                                }
+
+                            }, function (error) {
+                                console.error(error);
+                            })
+                    }
+                    else {
+                        var userId = @userId;
+                        var jsonData = {
+                            type: ($scope.payment - 1).toString(),
+                            userId: userId.toString(),
+                            invoiceNo: $scope.invoiceNo,
+                            cash: amount,
+                            date: $scope.receivedDate.toISOString().split('T')[0],
+                            tno: $scope.selectedRowForSalesList.tno,
+                            invoiceSchedulerId: $scope.selectedRowForSalesList.id.toString(),
+                            ledgerId: ledgerId.toString(),
+                            chequeDetails: cheque,
+                            companyName: $scope.selectedCompany.name,
+                            cashCollectionId: $scope.selectedRowForpaymentList.id
+                        }
+
+                        let Url = '';
+                        if (window.location.hostname == 'localhost')
+                            Url = '/Payment/UpdateCashCollection';
+                        else
+                            Url = '/AccountingNew/Payment/UpdateCashCollection';
+
+                        $http.post(Url, JSON.stringify(jsonData), { headers: { 'Content-Type': 'application/json' } })
+                            .then(function (response) {
+                                if (response.data == "Success") {
+                                    alert("Cash information has been updated successfully.");   
                                 }
 
                             }, function (error) {
