@@ -347,8 +347,8 @@ namespace AccountingSystem.Repository
             using (var _Onlinedb = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
             {
 
-                var onlineTransaction = _Onlinedb.BeginTransaction();
-                var localTransaction = _db.BeginTransaction();
+                //var onlineTransaction = _Onlinedb.BeginTransaction();
+                //var localTransaction = _db.BeginTransaction();
 
                 try
                 {
@@ -360,36 +360,33 @@ namespace AccountingSystem.Repository
                         {
                             recordCount++;
 
-                            await _Onlinedb.ExecuteAsync("usp_Acc_UpdatePayStatus", new { StatusType = 1, InvoiceNo = invoice.Invoice_No.ToString() }, commandType: CommandType.StoredProcedure, transaction: onlineTransaction);
+                            await _Onlinedb.ExecuteAsync("usp_Acc_UpdatePayStatus", new { StatusType = 1, InvoiceNo = invoice.Invoice_No.ToString() }, commandType: CommandType.StoredProcedure);
                         }
 
-                        await _db.ExecuteAsync("UPDATE InvoiceList SET UploadedPaymentStatus='Yes' where UploadedPaymentStatus='No'", transaction: localTransaction);
+                        await _db.ExecuteAsync("UPDATE InvoiceList SET UploadedPaymentStatus='Yes' where UploadedPaymentStatus='No'");
 
                         message = $"Total found {recordCount}. All are uploaded successfully.";
                     }
                     else
                     {
-                        await _Onlinedb.ExecuteAsync("usp_Acc_UpdatePayStatus", new { StatusType = 1, InvoiceNo = invoiceNo }, commandType: CommandType.StoredProcedure, transaction: onlineTransaction);
+                        await _Onlinedb.ExecuteAsync("usp_Acc_UpdatePayStatus", new { StatusType = 1, InvoiceNo = invoiceNo }, commandType: CommandType.StoredProcedure);
 
-                        await _db.ExecuteAsync(
-                            $"UPDATE InvoiceList SET UploadedPaymentStatus='Yes' where id={invoiceId}",
-                            transaction: localTransaction
-                        );
+                        await _db.ExecuteAsync( $"UPDATE InvoiceList SET UploadedPaymentStatus='Yes' where id={invoiceId}");
 
                         message = "Upload online successful.";
                     }
 
-                    onlineTransaction.Commit();
-                    localTransaction.Commit();
+                    //onlineTransaction.Commit();
+                    //localTransaction.Commit();
                 }
                 catch (Exception ex)
                 {
-                    onlineTransaction.Rollback();
-                    localTransaction.Rollback();
+                    //onlineTransaction.Rollback();
+                    //localTransaction.Rollback();
 
                     if (postType != "All")
                     {
-                        await _db.ExecuteAsync($"UPDATE InvoiceList SET UploadedPaymentStatus='No' where id={invoiceId}", transaction: localTransaction);
+                        await _db.ExecuteAsync($"UPDATE InvoiceList SET UploadedPaymentStatus='No' where id={invoiceId}");
                     }
 
                     message = "Sorry, Payment status cannot be uploaded now.Internet connection is not available.You can upload these Payment statuses later.";
