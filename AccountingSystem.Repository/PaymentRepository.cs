@@ -152,7 +152,7 @@ namespace AccountingSystem.Repository
                     Todate = model.ToDate,
                     EmployeeId = model.EmployeeId,
                 };
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
                     var result = await _db.QueryAsync<LoadPfPaymentDataResponseModel>("USP_LoadProvidentFundPaymentData", parameters, commandType: CommandType.StoredProcedure);
                     return result.ToList();
