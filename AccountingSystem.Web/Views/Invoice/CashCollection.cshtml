@@ -37,7 +37,7 @@
 
 <div ng-app="myApp">
     <div ng-controller="myController">
-        <div class="row">
+        <div class="row" style="font-size:14px !important">
             <h4 class="alert-primary text-center" style="margin-top:-10px">Cash Collection</h4>
 
             <div class="col-sm-6">
@@ -48,7 +48,7 @@
                     </div>
                 </div>
                 <div>Select a company</div>
-                <select class="form-control form-control-sm" size="15" ng-model="comList" style="height:230px;border:1px solid lightgray">
+                <select class="form-control form-control-sm" size="15" ng-model="comList" style="height:225px;border:1px solid lightgray">
                     <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
                 </select>
 
@@ -101,7 +101,7 @@
                     </div>
                 </div>
 
-               @*  <div class="row mt-3">
+                <div class="row mt-3">
                     <div class="col-12">
                         <fieldset class="border p-2">
                             <legend class="float-none w-auto p-2 fs-5">
@@ -164,7 +164,7 @@
                             </div>
                         </fieldset>
                     </div>
-                </div> *@
+                </div>
 
             </div>
             <div class="col-sm-6">
@@ -176,7 +176,7 @@
                         <label class="float-end"><input type="checkbox" ng-model="paid" ng-change="getInvoices()" />&nbsp; Show paid invoices </label>
                     </div>
                 </div>
-                <div class="mt-2" style="height: 200px; overflow-y: auto;border:1px solid lightgray">
+                <div class="mt-2" style="height: 183px; overflow-y: auto;border:1px solid lightgray">
                     <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
                         <thead class="thead-light">
                             <tr class="text-center">
@@ -218,7 +218,7 @@
                 </div>
                 <fieldset class="border p-2">
                     <legend class="float-none w-auto p-2 fs-5">Payment Nature</legend>
-                    <div class="row" style="font-size:14px">
+                    <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group row">
                                 <label class="col-sm-4">Date</label>
@@ -309,7 +309,7 @@
                                                     </legend>
                                                     <div class="row custom-margin-top">
                                                         <div class="col-sm-12">
-                                                            <select class="form-select input-sm" ng-model="vatType">
+                                                            <select class="form-select form-select-sm" ng-model="vatType">
                                                                 <option value=""></option>
 
                                                                 <option value="28747">Accounts Receivable-VDS</option>
