@@ -181,6 +181,7 @@
             var balance = data.totalCost - data.paidAmount;
             if (data.VDS !== balance) {
                 data.TDS = balance - data.VDS;
+                data.TDS = data.TDS.toString();
             }
         };
 
@@ -188,6 +189,7 @@
             var balance = data.totalCost - data.paidAmount;
             if (data.TDS !== balance) {
                 data.VDS = balance - data.TDS;
+                data.VDS = data.VDS.toString();
             }
         };
 
@@ -196,7 +198,7 @@
                 QID: qId,
                 verified: verification,
                 verifiedBy: @userId,
-                Comment: Comment,
+                Comment: Comment ? Comment : '',
                 TDS: TDS,
                 VDS: VDS
             };
@@ -210,7 +212,7 @@
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
                     $scope.search();
-                   alert(response);
+                    alert(response.data);
                 }, function (error) {
                     console.error(error);
                 })

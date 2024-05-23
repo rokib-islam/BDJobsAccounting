@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AccountingSystem.Models.AccountViewModels
+﻿namespace AccountingSystem.Models.AccountViewModels
 {
     public class JobListV2ViewModel
     {
@@ -20,5 +14,6 @@ namespace AccountingSystem.Models.AccountViewModels
         public string PostingDate { get; set; }
         public int Region { get; set; }
         public string VerifiedCompany { get; set; }
+        public string JType { get; set; }
     }
 }
