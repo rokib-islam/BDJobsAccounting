@@ -371,7 +371,7 @@ namespace AccountingSystem.Repository
                     {
                         await _Onlinedb.ExecuteAsync("usp_Acc_UpdatePayStatus", new { StatusType = 1, InvoiceNo = invoiceNo }, commandType: CommandType.StoredProcedure);
 
-                        await _db.ExecuteAsync( $"UPDATE InvoiceList SET UploadedPaymentStatus='Yes' where id={invoiceId}");
+                        await _db.ExecuteAsync($"UPDATE InvoiceList SET UploadedPaymentStatus='Yes' where id={invoiceId}");
 
                         message = "Upload online successful.";
                     }
@@ -613,6 +613,8 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
                     dynamicParameters.Add("@PaymentMode", parameters.PaymentMethod);
                     dynamicParameters.Add("@JType", parameters.JType);
+                    dynamicParameters.Add("@TDS", parameters.TDS);
+                    dynamicParameters.Add("@VDS", parameters.VDS);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
@@ -693,6 +695,8 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
                     dynamicParameters.Add("@SDate", parameters.SDate);
                     dynamicParameters.Add("@CP_Id", parameters.CP_Id);
+                    dynamicParameters.Add("@TDS", parameters.TDS);
+                    dynamicParameters.Add("@VDS", parameters.VDS);
 
 
 
