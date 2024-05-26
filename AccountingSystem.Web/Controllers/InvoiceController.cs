@@ -350,5 +350,13 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
+
+        public async Task<IActionResult> UpdateBouncedChequeData([FromBody] UpdateBouncedChequeDataModel model)
+        {
+            var result = await _InvoiceManager.UpdateBouncedChequeData(model);
+            return Json(result);
+        }
+
+
     }
 }

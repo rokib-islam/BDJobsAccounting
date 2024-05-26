@@ -126,5 +126,10 @@ namespace AccountingSystem.BLL
         {
             return await _repository.LoadBouncedCheckData(model);
         }
+
+        public async Task<string> UpdateBouncedChequeData(UpdateBouncedChequeDataModel data)
+        {
+            return await _repository.UpdateBouncedChequeData(data);
+        }
     }
 }

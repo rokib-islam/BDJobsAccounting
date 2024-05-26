@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-        <script type="text/javascript">
-            window.location.href = '@Url.Action("Index", "Home")';
-        </script>
+                            <script type="text/javascript">
+                                window.location.href = '@Url.Action("Index", "Home")';
+                            </script>
     }
     else
     {
@@ -52,16 +52,16 @@
                     <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
                 </select>
 
-                <div class="row mt-3">
+                <div class="row mt-2">
                     <div class="col-sm-6">
-                        <label>Payment List</label>
+                        <label class="fw-bold">Payment List</label>
                     </div>
                     <div class="col-sm-6">
                         <button class="btn btn-info btn-sm float-end px-4"><strong>Unpaid</strong></button>
                     </div>
                 </div>
 
-                <div class="mt-2" style="height: 220px; overflow-y: auto;border:1px solid lightgray">
+                <div class="mt-2" style="height: 165px; overflow-y: auto;border:1px solid lightgray">
                     <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
                         <thead class="thead-light">
                             <tr class="text-center">
@@ -86,7 +86,7 @@
                     </table>
                 </div>
 
-                <div class="row mt-5">
+                <div class="row mt-3">
                     <div class="col-sm-4">
                         <button class="btn btn-primary btn-sm px-4" ng-click="performAction('UPDATE')" ng-disabled="showBtnUpdate"><strong>Update</strong></button>
                     </div>
@@ -101,26 +101,26 @@
                     </div>
                 </div>
 
-                <div class="row mt-3">
-                    <div class="col-12">
+                <div class="row">
+                    <div class="col-sm-12">
                         <fieldset class="border p-2">
-                            <legend class="float-none w-auto p-2 fs-5">
-                                Check Bounced Section
+                            <legend class="float-none w-auto p-2 fs-6 fw-bold">
+                                Cheque Bounced Section
                             </legend>
 
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-sm-12">
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <div class="row">
-                                                <div class="col-1"><input type="checkbox" ng-model="isBounced"></div>
-                                                <div class="col-10">IsBounced</div>
+                                                <div class="col-sm-1"><input type="checkbox" ng-model="isBounced" ng-disabled="bouncedChequeFieldsDisabled" ng-change="bouncedChequeFieldsEmpty()"></div>
+                                                <div class="col-sm-10">IsBounced</div>
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-sm-6">
                                             <div class="row">
-                                                <div class="col-4">Check No</div>
-                                                <div class="col-8"><input type="text" class="form-control form-control-sm text-end" ng-model="checkNo"></div>
+                                                <div class="col-sm-4">Cheque No</div>
+                                                <div class="col-sm-8"><input type="text" class="form-control form-control-sm text-end" ng-model="chequeNo" ng-disabled="bouncedChequeFieldsDisabled"></div>
                                             </div>
                                         </div>
                                     </div>
@@ -128,39 +128,39 @@
                             </div>
 
                             <div class="row">
-                                <div class="col-12">
+                                <div class="col-sm-12">
                                     <div class="row">
-                                        <div class="col-6">
+                                        <div class="col-sm-6 mt-1">
                                             <div class="row">
-                                                <div class="col-4">Date</div>
-                                                <div class="col-8">
-                                                    <input type="date" class="form-control form-control-sm select" ng-model="bouncedDate">
+                                                <div class="col-sm-4">Date</div>
+                                                <div class="col-sm-8">
+                                                    <input type="date" class="form-control form-control-sm select" ng-model="bouncedDate" ng-disabled="bouncedChequeFieldsDisabled">
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-6">
+                                        <div class="col-sm-6 mt-1">
                                             <div class="row">
-                                                <div class="col-4">Amount</div>
-                                                <div class="col-8"><input type="text" class="form-control form-control-sm text-end" value="0.00" ng-model="bouncedAmount"></div>
+                                                <div class="col-sm-4">Amount</div>
+                                                <div class="col-sm-8"><input type="text" class="form-control form-control-sm text-end" value="0.00" ng-model="bouncedAmount" ng-disabled="bouncedChequeFieldsDisabled"></div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
-                            <div class="row mt-2">
-                                <div class="col-12">
+                            <div class="row mt-1">
+                                <div class="col-sm-12">
                                     <div class="row">
-                                        <div class="col-1">Note</div>
-                                        <div class="col-11">
-                                            <textarea type="text" class="form-control form-control-sm" ng-model="bouncedNote"></textarea>
+                                        <div class="col-sm-1">Note</div>
+                                        <div class="col-sm-11">
+                                            <textarea type="text" class="form-control form-control-sm" ng-model="bouncedNote" ng-disabled="bouncedChequeFieldsDisabled"></textarea>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                             <div class="mt-2">
-                                <button type="button" class="btn btn-success float-end" ng-click="submit()"><strong>Submit</strong></button>
+                                <button type="button" class="btn btn-success btn-sm float-end" ng-click="submit()" ng-disabled="bouncedChequeFieldsDisabled"><strong>Submit</strong></button>
                             </div>
                         </fieldset>
                     </div>
@@ -201,7 +201,7 @@
 
                 <div class="row mt-2">
                     <div class="col-sm-6">
-                        <label>Sales List</label>
+                        <label class="fw-bold">Sales List</label>
                     </div>
                     <div class="col-sm-6">
                         <button class="btn btn-info btn-sm float-end"><strong>Collection Note</strong></button>
@@ -217,7 +217,7 @@
                     </table>
                 </div>
                 <fieldset class="border p-2">
-                    <legend class="float-none w-auto p-2 fs-5">Payment Nature</legend>
+                    <legend class="float-none w-auto p-2 fs-6 fw-bold">Payment Nature</legend>
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group row">
@@ -603,10 +603,12 @@
             $scope.paymentId = 46;
             $scope.getAllLedger();
             $scope.receivedDate = new Date();
+            $scope.bouncedDate = new Date();
             $scope.showBtnInsert = true;
             $scope.showBtnUpdate = true;
             $scope.loadClosingDate();
             $scope.showFieldset = 'bKashAgentCollection';
+            $scope.bouncedChequeFieldsDisabled = true;
         })
 
         $scope.showFieldset = '';
@@ -727,13 +729,23 @@
         }
 
         $scope.getInvoices = function () {
+            debugger
             var str;
-            if ($scope.due && !$scope.paid)
+            if ($scope.due && !$scope.paid) {
                 str = "" + $scope.selectedCompany.id + ", 0, 0";
-            else if (!$scope.due && $scope.paid)
+                $scope.bouncedChequeFieldsDisabled = true;
+            }
+            else if (!$scope.due && $scope.paid) {
                 str = "" + $scope.selectedCompany.id + ", 1, null";
-            else if ($scope.due && $scope.paid)
+                $scope.bouncedChequeFieldsDisabled = false;
+            }
+            else if ($scope.due && $scope.paid) {
                 str = "" + $scope.selectedCompany.id + ", null, 0";
+                $scope.bouncedChequeFieldsDisabled = true;
+            }
+            else if (!$scope.due && !$scope.paid) {
+                $scope.bouncedChequeFieldsDisabled = true;
+            }
             else
                 str = "";
 
@@ -1197,48 +1209,55 @@
 
         }
 
-        // $scope.submit = function () {
-        //     var isBounced = $("#isBounced").is(':checked') ? 1 : 0;
-        //     var checkNo = $scope.checkNo;
-        //     var bouncedDate = $scope.bouncedDate;
-        //     var bouncedAmount = $scope.bouncedAmount;
-        //     var bouncedNote = $scope.bouncedNote;
-        //     var invoiceNo = invoiceNoForBounced;
+        $scope.submit = function () {
+            debugger
+            var isBounced = $scope.isBounced;
+            var chequeNo = $scope.chequeNo;
+            var bouncedDate = $scope.bouncedDate.toISOString().split('T')[0];
+            var bouncedAmount = $scope.bouncedAmount;
+            var bouncedNote = $scope.bouncedNote;
+            var invoiceNo = $scope.selectedRow.invoice_No;;
 
-        //     if (invoiceNo == "" || invoiceNo == undefined || invoiceNo == null) {
-        //         alert("Please select paid invoice number.");
-        //         return false;
-        //     }
-        //     var jsonData = {
-        //         isBounced: isBounced,
-        //         checkNo: checkNo,
-        //         bouncedDate: bouncedDate,
-        //         bouncedAmount: bouncedAmount,
-        //         bouncedNote: bouncedNote,
-        //         invoiceNo: invoiceNo
-        //     }
-        //     $("#spinner").show();
-        //     $.ajax({
-        //         type: "POST",
-        //         url: '@Url.Action("UpdateBouncedCheckData", "Invoice")',
-        //         contentType: "application/json; charset=utf-8",
-        //         data: JSON.stringify(jsonData),
-        //         dataType: "json",
-        //         success: function (dat) {
-        //             if (dat == true) {
-        //                 var m6 = new Messi('Bounced information has been updated successfully.',
-        //                     {
-        //                         modal: true,
-        //                         title: 'Success',
-        //                         buttons: [
-        //                             { id: 0, label: 'OK', val: 'X' }
-        //                         ]
-        //                     });
-        //                 $('.messi-actions').css('float', 'left').css('margin-left', '205px');
-        //             }
-        //         },
-        //     });
-        // }
+            if (invoiceNo == "" || invoiceNo == undefined || invoiceNo == null) {
+                alert("Please select paid invoice number.");
+                return false;
+            }
+            var jsonData = {
+                IsBounced: isBounced,
+                ChequeNo: chequeNo,
+                BouncedDate: bouncedDate,
+                BouncedAmount: bouncedAmount,
+                BouncedNote: bouncedNote,
+                InvoiceNo: invoiceNo
+            }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost') {
+                Url = '/Invoice/UpdateBouncedChequeData';
+            } else {
+                Url = '/AccountingNew/Invoice/UpdateBouncedChequeData';
+            }
+
+
+            $http.post(Url, JSON.stringify(jsonData), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    if (response.data == "Success") {
+                        alert("Bounced information has been updated successfully");
+                    }
+                }, function (error) {
+                    console.error(error);
+                });
+        }
+
+        $scope.bouncedChequeFieldsEmpty = function () {
+            if (!$scope.isBounced) {
+                $scope.checkNo = '';
+                $scope.bouncedAmount = 0;
+                $scope.bouncedNote = '';
+                $scope.bouncedDate = '';
+            }
+        };
+        
 
     })
 </script>

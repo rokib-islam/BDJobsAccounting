@@ -826,6 +826,44 @@ namespace AccountingSystem.Repository
 
         }
 
+        public async Task<string> UpdateBouncedChequeData(UpdateBouncedChequeDataModel data)
+        {
+            var result = "";
+
+            var parameters = new
+            {
+                IsBounced = data.IsBounced,
+                ChequeNo = data.ChequeNo,
+                BouncedDate = data.BouncedDate,
+                BouncedAmount = data.BouncedAmount,
+                BouncedNote = data.BouncedNote,
+                InvoiceNo = data.InvoiceNo
+            };
+
+            var query = "UPDATE InvoiceList " +
+                        "SET isBounced = @IsBounced, " +
+                        "BouncedCheckNo = @ChequeNo, " +
+                        "BouncedCheckDate = @BouncedDate, " +
+                        "BouncedAmount = @BouncedAmount, " +
+                        "BouncedNote = @BouncedNote " +
+                        "WHERE Invoice_No = @InvoiceNo;";
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    await _db.ExecuteAsync(query, parameters);
+                }
+                result = "Success";
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
+        }
+
+
     }
 
 }
