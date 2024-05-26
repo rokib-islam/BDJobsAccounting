@@ -39,8 +39,8 @@
                             <td rowspan="3">PF Start Date</td>
                             <td rowspan="3">PF End Date</td>
                             <td colspan="6">Employees & Employers Provident Fund</td>
-                            <td rowspan="3">Employees Contribution</td>
-                            <td rowspan="3">Employers Contribution</td>
+                            <td rowspan="3">Total Contribution</td>
+                            <td rowspan="3">Transferred to Forfeiture Account</td>
                             <td colspan="2" rowspan="2">Amount Paid</td>
                             <td rowspan="3">Closing Balance Before Profit Distribution</td>
                             <td rowspan="3">Investment Income (Employee Cont.)</td>
@@ -57,8 +57,8 @@
                             <td>Employers Contribution</td>
                             <td>Employees Contribution</td>
                             <td>Employers Contribution</td>
-                            <td>Total Contribution</td>
-                            <td>Transferred to Forfeiture Account</td>
+                            <td>Employees Contribution</td>
+                            <td>Employers Contribution</td>
                             <td>Employees Contribution</td>
                             <td>Employers Contribution</td>
                             <td>Employees Contribution</td>
@@ -70,7 +70,7 @@
                             <td>{{$index+1}}</td>
                             <td>{{data.employeeName}}</td>
                             <td>{{data.designation}}</td>
-                            <td>{{data.department}}</td>
+                            <td>{{data.departmentName}}</td>
                             <td style="white-space:nowrap">{{data.pdfActivationStartDate}}</td>
                             <td style="white-space:nowrap">{{data.pdfActivationEndDate}}</td>
                             <td class="text-end">{{data.empOpeningBal}}</td>
@@ -88,10 +88,11 @@
                             <td class="text-end">{{data.comInvestmentIncome}}</td>
                             <td class="text-end">{{data.closingEmpContribution}}</td>
                             <td class="text-end">{{data.closingComContribution}}</td>
-                            
+
                         </tr>
                     </tbody>
                 </table>
+
 
             </div>
         </div>

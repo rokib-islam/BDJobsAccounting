@@ -11,7 +11,7 @@ namespace AccountingSystem.Models.AccountViewModels
         public int EmployeeId { get; set; }
         public string EmployeeName { get; set; }
         public string Designation { get; set; }
-        public string Department { get; set; }
+        public string DepartmentName { get; set; }
         public string PDFActivationStartDate { get; set; }
         public string PDFActivationEndDate { get; set; }
         public decimal PFDeduction { get; set; }
