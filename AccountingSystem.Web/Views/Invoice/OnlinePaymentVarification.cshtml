@@ -9,20 +9,42 @@
         <div class="row">
             <h5 style="margin-top:-10px" class="alert-primary text-center">Online Payment Varification</h5>
 
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <label>From Date:</label>
                 <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
             </div>
-            <div class="col-sm-3">
+            <div class="col-sm-2">
                 <label>To Date:</label>
                 <input type="date" class="form-control form-control-sm" ng-model="toDate" />
             </div>
-            <div class="col-sm-3">
-                <label>Filter By:</label>
+            <div class="col-sm-2">
+                <label>Status:</label>
                 <select class="form-control form-control-sm" ng-model="verified">
                     <option value="">All</option>
                     <option value="1">Verified</option>
                     <option value="2">Rejected</option>
+                </select>
+            </div>
+            <div class="col-sm-2">
+                <label>Payment Mode:</label>
+                <select class="form-control form-control-sm" ng-model="PaymentMode">
+                    <option value="">All</option>
+                    <option value="1">Bkash</option>
+                    <option value="2">Nagad</option>
+                    <option value="3">Upay</option>
+                    <option value="4">Bank Deposit</option>
+                    <option value="5">Bank Transfer</option>
+                    <option value="6">Nexus Pay</option>
+                    <option value="7">Southeast Bank PLC</option>
+                    <option value="8">Brac Bank PLC</option>
+                    <option value="9">Mutual Trust Bank PLC</option>
+                    <option value="10">United Commercial Bank PLC</option>
+                    <option value="11">Dutch-Bangla Bank PLC</option>
+                    <option value="12">Standard Chartered Bank</option>
+
+
+                   
+
                 </select>
             </div>
             <div class="col-sm-3 mt-4">
@@ -147,12 +169,14 @@
                                 <input type="radio" ng-model="data.verification" value="2"> Reject
                                 <div ng-show="data.verification == 1">
                                     <input type="text" class="form-control form-control-sm" ng-model="data.TDS" placeholder="TDS" ng-disabled="data.totalCost === data.paidAmount" ng-change="updateTDS(data)"><br />
-                                    <input type="text" class="form-control form-control-sm" ng-model="data.VDS" placeholder="VDS" ng-disabled="data.totalCost === data.paidAmount" ng-change="updateVDS(data)">
+                                    <input type="text" class="form-control form-control-sm" ng-model="data.VDS" placeholder="VDS" ng-disabled="data.totalCost === data.paidAmount" ng-change="updateVDS(data)"><br />
+                                    JDate :<input type="date" class="form-control form-control-sm" ng-model="JDate" placeholder="JDate">
                                 </div>
                                 <div ng-show="data.verification == 2">
-                                    <input type="text" class="form-control form-control-sm" ng-model="data.Comment" placeholder="Reject Comment">
+                                    <textarea type="text" class="form-control form-control-sm" ng-model="data.Comment" placeholder="Reject Comment"></textarea>
                                 </div>
-                                <button class="btn btn-success btn-sm mt-1" ng-click="submit(data.quotationID, data.verification,data.Comment,data.TDS,data.VDS )">Submit</button>
+                                
+                                <button class="btn btn-success btn-sm mt-1" ng-click="submit(data.quotationID, data.verification,data.Comment,data.TDS,data.VDS,JDate )">Submit</button>
                             </div>
                         </td>
 
@@ -175,8 +199,9 @@
             $scope.maxPageLength = 5;
             $scope.currentPage = 1;
             $scope.totalItems = 0;
+           
         })
-        
+        $scope.JDate = new Date();
         $scope.updateVDS = function (data) {
             var balance = data.totalCost - data.paidAmount;
             if (data.VDS !== balance) {
@@ -193,14 +218,15 @@
             }
         };
 
-        $scope.submit = function (qId, verification, Comment,TDS,VDS) {
+        $scope.submit = function (qId, verification, Comment, TDS, VDS, JDate) {
             var requestData = {
                 QID: qId,
                 verified: verification,
                 verifiedBy: @userId,
                 Comment: Comment ? Comment : '',
                 TDS: TDS,
-                VDS: VDS
+                VDS: VDS,
+                JDate: JDate
             };
 
             let Url = '';
@@ -224,7 +250,8 @@
                 toDate: $scope.toDate == undefined ? "" : $scope.toDate,
                 verified: $scope.verified == undefined ? "" : $scope.verified,
                 pageNo: $scope.currentPage == undefined ? 1 : $scope.currentPage,
-                pageSize: $scope.itemsPerPage == undefined ? 20 : $scope.itemsPerPage
+                pageSize: $scope.itemsPerPage == undefined ? 20 : $scope.itemsPerPage,
+                paymentMode: $scope.PaymentMode == undefined ? "" : $scope.PaymentMode
             };
 
             let Url = '';

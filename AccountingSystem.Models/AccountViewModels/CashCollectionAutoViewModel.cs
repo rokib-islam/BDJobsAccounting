@@ -11,6 +11,7 @@
         public int CP_Id { get; set; }
         public double TDS { get; set; }
         public double VDS { get; set; }
+        public string jDate { get; set; }
     }
     public class CashCollectionAutoReponse
     {

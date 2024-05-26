@@ -259,7 +259,8 @@ namespace AccountingSystem.Web.Controllers
                 new KeyValuePair<string, string>("toDate", model.ToDate),
                 new KeyValuePair<string, string>("verified", model.Verified),
                 new KeyValuePair<string, string>("pageNo", model.PageNo.ToString()),
-                new KeyValuePair<string, string>("pageSize", model.PageSize.ToString())
+                new KeyValuePair<string, string>("pageSize", model.PageSize.ToString()),
+                new KeyValuePair<string, string>("paymentMode", model.paymentMode)
             });
 
             try
@@ -298,6 +299,7 @@ namespace AccountingSystem.Web.Controllers
                 new KeyValuePair<string, string>("comment", model.Comment),
                 new KeyValuePair<string, string>("TDS", model.TDS),
                 new KeyValuePair<string, string>("VDS", model.VDS),
+                new KeyValuePair<string, string>("JDate", model.JDate),
 
 
 

@@ -615,6 +615,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@JType", parameters.JType);
                     dynamicParameters.Add("@TDS", parameters.TDS);
                     dynamicParameters.Add("@VDS", parameters.VDS);
+                    dynamicParameters.Add("@JDate", parameters.jDate);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
@@ -664,6 +665,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@JType", parameters.JType);
                     dynamicParameters.Add("@TDS", parameters.TDS);
                     dynamicParameters.Add("@VDS", parameters.VDS);
+                    dynamicParameters.Add("@JDate", parameters.jDate);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
@@ -697,6 +699,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@CP_Id", parameters.CP_Id);
                     dynamicParameters.Add("@TDS", parameters.TDS);
                     dynamicParameters.Add("@VDS", parameters.VDS);
+                    dynamicParameters.Add("@JDate", parameters.jDate);
 
 
 
@@ -730,6 +733,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@CP_Id", parameters.CP_Id);
                     dynamicParameters.Add("@TDS", parameters.TDS);
                     dynamicParameters.Add("@VDS", parameters.VDS);
+                    dynamicParameters.Add("@JDate", parameters.jDate);
 
 
 
@@ -885,7 +889,7 @@ namespace AccountingSystem.Repository
 
                     throw ex;
                 }
-                
+
             }
         }
     }
