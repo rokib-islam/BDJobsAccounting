@@ -52,7 +52,12 @@ namespace AccountingSystem.Web.Controllers
                 List<Claim> claims = new List<Claim>() {
 
                     new Claim(ClaimTypes.NameIdentifier ,user.UName),
-                    new Claim("Id",user.UserID.ToString())
+                    new Claim("Id",user.UserID.ToString()),
+                    new Claim("Name",user.Name),
+                    new Claim("Designation",user.Designation),
+                    new Claim("Email",user.Email),
+                    new Claim("Mobile",user.MobileNo),
+                    new Claim("SignatureImage",user.SignatureImage)
                 };
 
                 ClaimsIdentity claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);

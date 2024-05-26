@@ -87,9 +87,12 @@
                         <label class="control-label float-right" style="font-weight: normal;">Premium</label>
                         <span style="border: 1px solid gray; background: #D5F5E3; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
                         <label class="control-label float-right" style="font-weight: normal;">SME</label>
-                        <span style="border: 1px solid gray; background: #fa6e66; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                        <span style="border: 1px solid gray; background: #f7adad; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
                         <label class="control-label float-right" style="font-weight: normal;">LN</label>
                         <span style="border: 1px solid gray; background: #0CFBFF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+                        <label class="control-label float-right" style="font-weight: normal;">HJ</label>
+                        <span style="border: 1px solid gray; background: #9bc76b; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
+
                     </div>
                 </div>
             </div>            
@@ -499,7 +502,7 @@
                 };
             }
             if (o.opid > 0 || o.addType > 0 || o.region > 0) {
-                if (o.addType == 1) {
+                if (o.addType == 1 && o.jType == 'J') {
                     rowStyle["background"] = "#C5C69D"; // Stand-out
                 }
                 else if (o.region > 0) {
@@ -509,11 +512,13 @@
                     rowStyle["background"] = "#D5F5E3"; // Premium
                 } else if (o.addType == 11) {
                     rowStyle["background"] = "#0CFBFF"; // Only LN
+                } else if (o.addType == 1 && o.jType == 'H') {
+                    rowStyle["background"] = "#9bc76b"; // hothobs
                 } else if (o.opid > 0) {
                     rowStyle["background"] = "#FFE6A8"; // Paid Online
 
                 } else if (o.addType == 10) {
-                    rowStyle["background"] = "#fa6e66"; // SME
+                    rowStyle["background"] = "#f7adad"; // SME
                 }
             }
 
@@ -756,6 +761,9 @@
                     if ($scope.selectedJob.blueCollar > 0) {
                        // onlineProduct = "Online Job Posting-Stand-out (Blue Color)";
                         onlineProduct = "Online Job Posting (Premium Listing-BC)";
+                    } if( $scope.selectedRow.jType =='H') {
+                        // onlineProduct = "Online Job Posting-Stand-out (Blue Color)";
+                        onlineProduct = "Hot Job Advertisement";
                     } else {
                         //onlineProduct = "Online Job Posting (Stand-out)";
                         onlineProduct = "Online Job Posting (Premium Listing)";

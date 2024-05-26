@@ -133,7 +133,7 @@ namespace AccountingSystem.Repository
                         using (var Connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                         {
                             await Connection.ExecuteAsync("USP_Download_Online_Jobs",
-                                new { DownloadOnlineJob = dataTable.AsTableValuedParameter("dbo.DownloadOnlineJob_v2") },
+                                new { DownloadOnlineJob = dataTable.AsTableValuedParameter("dbo.DownloadOnlineJob_v3") },
                                 commandType: CommandType.StoredProcedure);
                         }
 
@@ -171,6 +171,7 @@ namespace AccountingSystem.Repository
             dataTable.Columns.Add("VerifiedCompany", typeof(int));
             dataTable.Columns.Add("Email", typeof(string));
             dataTable.Columns.Add("Mobile", typeof(string));
+            dataTable.Columns.Add("jType", typeof(string));
             // Add other columns as needed
             return dataTable;
         }
@@ -196,7 +197,8 @@ namespace AccountingSystem.Repository
                     item.BlueCollar,
                     item.VerifiedCompany,
                     item.Email,
-                    item.Mobile
+                    item.Mobile,
+                    item.jType
                 );
             }
         }
