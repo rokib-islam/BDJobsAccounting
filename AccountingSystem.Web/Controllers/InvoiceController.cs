@@ -357,6 +357,10 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
-
+        public async Task<IActionResult> LoadbBouncedCheckData(string invoiceNo)
+        {
+            var result = await _InvoiceManager.LoadbBouncedCheckData(invoiceNo);
+            return Json(result);
+        }
     }
 }

@@ -867,7 +867,27 @@ namespace AccountingSystem.Repository
             return result;
         }
 
+        public async Task<List<LoadbBouncedCheckDataModel>> LoadbBouncedCheckData(string invoiceNo)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                try
+                {
+                    var query = "SELECT isBounced, BouncedCheckNo, BouncedCheckDate, BouncedAmount, BouncedNote from InvoiceList where Invoice_No=@invoiceNo";
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@invoiceNo", invoiceNo);
 
+                    var result = await _db.QueryAsync<LoadbBouncedCheckDataModel>(query, parameters);
+                    return result.ToList();
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+                
+            }
+        }
     }
 
 }

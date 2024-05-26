@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                            <script type="text/javascript">
-                                window.location.href = '@Url.Action("Index", "Home")';
-                            </script>
+                                        <script type="text/javascript">
+                                            window.location.href = '@Url.Action("Index", "Home")';
+                                        </script>
     }
     else
     {
@@ -728,12 +728,20 @@
             $scope.makeInvoiceBtn = false;
         }
 
+        $scope.emptyBouncedFielsWithDueOrPaidCheckbox = function () {
+            $scope.chequeNo = '';
+            $scope.isBounced = false;
+            $scope.bouncedAmount = '';
+            $scope.bouncedNote = '';
+            $scope.bouncedDate = new Date();
+        };
+
         $scope.getInvoices = function () {
-            debugger
             var str;
             if ($scope.due && !$scope.paid) {
                 str = "" + $scope.selectedCompany.id + ", 0, 0";
                 $scope.bouncedChequeFieldsDisabled = true;
+                $scope.emptyBouncedFielsWithDueOrPaidCheckbox();
             }
             else if (!$scope.due && $scope.paid) {
                 str = "" + $scope.selectedCompany.id + ", 1, null";
@@ -742,9 +750,11 @@
             else if ($scope.due && $scope.paid) {
                 str = "" + $scope.selectedCompany.id + ", null, 0";
                 $scope.bouncedChequeFieldsDisabled = true;
+                $scope.emptyBouncedFielsWithDueOrPaidCheckbox();
             }
             else if (!$scope.due && !$scope.paid) {
                 $scope.bouncedChequeFieldsDisabled = true;
+                $scope.emptyBouncedFielsWithDueOrPaidCheckbox();
             }
             else
                 str = "";
@@ -778,6 +788,9 @@
             } else {
                 $scope.selectedRow = row;
                 $scope.getSalesList();
+                if (!$scope.due && $scope.paid) {
+                    $scope.getBouncedData($scope.selectedRow.invoice_No);
+                } 
             }
         };
 
@@ -1210,7 +1223,6 @@
         }
 
         $scope.submit = function () {
-            debugger
             var isBounced = $scope.isBounced;
             var chequeNo = $scope.chequeNo;
             var bouncedDate = $scope.bouncedDate.toISOString().split('T')[0];
@@ -1251,13 +1263,33 @@
 
         $scope.bouncedChequeFieldsEmpty = function () {
             if (!$scope.isBounced) {
-                $scope.checkNo = '';
-                $scope.bouncedAmount = 0;
+                $scope.chequeNo = '';
+                $scope.bouncedAmount = '';
                 $scope.bouncedNote = '';
-                $scope.bouncedDate = '';
+                $scope.bouncedDate = new Date();
             }
         };
         
+        $scope.getBouncedData = function (invoiceNo) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/LoadbBouncedCheckData';
+            else
+                Url = '/AccountingNew/Invoice/LoadbBouncedCheckData';
 
+            $http.get(Url, { params: { invoiceNo: invoiceNo } })
+                .then(function (response) {
+                    $scope.bouncedData = response.data;
+
+                    $scope.isBounced = $scope.bouncedData[0].isBounced;
+                    $scope.chequeNo = $scope.bouncedData[0].bouncedCheckNo;
+                    $scope.bouncedAmount = $scope.bouncedData[0].bouncedAmount;
+                    $scope.bouncedNote = $scope.bouncedData[0].bouncedNote;
+                    $scope.bouncedDate = new Date($scope.bouncedData[0].bouncedCheckDate);
+
+                }, function (error) {
+                    console.error(error);
+                })
+        }
     })
 </script>
