@@ -19,5 +19,6 @@
         public int RegionalJob { get; set; }
         public int BlueCollar { get; set; }
         public int VerifiedCompany { get; set; }
+        public string jType { get; set; }
     }
 }

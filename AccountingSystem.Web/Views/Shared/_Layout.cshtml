@@ -27,6 +27,11 @@
             background-color: lightblue;
             cursor: pointer;
         }
+
+        .dropdown-menu {
+            min-width: 200px;
+            width: auto;
+        }
     </style>
 </head>
 <body>
@@ -75,7 +80,7 @@
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="OnlineJobs">Online Jobs</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="NewSale">New Sale</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="EditSale">Edit Sale</a>
-                                @* <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="CashCollection">Cash Collection</a> *@
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="CashCollection">Cash Collection</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -107,6 +112,7 @@
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Report" asp-action="TrailBalance">Trail Balance</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Report" asp-action="VatTaxCollectionReport">Vat Tax Collection</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="BouncedCheckReport">Bounced Cheque Report</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPaymentReport">Provident Fund Report</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -114,7 +120,7 @@
                                 Misc
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">                               
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPayment">Provident Fund(Test Only)</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPayment">Provident Fund</a>
                             </div>
                         </li>
                         

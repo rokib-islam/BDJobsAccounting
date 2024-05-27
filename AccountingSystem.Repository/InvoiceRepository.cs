@@ -347,8 +347,8 @@ namespace AccountingSystem.Repository
             using (var _Onlinedb = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
             {
 
-                var onlineTransaction = _Onlinedb.BeginTransaction();
-                var localTransaction = _db.BeginTransaction();
+                //var onlineTransaction = _Onlinedb.BeginTransaction();
+                //var localTransaction = _db.BeginTransaction();
 
                 try
                 {
@@ -360,36 +360,33 @@ namespace AccountingSystem.Repository
                         {
                             recordCount++;
 
-                            await _Onlinedb.ExecuteAsync("usp_Acc_UpdatePayStatus", new { StatusType = 1, InvoiceNo = invoice.Invoice_No.ToString() }, commandType: CommandType.StoredProcedure, transaction: onlineTransaction);
+                            await _Onlinedb.ExecuteAsync("usp_Acc_UpdatePayStatus", new { StatusType = 1, InvoiceNo = invoice.Invoice_No.ToString() }, commandType: CommandType.StoredProcedure);
                         }
 
-                        await _db.ExecuteAsync("UPDATE InvoiceList SET UploadedPaymentStatus='Yes' where UploadedPaymentStatus='No'", transaction: localTransaction);
+                        await _db.ExecuteAsync("UPDATE InvoiceList SET UploadedPaymentStatus='Yes' where UploadedPaymentStatus='No'");
 
                         message = $"Total found {recordCount}. All are uploaded successfully.";
                     }
                     else
                     {
-                        await _Onlinedb.ExecuteAsync("usp_Acc_UpdatePayStatus", new { StatusType = 1, InvoiceNo = invoiceNo }, commandType: CommandType.StoredProcedure, transaction: onlineTransaction);
+                        await _Onlinedb.ExecuteAsync("usp_Acc_UpdatePayStatus", new { StatusType = 1, InvoiceNo = invoiceNo }, commandType: CommandType.StoredProcedure);
 
-                        await _db.ExecuteAsync(
-                            $"UPDATE InvoiceList SET UploadedPaymentStatus='Yes' where id={invoiceId}",
-                            transaction: localTransaction
-                        );
+                        await _db.ExecuteAsync($"UPDATE InvoiceList SET UploadedPaymentStatus='Yes' where id={invoiceId}");
 
                         message = "Upload online successful.";
                     }
 
-                    onlineTransaction.Commit();
-                    localTransaction.Commit();
+                    //onlineTransaction.Commit();
+                    //localTransaction.Commit();
                 }
                 catch (Exception ex)
                 {
-                    onlineTransaction.Rollback();
-                    localTransaction.Rollback();
+                    //onlineTransaction.Rollback();
+                    //localTransaction.Rollback();
 
                     if (postType != "All")
                     {
-                        await _db.ExecuteAsync($"UPDATE InvoiceList SET UploadedPaymentStatus='No' where id={invoiceId}", transaction: localTransaction);
+                        await _db.ExecuteAsync($"UPDATE InvoiceList SET UploadedPaymentStatus='No' where id={invoiceId}");
                     }
 
                     message = "Sorry, Payment status cannot be uploaded now.Internet connection is not available.You can upload these Payment statuses later.";
@@ -616,6 +613,9 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
                     dynamicParameters.Add("@PaymentMode", parameters.PaymentMethod);
                     dynamicParameters.Add("@JType", parameters.JType);
+                    dynamicParameters.Add("@TDS", parameters.TDS);
+                    dynamicParameters.Add("@VDS", parameters.VDS);
+                    dynamicParameters.Add("@JDate", parameters.jDate);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
@@ -665,6 +665,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@JType", parameters.JType);
                     dynamicParameters.Add("@TDS", parameters.TDS);
                     dynamicParameters.Add("@VDS", parameters.VDS);
+                    dynamicParameters.Add("@JDate", parameters.jDate);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
@@ -696,6 +697,9 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
                     dynamicParameters.Add("@SDate", parameters.SDate);
                     dynamicParameters.Add("@CP_Id", parameters.CP_Id);
+                    dynamicParameters.Add("@TDS", parameters.TDS);
+                    dynamicParameters.Add("@VDS", parameters.VDS);
+                    dynamicParameters.Add("@JDate", parameters.jDate);
 
 
 
@@ -729,6 +733,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@CP_Id", parameters.CP_Id);
                     dynamicParameters.Add("@TDS", parameters.TDS);
                     dynamicParameters.Add("@VDS", parameters.VDS);
+                    dynamicParameters.Add("@JDate", parameters.jDate);
 
 
 
@@ -829,6 +834,64 @@ namespace AccountingSystem.Repository
 
         }
 
+        public async Task<string> UpdateBouncedChequeData(UpdateBouncedChequeDataModel data)
+        {
+            var result = "";
+
+            var parameters = new
+            {
+                IsBounced = data.IsBounced,
+                ChequeNo = data.ChequeNo,
+                BouncedDate = data.BouncedDate,
+                BouncedAmount = data.BouncedAmount,
+                BouncedNote = data.BouncedNote,
+                InvoiceNo = data.InvoiceNo
+            };
+
+            var query = "UPDATE InvoiceList " +
+                        "SET isBounced = @IsBounced, " +
+                        "BouncedCheckNo = @ChequeNo, " +
+                        "BouncedCheckDate = @BouncedDate, " +
+                        "BouncedAmount = @BouncedAmount, " +
+                        "BouncedNote = @BouncedNote " +
+                        "WHERE Invoice_No = @InvoiceNo;";
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    await _db.ExecuteAsync(query, parameters);
+                }
+                result = "Success";
+            }
+            catch (Exception ex)
+            {
+                result = ex.ToString();
+            }
+            return result;
+        }
+
+        public async Task<List<LoadbBouncedCheckDataModel>> LoadbBouncedCheckData(string invoiceNo)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                try
+                {
+                    var query = "SELECT isBounced, BouncedCheckNo, BouncedCheckDate, BouncedAmount, BouncedNote from InvoiceList where Invoice_No=@invoiceNo";
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@invoiceNo", invoiceNo);
+
+                    var result = await _db.QueryAsync<LoadbBouncedCheckDataModel>(query, parameters);
+                    return result.ToList();
+                }
+                catch (Exception ex)
+                {
+
+                    throw ex;
+                }
+
+            }
+        }
     }
 
 }

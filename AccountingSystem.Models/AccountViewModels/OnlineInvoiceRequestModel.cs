@@ -28,6 +28,7 @@
         public int PaymentMethod { get; set; }
         public decimal TDS { get; set; }
         public decimal VDS { get; set; }
+        public string jDate { get; set; }
 
     }
 }

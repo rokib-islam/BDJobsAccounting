@@ -28,5 +28,7 @@ namespace AccountingSystem.Abstractions.BLL
         Task<string> CheckOrderIdCountAsync(string invoiceNo);
         Task UpdateOrderInvoiceTableAsync(string invoiceNo, string courierOrderId, int userId);
         Task<List<LoadBouncedCheckDataModel>> LoadBouncedCheckData(LoadBouncedCheckDataModel model);
+        Task<string> UpdateBouncedChequeData(UpdateBouncedChequeDataModel data);
+        Task<List<LoadbBouncedCheckDataModel>> LoadbBouncedCheckData(string invoiceNo);
     }
 }

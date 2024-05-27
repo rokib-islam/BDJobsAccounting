@@ -57,5 +57,22 @@ namespace AccountingSystem.Web.Controllers
             else
                 return RedirectToAction("Index", "Home");
         }
+
+
+        public IActionResult ProvidentFundPaymentReport()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> LoadPfPaymentData([FromBody] LoadPfPaymentDataModel model)
+        {
+            var result = await _PaymentManager.LoadPfPaymentData(model);
+            return Json(result);
+        }
     }
 }

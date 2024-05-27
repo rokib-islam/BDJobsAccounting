@@ -37,7 +37,10 @@ namespace AccountingSystem.BLL
             return await _repository.GetBankInformation();
         }
 
-
+        public async Task<List<LoadPfPaymentDataResponseModel>> LoadPfPaymentData(LoadPfPaymentDataModel model)
+        {
+            return await _repository.LoadPfPaymentData(model);
+        }
 
     }
 }

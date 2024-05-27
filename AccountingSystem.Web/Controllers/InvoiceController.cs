@@ -70,9 +70,9 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(results);
         }
-        public async Task<IActionResult> PostToOnline(string postType, string invoiceNo, string invoiceId)
+        public async Task<IActionResult> PostToOnline([FromBody] PostToOnlineModel model)
         {
-            var results = await _InvoiceManager.PostToOnlineAsync(postType, invoiceNo, invoiceId);
+            var results = await _InvoiceManager.PostToOnlineAsync(model.postType, model.invoiceNo, model.invoiceId);
 
             return Json(results);
         }
@@ -259,7 +259,8 @@ namespace AccountingSystem.Web.Controllers
                 new KeyValuePair<string, string>("toDate", model.ToDate),
                 new KeyValuePair<string, string>("verified", model.Verified),
                 new KeyValuePair<string, string>("pageNo", model.PageNo.ToString()),
-                new KeyValuePair<string, string>("pageSize", model.PageSize.ToString())
+                new KeyValuePair<string, string>("pageSize", model.PageSize.ToString()),
+                new KeyValuePair<string, string>("paymentMode", model.paymentMode)
             });
 
             try
@@ -298,6 +299,7 @@ namespace AccountingSystem.Web.Controllers
                 new KeyValuePair<string, string>("comment", model.Comment),
                 new KeyValuePair<string, string>("TDS", model.TDS),
                 new KeyValuePair<string, string>("VDS", model.VDS),
+                new KeyValuePair<string, string>("JDate", model.JDate),
 
 
 
@@ -312,11 +314,11 @@ namespace AccountingSystem.Web.Controllers
                     string responseMessage = await response.Content.ReadAsStringAsync();
                     VarificationResponseModel responseObjectTyped = JsonConvert.DeserializeObject<VarificationResponseModel>(responseMessage);
 
-                    return Json(responseObjectTyped.Message);
+                    return Json($"Success");
                 }
                 else
                 {
-                    return Json($"Onlin Payment Varification failed (HTTP status code: {response.StatusCode})");
+                    return Json($"Failed (status code: {response.StatusCode})");
                 }
             }
             catch (Exception ex)
@@ -350,5 +352,17 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
+
+        public async Task<IActionResult> UpdateBouncedChequeData([FromBody] UpdateBouncedChequeDataModel model)
+        {
+            var result = await _InvoiceManager.UpdateBouncedChequeData(model);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> LoadbBouncedCheckData(string invoiceNo)
+        {
+            var result = await _InvoiceManager.LoadbBouncedCheckData(invoiceNo);
+            return Json(result);
+        }
     }
 }

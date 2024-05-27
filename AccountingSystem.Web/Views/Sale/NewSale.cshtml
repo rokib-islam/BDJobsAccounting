@@ -44,9 +44,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-            <script type="text/javascript">
-                window.location.href = '@Url.Action("Index", "Home")';
-            </script>
+                    <script type="text/javascript">
+                        window.location.href = '@Url.Action("Index", "Home")';
+                    </script>
     }
     else
     {
@@ -72,7 +72,7 @@
                         <label class="col-sm-3 col-form-label">Company</label>
                         <div class="col-sm-9">
                             <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
-                            <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 200px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                            <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 390px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
                                 <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
                             </select>
                         </div>
@@ -416,6 +416,11 @@
         $scope.selectCompany = function (company) {
             $scope.selectedCompany = company;
             $scope.searchQuery = company.name;
+
+            if ($scope.selectedCompany.blackListed == true) {
+                alert("This Company is Blacklisted.\nYou can't give a sale for this Company.");
+                return false;
+            }
             $scope.companyList = [];
             $scope.salesPriceDisabledEnabled();
 
@@ -570,6 +575,11 @@
                     // Set the searchQuery and other related variables
                     if ($scope.selectedCompany) {
                         $scope.searchQuery = $scope.selectedCompany.name;
+                        if ($scope.selectedCompany.blackListed == true) {
+                            $scope.saveButtonDisabled = true;
+                            alert("This Company is Blacklisted.\nYou can't give a sale for this Company.");
+                            return false;
+                        }
                     } else {
                         $scope.searchQuery = 'Select';
                     }

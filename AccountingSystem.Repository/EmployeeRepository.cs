@@ -48,7 +48,7 @@ namespace AccountingSystem.Repository
             var res = "";
             try
             {
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
                     var parameters = new DynamicParameters();
                     parameters.Add("@PaymentDate", model.PaymentDate);

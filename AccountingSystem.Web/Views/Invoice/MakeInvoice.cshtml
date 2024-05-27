@@ -240,13 +240,15 @@
                         </div>
                         <div class="row mt-2">
                             <div class="col-sm-4">
-                                <input type="checkbox" ng-click="" /><label>&nbsp; Send Invoice</label>
+                                <input type="checkbox" ng-model="sMail" /><label>&nbsp; Send Invoice</label>
                             </div>
                             <div class="col-sm-4">
-                                <input type="checkbox" ng-click="" /><label>&nbsp; Send Challan</label>
+                                <input type="checkbox" ng-model="sChallan" /><label>&nbsp; Send Challan</label>
                             </div>
                             <div class="col-sm-4">
-                                <button class="btn btn-primary btn-sm" ng-click="" disabled>Send Mail</button>
+                                <button class="btn btn-primary btn-sm" ng-click="SendMail(sMail,sChallan)">Send Mail
+                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showMailpinner"></span>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -1001,15 +1003,30 @@
                     }
                 });
         };
-       
-        
-
-        
 
         $scope.toggleExtraButtons = function () {
             $scope.showExtraButtons = !$scope.showExtraButtons;
         };
 
+        $scope.SendMail = function (sMail, sChallan) {
+            
+            const format = 'pdf'; // Use default format if not selected
+            const invoiceId = $scope.selectedRow.sbName;
+            const copyType = $scope.CopyType;
+
+            const params = { InvoiceNo: invoiceId, format, sMail, sChallan, CopyType: copyType };
+            $scope.showMailpinner = true;
+            const Url = window.location.hostname === 'localhost' ? '/Report/ReportMail' : '/AccountingNew/Report/ReportMail';
+            $http.get(Url, { params })
+                .then(function (response) {
+                    $scope.showMailpinner = false;
+                    alert(response.data);
+                })
+                .catch(function (error) {
+                    $scope.showMailpinner = false;
+                    console.log(error);
+                })
+        };
        
 
 

@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Mvc;
 //using AspNetCore.Reporting;
 using Microsoft.Reporting.NETCore;
 using Newtonsoft.Json;
+using System.Net;
+using System.Net.Mail;
 using System.Reflection;
 using System.Security.Claims;
 using System.Text;
@@ -424,6 +426,293 @@ namespace AccountingSystem.Web.Controllers
             var result = await _ReportManager.LoadVatTaxCollectionData(model);
             return Json(result);
         }
+
+        public async Task<IActionResult> ReportMail(string InvoiceNo, string format, bool sMail, bool sChallan, string CopyType)
+        {
+            var userId = int.Parse(User.FindFirstValue("Id"));
+
+            if (sMail == false && sChallan == false)
+            {
+                return StatusCode(200, "You did not select any Invoice or Challan.");
+            }
+
+            else if (userId == 28 || userId == 55 || userId == 47 || userId == 62 || userId == 105 || userId == 122 || userId == 79 || userId == 125 || userId == 120 || userId == 132 || userId == 129 || userId == 135 || userId == 126)
+            {
+                try
+                {
+                    // Retrieve user information
+                    string Image = User.FindFirstValue("SignatureImage");
+                    var Designation = User.FindFirstValue("Designation");
+                    var Email = User.FindFirstValue("Email");
+                    var Mobile = User.FindFirstValue("Mobile");
+                    var Name = User.FindFirstValue("Name");
+                    var toMail = "";
+
+                    byte[] InvoicefileContents = null;
+                    string InvoicecontentType = null;
+                    string InvoicefileName = null;
+
+                    byte[] ChallanContents = null;
+                    string ChallanContentType = null;
+                    string ChallanFileName = null;
+
+                    string userImagePath = Path.Combine(_WebHostEnvironment.WebRootPath, "Images", Image);
+
+                    var assembly = Assembly.GetExecutingAssembly();
+
+                    // List and log all resources for debugging
+                    var resourceNames = assembly.GetManifestResourceNames();
+                    foreach (var resourceName in resourceNames)
+                    {
+                        Console.WriteLine(resourceName);
+                    }
+
+                    if (sMail)
+                    {
+                        var reportData = await _ReportManager.GetInvoiceReportAsync(InvoiceNo);
+                        toMail = reportData.FirstOrDefault().AccPersonMail;
+                        double totalAmount = reportData.Sum(report => report.amount);
+                        string wordamount = await ConvertToWords((int)Math.Round(totalAmount));
+                        var datatable = Helpers.ListiToDataTable(reportData);
+
+                        using var report = new LocalReport();
+                        report.EnableExternalImages = true;
+
+                        var parameters = new[]
+                        {
+                        new ReportParameter("SumAmount", totalAmount.ToString("N2")),
+                        new ReportParameter("AmountInWord", wordamount),
+                        new ReportParameter("isColorPad", "0"),
+                        new ReportParameter("ImagePath", new Uri(userImagePath).AbsoluteUri)
+                    };
+
+                        using var rs = assembly.GetManifestResourceStream("AccountingSystem.Web.Reports.rptViewInvoiceForMail.rdlc");
+                        if (rs == null)
+                        {
+                            return StatusCode(500, "Report template not found.");
+                        }
+
+                        report.LoadReportDefinition(rs);
+                        report.DataSources.Add(new ReportDataSource("ShowInvoice", datatable));
+                        report.SetParameters(parameters);
+
+                        InvoicefileContents = report.Render("pdf");
+                        InvoicecontentType = "application/pdf";
+                        InvoicefileName = "InvoiceReport.pdf";
+
+                        if (InvoicefileContents == null || InvoicefileContents.Length == 0)
+                        {
+                            return StatusCode(500, "Failed to generate report content.");
+                        }
+                    }
+
+                    if (sChallan)
+                    {
+                        var reportData = await _ReportManager.GetChalanReportNew(InvoiceNo);
+                        toMail = reportData.FirstOrDefault().AccPersonMail;
+                        double sumTotalVat = reportData.Sum(report => report.TotalVat);
+                        double sumPriceWithVat = reportData.Sum(report => report.priceWithVat);
+                        double sumTotalPrice = reportData.Sum(report => report.TotalPrice);
+                        var datatable = Helpers.ListiToDataTable(reportData);
+
+                        using var report = new LocalReport();
+                        report.EnableExternalImages = true;
+
+                        var parameters = new[]
+                        {
+                        new ReportParameter("sumTotalVat", sumTotalVat.ToString("N2")),
+                        new ReportParameter("sumPriceWithVat", sumPriceWithVat.ToString("N2")),
+                        new ReportParameter("sumTotalPrice", sumTotalPrice.ToString("N2")),
+                        new ReportParameter("CopyType", CopyType),
+                        new ReportParameter("ImagePath", new Uri(userImagePath).AbsoluteUri)
+                    };
+
+                        using var rs = assembly.GetManifestResourceStream("AccountingSystem.Web.Reports.rptShowChallanForMail.rdlc");
+                        if (rs == null)
+                        {
+                            return StatusCode(500, "Report template not found.");
+                        }
+
+                        report.LoadReportDefinition(rs);
+                        report.DataSources.Add(new ReportDataSource("ShowChallan", datatable));
+                        report.SetParameters(parameters);
+
+                        ChallanContents = report.Render("pdf");
+                        ChallanContentType = "application/pdf";
+                        ChallanFileName = "ChallanReport.pdf";
+
+                        if (ChallanContents == null || ChallanContents.Length == 0)
+                        {
+                            return StatusCode(500, "Failed to generate report content.");
+                        }
+                    }
+
+                    var subject = $"Bill/Invoice #{InvoiceNo} from Bdjobs.com Ltd.";
+                    var Body = $@"
+                        <html>
+                        <head>
+                            <style>
+                                table {{
+                                    font-family: Arial, sans-serif;
+                                    border-collapse: collapse;
+                                    width: 100%;
+                                    color: black;
+                                }}
+                                th, td {{
+                                    border: 1px solid #dddddd;
+                                    text-align: left;
+                                    padding: 8px;
+                                    color: black;
+                                }}
+                                th {{
+                                    background-color: #f2f2f2;
+                                }}
+                                p {{
+                                    color: black;
+                                }}
+                                .boldColor {{
+                                    color: blue;
+                                    font-weight: bold;
+                                }}
+                                .mobile {{
+                                    font-weight: bold;
+                                }}
+                                .bkash {{
+                                    font-weight: bold;
+                                }}
+                                .refColor {{
+                                    color: blue;
+                                }}
+                                .userColor {{
+                                    color: black;
+                                }}
+                            </style>
+                        </head>
+                        <body>
+                            <p>Dear Sir,</p>
+                            <p>Please find the attachment for the required invoice from Bdjobs.com Ltd. We are requesting you to pay the bill at your earliest (if not yet paid). You can pay our bill by the following ways:</p>
+                            <p>Please pay by Bank Transfer/ BEFTN/ NPSB/ RTGS/ Direct Bank deposit to any of the following bank account.</p>
+                            <table>
+                                <tr>
+                                    <th>Bank Name</th>
+                                    <th>Account Title</th>
+                                    <th>Bank Account Number</th>
+                                    <th>Bank Routing Number</th>
+                                    <th>Bank Branch Name</th>
+                                    <th>Swift Code</th>
+                                </tr>
+                                <tr>
+                                    <td>Southeast Bank Limited</td>
+                                    <td>BDJOBS.COM LIMITED</td>
+                                    <td>001513100000131</td>
+                                    <td>205262535</td>
+                                    <td>Kawran Bazar</td>
+                                    <td>SEBDBDDHKRN</td>
+                                </tr>
+                                <tr>
+                                    <td>United Commercial Bank PLC</td>
+                                    <td>BDJOBS.COM LIMITED</td>
+                                    <td>0441301000000430</td>
+                                    <td>245262537</td>
+                                    <td>Kawran Bazar</td>
+                                    <td>UCBLBDDHKBZ</td>
+                                </tr>
+                                <tr>
+                                    <td>Standard Chartered</td>
+                                    <td>BDJOBS.COM LIMITED</td>
+                                    <td>0001536942801</td>
+                                    <td>215262538</td>
+                                    <td>Kawran Bazar</td>
+                                    <td>SCBLBDDX</td>
+                                </tr>
+                            </table>
+                            <p>Also, you can pay to our <span class=""bkash"">bKash/ Nagad/ Upay</span> merchant account number: <span class=""mobile"">01841235627</span></p>
+                            <p>Please write our invoice’s <span class=""refColor"">last 6-digit number as a payment reference</span> whenever paying by bKash/ Nagad/ Upay to recognize your payment and account it accordingly.</p>
+                            <p class=""boldColor"">Please don’t forget to send us the payment reference (bank advice or transaction id) in reply mail (or to accounts@bdjobs.com) immediately to clear your outstanding.</p>
+                            <p>We thank you for taking our services. For any query, please let us know to serve.</p>
+                            <p>Best Regards,</p>
+                            <p class=""userColor"">{Name}<br />{Designation}<br />{Email}<br />{Mobile}</p>
+                        </body>
+                        </html>
+                        ";
+
+                    var attachments = new List<(byte[] content, string name, string contentType)>
+                {
+                    (InvoicefileContents, InvoicefileName, InvoicecontentType),
+                    (ChallanContents, ChallanFileName, ChallanContentType)
+                }.Where(a => a.content != null).ToList(); // Only include non-null attachments
+
+                    await SendEmailAsync(toMail, subject, Body, attachments);
+
+                    return StatusCode(200, "E-Mail Sent Successfully!!!");
+                }
+                catch (Exception ex)
+                {
+                    return StatusCode(500, ex.ToString());
+                }
+            }
+            else
+            {
+                return StatusCode(200, "You have no permission to send this mail.");
+            }
+        }
+
+
+        private async Task SendEmailAsync(string toEmail, string subject, string body, List<(byte[] content, string name, string contentType)> attachments)
+        {
+            try
+            {
+                using (var message = new MailMessage())
+                {
+                    message.From = new MailAddress("accountsinfo@bdjobs.com");
+                    message.To.Add(toEmail);
+                    message.Subject = subject;
+                    message.Body = body;
+                    message.IsBodyHtml = true;
+
+                    // List to keep references to MemoryStreams to prevent them from being disposed
+                    var attachmentStreams = new List<MemoryStream>();
+
+                    foreach (var attachment in attachments)
+                    {
+                        if (attachment.content == null || attachment.content.Length == 0)
+                        {
+                            throw new InvalidOperationException("Attachment is null or empty.");
+                        }
+
+                        var stream = new MemoryStream(attachment.content);
+                        attachmentStreams.Add(stream); // Keep the reference
+                        var attachmentItem = new Attachment(stream, attachment.name, attachment.contentType);
+                        message.Attachments.Add(attachmentItem);
+                    }
+
+                    using (var smtpClient = new SmtpClient("mail.bdjobs.com"))
+                    {
+                        smtpClient.Port = 587; // or use your SMTP port
+                        smtpClient.Credentials = new NetworkCredential("accountsinfo@bdjobs.com", "Peq1KUza");
+                        smtpClient.EnableSsl = false; // Use SSL if required
+
+                        await smtpClient.SendMailAsync(message);
+                    }
+
+                    // Dispose streams after email is sent
+                    foreach (var stream in attachmentStreams)
+                    {
+                        stream.Dispose();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error sending email: {ex.Message}");
+                throw new InvalidOperationException("Failed to send email.", ex);
+            }
+        }
+
+
+
+
+
     }
 }
 
