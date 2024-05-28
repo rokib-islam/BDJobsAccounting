@@ -8,5 +8,6 @@
         public string Comment { get; set; }
         public string TDS { get; set; }
         public string VDS { get; set; }
+        public string JDate { get; set; }
     }
 }

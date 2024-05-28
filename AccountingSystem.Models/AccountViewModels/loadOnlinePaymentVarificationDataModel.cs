@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AccountingSystem.Models.AccountViewModels
+﻿namespace AccountingSystem.Models.AccountViewModels
 {
     public class loadOnlinePaymentVarificationDataModel
     {
@@ -13,5 +7,6 @@ namespace AccountingSystem.Models.AccountViewModels
         public string Verified { get; set; }
         public int PageNo { get; set; }
         public int PageSize { get; set; }
+        public string paymentMode { get; set; }
     }
 }

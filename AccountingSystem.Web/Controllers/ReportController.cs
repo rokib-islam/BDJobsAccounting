@@ -436,7 +436,7 @@ namespace AccountingSystem.Web.Controllers
                 return StatusCode(200, "You did not select any Invoice or Challan.");
             }
 
-            else if (userId == 28 || userId == 55 || userId == 47 || userId == 62 || userId == 105 || userId == 122 || userId == 79 || userId == 125 || userId == 120 || userId == 132 || userId == 129 || userId == 135)
+            else if (userId == 28 || userId == 55 || userId == 47 || userId == 62 || userId == 105 || userId == 122 || userId == 79 || userId == 125 || userId == 120 || userId == 132 || userId == 129 || userId == 135 || userId == 126)
             {
                 try
                 {
