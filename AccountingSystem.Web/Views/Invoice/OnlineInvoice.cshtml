@@ -96,7 +96,7 @@
                         <button class="btn btn-success btn-sm" ng-click="Rick(data.jP_ID)">Reconcile</button>
                         &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner"></span>
                         </td> *@
-                        <td class="text-center" ng-if="data.status == 'Success'">
+                        <td class="text-center" ng-if="data.status == 'Failed'">
                             <button class="btn btn-success btn-sm" ng-click="Rick($index)">Reconcile</button>
                             &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner[$index]"></span>
                         </td>
