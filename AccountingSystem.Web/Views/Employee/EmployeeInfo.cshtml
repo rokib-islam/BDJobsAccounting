@@ -1,0 +1,294 @@
+﻿@{
+    ViewData["Title"] = "EmployeeInfo";
+}
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+</head>
+
+<div ng-app="myApp">
+    <div ng-controller="myController">
+        <div class="row" style="margin-top:-10px">
+            <div class="col-sm-3">
+                <h4>Employee Information</h4>
+            </div>
+            <div class="col-sm-9">
+                <div>
+                    <button class="btn btn-info btn-sm" ng-click="basicInfoButton()"><strong>Basic Info</strong></button>
+                    <button class="btn btn-info ms-3 btn-sm" ng-click="employmentInfoButton()"><strong>Employment Info</strong></button>
+                    <button class="btn btn-info ms-3 btn-sm" ng-click="salaryInfoButton()"><strong>Salary Info</strong></button>
+                    <button class="btn btn-info ms-3 btn-sm" ng-click="bankAndTaxInfoButton()"><strong>Bank and Tax Info</strong></button>
+                    <button class="btn btn-success ms-3 btn-sm" ng-click="downloadExcelBtn()"><strong>Excel</strong></button>
+                    <button class="btn btn-success ms-3 btn-sm" ng-click="Import()"><strong>Import ACS</strong></button>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3 mb-2 offset-2">
+            <label class="col-sm-2">List of Employee</label>
+            <div class="col-sm-7">
+                <input class="form-select" style="background-color:lightcyan" placeholder="Search Employee Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchEmployee(searchQuery)">
+                <select class="form-select form-select-sm" size="10" ng-model="empList" style="position:absolute;z-index:999;width: 530px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="employeeList.length > 0">
+                    <option ng-repeat="employee in employeeList" value="{{employee.employeeId}}" ng-click="selectEmployee(employee)">{{employee.employeeName}}</option>
+                </select>
+            </div>
+        </div>
+        <div ng-show="basicInfo">
+            <h5 class="text-center">Employee Basic Information</h5>
+            <div class="row mt-4">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Employee ID</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="employeeId" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Employee ID No</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="employeeIdNo" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Employee Name</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="employeeName" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Fathers Name</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="fathersName" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Husband / Wife Name</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="husbandOrWifeName" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Mothers Name</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="mothersName" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Gender</label>
+                        <div class="col-sm-8">
+                            <select class="form-select form-select-sm" ng-model="gender">
+                                <option value="-1">Select</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Others">Others</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Date of Birth</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control form-control-sm" ng-model="dateOfBirth" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Blood Group</label>
+                        <div class="col-sm-8">
+                            <select class="form-select form-select-sm" ng-model="bloodGroup">
+                                <option value="-1">Select</option>
+                                <option value="A+">A+</option>
+                                <option value="A-">A-</option>
+                                <option value="B+">B+</option>
+                                <option value="B-">B-</option>
+                                <option value="O+">O+</option>
+                                <option value="O-">O-</option>
+                                <option value="AB+">AB+</option>
+                                <option value="AB-">AB-</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Mobile No.</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control form-control-sm" ng-model="mobileNo" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Present Address</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control form-control-sm" ng-model="presentAddress"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Permanent Address</label>
+                        <div class="col-sm-8">
+                            <textarea class="form-control form-control-sm" ng-model="permanentAddress"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Email</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="email" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">NID</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="nid" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">ETIN</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="etin" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div ng-show="employmentInfo">
+            <h5 class="text-center">Employee Employment Information</h5>
+            <div class="row mt-4">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Designation</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="designation" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Rank</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="rank" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Department</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="department" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Function</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="function" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Supervisory Role</label>
+                        <div class="col-sm-8">
+                            <select class="form-select form-select-sm" ng-model="supervisoryRole">
+                                <option value="1">YES</option>
+                                <option value="0">NO</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Supervisor Name</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="supervisorName" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        $scope.basicInfo = true;
+        $scope.employeeList = [];
+        $scope.selectedEmployee = null;
+        $scope.searchEmployee = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Employee/GetEmployeeListByKey';
+                else
+                    Url = '/AccountingNew/Employee/GetEmployeeListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.employeeList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.employeeList = [];
+            }
+        };
+
+        $scope.selectEmployee = function (employee) {
+            $scope.selectedEmployee = employee;
+            $scope.searchQuery = employee.employeeName;
+            $scope.empId = employee.employeeId;
+            $scope.employeeList = [];
+        }
+
+        $scope.basicInfoButton = function () {
+            $scope.basicInfo = true;
+        }
+        $scope.employmentInfoButton = function () {
+            $scope.employmentInfo = true;
+            $scope.basicInfo = false;
+        }
+    });
+</script>
