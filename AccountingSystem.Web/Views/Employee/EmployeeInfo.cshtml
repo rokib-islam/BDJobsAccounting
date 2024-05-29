@@ -15,9 +15,9 @@
             <div class="col-sm-9">
                 <div>
                     <button class="btn btn-info btn-sm" ng-click="basicInfoButton()"><strong>Basic Info</strong></button>
-                    <button class="btn btn-info ms-3 btn-sm" ng-model="employmentInfoButton"><strong>Employment Info</strong></button>
-                    <button class="btn btn-info ms-3 btn-sm" ng-model="salaryInfoButton"><strong>Salary Info</strong></button>
-                    <button class="btn btn-info ms-3 btn-sm" ng-model="bankAndTaxInfoButton"><strong>Bank and Tax Info</strong></button>
+                    <button class="btn btn-info ms-3 btn-sm" ng-click="employmentInfoButton()"><strong>Employment Info</strong></button>
+                    <button class="btn btn-info ms-3 btn-sm" ng-click="salaryInfoButton()"><strong>Salary Info</strong></button>
+                    <button class="btn btn-info ms-3 btn-sm" ng-click="bankAndTaxInfoButton()"><strong>Bank and Tax Info</strong></button>
                     <button class="btn btn-success ms-3 btn-sm" ng-click="downloadExcelBtn()"><strong>Excel</strong></button>
                     <button class="btn btn-success ms-3 btn-sm" ng-click="Import()"><strong>Import ACS</strong></button>
                 </div>
@@ -33,7 +33,8 @@
             </div>
         </div>
         <div ng-show="basicInfo">
-            <div class="row">
+            <h5 class="text-center">Employee Basic Information</h5>
+            <div class="row mt-4">
                 <div class="col-sm-6">
                     <div class="row mb-2">
                         <label class="col-sm-4">Employee ID</label>
@@ -186,6 +187,66 @@
             </div>
         </div>
         
+        <div ng-show="employmentInfo">
+            <h5 class="text-center">Employee Employment Information</h5>
+            <div class="row mt-4">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Designation</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="designation" />
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Rank</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="rank" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Department</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="department" />
+                        </div>
+                    </div>
+    </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Function</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="function" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Supervisory Role</label>
+                        <div class="col-sm-8">
+                            <select class="form-select form-select-sm" ng-model="supervisoryRole">
+                                <option value="1">YES</option>
+                                <option value="0">NO</option>
+                            </select>
+                        </div>
+</div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row mb-2">
+                        <label class="col-sm-4">Supervisor Name</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="supervisorName" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
 
@@ -193,6 +254,7 @@
 <script>
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
+        $scope.basicInfo = true;
         $scope.employeeList = [];
         $scope.selectedEmployee = null;
         $scope.searchEmployee = function (startingKey) {
@@ -223,6 +285,10 @@
 
         $scope.basicInfoButton = function () {
             $scope.basicInfo = true;
+        }
+        $scope.employmentInfoButton = function () {
+            $scope.employmentInfo = true;
+            $scope.basicInfo = false;
         }
     });
 </script>
