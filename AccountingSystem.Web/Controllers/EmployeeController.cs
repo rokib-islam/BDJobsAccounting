@@ -2,6 +2,7 @@
 using AccountingSystem.BLL;
 using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AccountingSystem.Web.Controllers
 {
@@ -28,6 +29,16 @@ namespace AccountingSystem.Web.Controllers
         {
             var resp = await _EmployeeManager.InsertProvidentFundPayment(model);
             return Json(resp);
+        }
+
+        public IActionResult EmployeeInfo()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
         }
     }
 }

@@ -92,11 +92,15 @@
                         <td class="text-center">{{data.postDate | date: "dd-MM-yyyy"}}</td>
                         <td class="text-center">{{data.transactionNo}}</td>
                         <td class="text-center">{{data.paymentMode}}</td>
-                        <td class="text-center">
-                            <button class="btn btn-success btn-sm" ng-click="Rick(data.jP_ID)">Reconcile</button>
-                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner"></span>
+                        @* <td class="text-center" ng-if="data.status == 'Success'">
+                        <button class="btn btn-success btn-sm" ng-click="Rick(data.jP_ID)">Reconcile</button>
+                        &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner"></span>
+                        </td> *@
+                        <td class="text-center" ng-if="data.status == 'Success'">
+                            <button class="btn btn-success btn-sm" ng-click="Rick($index)">Reconcile</button>
+                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner[$index]"></span>
                         </td>
-                    </tr>                   
+                    </tr>
                 </tbody>
                 <tfoot>
                     <tr style="font-weight:bold">
@@ -115,7 +119,7 @@
 <script>
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
-        
+
         $scope.disableExcelButton = true;
         $scope.showTable = false;
         $scope.status = 'Success';
@@ -124,7 +128,7 @@
         $scope.fromDate = new Date();
         $scope.toDate = new Date();
 
-        $scope.load=function(){
+        $scope.load = function () {
             let requestBodyModel = {
                 Status: $scope.status,
                 FromDate: $scope.fromDate.toISOString().split('T')[0],
@@ -147,33 +151,55 @@
                     $scope.totalSumPriceVat = $scope.totalPrice + $scope.totalVat;
                     $scope.showTable = true;
                     $scope.disableExcelButton = false;
-
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
         }
 
-        $scope.Rick = function (JP_ID) {
-            $scope.reconcileSpinner = true;
+        $scope.reconcileSpinner = [];
+
+        // $scope.Rick = function (JP_ID) {
+        //     $scope.reconcileSpinner = true;
+        //     if (window.location.hostname == 'localhost')
+        //         Url = '/Invoice/OIvoiceReconc';
+        //     else
+        //         Url = '/AccountingNew/Invoice/OIvoiceReconc';
+
+        //     $http.get(Url, { params: { JP_ID: JP_ID } })
+
+        //         .then(function (response) {
+        //             alert(response.data);
+        //             $scope.reconcileSpinner = false;
+        //             $scope.load();
+
+        //         })
+        //         .catch(function (error) {
+        //             console.log(error);
+        //             $scope.reconcileSpinner = false;
+        //         })
+        // }
+
+        $scope.Rick = function (index) {
+            $scope.reconcileSpinner[index] = true;
+            var abc = $scope.onlineData[index].jP_ID;
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/OIvoiceReconc';
             else
                 Url = '/AccountingNew/Invoice/OIvoiceReconc';
 
-            $http.get(Url, { params: { JP_ID: JP_ID } })
-            
+            $http.get(Url, { params: { JP_ID: $scope.onlineData[index].jP_ID } })
                 .then(function (response) {
                     alert(response.data);
-                    $scope.reconcileSpinner = false;
+                    $scope.reconcileSpinner[index] = false;
                     $scope.load();
-                    
                 })
                 .catch(function (error) {
                     console.log(error);
-                    $scope.reconcileSpinner = false;
-                })
-        }
+                    $scope.reconcileSpinner[index] = false;
+                });
+        };
+
 
         $scope.excel = function () {
             var wb = XLSX.utils.table_to_book(document.getElementById('tableData'), { sheet: "Sheet1" });

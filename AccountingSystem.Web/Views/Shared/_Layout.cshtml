@@ -1,7 +1,7 @@
 ﻿@using Microsoft.AspNetCore.Http
 @{
     var username = Context.Session.GetString("Name");
-    
+    var userId = Context.Session.GetInt32("UserID");
     // bool accountDep = user.AccountDep;
 
     
@@ -112,7 +112,10 @@
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Report" asp-action="TrailBalance">Trail Balance</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Report" asp-action="VatTaxCollectionReport">Vat Tax Collection</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="BouncedCheckReport">Bounced Cheque Report</a>
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPaymentReport">Provident Fund Report</a>
+                                @if (userId == 28)
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPaymentReport">Provident Fund Report</a>
+                                }
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -123,7 +126,14 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPayment">Provident Fund</a>
                             </div>
                         </li>
-                        
+                        @* <li class="nav-item dropdown">
+                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Payroll
+                            </a>
+                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="employeeInfo">Employee Info</a>
+                            </div>
+                        </li> *@
                     </ul>
 
                     <div class="navbar-text ml-auto">
