@@ -97,12 +97,14 @@
                 </div>
             </div>            
             <div class="row mt-2" style="height: 200px; overflow-y: auto;border:2px solid gray">
-                <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
+                <table class="table table-bordered table-hover table-sm">
                     <thead class="thead-light">
-                        <tr>
+                        <tr class="text-center" style="white-space:nowrap;">
                             <th class="border">Sl#</th>
                             <th class="border">CP Id</th>
                             <th class="border acenter">Name Of Company</th>
+                            <th class="border acenter">Sales Date</th>
+                            <th class="border acenter">Service Name</th>
                             <th class="border">Job Posted</th>
                             <th class="border">Total Job Posted</th>
                             <th class="border">Company Status</th>
@@ -110,12 +112,14 @@
                     </thead>
                     <tbody>
                         <tr ng-repeat="o in companyData" ng-style="getRowStyle(o)" ng-click="selectRow(o)" ng-class="{ 'selected-row': o === selectedRow }">
-                            <td class="border">{{$index + 1}}</td>
+                            <td class="border text-center">{{$index + 1}}</td>
                             <td class="border">{{o.cP_ID}}</td>
                             <td class="border">{{o.cName}}</td>
-                            <td class="border">{{o.jobPosted}}</td>
-                            <td class="border">{{o.totalJobPosted}}</td>
-                            <td class="border">{{o.companyStatus}}</td>
+                            <td class="border" style="white-space:nowrap;">{{o.postingDate}}</td>
+                            <td class="border">{{getJobPostingType(o.addType, o.blueCollar, o.jType, o.region)}}</td>
+                            <td class="border text-center">{{o.jobPosted}}</td>
+                            <td class="border text-center">{{o.totalJobPosted}}</td>
+                            <td class="border text-center">{{o.companyStatus}}</td>
                         </tr>
                     </tbody>
                 </table>
@@ -493,7 +497,38 @@
             $scope.GetLocalCompanyInfo(company.id, 1);
         }
 
+        $scope.getJobPostingType = function (addType, blueCollar, jType, Region) {
+            if (addType == 1 && blueCollar > 0 && jType == 'J') {
+                return 'Online Job Posting-Basic-Regional (Blue Color)';
+            } else if (addType == 1 && blueCollar == 0 && jType == 'J') {
+                return 'Online Job Posting (Premium Listing)';
+            } else if (addType == 1 && jType == 'H') {
+                return 'Hot Job Advertisement';
+            } else if (addType == 2 && blueCollar > 0) {
+                return 'Online Job Posting (Premium Plus Listing-BC)';
+            } else if (addType == 2 && blueCollar == 0) {
+                return 'Online Job Posting (Premium Plus Listing)';
+            } else if (addType == 10 && blueCollar > 0) {
+                return 'Online Job Posting-Basic (SME-BC)';
+            } else if (addType == 10 && blueCollar == 0) {
+                return 'Online Job Posting-Basic (SME)';
+            } else if (Region > 0 && Region < 0 && blueCollar > 0) {
+                return 'Online Job Posting-Basic-Regional (Blue Color)';
+            } else if (Region > 0 && Region < 0 && blueCollar == 0) {
+                return 'Online Job Posting (Basic) Regional';
+            } else if (Region == 0 && blueCollar > 0) {
+                return 'Online Job Posting (Standard Listing-BC)';
+            } else if (Region == 5) {
+                return 'Online Job Posting (PNPL)';
+            } else if (Region == 0 && blueCollar == 0) {
+                return 'Online Job Posting (Standard Listing)';
+            }
+            return '';
+        };
+
+
         $scope.getRowStyle = function (o) {
+            $scope.getJobPostingType();
             var rowStyle = {};
             if (o.verifiedCompany === "Verified" && !$scope.verified) {
                 rowStyle = {
