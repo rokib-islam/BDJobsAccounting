@@ -337,7 +337,7 @@ namespace AccountingSystem.Repository
                         var dataTable = CreateSMSAlertDataTable();
                         PopulateSMSAlertDataTable(dataTable, result);
 
-                        using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                        using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
                         {
                             await _db.ExecuteAsync("USP_Candidate_Monetization_Download",
                                 new { SMSAlertApplyLimt = dataTable.AsTableValuedParameter("dbo.SMSAlertApplyLimt") },

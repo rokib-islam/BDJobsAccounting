@@ -32,9 +32,9 @@
                     <option value="1">Bkash</option>
                     <option value="2">Nagad</option>
                     <option value="3">Upay</option>
-                    <option value="4">Bank Deposit</option>
+                    @* <option value="4">Bank Deposit</option>
                     <option value="5">Bank Transfer</option>
-                    <option value="6">Nexus Pay</option>
+                    <option value="6">Nexus Pay</option> *@
                     <option value="7">Southeast Bank PLC</option>
                     <option value="8">Brac Bank PLC</option>
                     <option value="9">Mutual Trust Bank PLC</option>
@@ -48,7 +48,9 @@
                 </select>
             </div>
             <div class="col-sm-3 mt-4">
-                <button class="btn btn-primary btn-sm px-4" ng-click="search()">Search</button>
+                <button class="btn btn-primary btn-sm px-4" ng-click="search()">Search
+                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
+                </button>
             </div>
 
 
@@ -111,6 +113,7 @@
                     <th>Paid Amount</th>
                     <th>Claient Comment</th>
                     <th>TDS & VDS</th>
+                    <th>Payment Mode</th>
                    
                     <th>Payment Info</th>
                     <th>Action</th>
@@ -150,7 +153,9 @@
                             VDS : {{data.vds}} <br />
                             
                         </td>
-
+                        <td>
+                            {{data.paymentType}}
+                        </td>
 
                         <td>
                             {{data.referenceNo}} <br />
@@ -259,13 +264,14 @@
                 Url = '/Invoice/loadOnlinePaymentVarificationData';
             else
                 Url = '/AccountingNew/Invoice/loadOnlinePaymentVarificationData';
-
+            $scope.spinner = true;
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
                     $scope.paymentVarificationData = response.data.data;
                     $scope.totalItems = response.data.totalRecords;
                     $scope.showTable = true;
                     $scope.isVisible = true;
+                    $scope.spinner = false;
                 }, function (error) {
                     console.error(error);
                 })

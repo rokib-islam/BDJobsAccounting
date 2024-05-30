@@ -135,7 +135,7 @@ namespace AccountingSystem.Web.Controllers
             return Json(results);
         }
 
-        
+
 
         public IActionResult ViewJournal()
         {
