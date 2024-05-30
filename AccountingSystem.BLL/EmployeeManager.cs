@@ -25,5 +25,25 @@ namespace AccountingSystem.BLL
         {
             return await _repository.InsertProvidentFundPayment(model);
         }
+
+        public async Task<List<Department_Function_Rank_Model>> LoadAllDepartment()
+        {
+            return await _repository.LoadAllDepartment();
+        }
+
+        public async Task<List<Department_Function_Rank_Model>> LoadAllFunction()
+        {
+            return await _repository.LoadAllFunction();
+        }
+
+        public async Task<List<Department_Function_Rank_Model>> LoadAllRank()
+        {
+            return await _repository.LoadAllRank();
+        }
+
+        public async Task<List<Department_Function_Rank_Model>> LoadSupervisor()
+        {
+            return await _repository.LoadSupervisor();
+        }
     }
 }

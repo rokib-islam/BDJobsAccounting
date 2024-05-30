@@ -20,264 +20,271 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
 
-<div ng-app="myApp">
-    <div ng-controller="myController">
-        <div class="row">
-            <div class="col-sm-12">
-                <h4 class="alert-primary text-center" style="margin-top:-10px">Company Information</h4>
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
                 <div class="row">
-                    <label class="col-sm-2 col-form-label">List of Companies</label>
-                    <div class="col-sm-7">
-                        <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
-                        <select class="form-select form-select-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 450px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
-                            <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
-                        </select>
+                    <div class="col-sm-12">
+                        <h4 class="text-center">Company Information</h4>
+                        <div class="row mt-2 mb-2 offset-2">
+                            <label class="col-sm-2 col-form-label fw-bold">List of Companies</label>
+                            <div class="col-sm-7">
+                                <input class="form-control form-control-sm" style="background-color:lightcyan" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
+                                <select class="form-select form-select-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 450px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                                    <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="row mt-2">
+                            <div class="col-sm-5">
+                                <div class="row">
+                                    <label class="col-sm-4">Id</label>
+                                    <div class="col-sm-7 ms-2">
+                                        <input class="form-control form-control-sm" ng-model="companyId" ng-disabled="companyIdDisabled" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5">
+                                <div class="row">
+                                    <label class="col-sm-4">Online Id</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control form-control-sm" ng-model="onlineId" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-2">
+                                <label class="float-end">Black Listed &nbsp;<input type="checkbox" ng-model="blackListed" /></label>
+                            </div>
+                        </div>
+
                     </div>
-                </div>
-                <div class="row mt-2">
-                    <div class="col-sm-5">
+                    <div class="col-sm-12">
                         <div class="row">
-                            <label class="col-sm-4">Id</label>
-                            <div class="col-sm-7 ms-2">
-                                <input class="form-control form-control-sm" ng-model="companyId" ng-disabled="companyIdDisabled" />
+                            <div class="col-sm-7">
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Company Name</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="companyName" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Vat Reg Add</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="vatRegAdd" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Vat Challan Name</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="vatChallanName" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Vat Reg No</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="vatRegNo" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">District</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select form-select-sm" ng-model="district">
+                                            <option value="-1">Select</option>
+                                            <option ng-repeat="data in districtData" value="{{data.districtID}}">{{data.districtName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Bank Information</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select form-select-sm" ng-model="bankInfo">
+                                            <option ng-repeat="data in bankInformationData" value="{{data.bankID}}">{{data.bankName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Address</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="address" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">City</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="city" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Phone</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="phone" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Email</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="email" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Fax</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="fax" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Contact Person</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="contactPerson" ng-disabled="contactPersonDisabled" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Designation</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="designation" ng-disabled="designationDisabled" />
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Acc. Person Mail</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="accMail" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">Acc. Person Contact No</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="accMobile" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">HR Person</label>
+                                    <div class="col-sm-9">
+                                        <input class="form-control form-control-sm" ng-model="accperson" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 mt-5">
+                                <div class="row mt-2">
+                                    <label class="col-sm-5">Remarks</label>
+                                    <div class="col-sm-7">
+                                        <textarea class="form-control form-control-sm bg-info p-2 bg-opacity-10" style="color:orangered" ng-model="remarks"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <label class="col-sm-5">Any VAT Exemption</label>
+                                    <div class="col-sm-7">
+                                        <select class="form-select form-select-sm" ng-model="vatExemption" ng-change="disableReason()">
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-5">VAT Exemption Reason</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control form-control-sm" ng-model="vatExemptionReason" ng-disabled="vatExemptionReasonDisabled" />
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-5">Customize Rate</label>
+                                    <div class="col-sm-7">
+                                        <select class="form-select form-select-sm" ng-model="customizeRate">
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-5">Auto Mail</label>
+                                    <div class="col-sm-7">
+                                        <select class="form-select form-select-sm" ng-model="autoMail">
+                                            <option value="1">Yes</option>
+                                            <option value="0">No</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+                                <fieldset class="border p-2 mt-3">
+                                    <legend class="float-none w-auto p-2 fs-5">
+                                        Billing Person
+                                    </legend>
+
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <label class="float-end"><input type="radio" name="radio" ng-model="radioBtn" value="1" ng-change="radioChange()" />&nbsp; Add</label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="float-end"><input type="radio" name="radio" ng-model="radioBtn" value="2" ng-change="radioChange()" />&nbsp; Update</label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <label class="float-end"><input type="checkbox" ng-model="checkCp" /> &nbsp; CP</label>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <label class="col-sm-3">Name</label>
+                                        <div class="col-sm-9">
+                                            <input type="text" class="form-control form-control-sm" ng-model="billingNameInput" ng-show="billingNameInputShow" />
+                                            <select class="form-select form-select-sm" ng-model="billingName" ng-change="loadDesignation()" ng-show="billingNameShow">
+                                                <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}" data-name="{{data.name}}">{{data.name}}</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <label class="col-sm-3">Designation</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control form-control-sm" ng-model="billingDesignation" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <label class="col-sm-3">Email</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control form-control-sm" ng-model="billingEmail" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <label class="col-sm-3">Phone</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control form-control-sm" ng-model="billingPhone" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3">
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-info btn-sm px-3" ng-click="billingDelete()" ng-disabled="billingDeleteDisabled">Delete</button>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-info btn-sm px-3" ng-click="billingUpdate()" ng-disabled="billingUpdateDisabled">Update</button>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-info btn-sm px-4" ng-click="billingAdd()" ng-disabled="billingAddDisabled">Add</button>
+                                        </div>
+                                    </div>
+                                </fieldset>
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-5">
-                        <div class="row">
-                            <label class="col-sm-4">Online Id</label>
-                            <div class="col-sm-8">
-                                <input class="form-control form-control-sm" ng-model="onlineId" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-2">
-                        <label class="float-end">Black Listed &nbsp;<input type="checkbox" ng-model="blackListed" /></label>
-                    </div>
-                </div>
 
-            </div>
-            <div class="col-sm-12 mt-2">
-                <div class="row">
-                    <div class="col-sm-7">
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Company Name</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="companyName" />
-                            </div>
+                    <div class="row offset-1 mt-2">
+                        <div class="col-sm-4">
+                            <button class="btn btn-info btn-sm px-3" ng-click="delete()" ng-disabled="deleteDisabled">Delete</button>
                         </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Vat Reg Add</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="vatRegAdd" />
-                            </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-info btn-sm px-3" ng-click="update()" ng-disabled="updateDisabled">Update</button>
                         </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Vat Challan Name</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="vatChallanName" />
-                            </div>
+                        <div class="col-sm-4">
+                            <button class="btn btn-info btn-sm px-4" ng-click="add()" ng-disabled="addDisabled">Add</button>
                         </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Vat Reg No</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="vatRegNo" />
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">District</label>
-                            <div class="col-sm-9">
-                                <select class="form-select form-select-sm" ng-model="district">
-                                    <option value="-1">Select</option>
-                                    <option ng-repeat="data in districtData" value="{{data.districtID}}">{{data.districtName}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Bank Information</label>
-                            <div class="col-sm-9">
-                                <select class="form-select form-select-sm" ng-model="bankInfo">
-                                    <option ng-repeat="data in bankInformationData" value="{{data.bankID}}">{{data.bankName}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Address</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="address" />
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">City</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="city" />
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Phone</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="phone" />
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Email</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="email" />
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Fax</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="fax" />
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Contact Person</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="contactPerson" ng-disabled="contactPersonDisabled" />
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Designation</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="designation" ng-disabled="designationDisabled" />
-                            </div>
-                        </div>
-
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Acc. Person Mail</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="accMail" />
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">Acc. Person Contact No</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="accMobile" />
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-3">HR Person</label>
-                            <div class="col-sm-9">
-                                <input class="form-control form-control-sm" ng-model="accperson" />
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-5 mt-5">
-                        <div class="row mt-2">
-                            <label class="col-sm-5">Remarks</label>
-                            <div class="col-sm-7">
-                                <textarea class="form-control form-control-sm bg-info p-2 bg-opacity-10" style="color:orangered" ng-model="remarks"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2">
-                            <label class="col-sm-5">Any VAT Exemption</label>
-                            <div class="col-sm-7">
-                                <select class="form-select form-select-sm" ng-model="vatExemption" ng-change="disableReason()">
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-5">VAT Exemption Reason</label>
-                            <div class="col-sm-7">
-                                <input class="form-control form-control-sm" ng-model="vatExemptionReason" ng-disabled="vatExemptionReasonDisabled" />
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-5">Customize Rate</label>
-                            <div class="col-sm-7">
-                                <select class="form-select form-select-sm" ng-model="customizeRate">
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <label class="col-sm-5">Auto Mail</label>
-                            <div class="col-sm-7">
-                                <select class="form-select form-select-sm" ng-model="autoMail">
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <fieldset class="border p-2 mt-4">
-                            <legend class="float-none w-auto p-2 fs-5">
-                                Billing Person
-                            </legend>
-
-                            <div class="row">
-                                <div class="col-sm-4">
-                                    <label class="float-end"><input type="radio" name="radio" ng-model="radioBtn" value="1" ng-change="radioChange()" />&nbsp; Add</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="float-end"><input type="radio" name="radio" ng-model="radioBtn" value="2" ng-change="radioChange()" />&nbsp; Update</label>
-                                </div>
-                                <div class="col-sm-4">
-                                    <label class="float-end"><input type="checkbox" ng-model="checkCp" /> &nbsp; CP</label>
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <label class="col-sm-3">Name</label>
-                                <div class="col-sm-9">
-                                    <input type="text" class="form-control form-control-sm" ng-model="billingNameInput" ng-show="billingNameInputShow" />
-                                    <select class="form-select form-select-sm" ng-model="billingName" ng-change="loadDesignation()" ng-show="billingNameShow">
-                                        <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}" data-name="{{data.name}}">{{data.name}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row mt-2">
-                                <label class="col-sm-3">Designation</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control form-control-sm" ng-model="billingDesignation" />
-                                </div>
-                            </div>
-                            <div class="row mt-2">
-                                <label class="col-sm-3">Email</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control form-control-sm" ng-model="billingEmail" />
-                                </div>
-                            </div>
-                            <div class="row mt-2">
-                                <label class="col-sm-3">Phone</label>
-                                <div class="col-sm-9">
-                                    <input class="form-control form-control-sm" ng-model="billingPhone" />
-                                </div>
-                            </div>
-                            <div class="row mt-3">
-                                <div class="col-sm-4">
-                                    <button class="btn btn-info btn-sm px-3" ng-click="billingDelete()" ng-disabled="billingDeleteDisabled">Delete</button>
-                                </div>
-                                <div class="col-sm-4">
-                                    <button class="btn btn-info btn-sm px-3" ng-click="billingUpdate()" ng-disabled="billingUpdateDisabled">Update</button>
-                                </div>
-                                <div class="col-sm-4">
-                                    <button class="btn btn-info btn-sm px-4" ng-click="billingAdd()" ng-disabled="billingAddDisabled">Add</button>
-                                </div>
-                            </div>
-                        </fieldset>
                     </div>
                 </div>
             </div>
 
-            <div class="row offset-1 mt-2">
-                <div class="col-sm-4">
-                    <button class="btn btn-info btn-sm px-3" ng-click="delete()" ng-disabled="deleteDisabled">Delete</button>
-                </div>
-                <div class="col-sm-4">
-                    <button class="btn btn-info btn-sm px-3" ng-click="update()" ng-disabled="updateDisabled">Update</button>
-                </div>
-                <div class="col-sm-4">
-                    <button class="btn btn-info btn-sm px-4" ng-click="add()" ng-disabled="addDisabled">Add</button>
-                </div>
-            </div>
         </div>
     </div>
 </div>
+
+
 
 <script>
     var app = angular.module('myApp', []);

@@ -40,5 +40,29 @@ namespace AccountingSystem.Web.Controllers
             else
                 return RedirectToAction("Index", "Home");
         }
+
+        public async Task<List<Department_Function_Rank_Model>> LoadAllDepartment()
+        {
+            var result = await _EmployeeManager.LoadAllDepartment();
+            return result;
+        }
+
+        public async Task<List<Department_Function_Rank_Model>> LoadAllFunction()
+        {
+            var result = await _EmployeeManager.LoadAllFunction();
+            return result;
+        }
+
+        public async Task<List<Department_Function_Rank_Model>> LoadAllRank()
+        {
+            var result = await _EmployeeManager.LoadAllRank();
+            return result;
+        }
+
+        public async Task<List<Department_Function_Rank_Model>> LoadSupervisor()
+        {
+            var result = await _EmployeeManager.LoadSupervisor();
+            return result;
+        }
     }
 }

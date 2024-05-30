@@ -79,5 +79,41 @@ namespace AccountingSystem.Repository
             }
             return res;
         }
+
+        public async Task<List<Department_Function_Rank_Model>> LoadAllDepartment()
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = await _db.QueryAsync<Department_Function_Rank_Model>("SELECT Id, DepartmentName FROM Department", new { });
+                return result.ToList();
+            }
+        }
+
+        public async Task<List<Department_Function_Rank_Model>> LoadAllFunction()
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = await _db.QueryAsync<Department_Function_Rank_Model>("SELECT Id, FunctionName FROM [Function]", new { });
+                return result.ToList();
+            }
+        }
+
+        public async Task<List<Department_Function_Rank_Model>> LoadAllRank()
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = await _db.QueryAsync<Department_Function_Rank_Model>("SELECT Id, RankName FROM Rank", new { });
+                return result.ToList();
+            }
+        }
+
+        public async Task<List<Department_Function_Rank_Model>> LoadSupervisor()
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = await _db.QueryAsync<Department_Function_Rank_Model>("SELECT EmployeeId, EmployeeName FROM EmployeeInfo WHERE Rank='AGM'", new { });
+                return result.ToList();
+            }
+        }
     }
 }

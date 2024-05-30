@@ -6,343 +6,609 @@
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
 </head>
 
-<div ng-app="myApp">
-    <div ng-controller="myController" style="font-size:14px">
-        <div class="row" style="margin-top:-10px">
-            <div class="col-sm-3">
-                <h4>Employee Information</h4>
-            </div>
-            <div class="col-sm-9">
-                <div>
-                    <button class="btn btn-info btn-sm" ng-click="basicInfoButton()"><strong>Basic Info</strong></button>
-                    <button class="btn btn-info ms-3 btn-sm" ng-click="employmentInfoButton()"><strong>Employment Info</strong></button>
-                    <button class="btn btn-info ms-3 btn-sm" ng-click="salaryInfoButton()"><strong>Salary Info</strong></button>
-                    <button class="btn btn-info ms-3 btn-sm" ng-click="bankAndTaxInfoButton()"><strong>Bank and Tax Info</strong></button>
-                    <button class="btn btn-success ms-3 btn-sm" ng-click="downloadExcelBtn()"><strong>Excel</strong></button>
-                    <button class="btn btn-success ms-3 btn-sm" ng-click="Import()"><strong>Import ACS</strong></button>
-                </div>
-            </div>
-        </div>
-        <div class="row mt-3 mb-2 offset-2">
-            <label class="col-sm-2">List of Employee</label>
-            <div class="col-sm-7">
-                <input class="form-select" style="background-color:lightcyan" placeholder="Search Employee Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchEmployee(searchQuery)">
-                <select class="form-select form-select-sm" size="10" ng-model="empList" style="position:absolute;z-index:999;width: 530px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="employeeList.length > 0">
-                    <option ng-repeat="employee in employeeList" value="{{employee.employeeId}}" ng-click="selectEmployee(employee)">{{employee.employeeName}}</option>
-                </select>
-            </div>
-        </div>
-        <div ng-show="basicInfo">
-            <h5 class="text-center">Employee Basic Information</h5>
-            <div class="row mt-4">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Employee ID</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="employeeId" />
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h4>Employee Information</h4>
+                    </div>
+                    <div class="col-sm-9">
+                        <div>
+                            <button class="btn btn-info btn-sm" ng-click="basicInfoButton()"><strong>Basic Info</strong></button>
+                            <button class="btn btn-info ms-3 btn-sm" ng-click="employmentInfoButton()"><strong>Employment Info</strong></button>
+                            <button class="btn btn-info ms-3 btn-sm" ng-click="salaryInfoButton()"><strong>Salary Info</strong></button>
+                            <button class="btn btn-info ms-3 btn-sm" ng-click="bankAndTaxInfoButton()"><strong>Bank and Tax Info</strong></button>
+                            <button class="btn btn-success ms-3 btn-sm" ng-click="downloadExcelBtn()"><strong>Excel</strong></button>
+                            <button class="btn btn-success ms-3 btn-sm" ng-click="Import()"><strong>Import from ACS</strong></button>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Employee ID No</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="employeeIdNo" />
+                <div class="row mt-2 mb-2 offset-2">
+                    <label class="col-sm-2 fw-bold">List of Employee</label>
+                    <div class="col-sm-7">
+                        <input class="form-select form-select-sm" style="background-color:lightcyan" placeholder="Search Employee Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchEmployee(searchQuery)">
+                        <select class="form-select form-select-sm" size="10" ng-model="empList" style="position:absolute;z-index:999;width: 530px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="employeeList.length > 0">
+                            <option ng-repeat="employee in employeeList" value="{{employee.employeeId}}" ng-click="selectEmployee(employee)">{{employee.employeeName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div ng-show="basicInfo">
+                    <h5 class="text-center">Employee Basic Information</h5>
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Employee ID</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="employeeId" ng-disabled="employeeIdDisabled"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Employee ID No</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="employeeIdNo" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Employee Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="employeeName" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Fathers Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="fathersName" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Husband / Wife Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="husbandOrWifeName" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Mothers Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="mothersName" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Gender</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="gender">
+                                        <option value="-1">Select</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Date of Birth</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="dateOfBirth" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Blood Group</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="bloodGroup">
+                                        <option value="-1">Select</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Mobile No.</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="mobileNo" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Present Address</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control form-control-sm" ng-model="presentAddress"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Permanent Address</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control form-control-sm" ng-model="permanentAddress"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Email</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="email" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">NID</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="nid" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">ETIN</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="etin" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Employee Name</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="employeeName" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Fathers Name</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="fathersName" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Husband / Wife Name</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="husbandOrWifeName" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Mothers Name</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="mothersName" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Gender</label>
-                        <div class="col-sm-8">
-                            <select class="form-select form-select-sm" ng-model="gender">
-                                <option value="-1">Select</option>
-                                <option value="Male">Male</option>
-                                <option value="Female">Female</option>
-                                <option value="Others">Others</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Date of Birth</label>
-                        <div class="col-sm-8">
-                            <input type="date" class="form-control form-control-sm" ng-model="dateOfBirth" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Blood Group</label>
-                        <div class="col-sm-8">
-                            <select class="form-select form-select-sm" ng-model="bloodGroup">
-                                <option value="-1">Select</option>
-                                <option value="A+">A+</option>
-                                <option value="A-">A-</option>
-                                <option value="B+">B+</option>
-                                <option value="B-">B-</option>
-                                <option value="O+">O+</option>
-                                <option value="O-">O-</option>
-                                <option value="AB+">AB+</option>
-                                <option value="AB-">AB-</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Mobile No.</label>
-                        <div class="col-sm-8">
-                            <input type="date" class="form-control form-control-sm" ng-model="mobileNo" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Present Address</label>
-                        <div class="col-sm-8">
-                            <textarea class="form-control form-control-sm" ng-model="presentAddress"></textarea>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Permanent Address</label>
-                        <div class="col-sm-8">
-                            <textarea class="form-control form-control-sm" ng-model="permanentAddress"></textarea>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Email</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="email" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">NID</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="nid" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">ETIN</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="etin" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
 
-        <div ng-show="employmentInfo">
-            <h5 class="text-center">Employee Employment Information</h5>
-            <div class="row mt-4">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Designation</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="designation" />
+                <div ng-show="employmentInfo">
+                    <h5 class="text-center">Employee Employment Information</h5>
+                    <div class="row mt-4">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Designation</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="designation" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Rank</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="rank">
+                                        <option value="-1">Select</option>
+                                        <option ng-repeat="data in rankData" value="{{data.id}}">{{data.rankName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Department</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="department">
+                                        <option value="-1">Select</option>
+                                        <option ng-repeat="data in departmentData" value="{{data.id}}">{{data.departmentName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Function</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="function">
+                                        <option value="-1">Select</option>
+                                        <option ng-repeat="data in functionData" value="{{data.id}}">{{data.functionName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Supervisory Role</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="supervisoryRole" ng-change="changeSupervisor()">
+                                        <option value="1">YES</option>
+                                        <option value="0">NO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Supervisor Name</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="supervisorName" ng-disabled="disabledSupervisorName">
+                                        <option value="-1">Select</option>
+                                        <option ng-repeat="data in supervisorData" value="{{data.employeeId}}">{{data.employeeName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Joining Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="joiningDate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Job Location</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="jobLocation">
+                                        <option value="-1">Select</option>
+                                        <option value="Dhaka HO">Dhaka HO</option>
+                                        <option value="Lalmatia">Lalmatia</option>
+                                        <option value="Chottogram">Chottogram</option>
+                                        <option value="Khulna">Khulna</option>
+                                        <option value="Rajshahi">Rajshahi</option>
+                                        <option value="Bogura">Bogura</option>
+                                        <option value="Barishal">Barishal</option>
+                                        <option value="Mymensingh">Mymensingh</option>
+                                        <option value="Rangpur">Rangpur</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Employment Status</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="employmentStatus" ng-change="changeEmploymentStatus()">
+                                        <option value="-1">Select</option>
+                                        <option value="Parmanent">Parmanent</option>
+                                        <option value="Probationary">Probationary</option>
+                                        <option value="Contractual">Contractual</option>
+                                        <option value="Intern">Intern</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Increment Effective Month</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="incrementEffectiveMonth">
+                                        <option value="-1">Select</option>
+                                        <option value="January">January</option>
+                                        <option value="February">February</option>
+                                        <option value="March">March</option>
+                                        <option value="April">April</option>
+                                        <option value="May">May</option>
+                                        <option value="June">June</option>
+                                        <option value="July">July</option>
+                                        <option value="August">August</option>
+                                        <option value="September">September</option>
+                                        <option value="October">October</option>
+                                        <option value="November">November</option>
+                                        <option value="December">December</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Job Confirmation Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="effectiveDate" ng-disabled="disabledEffectiveDate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Status</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="status" ng-change="changeStatus()">
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Resignation / Inactivation Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="resignationDate" ng-disabled="disabledResignationDate" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Rank</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="rank" />
+                <div ng-show="salaryInfo">
+                    <h5 class="text-center">Salary Information</h5>
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">PF Activation</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="pfActivation" ng-change="pfActivationChange()">
+                                        <option value="1">YES</option>
+                                        <option value="0">NO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">PF Start Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="pfStartDate" ng-disabled="disabledPfStartDate" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">PF End Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="pdfEndDate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">OT Applicable</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="otApplicable">
+                                        <option value="1">YES</option>
+                                        <option value="0">NO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Lunch Allowance</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="lunchAllowance">
+                                        <option value="1">YES</option>
+                                        <option value="0">NO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <fieldset class="border">
+                                <legend class="float-none w-auto fs-6">Gross Salary</legend>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label class="float-end"><input type="radio" name="radio" ng-model="gsRadioBtn" value="1" ng-change="gsRadioChange()" />&nbsp; Add</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="float-end"><input type="radio" name="radio" ng-model="gsRadioBtn" value="2" ng-change="gsRadioChange()" />&nbsp; Update</label>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-sm-5">Gross Salary</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control form-control-sm" ng-model="grossSalaryInput" />
+                                        <select class="form-select form-select-sm" ng-model="grossSalary" ng-change="loadGrossSalaryEffectiveDate()" ng-show="grossSalaryShow">
+                                            @* <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}" data-name="{{data.name}}">{{data.name}}</option> *@
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-5">Gross Salary Effective Date</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control form-control-sm" ng-model="grossSalaryEffectiveDate" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-3" ng-click="gsDelete()" ng-disabled="gsDeleteDisabled">Delete</button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-3" ng-click="gsUpdate()" ng-disabled="gsUpdateDisabled">Update</button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-4" ng-click="gsAdd()" ng-disabled="gsAddDisabled">Add</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-sm-6">
+                            <fieldset class="border">
+                                <legend class="float-none w-auto fs-6">TA</legend>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label class="float-end"><input type="radio" name="radio" ng-model="taRadioBtn" value="1" ng-change="taRadioChange()" />&nbsp; Add</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="float-end"><input type="radio" name="radio" ng-model="taRadioBtn" value="2" ng-change="taRadioChange()" />&nbsp; Update</label>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-sm-5">TA</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control form-control-sm" ng-model="taInput" />
+                                        <select class="form-select form-select-sm" ng-model="ta" ng-change="loadTaEffectiveDate()" ng-show="taShow">
+                                            @* <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}" data-name="{{data.name}}">{{data.name}}</option> *@
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-5">TA Effective Date</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control form-control-sm" ng-model="taEffectiveDate" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-3" ng-click="taDelete()" ng-disabled="taDeleteDisabled">Delete</button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-3" ng-click="taUpdate()" ng-disabled="taUpdateDisabled">Update</button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-4" ng-click="taAdd()" ng-disabled="taAddDisabled">Add</button>
+                                    </div>
+                                </div>
+                            </fieldset>
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Department</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="department" />
+                <div ng-show="bankAndTaxInfo">
+                    <h5 class="text-center">Employee Bank and Tax Information</h5>
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Bank A/C Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="bankAcName" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Bank Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="bankName" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Branch Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="branchName" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Bank A/C No.</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="bankAcNo" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Routing No.</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="routingNo" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Branch Code</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="branchCode" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4">BKash No.</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="bKashNo" />
+                                </div>
+                            </div>
+                            <div class="row offset-2">
+                                <div class="col-sm-5">
+                                    <label class="float-end"><input type="radio" name="radio" ng-model="bkashRadioBtn" value="1" ng-change="bkashRadioChange()" />&nbsp; Bkash</label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <label class="float-end"><input type="radio" name="radio" ng-model="bankRadioBtn" value="2" ng-change="bankRadioChange()" />&nbsp; Bank</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <fieldset class="border">
+                                <legend class="float-none w-auto fs-6">Tax Return Acknowledgement</legend>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label class="float-end"><input type="radio" name="radio" ng-model="taxRadioBtn" value="1" ng-change="taxChange()" />&nbsp; Add</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="float-end"><input type="radio" name="radio" ng-model="taxRadioBtn" value="2" ng-change="taxChange()" />&nbsp; Update</label>
+                                    </div>
+                                </div>
+                                <div class="row" hidden>
+                                    <label class="col-sm-5">ID</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control form-control-sm" ng-model="id" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-sm-5">Acknowledgement No</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control form-control-sm" ng-model="acknowledgeInput" />
+                                        <select class="form-select form-select-sm" ng-model="acknowledge" ng-change="loadreturnYear()" ng-show="acknowledgeShow">
+                                            @* <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}" data-name="{{data.name}}">{{data.name}}</option> *@
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-5">Return Year</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control form-control-sm" ng-model="returnYear" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-3" ng-click="acknowledgeDelete()" ng-disabled="acknowledgeDeleteDisabled">Delete</button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-3" ng-click="acknowledgeUpdate()" ng-disabled="acknowledgeUpdateDisabled">Update</button>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-4" ng-click="acknowledgeAdd()" ng-disabled="acknowledgeAddDisabled">Add</button>
+                                    </div>
+                                </div>
+                            </fieldset>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Function</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="function" />
-                        </div>
+
+                <div class="row mt-3">
+                    <div class="col-sm-6">
+                        <button class="btn btn-primary btn-sm col-sm-4 float-end " ng-click="update()" ng-disabled="updateDisabled">Update</button>
                     </div>
+                    <div class="col-sm-6">
+                        <button class="btn btn-success btn-sm col-sm-4" ng-click="add()" ng-disabled="addDisabled">Add</button>
+                    </div>                    
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Supervisory Role</label>
-                        <div class="col-sm-8">
-                            <select class="form-select form-select-sm" ng-model="supervisoryRole">
-                                <option value="1">YES</option>
-                                <option value="0">NO</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Supervisor Name</label>
-                        <div class="col-sm-8">
-                            <input class="form-control form-control-sm" ng-model="supervisorName" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Joining Date</label>
-                        <div class="col-sm-8">
-                            <input type="date" class="form-control form-control-sm" ng-model="joiningDate" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Job Location</label>
-                        <div class="col-sm-8">
-                            <select class="form-select form-select-sm" ng-model="supervisoryRole">
-                                <option value="-1">Select</option>
-                                <option value="Dhaka HO">Dhaka HO</option>
-                                <option value="Lalmatia">Lalmatia</option>
-                                <option value="Chottogram">Chottogram</option>
-                                <option value="Khulna">Khulna</option>
-                                <option value="Rajshahi">Rajshahi</option>
-                                <option value="Bogura">Bogura</option>
-                                <option value="Barishal">Barishal</option>
-                                <option value="Mymensingh">Mymensingh</option>
-                                <option value="Rangpur">Rangpur</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Employment Status</label>
-                        <div class="col-sm-8">
-                            <select class="form-select form-select-sm" ng-model="employmentStatus">
-                                <option value="-1">Select</option>
-                                <option value="Parmanent">Parmanent</option>
-                                <option value="Probationary">Probationary</option>
-                                <option value="Contractual">Contractual</option>
-                                <option value="Intern">Intern</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Increment Effective Month</label>
-                        <div class="col-sm-8">
-                            <select class="form-select form-select-sm" ng-model="incrementEffectiveMonth">
-                                <option value="-1">Select</option>
-                                <option value="January">January</option>
-                                <option value="February">February</option>
-                                <option value="March">March</option>
-                                <option value="April">April</option>
-                                <option value="May">May</option>
-                                <option value="June">June</option>
-                                <option value="July">July</option>
-                                <option value="August">August</option>
-                                <option value="September">September</option>
-                                <option value="October">October</option>
-                                <option value="November">November</option>
-                                <option value="December">December</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Job Confirmation Date</label>
-                        <div class="col-sm-8">
-                            <input type="date" class="form-control form-control-sm" ng-model="effectiveDate" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Status</label>
-                        <div class="col-sm-8">
-                            <select class="form-select form-select-sm" ng-model="status">
-                                <option value="1">YES</option>
-                                <option value="0">NO</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="row mb-2">
-                        <label class="col-sm-4">Resignation / Inactivation Date</label>
-                        <div class="col-sm-8">
-                            <input type="date" class="form-control form-control-sm" ng-model="resignationDate" />
-                        </div>
-                    </div>
-                </div>                
             </div>
         </div>
     </div>
@@ -352,7 +618,67 @@
 <script>
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+            $scope.loadDepartment();
+            $scope.loadFunction();
+            $scope.loadRank();
+            $scope.loadSupervisor();
+        })
         $scope.basicInfo = true;
+        $scope.employeeIdDisabled = true;
+        $scope.updateDisabled = true;
+        $scope.gender = '-1';
+        $scope.bloodGroup = '-1';
+        $scope.supervisoryRole = '1';
+        $scope.jobLocation = '-1';
+        $scope.employmentStatus = '-1';
+        $scope.incrementEffectiveMonth = '-1';
+        $scope.status = '1';
+        $scope.otApplicable = '-1';
+        $scope.pfActivation = '1';
+        $scope.otApplicable = '0';
+        $scope.lunchAllowance = '0';
+        $scope.department = '-1';
+        $scope.function = '-1';
+        $scope.rank = '-1';
+        $scope.supervisorName = '-1';
+        $scope.bkashRadioBtn = '1';
+        $scope.disabledSupervisorName = true;
+        $scope.disabledEffectiveDate = true;
+        $scope.disabledResignationDate = true;
+
+        $scope.changeSupervisor = function () {
+            if($scope.supervisoryRole == "1"){
+                $scope.disabledSupervisorName = true;
+            }else{
+                $scope.disabledSupervisorName = false;
+            }
+        };
+
+        $scope.pfActivationChange = function () {
+            if ($scope.pfActivation == "1") {
+                $scope.disabledPfStartDate = false;
+            } else {
+                $scope.disabledPfStartDate = true;
+            }
+        };
+
+        $scope.changeEmploymentStatus = function () {
+            if ($scope.employmentStatus == "Parmanent") {
+                $scope.disabledEffectiveDate = false;
+            } else {
+                $scope.disabledEffectiveDate = true;
+            }
+        };
+
+        $scope.changeStatus = function () {
+            if ($scope.status == "1") {
+                $scope.disabledResignationDate = true;
+            } else {
+                $scope.disabledResignationDate = false;
+            }
+        };
+
         $scope.employeeList = [];
         $scope.selectedEmployee = null;
         $scope.searchEmployee = function (startingKey) {
@@ -380,13 +706,99 @@
             $scope.empId = employee.employeeId;
             $scope.employeeList = [];
         }
+        
+        $scope.loadDepartment = function () {
+            debugger
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                Url = '/Employee/LoadAllDepartment';
+                else
+                Url = '/AccountingNew/Employee/LoadAllDepartment';
 
+                $http.get(Url)
+                    .then(function (response) {
+                        $scope.departmentData = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            
+        };
+
+        $scope.loadFunction = function () {
+            debugger
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/LoadAllFunction';
+            else
+                Url = '/AccountingNew/Employee/LoadAllFunction';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.functionData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.loadRank = function () {
+            debugger
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/LoadAllRank';
+            else
+                Url = '/AccountingNew/Employee/LoadAllRank';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.rankData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.loadSupervisor = function () {
+            debugger
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/LoadSupervisor';
+            else
+                Url = '/AccountingNew/Employee/LoadSupervisor';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.supervisorData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.bankAndTaxInfoButton = function () {
+            $scope.bankAndTaxInfo = true;
+            $scope.salaryInfo = false;
+            $scope.employmentInfo = false;
+            $scope.basicInfo = false;
+        }
+
+        $scope.salaryInfoButton = function () {
+            $scope.salaryInfo = true;
+            $scope.employmentInfo = false;
+            $scope.basicInfo = false;
+            $scope.bankAndTaxInfo = false;
+        }
         $scope.basicInfoButton = function () {
             $scope.basicInfo = true;
+            $scope.salaryInfo = false;
+            $scope.employmentInfo = false;
+            $scope.bankAndTaxInfo = false;
         }
         $scope.employmentInfoButton = function () {
             $scope.employmentInfo = true;
             $scope.basicInfo = false;
+            $scope.salaryInfo = false;
+            $scope.bankAndTaxInfo = false;
         }
     });
 </script>
