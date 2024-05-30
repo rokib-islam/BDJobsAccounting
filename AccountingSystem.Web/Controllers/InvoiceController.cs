@@ -282,7 +282,7 @@ namespace AccountingSystem.Web.Controllers
                     string responseMessage = await response.Content.ReadAsStringAsync();
                     VarificationResponseModel responseObjectTyped = JsonConvert.DeserializeObject<VarificationResponseModel>(responseMessage);
 
-                    return Json($"Success");
+                    return Json($"{responseObjectTyped.Message}");
                 }
                 else
                 {
