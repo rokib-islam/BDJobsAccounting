@@ -57,7 +57,7 @@ namespace AccountingSystem.Repository
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                var query = "SELECT TOP 30 Id,Name + ' (' + CONVERT(varchar, Cp_id) + ')' Name, BlackListed, AnyVatExemption FROM Company WHERE Name LIKE @Key ORDER BY Name";
+                var query = "SELECT TOP 30 Id,Name + ' (' + CONVERT(varchar, Cp_id) + ')' Name, BlackListed, AnyVatExemption FROM Company WHERE Name LIKE @Key";
                 var parameters = new { Key = "%" + Key + "%" };
 
                 var result = await _db.QueryAsync<CompanyViewModel>(query, parameters);
