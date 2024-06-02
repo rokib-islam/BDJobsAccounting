@@ -64,5 +64,17 @@ namespace AccountingSystem.Web.Controllers
             var result = await _EmployeeManager.LoadSupervisor();
             return result;
         }
+
+        public async Task<string> InsertOrUpdateEmployeeInfo([FromBody] EmployeeModel model)
+        {
+            var result = await _EmployeeManager.InsertOrUpdateEmployeeInfo(model);
+            return result;
+        }
+
+        public async Task<List<EmployeeModel>> LoadEmployeeInfoById(int id)
+        {
+            var result = await _EmployeeManager.LoadEmployeeInfoById(id);
+            return result;
+        }
     }
 }

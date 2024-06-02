@@ -45,5 +45,15 @@ namespace AccountingSystem.BLL
         {
             return await _repository.LoadSupervisor();
         }
+
+        public async Task<string> InsertOrUpdateEmployeeInfo(EmployeeModel model)
+        {
+            return await _repository.InsertOrUpdateEmployeeInfo(model);
+        }
+
+        public async Task<List<EmployeeModel>> LoadEmployeeInfoById(int id)
+        {
+            return await _repository.LoadEmployeeInfoById(id);
+        }
     }
 }

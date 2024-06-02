@@ -11,5 +11,7 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<Department_Function_Rank_Model>> LoadAllFunction();
         Task<List<Department_Function_Rank_Model>> LoadAllRank();
         Task<List<Department_Function_Rank_Model>> LoadSupervisor();
+        Task<string> InsertOrUpdateEmployeeInfo(EmployeeModel model);
+        Task<List<EmployeeModel>> LoadEmployeeInfoById(int id);
     }
 }

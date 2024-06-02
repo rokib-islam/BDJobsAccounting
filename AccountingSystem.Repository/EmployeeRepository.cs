@@ -111,9 +111,87 @@ namespace AccountingSystem.Repository
         {
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
-                var result = await _db.QueryAsync<Department_Function_Rank_Model>("SELECT EmployeeId, EmployeeName FROM EmployeeInfo WHERE Rank='AGM'", new { });
+                var result = await _db.QueryAsync<Department_Function_Rank_Model>("SELECT EmployeeId, EmployeeName FROM EmployeeInfo WHERE Rank=4", new { });
                 return result.ToList();
             }
+        }
+
+        public async Task<string> InsertOrUpdateEmployeeInfo(EmployeeModel model)
+        {
+            var res = "";
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@EmployeeId", model.EmployeeId);
+                    parameters.Add("@EmployeeIdNo", model.EmployeeIdNo);
+                    parameters.Add("@EmployeeName", model.EmployeeName);
+                    parameters.Add("@FathersName", model.FathersName);
+                    parameters.Add("@MothersName", model.MothersName);
+                    parameters.Add("@HusbandOrWifeName", model.HusbandOrWifeName);
+                    parameters.Add("@Gender", model.Gender);
+                    parameters.Add("@DateOfBirth", model.DateOfBirth);
+                    parameters.Add("@BloodGroup", model.BloodGroup);
+                    parameters.Add("@MobileNo", model.MobileNo);
+                    parameters.Add("@Email", model.Email);
+                    parameters.Add("@NID", model.NID);
+                    parameters.Add("@ETin", model.ETin);
+                    parameters.Add("@PresentAddress", model.PresentAddress);
+                    parameters.Add("@PermanentAddress", model.PermanentAddress);
+                    parameters.Add("@Designation", model.Designation);
+                    parameters.Add("@EmploymentStatus", model.EmploymentStatus);
+                    parameters.Add("@Rank", model.Rank);
+                    parameters.Add("@SupervisoryRole", model.SupervisoryRole);
+                    parameters.Add("@SupervisorId", model.SupervisorId);
+                    parameters.Add("@JobLocation", model.JobLocation);
+                    parameters.Add("@IncrementEffectiveMonth", model.IncrementEffectiveMonth);
+                    parameters.Add("@JoiningDate", model.JoiningDate);
+                    parameters.Add("@EffectiveDate", model.EffectiveDate);
+                    parameters.Add("@PDFActivation", model.PDFActivation);
+                    parameters.Add("@PDFActivationStartDate", model.PDFActivationStartDate);
+                    parameters.Add("@PDFActivationEndDate", model.PDFActivationEndDate);
+                    parameters.Add("@ActiveStatus", model.ActiveStatus);
+                    parameters.Add("@ResignationDate", model.ResignationDate);
+                    parameters.Add("@OTApplicable", model.OTApplicable);
+                    parameters.Add("@LunchAllowance", model.LunchAllowance);
+                    parameters.Add("@BankAcName", model.BankAcName);
+                    parameters.Add("@BankName", model.BankName);
+                    parameters.Add("@BranchName", model.BranchName);
+                    parameters.Add("@BankAcNo", model.BankAcNo);
+                    parameters.Add("@RoutingNo", model.RoutingNo);
+                    parameters.Add("@BranchCode", model.BranchCode);
+                    parameters.Add("@BkashNo", model.BkashNo);
+                    parameters.Add("@DefaultPaymentMode", model.DefaultPaymentMode);
+                    parameters.Add("@Department", model.Department);
+                    parameters.Add("@Function", model.Function);
+
+
+                    await _db.ExecuteAsync(
+                        "InsertOrUpdateEmployeeInfo",
+                        parameters,
+                        commandType: CommandType.StoredProcedure);
+                    res = "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+                res = ex.ToString();
+            }
+            return res;
+        }
+
+        public async Task<List<EmployeeModel>> LoadEmployeeInfoById(int id)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var parameters = new DynamicParameters();
+                parameters.Add("@Id", id);
+
+                var result = await _db.QueryAsync<EmployeeModel>("USP_LoadEmployeeInfoById", parameters, commandType: CommandType.StoredProcedure);
+                return result.ToList();
+            }
+
         }
     }
 }
