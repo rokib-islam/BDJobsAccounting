@@ -33,5 +33,6 @@ namespace AccountingSystem.Abstractions.BLL
         Task<string> UpdateSaleContactPersonAndRefNo(UpdateSaleContactPersonAndRefNoModel model);
         Task<List<SalesPerson>> GetSalesPersonListByKey(string startingKey);
         Task<int> DownloadCandidateMonetizationAsync();
+        Task<MonetizationPosting> PostSMSAlertApplyLimitSalePostingNew(string ServiceName);
     }
 }

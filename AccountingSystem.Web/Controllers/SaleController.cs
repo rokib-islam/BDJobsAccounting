@@ -218,6 +218,12 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
+        public async Task<IActionResult> SalePostMonetizationBasic(string ServiceName)
+        {
+            var result = await _SaleManager.PostSMSAlertApplyLimitSalePostingNew(ServiceName);
+            return Json(result);
+        }
+
         public void DownloadCandidateMonetizationJob()
         {
             RecurringJob.AddOrUpdate(
@@ -231,16 +237,16 @@ namespace AccountingSystem.Web.Controllers
         {
             RecurringJob.AddOrUpdate(
                 "Candidate_Monetization_Basic_Sale_Posting",
-                () => DownloadCandidateMonetizationAsync().GetAwaiter().GetResult(),
+                () => SalePostMonetizationBasic("Candidate Monetization-Basic").GetAwaiter().GetResult(),
                 //Cron.Hourly
-                "0 */4 * * *"
+                "0 */3 * * *"
             );
         }
         public void SalesPostingMonetizationStandard()
         {
             RecurringJob.AddOrUpdate(
                 "Candidate_Monetization_Standard_Sale_Posting",
-                () => DownloadCandidateMonetizationAsync().GetAwaiter().GetResult(),
+                () => SalePostMonetizationBasic("Candidate Monetization-Standard").GetAwaiter().GetResult(),
                 "0 */4 * * *"
             );
         }
@@ -248,8 +254,8 @@ namespace AccountingSystem.Web.Controllers
         {
             RecurringJob.AddOrUpdate(
                 "Candidate_Monetization_Premium_Sale_Posting",
-                () => DownloadCandidateMonetizationAsync().GetAwaiter().GetResult(),
-                "0 */4 * * *"
+                () => SalePostMonetizationBasic("Candidate Monetization-Premium").GetAwaiter().GetResult(),
+                "0 */5 * * *"
             );
         }
 
