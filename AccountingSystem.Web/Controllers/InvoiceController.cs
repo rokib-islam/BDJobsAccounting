@@ -221,6 +221,7 @@ namespace AccountingSystem.Web.Controllers
         {
             var url = "https://corporate3.bdjobs.com/api/GetBillingsForAccouting.asp";
 
+
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("fromDate", model.FromDate),
@@ -259,6 +260,9 @@ namespace AccountingSystem.Web.Controllers
         {
             var url = "https://corporate3.bdjobs.com/api/VerifyInvoiceForAccouting.asp";
 
+            DateTime date = DateTime.Parse(model.JDate, null, System.Globalization.DateTimeStyles.RoundtripKind);
+            string formattedDate = date.ToString("MM/dd/yyyy");
+
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("QID", model.QID.ToString()),
@@ -267,7 +271,7 @@ namespace AccountingSystem.Web.Controllers
                 new KeyValuePair<string, string>("comment", model.Comment),
                 new KeyValuePair<string, string>("TDS", model.TDS),
                 new KeyValuePair<string, string>("VDS", model.VDS),
-                new KeyValuePair<string, string>("JDate", model.JDate),
+                new KeyValuePair<string, string>("JDate", formattedDate),
 
 
 
