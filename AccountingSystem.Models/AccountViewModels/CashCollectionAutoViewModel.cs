@@ -12,7 +12,7 @@
         public int UserId { get; set; } = 0;
         public double TDS { get; set; }
         public double VDS { get; set; }
-        public string jDate { get; set; }
+        public string jDate { get; set; } = "";
     }
     public class CashCollectionAutoReponse
     {
