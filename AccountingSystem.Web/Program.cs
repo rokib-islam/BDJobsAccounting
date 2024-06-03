@@ -62,6 +62,7 @@ builder.Services.AddHangfire(configuration => configuration
         DisableGlobalLocks = true
     }));
 
+
 // Add the Hangfire server
 builder.Services.AddHangfireServer();
 builder.Services.AddScoped<SaleController>();
@@ -93,7 +94,7 @@ app.UseStaticFiles();
 
 app.UseCors("AllowAll");
 
-app.UseHangfireDashboard();
+
 
 app.MapControllerRoute(
     name: "default",
@@ -103,9 +104,7 @@ using (var scope = app.Services.CreateScope())
 {
     var saleController = scope.ServiceProvider.GetRequiredService<SaleController>();
     saleController.DownloadCandidateMonetizationJob();
-    saleController.SalesPostingMonetizationBasic();
-    saleController.SalesPostingMonetizationStandard();
-    saleController.SalesPostingMonetizationPremium();
+    saleController.SalesPostingMonetizationJobs();
 }
 
 
