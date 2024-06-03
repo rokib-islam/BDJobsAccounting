@@ -6,7 +6,8 @@
     <div class="card-body" style="background-color:whitesmoke;font-size:14px">
         <div ng-app="myApp">
             <div ng-controller="myController">
-                <div class="row">
+                <div class="row" style="margin-top:-15px">
+                    <h4 class="text-center">Auto Billing</h4>
                     <div class="col-sm-3">
                         <label>From Date</label>
                         <input type="date" class="form-control form-control-sm" ng-model="fromDate"/>
@@ -18,20 +19,65 @@
                     <div class="col-sm-2">
                         <label>Satus</label>
                         <select class="form-select form-select-sm" ng-model="status">
-                            <option>Select</option>
+                            <option value="0">Peding</option>
+                            <option value="1">Done</option>
                         </select>
                     </div>
                     <div class="col-sm-3">
                         <label>Service Name</label>
                         <select class="form-select form-select-sm" ng-model="serviceName">
-                            <option>Select</option>
+                            <option value="0">Select</option>
+                            <option value="Candidate Monetization-Standard">Candidate Monetization-Standard</option>
+                            <option value="Candidate Monetization-Basic">Candidate Monetization-Basic</option>
+                            <option value="Candidate Monetization-Premium">Candidate Monetization-Premium</option>
                         </select>
                     </div>
-                    <div class="col-sm-1">
-                        <button class="btn btn-success btn-sm" ng-click="load()">Load</button>
+                    <div class="col-sm-1 mt-3">
+                        <button class="btn btn-success btn-sm px-3" ng-click="load()">Load</button>
+                    </div>
+
+                    <div class="mt-3">
+                        <table class="table table-bordered table-hovar table-sm">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Service Name</th>
+                                    <th class="text-center">Transaction ID</th>
+                                    <th class="text-center">Transaciton Date</th>
+                                    <th class="text-center">Paid By</th>
+                                    <th class="text-right">Amount</th>
+                                    <th class="text-center">Invoice No</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+            
+        })
+
+        $scope.fromDate = new Date();
+        $scope.toDate = new Date();
+        $scope.status = '0';
+        $scope.serviceName = '-1';
+    });
+</script>
