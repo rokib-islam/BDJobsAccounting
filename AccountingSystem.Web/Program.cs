@@ -102,7 +102,10 @@ app.MapControllerRoute(
 using (var scope = app.Services.CreateScope())
 {
     var saleController = scope.ServiceProvider.GetRequiredService<SaleController>();
-    saleController.ScheduleRecurringJob();
+    saleController.DownloadCandidateMonetizationJob();
+    saleController.SalesPostingMonetizationBasic();
+    saleController.SalesPostingMonetizationStandard();
+    saleController.SalesPostingMonetizationPremium();
 }
 
 

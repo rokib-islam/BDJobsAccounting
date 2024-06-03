@@ -141,5 +141,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.DownloadCandidateMonetizationAsync();
         }
+
+        public Task<MonetizationPosting> PostSMSAlertApplyLimitSalePostingNew(string ServiceName)
+        {
+            return _repository.PostSMSAlertApplyLimitSalePostingNew(ServiceName);
+        }
     }
 }

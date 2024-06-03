@@ -218,12 +218,44 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
-        public void ScheduleRecurringJob()
+        public async Task<IActionResult> SalePostMonetizationBasic(string ServiceName)
+        {
+            var result = await _SaleManager.PostSMSAlertApplyLimitSalePostingNew(ServiceName);
+            return Json(result);
+        }
+
+        public void DownloadCandidateMonetizationJob()
         {
             RecurringJob.AddOrUpdate(
                 "DownloadCandidateMonetizationJob",
                 () => DownloadCandidateMonetizationAsync().GetAwaiter().GetResult(),
-                Cron.Hourly
+                //Cron.Hourly
+                "0 */6 * * *"
+            );
+        }
+        public void SalesPostingMonetizationBasic()
+        {
+            RecurringJob.AddOrUpdate(
+                "Candidate_Monetization_Basic_Sale_Posting",
+                () => SalePostMonetizationBasic("Candidate Monetization-Basic").GetAwaiter().GetResult(),
+                //Cron.Hourly
+                "0 */3 * * *"
+            );
+        }
+        public void SalesPostingMonetizationStandard()
+        {
+            RecurringJob.AddOrUpdate(
+                "Candidate_Monetization_Standard_Sale_Posting",
+                () => SalePostMonetizationBasic("Candidate Monetization-Standard").GetAwaiter().GetResult(),
+                "0 */4 * * *"
+            );
+        }
+        public void SalesPostingMonetizationPremium()
+        {
+            RecurringJob.AddOrUpdate(
+                "Candidate_Monetization_Premium_Sale_Posting",
+                () => SalePostMonetizationBasic("Candidate Monetization-Premium").GetAwaiter().GetResult(),
+                "0 */5 * * *"
             );
         }
 
