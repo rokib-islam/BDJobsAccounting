@@ -257,5 +257,15 @@ namespace AccountingSystem.Web.Controllers
 
         #endregion 
 
+
+        public IActionResult AutoBilling()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
     }
 }

@@ -233,6 +233,5 @@ namespace AccountingSystem.Repository
 
         }
 
-        }
     }
 }

@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "AutoBilling";
+}
+
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label>From Date</label>
+                        <input type="date" class="form-control form-control-sm" ng-model="fromDate"/>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>To Date</label>
+                        <input type="date" class="form-control form-control-sm" ng-model="toDate" />
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Satus</label>
+                        <select class="form-select form-select-sm" ng-model="status">
+                            <option>Select</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>Service Name</label>
+                        <select class="form-select form-select-sm" ng-model="serviceName">
+                            <option>Select</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-1">
+                        <button class="btn btn-success btn-sm" ng-click="load()">Load</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
