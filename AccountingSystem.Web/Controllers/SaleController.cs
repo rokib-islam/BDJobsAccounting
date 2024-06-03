@@ -4,6 +4,7 @@ using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
+
 namespace AccountingSystem.Web.Controllers
 {
     public class SaleController : Controller
@@ -212,16 +213,14 @@ namespace AccountingSystem.Web.Controllers
             else
                 return RedirectToAction("Index", "Home");
         }
-        public async Task<IActionResult> DownloadCandidateMonetizationAsync()
+        public async Task DownloadCandidateMonetizationAsync()
         {
             var result = await _SaleManager.DownloadCandidateMonetizationAsync();
-            return Json(result);
         }
-
-        public async Task<IActionResult> SalePostMonetizationBasic(string ServiceName)
+        public async Task SalePostMonetizationBasicAsync(string serviceName)
         {
-            var result = await _SaleManager.PostSMSAlertApplyLimitSalePostingNew(ServiceName);
-            return Json(result);
+            var result = await _SaleManager.PostSMSAlertApplyLimitSalePostingNew(serviceName);
+
         }
 
         public void DownloadCandidateMonetizationJob()
@@ -233,30 +232,25 @@ namespace AccountingSystem.Web.Controllers
                 "0 */6 * * *"
             );
         }
-        public void SalesPostingMonetizationBasic()
+
+        public void SalesPostingMonetizationJobs()
         {
             RecurringJob.AddOrUpdate(
-                "Candidate_Monetization_Basic_Sale_Posting",
-                () => SalePostMonetizationBasic("Candidate Monetization-Basic").GetAwaiter().GetResult(),
-                //Cron.Hourly
-                "0 */3 * * *"
+                "Candidate_Monetization_Sequential_Sale_Posting",
+                () => RunMonetizationJobsSequentially().GetAwaiter().GetResult(),
+                "0 */3 * * *" // Adjust the cron expression as needed
             );
         }
-        public void SalesPostingMonetizationStandard()
+
+        public async Task RunMonetizationJobsSequentially()
         {
-            RecurringJob.AddOrUpdate(
-                "Candidate_Monetization_Standard_Sale_Posting",
-                () => SalePostMonetizationBasic("Candidate Monetization-Standard").GetAwaiter().GetResult(),
-                "0 */4 * * *"
-            );
-        }
-        public void SalesPostingMonetizationPremium()
-        {
-            RecurringJob.AddOrUpdate(
-                "Candidate_Monetization_Premium_Sale_Posting",
-                () => SalePostMonetizationBasic("Candidate Monetization-Premium").GetAwaiter().GetResult(),
-                "0 */5 * * *"
-            );
+            await SalePostMonetizationBasicAsync("Candidate Monetization-Basic");
+            await Task.Delay(TimeSpan.FromMinutes(15));
+
+            await SalePostMonetizationBasicAsync("Candidate Monetization-Standard");
+            await Task.Delay(TimeSpan.FromMinutes(15));
+
+            await SalePostMonetizationBasicAsync("Candidate Monetization-Premium");
         }
 
     }

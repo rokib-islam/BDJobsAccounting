@@ -103,9 +103,7 @@ using (var scope = app.Services.CreateScope())
 {
     var saleController = scope.ServiceProvider.GetRequiredService<SaleController>();
     saleController.DownloadCandidateMonetizationJob();
-    saleController.SalesPostingMonetizationBasic();
-    saleController.SalesPostingMonetizationStandard();
-    saleController.SalesPostingMonetizationPremium();
+    saleController.SalesPostingMonetizationJobs();
 }
 
 
