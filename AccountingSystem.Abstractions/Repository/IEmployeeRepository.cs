@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Models.AccountViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingSystem.Abstractions.Repository
 {
@@ -13,5 +14,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<Department_Function_Rank_Model>> LoadSupervisor();
         Task<string> InsertOrUpdateEmployeeInfo(EmployeeModel model);
         Task<List<EmployeeModel>> LoadEmployeeInfoById(int id);
+        Task<string> InsertOrUpdateAcknowledgement([FromBody] Acknowledgement_GrossSalary_TA_Model model);
+        Task<List<Acknowledgement_GrossSalary_TA_Model>> GetAcknowledgementNoByEmployeeId(int employeeId);
     }
 }

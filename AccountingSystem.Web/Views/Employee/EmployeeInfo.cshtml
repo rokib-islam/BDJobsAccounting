@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                        <script type="text/javascript">
-                            window.location.href = '@Url.Action("Index", "Home")';
-                        </script>
+                                <script type="text/javascript">
+                                    window.location.href = '@Url.Action("Index", "Home")';
+                                </script>
     }
     else
     {
@@ -587,17 +587,17 @@
                                 <div class="row" hidden>
                                     <label class="col-sm-5">ID</label>
                                     <div class="col-sm-7">
-                                        <input class="form-control form-control-sm" ng-model="id" />
+                                        <input class="form-control form-control-sm" ng-model="acknowledgeId" />
                                     </div>
                                 </div>
                                 <div class="row mt-3">
                                     <label class="col-sm-5">Acknowledgement No</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control form-control-sm" ng-model="acknowledgeInput" ng-show="acknowledgeInputShow" />
-                                        <select class="form-select form-select-sm" ng-model="acknowledge" ng-change="loadReturnYear()" ng-show="acknowledgeListShow">
+                                        <select class="form-select form-select-sm" ng-model="acknowledge" ng-show="acknowledgeListShow" ng-change="updateReturnYear()">
                                             <option value="-1">Select</option>
-                                            @* <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}" data-name="{{data.name}}">{{data.name}}</option> *@
-                                        </select>
+                                            <option ng-repeat="data in acknowlegementData" value="{{data.id}}">{{data.acknowledgementNo}}</option>
+                                        </select>                                        
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -608,11 +608,11 @@
                                 </div>
                                 <div class="row mt-3">                                    
                                     <div class="col-sm-4">
-                                        <button class="btn btn-info btn-sm px-4 float-end" ng-click="acknowledgeUpdate()" ng-disabled="acknowledgeUpdateDisabled">Update</button>
+                                        <button class="btn btn-info btn-sm px-4 float-end" ng-click="addOrUpdateAcknowledgeUpdate('UPDATE')" ng-disabled="acknowledgeUpdateDisabled">Update</button>
                                     </div>
                                     <div class="col-sm-2"></div>
                                     <div class="col-sm-4">
-                                        <button class="btn btn-info btn-sm px-5" ng-click="acknowledgeAdd()" ng-disabled="acknowledgeAddDisabled">Add</button>
+                                        <button class="btn btn-info btn-sm px-5" ng-click="addOrUpdateAcknowledgeUpdate('INSERT')" ng-disabled="acknowledgeAddDisabled">Add</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -783,7 +783,8 @@
             $scope.addDisabled = true;
             $scope.isDisabled = false;
             $scope.getEmployeeInfoById($scope.selectedEmployee.employeeId);
-        }
+            $scope.loadAcknolegementInfo($scope.selectedEmployee.employeeId);
+        }       
 
         $scope.loadDepartment = function () {
             let Url = '';
@@ -1154,6 +1155,70 @@
                 }, function (error) {
                     console.error(error);
                 });
+        };
+
+        $scope.addOrUpdateAcknowledgeUpdate = function (action) {
+            if (action == 'INSERT') {
+                var access = '@accessRights.Contains("1")';
+                if (access == 'False') {
+                    alert("Sorry, You have no permission to insert a record.");
+                }
+            } else {
+                var access = '@accessRights.Contains("2")';
+                if (access == 'False') {
+                    alert("Sorry, You have no permission to update a record.");
+                }
+
+            }
+            let requestBodyModel = {
+                EmployeeId: $scope.employeeId,
+                ID: $scope.acknowledge,
+                AcknowledgementNo: action == 'INSERT' ? $scope.acknowledgeInput : $scope.acknowledgementNo,
+                ReturnYear: $scope.returnYear,
+                }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/InsertOrUpdateAcknowledgement';
+            else
+                Url = '/AccountingNew/Employee/InsertOrUpdateAcknowledgement';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    if (response.data == 'Success') {
+                        alert("Data Saved Successfully.");
+                        $scope.fieldsEmpty();
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        $scope.loadAcknolegementInfo = function (employeeId) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/GetAcknowledgementNoByEmployeeId';
+            else
+                Url = '/AccountingNew/Employee/GetAcknowledgementNoByEmployeeId';
+
+            $http.get(Url, { params: { employeeId: employeeId } })
+                .then(function (response) {
+                    $scope.acknowlegementData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.updateReturnYear = function () {
+            const selectedAcknowledge = $scope.acknowlegementData.find(data => data.id == $scope.acknowledge);
+            if (selectedAcknowledge) {
+                $scope.acknowledgementNo = selectedAcknowledge.acknowledgementNo;
+                $scope.returnYear = selectedAcknowledge.returnYear;
+            } else {
+                $scope.returnYear = '';
+            }
         };
     });
 </script>

@@ -1,7 +1,9 @@
 ﻿using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
+using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
@@ -191,6 +193,45 @@ namespace AccountingSystem.Repository
                 var result = await _db.QueryAsync<EmployeeModel>("USP_LoadEmployeeInfoById", parameters, commandType: CommandType.StoredProcedure);
                 return result.ToList();
             }
+
+        }
+
+        public async Task<string> InsertOrUpdateAcknowledgement([FromBody] Acknowledgement_GrossSalary_TA_Model model)
+        {
+            var res = "";
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@EmployeeId", model.EmployeeId);
+                    parameters.Add("@AcknowledgementNo", model.AcknowledgementNo);
+                    parameters.Add("@ReturnYear", model.ReturnYear);
+                    parameters.Add("@ID", model.ID);
+
+                    await _db.ExecuteAsync("InsertOrUpdateTaxReturnAcknowledgement", parameters,commandType: CommandType.StoredProcedure);
+                    res = "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+                res = ex.ToString();
+            }
+            return res;
+        }
+
+        public async Task<List<Acknowledgement_GrossSalary_TA_Model>> GetAcknowledgementNoByEmployeeId(int employeeId)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var query = "SELECT tr.ID, tr.AcknowledgementNo, tr.ReturnYear FROM TaxReturnAcknowledgement tr LEFT JOIN EmployeeInfo e ON tr.EmployeeId = e.EmployeeId WHERE e.EmployeeId = @EmployeeId";
+                var parameters = new { EmployeeId = employeeId };
+
+                var result = await _db.QueryAsync<Acknowledgement_GrossSalary_TA_Model>(query, parameters);
+                return result.ToList();
+            }
+
+        }
 
         }
     }

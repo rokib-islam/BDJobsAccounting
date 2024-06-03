@@ -1,6 +1,7 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Abstractions.Repository;
 using AccountingSystem.Models.AccountViewModels;
+using Microsoft.AspNetCore.Mvc;
 
 namespace AccountingSystem.BLL
 {
@@ -54,6 +55,16 @@ namespace AccountingSystem.BLL
         public async Task<List<EmployeeModel>> LoadEmployeeInfoById(int id)
         {
             return await _repository.LoadEmployeeInfoById(id);
+        }
+
+        public async Task<string> InsertOrUpdateAcknowledgement([FromBody] Acknowledgement_GrossSalary_TA_Model model)
+        {
+            return await _repository.InsertOrUpdateAcknowledgement(model);
+        }
+
+        public async Task<List<Acknowledgement_GrossSalary_TA_Model>> GetAcknowledgementNoByEmployeeId(int employeeId)
+        {
+            return await _repository.GetAcknowledgementNoByEmployeeId(employeeId);
         }
     }
 }
