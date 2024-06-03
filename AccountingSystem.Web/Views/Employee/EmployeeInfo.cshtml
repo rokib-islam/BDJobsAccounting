@@ -1,0 +1,1224 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "EmployeeInfo";
+    var userId = Context.Session.GetInt32("UserID");
+    var accessRight = Context.Session.GetString("AccessRight");
+
+    var accessRights = new string[0];
+
+    if (string.IsNullOrEmpty(accessRight))
+    {
+                                <script type="text/javascript">
+                                    window.location.href = '@Url.Action("Index", "Home")';
+                                </script>
+    }
+    else
+    {
+        accessRights = accessRight.Split(',');
+    }
+}
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <style>
+        .disabled-div {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+    </style>
+</head>
+
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h4>Employee Information</h4>
+                    </div>
+                    <div class="col-sm-9">
+                        <div>
+                            <button class="btn btn-info btn-sm" ng-click="basicInfoButton()">Basic Info</button>
+                            <button class="btn btn-info ms-3 btn-sm" ng-click="employmentInfoButton()">Employment Info</button>
+                            <button class="btn btn-info ms-3 btn-sm" ng-click="salaryInfoButton()">Salary Info</button>
+                            <button class="btn btn-info ms-3 btn-sm" ng-click="bankAndTaxInfoButton()">Bank and Tax Info</button>
+                            <button class="btn btn-success ms-3 btn-sm" ng-click="downloadExcelBtn()">Excel</button>
+                            <button class="btn btn-success ms-3 btn-sm" ng-click="Import()">Import from ACS</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2 mb-2 offset-2">
+                    <label class="col-sm-2 fw-bold">List of Employee</label>
+                    <div class="col-sm-7">
+                        <input class="form-select form-select-sm" style="background-color:lightcyan;" placeholder="Search Employee Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchEmployee(searchQuery)">
+                        <select class="form-select form-select-sm" size="10" ng-model="empList" style="position:absolute;z-index:999;width: 510px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="employeeList.length > 0">
+                            <option ng-repeat="employee in employeeList" value="{{employee.employeeId}}" ng-click="selectEmployee(employee)">{{employee.employeeName}}</option>
+                        </select>
+                    </div>
+                </div>
+                <div ng-show="basicInfo">
+                    <h5 class="text-center">Employee Basic Information</h5>
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Employee ID</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="employeeId" ng-disabled="employeeIdDisabled" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Employee ID No</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="employeeIdNo" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Employee Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="employeeName" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Fathers Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="fathersName" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Husband / Wife Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="husbandOrWifeName" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Mothers Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="mothersName" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Gender</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="gender">
+                                        <option value="-1">Select</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Date of Birth</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="dateOfBirth" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Blood Group</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="bloodGroup">
+                                        <option value="-1">Select</option>
+                                        <option value="A+">A+</option>
+                                        <option value="A-">A-</option>
+                                        <option value="B+">B+</option>
+                                        <option value="B-">B-</option>
+                                        <option value="O+">O+</option>
+                                        <option value="O-">O-</option>
+                                        <option value="AB+">AB+</option>
+                                        <option value="AB-">AB-</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Mobile No.</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="mobileNo" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Present Address</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control form-control-sm" ng-model="presentAddress"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Permanent Address</label>
+                                <div class="col-sm-8">
+                                    <textarea class="form-control form-control-sm" ng-model="permanentAddress"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Email</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="email" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">NID</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="nid" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">ETIN</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="etin" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-show="employmentInfo">
+                    <h5 class="text-center">Employee Employment Information</h5>
+                    <div class="row mt-4">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Designation</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="designation" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Rank</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="rank">
+                                        <option value="-1">Select</option>
+                                        <option ng-repeat="data in rankData" value="{{data.id}}">{{data.rankName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Department</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="department">
+                                        <option value="-1">Select</option>
+                                        <option ng-repeat="data in departmentData" value="{{data.id}}">{{data.departmentName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Function</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="function">
+                                        <option value="-1">Select</option>
+                                        <option ng-repeat="data in functionData" value="{{data.id}}">{{data.functionName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Supervisory Role</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="supervisoryRole" ng-change="changeSupervisor()">
+                                        <option value="1">YES</option>
+                                        <option value="0">NO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Supervisor Name</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="supervisorName" ng-disabled="disabledSupervisorName">
+                                        <option value="-1">Select</option>
+                                        <option ng-repeat="data in supervisorData" value="{{data.employeeId}}">{{data.employeeName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Joining Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="joiningDate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Job Location</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="jobLocation">
+                                        <option value="-1">Select</option>
+                                        <option value="Dhaka HO">Dhaka HO</option>
+                                        <option value="Lalmatia">Lalmatia</option>
+                                        <option value="Chottogram">Chottogram</option>
+                                        <option value="Khulna">Khulna</option>
+                                        <option value="Rajshahi">Rajshahi</option>
+                                        <option value="Bogura">Bogura</option>
+                                        <option value="Barishal">Barishal</option>
+                                        <option value="Mymensingh">Mymensingh</option>
+                                        <option value="Rangpur">Rangpur</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Employment Status</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="employmentStatus" ng-change="changeEmploymentStatus()">
+                                        <option value="-1">Select</option>
+                                        <option value="Parmanent">Parmanent</option>
+                                        <option value="Probationary">Probationary</option>
+                                        <option value="Contractual">Contractual</option>
+                                        <option value="Intern">Intern</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Increment Effective Month</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="incrementEffectiveMonth">
+                                        <option value="-1">Select</option>
+                                        <option value="January">January</option>
+                                        <option value="February">February</option>
+                                        <option value="March">March</option>
+                                        <option value="April">April</option>
+                                        <option value="May">May</option>
+                                        <option value="June">June</option>
+                                        <option value="July">July</option>
+                                        <option value="August">August</option>
+                                        <option value="September">September</option>
+                                        <option value="October">October</option>
+                                        <option value="November">November</option>
+                                        <option value="December">December</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Job Confirmation Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="effectiveDate" ng-disabled="disabledEffectiveDate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Status</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="status" ng-change="changeStatus()">
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Resignation / Inactivation Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="resignationDate" ng-disabled="disabledResignationDate" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="salaryInfo">
+                    <h5 class="text-center">Salary Information</h5>
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">PF Activation</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="pfActivation" ng-change="pfActivationChange()">
+                                        <option value="1">YES</option>
+                                        <option value="0">NO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">PF Start Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="pfStartDate" ng-disabled="disabledPfStartDate" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">PF End Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="pfEndDate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">OT Applicable</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="otApplicable">
+                                        <option value="1">YES</option>
+                                        <option value="0">NO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Lunch Allowance</label>
+                                <div class="col-sm-8">
+                                    <select class="form-select form-select-sm" ng-model="lunchAllowance">
+                                        <option value="1">YES</option>
+                                        <option value="0">NO</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="row" ng-class="{'disabled-div': isDisabled}">
+                        <div class="col-sm-6">
+                            <fieldset class="border">
+                                <legend class="float-none w-auto fs-6">Gross Salary</legend>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label class="float-end"><input type="radio" name="radioGs" ng-model="gsRadioBtn" value="1" ng-change="gsRadioChange()" />&nbsp; Add</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="float-end"><input type="radio" name="radioGs" ng-model="gsRadioBtn" value="2" ng-change="gsRadioChange()" />&nbsp; Update</label>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-sm-5">Gross Salary</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control form-control-sm" ng-model="grossSalaryInput" ng-show="grossSalaryInputShow" />
+                                        <select class="form-select form-select-sm" ng-model="grossSalary" ng-change="loadGrossSalaryEffectiveDate()" ng-show="grossSalaryListShow">
+                                            <option value="-1">Select</option>
+                                            @* <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}" data-name="{{data.name}}">{{data.name}}</option> *@
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-5">Gross Salary Effective Date</label>
+                                    <div class="col-sm-7">
+                                        <input type="date" class="form-control form-control-sm" ng-model="grossSalaryEffectiveDate" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">                                    
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-4 float-end" ng-click="gsUpdate()" ng-disabled="gsUpdateDisabled">Update</button>
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-5" ng-click="gsAdd()" ng-disabled="gsAddDisabled">Add</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                        <div class="col-sm-6">
+                            <fieldset class="border">
+                                <legend class="float-none w-auto fs-6">TA</legend>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label class="float-end"><input type="radio" name="radioTa" ng-model="taRadioBtn" value="1" ng-change="taRadioChange()" />&nbsp; Add</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="float-end"><input type="radio" name="radioTa" ng-model="taRadioBtn" value="2" ng-change="taRadioChange()" />&nbsp; Update</label>
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-sm-5">TA</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control form-control-sm" ng-model="taInput" ng-show="taInputShow"/>
+                                        <select class="form-select form-select-sm" ng-model="ta" ng-change="loadTaEffectiveDate()" ng-show="taListShow">
+                                            <option value="-1">Select</option>
+                                            @* <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}" data-name="{{data.name}}">{{data.name}}</option> *@
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-5">TA Effective Date</label>
+                                    <div class="col-sm-7">
+                                        <input type="date" class="form-control form-control-sm" ng-model="taEffectiveDate" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">                                    
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-4 float-end" ng-click="taUpdate()" ng-disabled="taUpdateDisabled">Update</button>
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-5" ng-click="taAdd()" ng-disabled="taAddDisabled">Add</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div ng-show="bankAndTaxInfo">
+                    <h5 class="text-center">Employee Bank and Tax Information</h5>
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Bank A/C Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="bankAcName" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Bank Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="bankName" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Branch Name</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="branchName" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Bank A/C No.</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="bankAcNo" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Routing No.</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="routingNo" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4">Branch Code</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="branchCode" />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <label class="col-sm-4">BKash No.</label>
+                                <div class="col-sm-8">
+                                    <input class="form-control form-control-sm" ng-model="bKashNo" />
+                                </div>
+                            </div>
+                            <div class="row offset-2">
+                                <div class="col-sm-5">
+                                    <label class="float-end"><input type="radio" name="radio" ng-model="paymentMethodValue" value="1" ng-change="bkashRadioChange()" />&nbsp; Bkash</label>
+                                </div>
+                                <div class="col-sm-5">
+                                    <label class="float-end"><input type="radio" name="radio" ng-model="paymentMethodValue" value="2" ng-change="bankRadioChange()" />&nbsp; Bank</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" ng-class="{'disabled-div':isDisabled}">
+                            <fieldset class="border">
+                                <legend class="float-none w-auto fs-6">Tax Return Acknowledgement</legend>
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <label class="float-end"><input type="radio" name="radioTax" ng-model="taxRadioBtn" value="1" ng-change="taxChange()" />&nbsp; Add</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label class="float-end"><input type="radio" name="radioTax" ng-model="taxRadioBtn" value="2" ng-change="taxChange()" />&nbsp; Update</label>
+                                    </div>
+                                </div>
+                                <div class="row" hidden>
+                                    <label class="col-sm-5">ID</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control form-control-sm" ng-model="acknowledgeId" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">
+                                    <label class="col-sm-5">Acknowledgement No</label>
+                                    <div class="col-sm-7">
+                                        <input type="text" class="form-control form-control-sm" ng-model="acknowledgeInput" ng-show="acknowledgeInputShow" />
+                                        <select class="form-select form-select-sm" ng-model="acknowledge" ng-show="acknowledgeListShow" ng-change="updateReturnYear()">
+                                            <option value="-1">Select</option>
+                                            <option ng-repeat="data in acknowlegementData" value="{{data.id}}">{{data.acknowledgementNo}}</option>
+                                        </select>                                        
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <label class="col-sm-5">Return Year</label>
+                                    <div class="col-sm-7">
+                                        <input class="form-control form-control-sm" ng-model="returnYear" />
+                                    </div>
+                                </div>
+                                <div class="row mt-3">                                    
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-4 float-end" ng-click="addOrUpdateAcknowledgeUpdate('UPDATE')" ng-disabled="acknowledgeUpdateDisabled">Update</button>
+                                    </div>
+                                    <div class="col-sm-2"></div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-info btn-sm px-5" ng-click="addOrUpdateAcknowledgeUpdate('INSERT')" ng-disabled="acknowledgeAddDisabled">Add</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mt-3">
+                    <div class="col-sm-6">
+                        <button class="btn btn-primary btn-sm col-sm-4 float-end " ng-click="insertOrUpdate('UPDATE')" ng-disabled="updateDisabled">Update</button>
+                    </div>
+                    <div class="col-sm-6">
+                        <button class="btn btn-success btn-sm col-sm-4" ng-click="insertOrUpdate('INSERT')" ng-disabled="addDisabled">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+            $scope.loadDepartment();
+            $scope.loadFunction();
+            $scope.loadRank();
+            $scope.loadSupervisor();
+        })
+        
+        $scope.basicInfo = true;
+        $scope.employeeIdDisabled = true;
+        $scope.updateDisabled = true;
+        $scope.gender = '-1';
+        $scope.bloodGroup = '-1';
+        $scope.supervisoryRole = '1';
+        $scope.jobLocation = '-1';
+        $scope.employmentStatus = '-1';
+        $scope.incrementEffectiveMonth = '-1';
+        $scope.status = '1';
+        $scope.otApplicable = '-1';
+        $scope.pfActivation = '1';
+        $scope.otApplicable = '0';
+        $scope.lunchAllowance = '0';
+        $scope.department = '-1';
+        $scope.function = '-1';
+        $scope.rank = '-1';
+        $scope.supervisorName = '-1';
+        $scope.paymentMethodValue = '1';
+        $scope.disabledSupervisorName = true;
+        $scope.disabledEffectiveDate = true;
+        $scope.disabledResignationDate = true;
+        $scope.isDisabled = true;
+        $scope.acknowledgeAddDisabled = true;
+        $scope.gsAddDisabled = true;
+        $scope.taAddDisabled = true;
+        $scope.acknowledgeListShow = true;
+        $scope.taListShow = true;
+        $scope.grossSalaryListShow = true;
+        $scope.taxRadioBtn = '2';
+        $scope.gsRadioBtn = '2';
+        $scope.taRadioBtn = '2';
+
+        $scope.changeSupervisor = function () {
+            if ($scope.supervisoryRole == "1") {
+                $scope.disabledSupervisorName = true;
+                $scope.supervisorName = "-1";
+            } else {
+                $scope.disabledSupervisorName = false;
+                $scope.supervisorName = $scope.employeeData.supervisorId.toString();
+            }
+        };
+
+        $scope.pfActivationChange = function () {
+            if ($scope.pfActivation == "1") {
+                $scope.disabledPfStartDate = false;
+            } else {
+                $scope.disabledPfStartDate = true;
+            }
+        };
+
+        $scope.changeEmploymentStatus = function () {
+            if ($scope.employmentStatus == "Parmanent") {
+                $scope.disabledEffectiveDate = false;
+            } else {
+                $scope.disabledEffectiveDate = true;
+            }
+        };
+
+        $scope.changeStatus = function () {
+            if ($scope.status == "1") {
+                $scope.disabledResignationDate = true;
+            } else {
+                $scope.disabledResignationDate = false;
+            }
+        };
+
+        $scope.taxChange = function () {
+            if ($scope.taxRadioBtn == '1') {
+                $scope.acknowledgeUpdateDisabled = true;
+                $scope.acknowledgeAddDisabled = false;
+                $scope.acknowledgeInputShow = true;
+                $scope.acknowledgeListShow = false;
+            } else {
+                $scope.acknowledgeAddDisabled = true;
+                $scope.acknowledgeUpdateDisabled = false;
+                $scope.acknowledgeInputShow = false;
+                $scope.acknowledgeListShow = true;
+            }
+        }
+
+        $scope.gsRadioChange = function () {
+            if ($scope.gsRadioBtn == '1') {
+                $scope.gsUpdateDisabled = true;
+                $scope.gsAddDisabled = false;
+                $scope.grossSalaryInputShow = true;
+                $scope.grossSalaryListShow = false;
+            } else {
+                $scope.gsAddDisabled = true;
+                $scope.gsUpdateDisabled = false;
+                $scope.grossSalaryListShow = true;
+                $scope.grossSalaryInputShow = false;
+            }
+        }
+
+        $scope.taRadioChange = function () {
+            if ($scope.taRadioBtn == '1') {
+                $scope.taUpdateDisabled = true;
+                $scope.taAddDisabled = false;
+                $scope.taInputShow = true;
+                $scope.taListShow = false;
+            } else {
+                $scope.taAddDisabled = true;
+                $scope.taUpdateDisabled = false;
+                $scope.taListShow = true;
+                $scope.taInputShow = false;
+            }
+        }
+
+        $scope.employeeList = [];
+        $scope.selectedEmployee = null;
+        $scope.searchEmployee = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Employee/GetEmployeeListByKey';
+                else
+                    Url = '/AccountingNew/Employee/GetEmployeeListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.employeeList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.employeeList = [];
+            }
+        };
+
+        $scope.selectEmployee = function (employee) {
+            $scope.selectedEmployee = employee;
+            $scope.searchQuery = employee.employeeName;
+            $scope.empId = employee.employeeId;
+            $scope.employeeList = [];
+            $scope.updateDisabled = false;
+            $scope.addDisabled = true;
+            $scope.isDisabled = false;
+            $scope.getEmployeeInfoById($scope.selectedEmployee.employeeId);
+            $scope.loadAcknolegementInfo($scope.selectedEmployee.employeeId);
+        }       
+
+        $scope.loadDepartment = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/LoadAllDepartment';
+            else
+                Url = '/AccountingNew/Employee/LoadAllDepartment';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.departmentData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.loadFunction = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/LoadAllFunction';
+            else
+                Url = '/AccountingNew/Employee/LoadAllFunction';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.functionData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.loadRank = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/LoadAllRank';
+            else
+                Url = '/AccountingNew/Employee/LoadAllRank';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.rankData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.loadSupervisor = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/LoadSupervisor';
+            else
+                Url = '/AccountingNew/Employee/LoadSupervisor';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.supervisorData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.bankAndTaxInfoButton = function () {
+            $scope.bankAndTaxInfo = true;
+            $scope.salaryInfo = false;
+            $scope.employmentInfo = false;
+            $scope.basicInfo = false;
+        }
+
+        $scope.salaryInfoButton = function () {
+            $scope.salaryInfo = true;
+            $scope.employmentInfo = false;
+            $scope.basicInfo = false;
+            $scope.bankAndTaxInfo = false;
+        }
+        $scope.basicInfoButton = function () {
+            $scope.basicInfo = true;
+            $scope.salaryInfo = false;
+            $scope.employmentInfo = false;
+            $scope.bankAndTaxInfo = false;
+        }
+        $scope.employmentInfoButton = function () {
+            $scope.employmentInfo = true;
+            $scope.basicInfo = false;
+            $scope.salaryInfo = false;
+            $scope.bankAndTaxInfo = false;
+        }
+
+        $scope.insertOrUpdate = function (action) {
+            if (action == 'INSERT') {
+                var access = '@accessRights.Contains("1")';
+                if (access == 'False') {
+                    alert("Sorry, You have no permission to insert a record.");
+                }
+            } else {
+                var access = '@accessRights.Contains("2")';
+                if (access == 'False') {
+                    alert("Sorry, You have no permission to update a record.");
+                }
+
+            }
+            var employeeId = $scope.employeeId;
+            var employeeIdNo = $scope.employeeIdNo;
+            var employeeName = $scope.employeeName;
+            var fathersName = $scope.fathersName;
+            var husbandOrWifeName = $scope.husbandOrWifeName;
+            var mothersName = $scope.mothersName;
+            var gender = $scope.gender;
+            var dateOfBirth = $scope.dateOfBirth;
+            var bloodGroup = $scope.bloodGroup;
+            var mobileNo = $scope.mobileNo;
+            var presentAddress = $scope.presentAddress;
+            var permanentAddress = $scope.permanentAddress;
+            var email = $scope.email;
+            var nid = $scope.nid;
+            var etin = $scope.etin;
+            var designation = $scope.designation;
+            var rank = $scope.rank;
+            var department = $scope.department;
+            var functions = $scope.function;
+            var supervisoryRole = $scope.supervisoryRole == 1 ? true : false;
+            var supervisorName = $scope.supervisorName;
+            var joiningDate = $scope.joiningDate;
+            var jobLocation = $scope.jobLocation;
+            var employmentStatus = $scope.employmentStatus;
+            var incrementEffectiveMonth = $scope.incrementEffectiveMonth;
+            var effectiveDate = $scope.effectiveDate;
+            var status = $scope.status == 1 ? true : false;
+            var resignationDate = $scope.resignationDate;
+            var pdfActivation = $scope.pfActivation == 1 ? true : false;
+            var pdfStartDate = $scope.pfStartDate;
+            var pdfEndDate = $scope.pfEndDate;
+            var otApplicable = $scope.otApplicable == 1 ? true : false;
+            var lunchAllowance = $scope.lunchAllowance == 1 ? true : false;
+            var bankAcName = $scope.bankAcName;
+            var bankName = $scope.bankName;
+            var branchName = $scope.branchName;
+            var bankAcNo = $scope.bankAcNo;
+            var routingNo = $scope.routingNo;
+            var branchCode = $scope.branchCode;
+            var bKashNo = $scope.bKashNo;
+
+            if (employeeName == "" || employeeName == null || employeeName == undefined) {
+                alert("Employee Name Required.");
+                return false;
+            }
+            else if (gender == "" || gender == null || gender == undefined || gender == '-1') {
+                alert("Gender Required.");
+                return false;
+            }
+            else if (dateOfBirth == "" || dateOfBirth == null || dateOfBirth == undefined) {
+                alert("Date of Birth Required.");
+                return false;
+            }
+            else if (designation == "" || designation == "" || designation == null || designation == undefined) {
+                alert("Designation Required.");
+                return false;
+            }
+            else if (department == "-1" || department == "" || department == null || department == undefined) {
+                alert("Department Required.");
+                return false;
+            }
+            else if (functions == "-1" || functions == "" || functions == null || functions == undefined) {
+                alert("Functions Required.");
+                return false;
+            }
+            else if (employmentStatus == "-1" || employmentStatus == "" || employmentStatus == null || employmentStatus == undefined) {
+                alert("Employment Status Required.");
+                return false;
+            }
+            else if (rank == "-1" || rank == "" || rank == null || rank == undefined) {
+                alert("Rank Required.");
+                return false;
+            }
+            else if (jobLocation == "-1" || jobLocation == "" || jobLocation == null || jobLocation == undefined) {
+                alert("Job location Required.");
+                return false;
+            }
+            else if (incrementEffectiveMonth == "-1" || incrementEffectiveMonth == "" || incrementEffectiveMonth == null || incrementEffectiveMonth == undefined) {
+                alert("Increment Effective Month Required.");
+                return false;
+            }
+            else if (joiningDate == "" || joiningDate == null || joiningDate == undefined) {
+                alert("Joining Date Required.");
+                return false;
+            }
+
+            var jsonData = {
+                EmployeeId: action == 'INSERT' ? 0 : employeeId,
+                EmployeeIdNo: employeeIdNo,
+                EmployeeName: employeeName,
+                FathersName: fathersName,
+                MothersName: mothersName,
+                HusbandOrWifeName: husbandOrWifeName,
+                Gender: gender,
+                DateOfBirth: dateOfBirth,
+                BloodGroup: bloodGroup,
+                MobileNo: mobileNo,
+                Email: email,
+                NID: nid,
+                ETin: etin,
+                PresentAddress: presentAddress,
+                PermanentAddress: permanentAddress,
+                Designation: designation,
+                EmploymentStatus: employmentStatus,
+                Rank: rank,
+                SupervisoryRole: supervisoryRole,
+                SupervisorId: +supervisorName,
+                JobLocation: jobLocation,
+                IncrementEffectiveMonth: incrementEffectiveMonth,
+                JoiningDate: joiningDate,
+                EffectiveDate: effectiveDate,
+                PDFActivation: pdfActivation,
+                PDFActivationStartDate: pdfStartDate,
+                PDFActivationEndDate: pdfEndDate,
+                ActiveStatus: status,
+                ResignationDate: resignationDate,
+                OTApplicable: otApplicable,
+                LunchAllowance: lunchAllowance,
+                BankAcName: bankAcName,
+                BankName: bankName,
+                BranchName: branchName,
+                BankAcNo: bankAcNo,
+                RoutingNo: routingNo,
+                BranchCode: branchCode,
+                BkashNo: bKashNo,
+                DefaultPaymentMode: +$scope.paymentMethodValue,
+                Department: department,
+                Function: functions
+            };
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/InsertOrUpdateEmployeeInfo';
+            else
+                Url = '/AccountingNew/Employee/InsertOrUpdateEmployeeInfo';
+
+            $http.post(Url, JSON.stringify(jsonData), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    if (response.data == "Success") {
+                        alert("Employee information has been updated successfully.");
+                        $scope.resetForm();
+                    }
+                }, function (error) {
+                    console.error(error);
+                })
+        };
+
+        $scope.resetForm = function () {
+            $scope.employeeId = "";
+            $scope.employeeIdNo = "";
+            $scope.employeeName = "";
+            $scope.fathersName = "";
+            $scope.husbandOrWifeName = "";
+            $scope.mothersName = "";
+            $scope.gender = "-1";
+            $scope.dateOfBirth = "";
+            $scope.bloodGroup = "-1";
+            $scope.mobileNo = "";
+            $scope.presentAddress = "";
+            $scope.permanentAddress = "";
+            $scope.email = "";
+            $scope.nid = "";
+            $scope.etin = "";
+            $scope.designation = "";
+            $scope.rank = "-1";
+            $scope.department = "-1";
+            $scope.function = "-1";
+            $scope.supervisoryRole = '1';
+            $scope.supervisorName = "-1";
+            $scope.joiningDate = "";
+            $scope.jobLocation = "-1";
+            $scope.employmentStatus = "-1";
+            $scope.incrementEffectiveMonth = "-1";
+            $scope.effectiveDate = "";
+            $scope.status = "1";
+            $scope.resignationDate = "";
+            $scope.pfActivation = "1";
+            $scope.pfStartDate = "";
+            $scope.pfEndDate = "";
+            $scope.otApplicable = "0";
+            $scope.lunchAllowance = "0";
+            $scope.bankAcName = "";
+            $scope.bankName = "";
+            $scope.branchName = "";
+            $scope.bankAcNo = "";
+            $scope.routingNo = "";
+            $scope.branchCode = "";
+            $scope.bKashNo = "";
+            $scope.paymentMethodValue = "1";
+        }
+
+        $scope.getEmployeeInfoById = function (id) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/LoadEmployeeInfoById';
+            else
+                Url = '/AccountingNew/Employee/LoadEmployeeInfoById';
+            $http.get(Url, { params: { id: id } })
+                .then(function (response) {
+                    $scope.employeeData = response.data[0];
+
+                    $scope.employeeId = $scope.employeeData.employeeId;
+                    $scope.employeeIdNo = $scope.employeeData.employeeIdNo;
+                    $scope.employeeName = $scope.employeeData.employeeName;
+                    $scope.fathersName = $scope.employeeData.fathersName;
+                    $scope.husbandOrWifeName = $scope.employeeData.husbandOrWifeName;
+                    $scope.mothersName = $scope.employeeData.mothersName;
+                    $scope.gender = $scope.employeeData.gender;
+                    $scope.dateOfBirth = new Date($scope.employeeData.dateOfBirth);
+                    $scope.bloodGroup = $scope.employeeData.bloodGroup;
+                    $scope.mobileNo = $scope.employeeData.mobileNo;
+                    $scope.presentAddress = $scope.employeeData.presentAddress;
+                    $scope.permanentAddress = $scope.employeeData.permanentAddress;
+                    $scope.email = $scope.employeeData.email;
+                    $scope.nid = $scope.employeeData.nid;
+                    $scope.etin = $scope.employeeData.eTin;
+                    $scope.designation = $scope.employeeData.designation;
+                    $scope.rank = $scope.employeeData.rank;
+                    $scope.department = $scope.employeeData.department;
+                    $scope.function = $scope.employeeData.function;
+                    $scope.supervisoryRole = $scope.employeeData.supervisoryRole == true ? "1" : "0";
+
+                    if ($scope.supervisoryRole == "1") {
+                        $scope.disabledSupervisorName = true;
+                        $scope.supervisorName = "-1";
+                    } else {
+                        $scope.disabledSupervisorName = false;
+                        $scope.supervisorName = $scope.employeeData.supervisorId.toString();
+                    }
+
+                    $scope.joiningDate = new Date($scope.employeeData.joiningDate);
+                    $scope.jobLocation = $scope.employeeData.jobLocation;
+                    $scope.employmentStatus = $scope.employeeData.employmentStatus;
+                    $scope.incrementEffectiveMonth = $scope.employeeData.incrementEffectiveMonth;
+
+                    if ($scope.employmentStatus == "Parmanent") {
+                        $scope.disabledEffectiveDate = false;
+                        $scope.effectiveDate = new Date($scope.employeeData.effectiveDate);
+                    } else {
+                        $scope.disabledEffectiveDate = true;
+                    }
+                    
+                    $scope.status = $scope.employeeData.activeStatus == true ? "1" : "0";
+
+                    if ($scope.status == "1") {
+                        $scope.disabledResignationDate = true;
+                    } else {
+                        $scope.disabledResignationDate = false;
+                        $scope.resignationDate = new Date($scope.employeeData.resignationDate);
+                    }
+
+                    $scope.pfActivation = $scope.employeeData.pdfActivation == true ? "1" : "0";
+                    $scope.pfStartDate = new Date($scope.employeeData.pdfActivationStartDate);
+                    $scope.pfEndDate = new Date($scope.employeeData.pdfActivationEndDate);
+                    $scope.otApplicable = $scope.employeeData.otApplicable == true ? "1" : "0";
+                    $scope.lunchAllowance = $scope.employeeData.lunchAllowance == true ? "1" : "0";
+                    $scope.bankAcName = $scope.employeeData.bankAcName;
+                    $scope.bankName = $scope.employeeData.bankName;
+                    $scope.branchName = $scope.employeeData.branchName;
+                    $scope.bankAcNo = $scope.employeeData.bankAcNo;
+                    $scope.routingNo = $scope.employeeData.routingNo;
+                    $scope.branchCode = $scope.employeeData.branchCode;
+                    $scope.bKashNo = $scope.employeeData.bkashNo;
+                    $scope.paymentMethodValue = $scope.employeeData.defaultPaymentMode.toString();
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+        $scope.addOrUpdateAcknowledgeUpdate = function (action) {
+            if (action == 'INSERT') {
+                var access = '@accessRights.Contains("1")';
+                if (access == 'False') {
+                    alert("Sorry, You have no permission to insert a record.");
+                }
+            } else {
+                var access = '@accessRights.Contains("2")';
+                if (access == 'False') {
+                    alert("Sorry, You have no permission to update a record.");
+                }
+
+            }
+            let requestBodyModel = {
+                EmployeeId: $scope.employeeId,
+                ID: $scope.acknowledge,
+                AcknowledgementNo: action == 'INSERT' ? $scope.acknowledgeInput : $scope.acknowledgementNo,
+                ReturnYear: $scope.returnYear,
+                }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/InsertOrUpdateAcknowledgement';
+            else
+                Url = '/AccountingNew/Employee/InsertOrUpdateAcknowledgement';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    if (response.data == 'Success') {
+                        alert("Data Saved Successfully.");
+                        $scope.fieldsEmpty();
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        $scope.loadAcknolegementInfo = function (employeeId) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/GetAcknowledgementNoByEmployeeId';
+            else
+                Url = '/AccountingNew/Employee/GetAcknowledgementNoByEmployeeId';
+
+            $http.get(Url, { params: { employeeId: employeeId } })
+                .then(function (response) {
+                    $scope.acknowlegementData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.updateReturnYear = function () {
+            const selectedAcknowledge = $scope.acknowlegementData.find(data => data.id == $scope.acknowledge);
+            if (selectedAcknowledge) {
+                $scope.acknowledgementNo = selectedAcknowledge.acknowledgementNo;
+                $scope.returnYear = selectedAcknowledge.returnYear;
+            } else {
+                $scope.returnYear = '';
+            }
+        };
+    });
+</script>

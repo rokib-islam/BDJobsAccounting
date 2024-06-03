@@ -135,39 +135,7 @@ namespace AccountingSystem.Web.Controllers
             return Json(results);
         }
 
-        [HttpPost]
-        [Route("api/OnlineInvocie")]
-        public async Task<IActionResult> OnlineInvocie([FromBody] OnlineInvoiceRequestModel OnlineInvoice)
-        {
-            var responseList = await _InvoiceManager.OnlineInvcoie(OnlineInvoice);
 
-            return await Task.FromResult(Ok(responseList));
-        }
-        [HttpPost]
-        [Route("api/OnlineInvocie-test")]
-        public async Task<IActionResult> OnlineInvocietest([FromBody] OnlineInvoiceRequestModel OnlineInvoice)
-        {
-            var responseList = await _InvoiceManager.OnlineInvcoietest(OnlineInvoice);
-
-            return await Task.FromResult(Ok(responseList));
-        }
-
-        [HttpPost]
-        [Route("api/AutoCashCollection")]
-        public async Task<IActionResult> AutoCashCollection([FromBody] CashCollectionAutoViewModel OnlineInvoice)
-        {
-            var responseList = await _InvoiceManager.AutoCashCollection(OnlineInvoice);
-
-            return await Task.FromResult(Ok(responseList));
-        }
-        [HttpPost]
-        [Route("api/AutoCashCollection-test")]
-        public async Task<IActionResult> AutoCashCollectiontestTest([FromBody] CashCollectionAutoViewModel OnlineInvoice)
-        {
-            var responseList = await _InvoiceManager.AutoCashCollectiontest(OnlineInvoice);
-
-            return await Task.FromResult(Ok(responseList));
-        }
 
         public IActionResult ViewJournal()
         {
@@ -253,6 +221,7 @@ namespace AccountingSystem.Web.Controllers
         {
             var url = "https://corporate3.bdjobs.com/api/GetBillingsForAccouting.asp";
 
+
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("fromDate", model.FromDate),
@@ -291,6 +260,9 @@ namespace AccountingSystem.Web.Controllers
         {
             var url = "https://corporate3.bdjobs.com/api/VerifyInvoiceForAccouting.asp";
 
+            DateTime date = DateTime.Parse(model.JDate, null, System.Globalization.DateTimeStyles.RoundtripKind);
+            string formattedDate = date.ToString("MM/dd/yyyy");
+
             var content = new FormUrlEncodedContent(new[]
             {
                 new KeyValuePair<string, string>("QID", model.QID.ToString()),
@@ -299,7 +271,7 @@ namespace AccountingSystem.Web.Controllers
                 new KeyValuePair<string, string>("comment", model.Comment),
                 new KeyValuePair<string, string>("TDS", model.TDS),
                 new KeyValuePair<string, string>("VDS", model.VDS),
-                new KeyValuePair<string, string>("JDate", model.JDate),
+                new KeyValuePair<string, string>("JDate", formattedDate),
 
 
 
@@ -314,7 +286,7 @@ namespace AccountingSystem.Web.Controllers
                     string responseMessage = await response.Content.ReadAsStringAsync();
                     VarificationResponseModel responseObjectTyped = JsonConvert.DeserializeObject<VarificationResponseModel>(responseMessage);
 
-                    return Json($"Success");
+                    return Json($"{responseObjectTyped.Message}");
                 }
                 else
                 {

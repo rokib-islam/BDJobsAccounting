@@ -14,7 +14,7 @@ namespace AccountingSystem.Models.AccountViewModels
         public string FathersName { get; set; }
         public string MothersName { get; set; }
         public string Gender { get; set; }
-        public string DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
         public string BloodGroup { get; set; }
         public string MobileNo { get; set; }
         public string Email { get; set; }
@@ -25,17 +25,17 @@ namespace AccountingSystem.Models.AccountViewModels
         public string Designation { get; set; }
         public string EmploymentStatus { get; set; }
         public string Rank { get; set; }
-        public byte SupervisoryRole { get; set; }
+        public bool SupervisoryRole { get; set; }
         public int SupervisorId { get; set; }
         public string SupervisorName { get; set; }
         public string JobLocation { get; set; }
-        public string JoiningDate { get; set; }
-        public string EffectiveDate { get; set; }
-        public byte PDFActivation { get; set; }
-        public string PDFActivationStartDate { get; set; }
-        public string PDFActivationEndDate { get; set; }
-        public byte ActiveStatus { get; set; }
-        public string ResignationDate { get; set; }
+        public DateTime JoiningDate { get; set; }
+        public DateTime EffectiveDate { get; set; }
+        public bool PDFActivation { get; set; }
+        public DateTime PDFActivationStartDate { get; set; }
+        public DateTime PDFActivationEndDate { get; set; }
+        public bool ActiveStatus { get; set; }
+        public DateTime ResignationDate { get; set; }
         public string BankAcName { get; set; }
         public string BankName { get; set; }
         public string BranchName { get; set; }
@@ -47,8 +47,8 @@ namespace AccountingSystem.Models.AccountViewModels
         public string Department { get; set; }
         public string Function { get; set; }
         public string IncrementEffectiveMonth { get; set; }
-        public byte OTApplicable { get; set; }
-        public byte LunchAllowance { get; set; }
+        public bool OTApplicable { get; set; }
+        public bool LunchAllowance { get; set; }
         public string HusbandOrWifeName { get; set; }
         public string AcknowledgementNo { get; set; }
         public string ReturnYear { get; set; }

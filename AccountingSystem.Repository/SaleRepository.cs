@@ -337,7 +337,7 @@ namespace AccountingSystem.Repository
                         var dataTable = CreateSMSAlertDataTable();
                         PopulateSMSAlertDataTable(dataTable, result);
 
-                        using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                        using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
                         {
                             await _db.ExecuteAsync("USP_Candidate_Monetization_Download",
                                 new { SMSAlertApplyLimt = dataTable.AsTableValuedParameter("dbo.SMSAlertApplyLimt") },
@@ -843,6 +843,28 @@ namespace AccountingSystem.Repository
                 throw ex;
             }
         }
+
+        public async Task<MonetizationPosting> PostSMSAlertApplyLimitSalePostingNew(string ServiceName)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {
+
+                    var result = (await _db.QueryAsync<MonetizationPosting>("USP_SMSAlert_ApplyLimit_Sale_Postings_New", new { ServiceName = ServiceName },
+                        commandType: CommandType.StoredProcedure)).FirstOrDefault();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
 
 
     }

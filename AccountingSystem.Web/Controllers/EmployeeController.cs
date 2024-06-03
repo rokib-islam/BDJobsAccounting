@@ -2,6 +2,7 @@
 using AccountingSystem.BLL;
 using AccountingSystem.Models.AccountViewModels;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace AccountingSystem.Web.Controllers
 {
@@ -29,5 +30,64 @@ namespace AccountingSystem.Web.Controllers
             var resp = await _EmployeeManager.InsertProvidentFundPayment(model);
             return Json(resp);
         }
+
+        public IActionResult EmployeeInfo()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> LoadAllDepartment()
+        {
+            var result = await _EmployeeManager.LoadAllDepartment();
+            return Json(result);
+        }
+
+        public async Task<IActionResult> LoadAllFunction()
+        {
+            var result = await _EmployeeManager.LoadAllFunction();
+            return Json(result);
+        }
+
+        public async Task<IActionResult> LoadAllRank()
+        {
+            var result = await _EmployeeManager.LoadAllRank();
+            return Json(result);
+        }
+
+        public async Task<IActionResult> LoadSupervisor()
+        {
+            var result = await _EmployeeManager.LoadSupervisor();
+            return Json(result);
+        }
+
+        public async Task<IActionResult> InsertOrUpdateEmployeeInfo([FromBody] EmployeeModel model)
+        {
+            var result = await _EmployeeManager.InsertOrUpdateEmployeeInfo(model);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> LoadEmployeeInfoById(int id)
+        {
+            var result = await _EmployeeManager.LoadEmployeeInfoById(id);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> InsertOrUpdateAcknowledgement([FromBody] Acknowledgement_GrossSalary_TA_Model model)
+        {
+            var result = await _EmployeeManager.InsertOrUpdateAcknowledgement(model);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> GetAcknowledgementNoByEmployeeId(int employeeId)
+        {
+            var result = await _EmployeeManager.GetAcknowledgementNoByEmployeeId(employeeId);
+            return Json(result);
+        }
+
     }
 }

@@ -15,5 +15,6 @@
         public int Region { get; set; }
         public string VerifiedCompany { get; set; }
         public string JType { get; set; }
+        public int BlueCollar { get; set; }
     }
 }

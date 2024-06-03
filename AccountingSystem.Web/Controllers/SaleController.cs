@@ -4,6 +4,7 @@ using Hangfire;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 
+
 namespace AccountingSystem.Web.Controllers
 {
     public class SaleController : Controller
@@ -212,20 +213,59 @@ namespace AccountingSystem.Web.Controllers
             else
                 return RedirectToAction("Index", "Home");
         }
-        public async Task<IActionResult> DownloadCandidateMonetizationAsync()
+
+        #region candidate monetization auto billing system Using Hangfire
+        public async Task DownloadCandidateMonetizationAsync()
         {
             var result = await _SaleManager.DownloadCandidateMonetizationAsync();
-            return Json(result);
+        }
+        public async Task SalePostMonetizationBasicAsync(string serviceName)
+        {
+            var result = await _SaleManager.PostSMSAlertApplyLimitSalePostingNew(serviceName);
+
         }
 
-        public void ScheduleRecurringJob()
+        public void DownloadCandidateMonetizationJob()
         {
             RecurringJob.AddOrUpdate(
                 "DownloadCandidateMonetizationJob",
                 () => DownloadCandidateMonetizationAsync().GetAwaiter().GetResult(),
-                Cron.Hourly
+                //Cron.Hourly
+                "0 */6 * * *"
             );
         }
 
+        public void SalesPostingMonetizationJobs()
+        {
+            RecurringJob.AddOrUpdate(
+                "Candidate_Monetization_Sequential_Sale_Posting",
+                () => RunMonetizationJobsSequentially().GetAwaiter().GetResult(),
+                "0 */3 * * *" // Adjust the cron expression as needed
+            );
+        }
+
+        public async Task RunMonetizationJobsSequentially()
+        {
+            await SalePostMonetizationBasicAsync("Candidate Monetization-Basic");
+            await Task.Delay(TimeSpan.FromMinutes(15));
+
+            await SalePostMonetizationBasicAsync("Candidate Monetization-Standard");
+            await Task.Delay(TimeSpan.FromMinutes(15));
+
+            await SalePostMonetizationBasicAsync("Candidate Monetization-Premium");
+        }
+
+        #endregion 
+
+
+        public IActionResult AutoBilling()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
     }
 }

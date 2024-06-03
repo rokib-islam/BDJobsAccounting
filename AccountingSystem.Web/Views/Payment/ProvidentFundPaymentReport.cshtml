@@ -39,8 +39,8 @@
                             <td rowspan="3">PF Start Date</td>
                             <td rowspan="3">PF End Date</td>
                             <td colspan="6">Employees & Employers Provident Fund</td>
-                            <td rowspan="3">Employees Contribution</td>
-                            <td rowspan="3">Employers Contribution</td>
+                            <td rowspan="3">Total Contribution</td>
+                            <td rowspan="3">Transferred to Forfeiture Account</td>
                             <td colspan="2" rowspan="2">Amount Paid</td>
                             <td rowspan="3">Closing Balance Before Profit Distribution</td>
                             <td rowspan="3">Investment Income (Employee Cont.)</td>
@@ -57,8 +57,8 @@
                             <td>Employers Contribution</td>
                             <td>Employees Contribution</td>
                             <td>Employers Contribution</td>
-                            <td>Total Contribution</td>
-                            <td>Transferred to Forfeiture Account</td>
+                            <td>Employees Contribution</td>
+                            <td>Employers Contribution</td>
                             <td>Employees Contribution</td>
                             <td>Employers Contribution</td>
                             <td>Employees Contribution</td>
@@ -70,28 +70,49 @@
                             <td>{{$index+1}}</td>
                             <td>{{data.employeeName}}</td>
                             <td>{{data.designation}}</td>
-                            <td>{{data.department}}</td>
+                            <td>{{data.departmentName}}</td>
                             <td style="white-space:nowrap">{{data.pdfActivationStartDate}}</td>
                             <td style="white-space:nowrap">{{data.pdfActivationEndDate}}</td>
-                            <td class="text-end">{{data.empOpeningBal}}</td>
-                            <td class="text-end">{{data.comOpeningBal}}</td>
-                            <td class="text-end">{{data.empRangeContribution}}</td>
-                            <td class="text-end">{{data.comRangeContribution}}</td>
-                            <td class="text-end">{{data.totalEmpContribution}}</td>
-                            <td class="text-end">{{data.totalComContribution}}</td>
-                            <td class="text-end">{{data.totalContribution}}</td>
-                            <td class="text-end">{{data.forfeitureAmount}}</td>
-                            <td class="text-end">{{data.paidEmpContribution}}</td>
-                            <td class="text-end">{{data.paidComContribution}}</td>
-                            <td class="text-end">{{data.closingBalanceBeforeProfit}}</td>
-                            <td class="text-end">{{data.empInvestmentIncome}}</td>
-                            <td class="text-end">{{data.comInvestmentIncome}}</td>
-                            <td class="text-end">{{data.closingEmpContribution}}</td>
-                            <td class="text-end">{{data.closingComContribution}}</td>
-                            
+                            <td class="text-end">{{data.empOpeningBal | number}}</td>
+                            <td class="text-end">{{data.comOpeningBal | number}}</td>
+                            <td class="text-end">{{data.empRangeContribution | number}}</td>
+                            <td class="text-end">{{data.comRangeContribution | number}}</td>
+                            <td class="text-end">{{data.totalEmpContribution | number}}</td>
+                            <td class="text-end">{{data.totalComContribution | number}}</td>
+                            <td class="text-end">{{data.totalContribution | number}}</td>
+                            <td class="text-end">{{data.forfeitureAmount | number}}</td>
+                            <td class="text-end">{{data.paidEmpContribution | number}}</td>
+                            <td class="text-end">{{data.paidComContribution | number}}</td>
+                            <td class="text-end">{{data.closingBalanceBeforeProfit | number}}</td>
+                            <td class="text-end">{{data.empInvestmentIncome | number}}</td>
+                            <td class="text-end">{{data.comInvestmentIncome | number}}</td>
+                            <td class="text-end">{{data.closingEmpContribution | number}}</td>
+                            <td class="text-end">{{data.closingComContribution | number}}</td>
+
                         </tr>
                     </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="6" class="text-center">Total</th>
+                            <th class="text-end">{{totalEmpOpeningBal | number}}</th>
+                            <th class="text-end">{{totalComOpeningBal | number}}</th>
+                            <th class="text-end">{{totalEmpRangeContribution | number}}</th>
+                            <th class="text-end">{{totalComRangeContribution | number}}</th>
+                            <th class="text-end">{{totalTotalEmpContribution | number}}</th>
+                            <th class="text-end">{{totalTotalComContribution | number}}</th>
+                            <th class="text-end">{{totalContribution | number}}</th>
+                            <th class="text-end">{{totalForfeitureAmount | number}}</th>
+                            <th class="text-end">{{totalPaidEmpContribution | number}}</th>
+                            <th class="text-end">{{totalPaidComContribution | number}}</th>
+                            <th class="text-end">{{totalClosingBalanceBeforeProfit | number}}</th>
+                            <th class="text-end">{{totalEmpInvestmentIncome | number}}</th>
+                            <th class="text-end">{{totalComInvestmentIncome | number}}</th>
+                            <th class="text-end">{{totalClosingEmpContribution | number}}</th>
+                            <th class="text-end">{{totalClosingComContribution | number}}</th>
+                        </tr>
+                    </tfoot>
                 </table>
+
 
             </div>
         </div>
@@ -150,6 +171,21 @@
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
                     $scope.pfPaymentData = response.data;
+                    $scope.totalEmpOpeningBal = response.data.reduce((a, b) => a + b.empOpeningBal, 0);
+                    $scope.totalComOpeningBal = response.data.reduce((a, b) => a + b.comOpeningBal, 0);
+                    $scope.totalEmpRangeContribution = response.data.reduce((a, b) => a + b.empRangeContribution, 0);
+                    $scope.totalComRangeContribution = response.data.reduce((a, b) => a + b.comRangeContribution, 0);
+                    $scope.totalTotalEmpContribution = response.data.reduce((a, b) => a + b.totalEmpContribution, 0);
+                    $scope.totalTotalComContribution = response.data.reduce((a, b) => a + b.totalComContribution, 0);
+                    $scope.totalContribution = response.data.reduce((a, b) => a + b.totalContribution, 0);
+                    $scope.totalForfeitureAmount = response.data.reduce((a, b) => a + b.forfeitureAmount, 0);
+                    $scope.totalPaidEmpContribution = response.data.reduce((a, b) => a + b.paidEmpContribution, 0);
+                    $scope.totalPaidComContribution = response.data.reduce((a, b) => a + b.paidComContribution, 0);
+                    $scope.totalClosingBalanceBeforeProfit = response.data.reduce((a, b) => a + b.closingBalanceBeforeProfit, 0);
+                    $scope.totalEmpInvestmentIncome = response.data.reduce((a, b) => a + b.empInvestmentIncome, 0);
+                    $scope.totalComInvestmentIncome = response.data.reduce((a, b) => a + b.comInvestmentIncome, 0);
+                    $scope.totalClosingEmpContribution = response.data.reduce((a, b) => a + b.closingEmpContribution, 0);
+                    $scope.totalClosingComContribution = response.data.reduce((a, b) => a + b.closingComContribution, 0);
                     $scope.showTable = true;                   
                 })
                 .catch(function (error) {
