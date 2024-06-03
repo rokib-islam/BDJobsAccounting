@@ -62,6 +62,7 @@ builder.Services.AddHangfire(configuration => configuration
         DisableGlobalLocks = true
     }));
 
+
 // Add the Hangfire server
 builder.Services.AddHangfireServer();
 builder.Services.AddScoped<SaleController>();
@@ -93,7 +94,7 @@ app.UseStaticFiles();
 
 app.UseCors("AllowAll");
 
-app.UseHangfireDashboard();
+
 
 app.MapControllerRoute(
     name: "default",

@@ -213,6 +213,8 @@ namespace AccountingSystem.Web.Controllers
             else
                 return RedirectToAction("Index", "Home");
         }
+
+        #region candidate monetization auto billing system Using Hangfire
         public async Task DownloadCandidateMonetizationAsync()
         {
             var result = await _SaleManager.DownloadCandidateMonetizationAsync();
@@ -252,6 +254,8 @@ namespace AccountingSystem.Web.Controllers
 
             await SalePostMonetizationBasicAsync("Candidate Monetization-Premium");
         }
+
+        #endregion 
 
     }
 }
