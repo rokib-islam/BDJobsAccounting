@@ -1273,7 +1273,6 @@
         };
 
         $scope.getBouncedData = function (invoiceNo) {
-            debugger
             let Url = '';
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/LoadbBouncedCheckData';
@@ -1288,7 +1287,6 @@
                     $scope.chequeNo = $scope.bouncedData[0].bouncedCheckNo;
                     $scope.bouncedAmount = $scope.bouncedData[0].bouncedAmount;
                     $scope.bouncedNote = $scope.bouncedData[0].bouncedNote;
-                    debugger
                     $scope.bouncedDate = $scope.bouncedData[0].bouncedCheckDate == '1900-01-01T00:00:00' || $scope.bouncedData[0].bouncedCheckDate == "0001-01-01T00:00:00" ? new Date() : new Date($scope.bouncedData[0].bouncedCheckDate);
 
                 }, function (error) {

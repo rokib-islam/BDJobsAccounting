@@ -29,12 +29,14 @@ namespace AccountingSystem.Repository
                 await _db.ExecuteAsync(query);
             }
         }
-        public async Task<List<JobListV2ViewModel>> GetOnlineJobList(string CName, int Verified, int LedgerID)
+        public async Task<List<JobListV2ViewModel>> GetOnlineJobList(string FromDate, string ToDate, string CName, int Verified, int LedgerID)
         {
             try
             {
                 var parameters = new
                 {
+                    FromDate,
+                    ToDate,
                     CName,
                     Verified,
                     LedgerID

@@ -7,7 +7,7 @@ namespace AccountingSystem.Abstractions.Repository
     {
         // Users GetUsers(string userName, string password);
         Task FixDownloadIssue();
-        Task<List<JobListV2ViewModel>> GetOnlineJobList(string CName, int Verified, int LedgerID);
+        Task<List<JobListV2ViewModel>> GetOnlineJobList(string FromDate, string ToDate, string CName, int Verified, int LedgerID);
         Task<List<JobViewModel>> GetJobs(int cpId, string date, int adType, int adRegion);
         Task DeleteOnlineJob(int jpId);
         Task<bool> IsAllUploaded();
