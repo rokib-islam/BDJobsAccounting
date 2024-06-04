@@ -2,7 +2,6 @@
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
-using Azure;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
@@ -879,7 +878,7 @@ namespace AccountingSystem.Repository
                     Status = model.Status,
                     ServiceName = model.ServiceName
                 };
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
                 {
                     var result = await _db.QueryAsync<AutoBillingModel_Response>("USP_LoadAutoBilling", parameters, commandType: CommandType.StoredProcedure);
                     return result.ToList();
