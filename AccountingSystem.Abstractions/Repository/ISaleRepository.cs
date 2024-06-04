@@ -36,5 +36,6 @@ namespace AccountingSystem.Abstractions.Repository
         Task<int> DownloadCandidateMonetizationAsync();
         Task<MonetizationPosting> PostSMSAlertApplyLimitSalePostingNew(string ServiceName);
         Task<List<AutoBillingModel_Response>> AutoBillingData(AutoBillingModel model);
+        Task<int> SMSAlertApplyLimitCountForBilling(string ServiceName);
     }
 }

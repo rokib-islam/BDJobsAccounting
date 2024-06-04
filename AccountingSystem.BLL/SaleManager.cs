@@ -150,5 +150,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.AutoBillingData(model);
         }
+
+        public Task<int> SMSAlertApplyLimitCountForBilling(string ServiceName)
+        {
+            return _repository.SMSAlertApplyLimitCountForBilling(ServiceName);
+        }
     }
 }

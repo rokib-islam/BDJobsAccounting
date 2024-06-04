@@ -864,6 +864,25 @@ namespace AccountingSystem.Repository
             }
 
         }
+        public async Task<int> SMSAlertApplyLimitCountForBilling(string ServiceName)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {
+
+                    var result = (await _db.QueryAsync<int>("select count(*) from CandidateMonetizationLog where TNO=0 and InvoiceNo is null and Submitted=0 and ServiceName=@ServiceName", new { ServiceName })).FirstOrDefault();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
 
         public async Task<List<AutoBillingModel_Response>> AutoBillingData(AutoBillingModel model)
         {
