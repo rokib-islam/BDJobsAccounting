@@ -272,26 +272,26 @@ namespace AccountingSystem.Web.Controllers
             }
 
 
-            count = await _SaleManager.SMSAlertApplyLimitCountForBilling("Apply Limit(Job Fair)");
+            count = await _SaleManager.SMSAlertApplyLimitCountForBilling("Apply Limit (Job Fair)");
             if (count > 100)
             {
-                await SalePostMonetizationBasicAsync("Apply Limit(Job Fair)");
+                await SalePostMonetizationBasicAsync("Apply Limit (Job Fair)");
                 await Task.Delay(TimeSpan.FromMinutes(10));
             }
 
 
-            count = await _SaleManager.SMSAlertApplyLimitCountForBilling("Apply Limit(Job Seeker)");
+            count = await _SaleManager.SMSAlertApplyLimitCountForBilling("Apply Limit (Job Seeker)");
             if (count > 100)
             {
-                await SalePostMonetizationBasicAsync("Apply Limit(Job Seeker)");
+                await SalePostMonetizationBasicAsync("Apply Limit (Job Seeker)");
                 await Task.Delay(TimeSpan.FromMinutes(10));
             }
 
 
-            count = await _SaleManager.SMSAlertApplyLimitCountForBilling("SMS Alert(Job Seeker)");
+            count = await _SaleManager.SMSAlertApplyLimitCountForBilling("SMS Alert (Job Seeker)");
             if (count > 100)
             {
-                await SalePostMonetizationBasicAsync("SMS Alert(Job Seeker)");
+                await SalePostMonetizationBasicAsync("SMS Alert (Job Seeker)");
                 await Task.Delay(TimeSpan.FromMinutes(10));
             }
 
