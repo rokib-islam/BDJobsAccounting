@@ -35,5 +35,6 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<SalesPerson>> GetSalesPersonListByKey(string startingKey);
         Task<int> DownloadCandidateMonetizationAsync();
         Task<MonetizationPosting> PostSMSAlertApplyLimitSalePostingNew(string ServiceName);
+        Task<List<AutoBillingModel_Response>> AutoBillingData(AutoBillingModel model);
     }
 }

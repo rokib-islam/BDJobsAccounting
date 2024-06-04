@@ -267,5 +267,11 @@ namespace AccountingSystem.Web.Controllers
             else
                 return RedirectToAction("Index", "Home");
         }
+
+        public async Task<IActionResult> AutoBillingData([FromBody] AutoBillingModel model)
+        {
+            var result = await _SaleManager.AutoBillingData(model);
+            return Json(result);
+        }
     }
 }

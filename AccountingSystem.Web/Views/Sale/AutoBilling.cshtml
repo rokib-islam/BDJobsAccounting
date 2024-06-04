@@ -1,63 +1,142 @@
 ﻿@{
     ViewData["Title"] = "AutoBilling";
 }
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+</head>
+
 
 <div class="card">
     <div class="card-body" style="background-color:whitesmoke;font-size:14px">
         <div ng-app="myApp">
             <div ng-controller="myController">
-                <div class="row" style="margin-top:-15px">
-                    <h4 class="text-center">Auto Billing</h4>
-                    <div class="col-sm-3">
-                        <label>From Date</label>
-                        <input type="date" class="form-control form-control-sm" ng-model="fromDate"/>
-                    </div>
-                    <div class="col-sm-3">
-                        <label>To Date</label>
-                        <input type="date" class="form-control form-control-sm" ng-model="toDate" />
-                    </div>
-                    <div class="col-sm-2">
-                        <label>Satus</label>
-                        <select class="form-select form-select-sm" ng-model="status">
-                            <option value="0">Peding</option>
-                            <option value="1">Done</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-3">
-                        <label>Service Name</label>
-                        <select class="form-select form-select-sm" ng-model="serviceName">
-                            <option value="0">Select</option>
-                            <option value="Candidate Monetization-Standard">Candidate Monetization-Standard</option>
-                            <option value="Candidate Monetization-Basic">Candidate Monetization-Basic</option>
-                            <option value="Candidate Monetization-Premium">Candidate Monetization-Premium</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-1 mt-3">
-                        <button class="btn btn-success btn-sm px-3" ng-click="load()">Load</button>
-                    </div>
+                <div class="row" style="margin-top:-10px">
+                    <h4 class="text-center">Auto SMS Alert Apply Limit</h4>
 
-                    <div class="mt-3">
+                    <div class="col-sm-5">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>From Date</label>
+                                <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
+                            </div>
+                            <div class="col-sm-6">
+                                <label>To Date</label>
+                                <input type="date" class="form-control form-control-sm" ng-model="toDate" />
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-7">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <label>Satus</label>
+                                <select class="form-select form-select-sm" ng-model="status">
+                                    <option value="1">Done</option>
+                                    <option value="0">Peding</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-5">
+                                <label>Service Name</label>
+                                <select class="form-select form-select-sm" ng-model="serviceName">
+                                    <option value="0">Select</option>
+                                    <option value="Candidate Monetization-Standard">Candidate Monetization-Standard</option>
+                                    <option value="Candidate Monetization-Basic">Candidate Monetization-Basic</option>
+                                    <option value="Candidate Monetization-Premium">Candidate Monetization-Premium</option>
+                                    <option value="Apply Limit (Job Fair)">Apply Limit (Job Fair)</option>
+                                    <option value="Apply Limit (Job Seeker)">Apply Limit (Job Seeker)</option>
+                                    <option value="SMS Alert (Job Seeker)">SMS Alert (Job Seeker)</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-3 mt-3">
+                                <button class="btn btn-success btn-sm px-3" ng-click="load()">
+                                    Load
+                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                                        
+                    <div class="row mt-3" ng-show="isVisible">
+                        <div class="col-sm-6">
+                            <div class="pull-left text-left">
+                                Show
+                                <select id="page" ng-model="itemsPerPage">
+                                    <option value="10">10</option>
+                                    <option value="20">20</option>
+                                    <option value="40">40</option>
+                                    <option value="50" selected>50</option>
+                                    <option value="60">60</option>
+                                    <option value="80">80</option>
+                                    <option value="100">100</option>
+                                    <option value="500">500</option>
+                                    <option value="1000">1000</option>
+                                    <option value="3000">3000</option>
+                                    <option value="5000">5000</option>
+                                    <option value="10000">10000</option>
+                                    <option value="10000000">All</option>
+                                </select>
+                                entries per page. (Total:{{totalItems}} data)
+
+
+                            </div>
+                        </div>
+                        <div class="col-sm-6 d-flex justify-content-end">
+                            @* section paging *@
+                            <nav aria-label="...">
+                                <ul class="pagination">
+                                    <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                        <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                            <span aria-hidden="true">&laquo;</span>
+                                        </a>
+                                    </li>
+
+                                    <!-- The ng-repeat code you provided -->
+                                    <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                        <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                    </li>
+
+                                    <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                        <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                            <span aria-hidden="true">&raquo;</span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </nav>
+                            @* section paging end *@
+                        </div>
+
+                    </div>
+                    <div ng-show="showTable">
                         <table class="table table-bordered table-hovar table-sm">
                             <thead>
-                                <tr>
-                                    <th class="text-center">Service Name</th>
-                                    <th class="text-center">Transaction ID</th>
-                                    <th class="text-center">Transaciton Date</th>
-                                    <th class="text-center">Paid By</th>
-                                    <th class="text-right">Amount</th>
-                                    <th class="text-center">Invoice No</th>
+                                <tr class="text-center">
+                                    <th>Sl No</th>
+                                    <th>Service Name</th>
+                                    <th>Transaction ID</th>
+                                    <th>Transaciton Date</th>
+                                    <th>Paid By</th>
+                                    <th>Amount</th>
+                                    <th>Invoice No</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
-                                    <td></td>
+                                <tr ng-repeat="data in autoBillingData">
+                                    <td class="text-center">{{$index + 1}}</td>
+                                    <td class="text-center">{{data.serviceName}}</td>
+                                    <td class="text-center">{{data.transID}}</td>
+                                    <td class="text-center">{{data.transDate | date: 'dd-MM-yyyy'}}</td>
+                                    <td class="text-center">{{data.paidBy}}</td>
+                                    <td class="text-end">{{data.amount}}</td>
+                                    <td class="text-center">{{data.invoiceNo}}</td>
+                                    
                                 </tr>
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="5" class="text-end">Total</th>
+                                    <th class="text-end">{{totalAmount}}</th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>
@@ -66,18 +145,108 @@
     </div>
 </div>
 
-<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
 
-<script>
+<script type="text/javascript">
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-            
-        })
+            $scope.spinner = false;
+        });
+        $scope.status = '1';
+        $scope.serviceName = '0';
+        $scope.isVisible = false;
+        $scope.showTable = false;
+        $scope.itemsPerPage = '20';
+        $scope.maxPageLength = 5;
+        $scope.currentPage = 1;
+        $scope.totalItems = 0;
 
         $scope.fromDate = new Date();
         $scope.toDate = new Date();
-        $scope.status = '0';
-        $scope.serviceName = '-1';
+       
+
+        
+
+        $scope.load = function () {
+            $scope.spinner = true;
+            let requestBodyModel = {
+                PageNo: $scope.currentPage,
+                PageSize: $scope.itemsPerPage,
+                FromDate: $scope.fromDate,
+                ToDate: $scope.toDate,
+                Status: $scope.status,
+                ServiceName: $scope.serviceName.toString()
+            }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/AutoBillingData';
+            else
+                Url = '/AccountingNew/Sale/AutoBillingData';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    if (response.data == 0) {
+                        alert('There is no data to shown.')
+                        $scope.spinner = false;
+                        $scope.isVisible = false;
+                        $scope.showTable = false;
+                        return false;
+                    }
+                    $scope.isVisible = true;
+                    $scope.showTable = true;
+                    $scope.autoBillingData = response.data;
+                    $scope.totalItems = response.data[0].totalRecords;
+                    $scope.totalAmount = $scope.autoBillingData.reduce((a, b) => a + b.amount, 0);
+                    $scope.spinner = false;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        // paging code
+        $scope.$watch('totalItems', function () {
+            $scope.calculatePages();
+        });
+
+        $scope.$watch('itemsPerPage', function () {
+            $scope.calculatePages();
+            //$scope.load();
+        });
+
+        $scope.$watch('currentPage', function () {
+            if ($scope.currentPage > 1) {
+                $scope.calculatePages();
+                $scope.load();
+            }
+            else {
+                $scope.calculatePages();
+            }
+
+        });
+
+        $scope.calculatePages = function () {
+            $scope.totalPages = Math.ceil($scope.totalItems / $scope.itemsPerPage);
+            $scope.pages = [];
+
+            var startPage = Math.max(1, $scope.currentPage - Math.floor($scope.maxPageLength / 2));
+            var endPage = Math.min($scope.totalPages, startPage + $scope.maxPageLength - 1);
+
+            for (var i = startPage; i <= endPage; i++) {
+                $scope.pages.push(i);
+            }
+        };
+
+        $scope.getPages = function () {
+            return $scope.pages || [];
+        };
+
+        $scope.setCurrentPage = function (page) {
+            if (page >= 1 && page <= $scope.totalPages) {
+                $scope.currentPage = page;
+            }
+        };
+        //paging code end
     });
 </script>
