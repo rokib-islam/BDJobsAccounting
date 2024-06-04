@@ -26,9 +26,9 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(true);
         }
-        public async Task<IActionResult> GetOnlineJobList(string CName, int Verified, int LedgerID)
+        public async Task<IActionResult> GetOnlineJobList(string FromDate, string ToDate, string CName, int Verified, int LedgerID)
         {
-            var data = await _SaleManager.GetOnlineJobList(CName, Verified, LedgerID);
+            var data = await _SaleManager.GetOnlineJobList(FromDate, ToDate, CName, Verified, LedgerID);
 
             return Json(data);
         }
