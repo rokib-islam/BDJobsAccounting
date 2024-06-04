@@ -146,6 +146,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.PostSMSAlertApplyLimitSalePostingNew(ServiceName);
         }
+        public Task<List<AutoBillingModel_Response>> AutoBillingData(AutoBillingModel model)
+        {
+            return _repository.AutoBillingData(model);
+        }
 
         public Task<int> SMSAlertApplyLimitCountForBilling(string ServiceName)
         {
