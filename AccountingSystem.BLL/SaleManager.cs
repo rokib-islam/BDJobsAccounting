@@ -146,5 +146,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.PostSMSAlertApplyLimitSalePostingNew(ServiceName);
         }
+
+        public Task<int> SMSAlertApplyLimitCountForBilling(string ServiceName)
+        {
+            return _repository.SMSAlertApplyLimitCountForBilling(ServiceName);
+        }
     }
 }
