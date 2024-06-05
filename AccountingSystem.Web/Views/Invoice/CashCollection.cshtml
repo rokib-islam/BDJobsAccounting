@@ -1225,6 +1225,7 @@
         }
 
         $scope.submit = function () {
+            debugger
             var isBounced = $scope.isBounced;
             var chequeNo = $scope.chequeNo;
             var bouncedDate = $scope.bouncedDate.toISOString().split('T')[0];
@@ -1266,7 +1267,7 @@
         $scope.bouncedChequeFieldsEmpty = function () {
             if (!$scope.isBounced) {
                 $scope.chequeNo = '';
-                $scope.bouncedAmount = '';
+                $scope.bouncedAmount = 0;
                 $scope.bouncedNote = '';
                 $scope.bouncedDate = new Date();
             }
