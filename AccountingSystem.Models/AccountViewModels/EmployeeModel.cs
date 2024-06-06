@@ -14,7 +14,7 @@ namespace AccountingSystem.Models.AccountViewModels
         public string FathersName { get; set; }
         public string MothersName { get; set; }
         public string Gender { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public string DateOfBirth { get; set; }
         public string BloodGroup { get; set; }
         public string MobileNo { get; set; }
         public string Email { get; set; }
@@ -29,13 +29,13 @@ namespace AccountingSystem.Models.AccountViewModels
         public int SupervisorId { get; set; }
         public string SupervisorName { get; set; }
         public string JobLocation { get; set; }
-        public DateTime JoiningDate { get; set; }
-        public DateTime EffectiveDate { get; set; }
+        public string JoiningDate { get; set; }
+        public string EffectiveDate { get; set; }
         public bool PDFActivation { get; set; }
-        public DateTime PDFActivationStartDate { get; set; }
-        public DateTime PDFActivationEndDate { get; set; }
+        public string PDFActivationStartDate { get; set; }
+        public string PDFActivationEndDate { get; set; }
         public bool ActiveStatus { get; set; }
-        public DateTime ResignationDate { get; set; }
+        public string ResignationDate { get; set; }
         public string BankAcName { get; set; }
         public string BankName { get; set; }
         public string BranchName { get; set; }

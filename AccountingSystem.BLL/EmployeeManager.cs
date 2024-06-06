@@ -66,5 +66,32 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetAcknowledgementNoByEmployeeId(employeeId);
         }
+
+        public async Task<string> InsertOrUpdateGrossSalary([FromBody] Acknowledgement_GrossSalary_TA_Model model)
+        {
+            return await _repository.InsertOrUpdateGrossSalary(model);
+        }
+        
+        public async Task<List<Acknowledgement_GrossSalary_TA_Model>> GetGrossSalaryByEmployeeId(int employeeId)
+        {
+            return await _repository.GetGrossSalaryByEmployeeId(employeeId);
+        }
+        
+        public async Task<string> InsertOrUpdateTA([FromBody] Acknowledgement_GrossSalary_TA_Model model)
+        {
+            return await _repository.InsertOrUpdateTA(model);
+        }
+        public async Task<List<Acknowledgement_GrossSalary_TA_Model>> GetTaByEmployeeId(int employeeId)
+        {
+            return await _repository.GetTaByEmployeeId(employeeId);
+        }
+        public async Task<List<EmployeeModel>> LoadAllEmployeeInfo()
+        {
+            return await _repository.LoadAllEmployeeInfo();
+        }
+        public async Task<string> ImportACS()
+        {
+            return await _repository.ImportACS();
+        }
     }
 }

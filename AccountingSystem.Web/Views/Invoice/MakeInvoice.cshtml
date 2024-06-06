@@ -10,9 +10,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                    <script type="text/javascript">
-                                        window.location.href = '@Url.Action("Index", "Home")';
-                                    </script>
+        <script type="text/javascript">
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
     }
     else
     {
@@ -36,9 +36,8 @@
             right: 110px; /* Adjust this value as needed */
         }
 
-
     </style>
-  
+
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -47,214 +46,221 @@
 
 </head>
 
-<h3 class="text-center alert-primary" style="margin-top:-10px">Make Invoice</h3>
 
-<div ng-app="myApp">
-    <div ng-controller="myController">
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-sm-4">
-                    <label><input type="radio" ng-model="invoiceType" value="0" ng-checked="invoiceType==0" ng-change="blankForNew()" />&nbsp; Make New Invoice</label><br />
-                    <label class="mt-2"><input type="radio" ng-model="invoiceType" value="1" ng-change="blankForOld()" />&nbsp; View Existing Invoice</label>
-                </div>
-                <div class="col-sm-4 text-center">
-                        <label>Invoice Number</label>
-                        <input type="text" class="form-control form-control-sm text-center fw-bold" style="background-color:lightblue;border:2px solid" ng-model="invoiceNo" disabled/>
-                    @* <div class="text-center">
-                        <button class="btn btn-primary btn-sm" ng-click="">Generate Invoice Number</button>
-                    </div> *@
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group row">
-                        <label class="col-sm-4">Issue Date</label>
-                        <div class="col-sm-8">
-                            <input type="date" class="form-control form-control-sm" ng-model="issueDate" />
-                        </div>
-                    </div>
-                    <div class="form-group row">
-                        <label class="col-sm-4">Invoice Price</label>
-                        <div class="col-sm-8">
-                            <input type="number" class="form-control form-control-sm" ng-model="invoicePrice" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-6">
-                    
-                </div>
-                <div class="row">
-                    <div class="form-group row">
-                        <label class="col-sm-1">Companies</label>
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <h3 class="text-center" style="margin-top:-10px">Make Invoice</h3>
+                <div class="col-sm-12">
+                    <div class="row">
                         <div class="col-sm-4">
-                            <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
-                            <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 325px; overflow:auto ;background: white none repeat scroll 0% 0%" ng-show="companyList.length > 0">
-                                <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
-                            </select>
+                            <label><input type="radio" ng-model="invoiceType" value="0" ng-checked="invoiceType==0" ng-change="blankForNew()" />&nbsp; Make New Invoice</label><br />
+                            <label class="mt-2"><input type="radio" ng-model="invoiceType" value="1" ng-change="blankForOld()" />&nbsp; View Existing Invoice</label>
                         </div>
-                    </div>
-                    <div class="col-sm-5">
-                        <div style="height: 280px; overflow-y: auto;border:2px solid gray">
-                            <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Products</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="o in products" ng-click="bindOtherTable(o)" ng-class="{ 'selected-row': o === selectedRow }">
-                                        <td>{{o.listItem}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-
+                        <div class="col-sm-4 text-center">
+                            <label>Invoice Number</label>
+                            <input type="text" class="form-control form-control-sm text-center fw-bold" style="background-color:lightblue;border:2px solid" ng-model="invoiceNo" disabled />
+                            @* <div class="text-center">
+                            <button class="btn btn-primary btn-sm" ng-click="">Generate Invoice Number</button>
+                            </div> *@
                         </div>
-                        <div class="row mt-3">
-                            <div class="col-sm-6">
-                                <label>Labels of Companies</label>
+                        <div class="col-sm-4">
+                            <div class="form-group row">
+                                <label class="col-sm-4">Issue Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="issueDate" />
+                                </div>
                             </div>
-                            <div class="col-sm-6">
-                                <label class="d-flex justify-content-end"><input type="checkbox" ng-model="dtChk" />&nbsp; Delivery Tiger</label>
-                                <div class="button-container">
-                                    <button class="btn btn-info btn-sm float-right" ng-click="toggleExtraButtons()">
-                                        Preview Label
-                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showlabelspinner"></span>
-                                    </button>
-                                    <div class="extra-buttons" ng-show="showExtraButtons">
-                                        <button class="btn btn-secondary btn-sm" ng-click="PreviewLabelreport('Pdf')">
-                                            <i class="fas fa-file-pdf" style="font-size: 20px;"></i>
-                                        </button>
-                                        <button class="btn btn-secondary btn-sm" ng-click="PreviewLabelreport('Word')">
-                                            <i class="fas fa-file-word" style="font-size: 20px;"></i>
-                                        </button>
+                            <div class="form-group row">
+                                <label class="col-sm-4">Invoice Price</label>
+                                <div class="col-sm-8">
+                                    <input type="number" class="form-control form-control-sm" ng-model="invoicePrice" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                        </div>
+                        <div class="row" style="margin-top:-20px">
+                            <div class="d-flex align-content-start flex-wrap">
+                                <label class="fw-bold">Companies</label>
+                                <div class="col-sm-6">
+                                    <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
+                                    <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 470px; overflow:auto ;background: white none repeat scroll 0% 0%" ng-show="companyList.length > 0">
+                                        <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-sm-5 mt-2">
+                                <div style="height: 240px; overflow-y: auto;border:1px solid lightgray">
+                                    <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Products</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="o in products" ng-click="bindOtherTable(o)" ng-class="{ 'selected-row': o === selectedRow }">
+                                                <td>{{o.listItem}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-sm-6">
+                                        <label>Labels of Companies</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label class="d-flex justify-content-end"><input type="checkbox" ng-model="dtChk" />&nbsp; Delivery Tiger</label>
+                                        <div class="button-container">
+                                            <button class="btn btn-info btn-sm float-right" ng-click="toggleExtraButtons()">
+                                                Preview Label
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showlabelspinner"></span>
+                                            </button>
+                                            <div class="extra-buttons" ng-show="showExtraButtons">
+                                                <button class="btn btn-secondary btn-sm" ng-click="PreviewLabelreport('Pdf')">
+                                                    <i class="fas fa-file-pdf" style="font-size: 20px;"></i>
+                                                </button>
+                                                <button class="btn btn-secondary btn-sm" ng-click="PreviewLabelreport('Word')">
+                                                    <i class="fas fa-file-word" style="font-size: 20px;"></i>
+                                                </button>
+
+
+                                            </div>
+                                        </div>
 
 
                                     </div>
                                 </div>
+                                <div class="row mt-2" style="border:1px solid lightgray;height:100px">
+                                    <textarea ng-model="label"></textarea>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label><input type="checkbox" ng-model="request" />&nbsp; Request Comment</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label><input type="checkbox" ng-model="print" />&nbsp; Print on color pad</label>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-sm-4">
+                                        <label>Challan Report</label>
+                                    </div>
 
-                                
+                                    <div class="col-sm-4">
+                                        <select ng-model="CopyType" class="form-control form-control-sm">
+                                            <option value="First Copy">First Copy</option>
+                                            <option value="Second Copy">Second Copy</option>
+                                        </select>
+                                    </div>
+
+                                    <div class="col-sm-4">
+                                        @*  <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="" ng-disabled="showChallanButton">Show Challan</button> *@
+                                        <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="downloadReportChallan()" ng-disabled="showChallanButton">
+                                            Show Challan
+                                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showChallanspinner"></span>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-sm-6">
+                                        <button type="button" class="btn btn-block btn-success btn-sm" ng-click="save()" ng-disabled="saveDisabled">
+                                            Save
+                                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="saveSpinner"></span>
+                                        </button>
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        @*  <button type="button" class="btn btn-block btn-info btn-sm" ng-click="" ng-disabled="showInvoiceButton">Show Invoice</button> *@
+                                        <button type="button" class="btn btn-block btn-info btn-sm" ng-click="downloadReport()" ng-disabled="showInvoiceButton">
+                                            Show Invoice
+                                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showInviceSpinner"></span>
+                                        </button>
+                                    </div>
+
+                                </div>
                             </div>
-                        </div>
-                        <div class="row mt-2" style="border:1px solid gray;height:120px">
-                            <textarea ng-model="label"></textarea>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label><input type="checkbox" ng-model="request" />&nbsp; Request Comment</label>
-                            </div>
-                            <div class="col-sm-6">
-                                <label><input type="checkbox" ng-model="print" />&nbsp; Print on color pad</label>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-sm-4">
-                                <label>Challan Report</label>
+                            <div class="col-sm-2">
+                                <div class="col-sm-12 mt-5">
+                                    <button class="btn btn-block btn-sm btn-outline-secondary" ng-click="go()" value="1" ng-disabled="rightArrow"><i class="bi bi-arrow-right"></i></button>
+                                </div>
+                                <div class="col-sm-12 mt-5">
+                                    <button class="btn btn-block btn-sm btn-outline-secondary" ng-click="back()" value="2" ng-disabled="leftArrow"><i class="bi bi-arrow-left"></i></button>
+                                </div>
                             </div>
 
-                            <div class="col-sm-4">
-                                <select ng-model="CopyType" class="form-control form-control-sm">
-                                    <option value="First Copy">First Copy</option>
-                                    <option value="Second Copy">Second Copy</option>
-                                </select>
-                            </div>
 
-                            <div class="col-sm-4">
-                               @*  <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="" ng-disabled="showChallanButton">Show Challan</button> *@
-                                <button type="button" class="btn btn-block btn-primary btn-sm" ng-click="downloadReportChallan()" ng-disabled="showChallanButton">Show Challan
-                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showChallanspinner"></span>
-                                </button>
-                            </div>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-sm-6">
-                                <button type="button" class="btn btn-block btn-success btn-sm" ng-click="save()" ng-disabled="saveDisabled">Save
-                                     &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="saveSpinner"></span>
-                                </button>
-                            </div>
+                            <div class="col-sm-5 mt-2">
+                                <div style="height: 193px; overflow-y: auto;border:1px solid lightgray">
+                                    <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Product</th>
 
-                            <div class="col-sm-6">
-                                @*  <button type="button" class="btn btn-block btn-info btn-sm" ng-click="" ng-disabled="showInvoiceButton">Show Invoice</button> *@
-                                <button type="button" class="btn btn-block btn-info btn-sm" ng-click="downloadReport()" ng-disabled="showInvoiceButton">Show Invoice
-                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showInviceSpinner"></span>
-                                </button>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="shiftedProduct in shiftData" ng-click="passAnother(shiftedProduct)" ng-class="{ 'selected-row': shiftedProduct === selectedAnotherRow }">
+                                                <td>{{ shiftedProduct.product }}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="form-group row mt-2">
+                                    <label class="col-sm-4">Total Price</label>
+                                    <div class="col-sm-8">
+                                        <input type="number" class="form-control form-control-sm text-right" ng-model="totalPrice" />
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>Comments of invoice item</label>
+                                    </div>
+                                    <div class="col-sm-6 d-flex justify-content-end mb-2">
+                                        <button class="btn btn-primary btn-sm" ng-click="updateComment()">Update Comment</button>
+                                    </div>
+                                </div>
+                                <div style="height: 200px; overflow-y: auto;border:1px solid lightgray" ng-hide="disabledCommentsTable">
+                                    <table class="table table-bordered table-hover table-sm">
+                                        <thead class="thead-light">
+                                            <tr>
+                                                <th>Comments</th>
+                                                <th>Amount</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="o in bindData">
+                                                <td>{{o.comments}}</td>
+                                                <td>{{o.schAmount}}</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row" style="height:200px;border:1px solid lightgray" ng-hide="disabledComments">
+                                    <textarea ng-model="comments"></textarea>
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-sm-4">
+                                        <input type="checkbox" ng-model="sMail" /><label>&nbsp; Send Invoice</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <input type="checkbox" ng-model="sChallan" /><label>&nbsp; Send Challan</label>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <button class="btn btn-primary btn-sm" ng-click="SendMail(sMail,sChallan)">
+                                            Send Mail
+                                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showMailpinner"></span>
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
-
                         </div>
                     </div>
-                    <div class="col-sm-2">
-                        <div class="col-sm-12 mt-5">
-                            <button class="btn btn-block btn-sm btn-outline-secondary" ng-click="go()" value="1" ng-disabled="rightArrow"><i class="bi bi-arrow-right"></i></button>
-                        </div>
-                        <div class="col-sm-12 mt-5">
-                            <button class="btn btn-block btn-sm btn-outline-secondary" ng-click="back()" value="2" ng-disabled="leftArrow"><i class="bi bi-arrow-left"></i></button>
-                        </div>
-                    </div>
 
-
-                    <div class="col-sm-5">
-                        <div style="height: 200px; overflow-y: auto;border:2px solid gray">
-                            <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Product</th>
-
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="shiftedProduct in shiftData" ng-click="passAnother(shiftedProduct)" ng-class="{ 'selected-row': shiftedProduct === selectedAnotherRow }">
-                                        <td>{{ shiftedProduct.product }}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="form-group row mt-3">
-                            <label class="col-sm-4">Total Price</label>
-                            <div class="col-sm-8">
-                                <input type="number" class="form-control form-control-sm" ng-model="totalPrice" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label>Comments of invoice item</label>
-                            </div>
-                            <div class="col-sm-6 d-flex justify-content-end mb-2">
-                                <button class="btn btn-primary btn-sm" ng-click="updateComment()">Update Comment</button>
-                            </div>
-                        </div>
-                        <div style="height: 260px; overflow-y: auto;border:2px solid gray" ng-hide="disabledCommentsTable">
-                            <table class="table table-bordered table-hover table-sm">
-                                <thead class="thead-light">
-                                    <tr>
-                                        <th>Comments</th>
-                                        <th>Amount</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="o in bindData">
-                                        <td>{{o.comments}}</td>
-                                        <td>{{o.schAmount}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                        <div class="row" style="height:200px;border:1px solid gray" ng-hide="disabledComments">
-                            <textarea ng-model="comments"></textarea>
-                        </div>
-                        <div class="row mt-2">
-                            <div class="col-sm-4">
-                                <input type="checkbox" ng-model="sMail" /><label>&nbsp; Send Invoice</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <input type="checkbox" ng-model="sChallan" /><label>&nbsp; Send Challan</label>
-                            </div>
-                            <div class="col-sm-4">
-                                <button class="btn btn-primary btn-sm" ng-click="SendMail(sMail,sChallan)">Send Mail
-                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showMailpinner"></span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
-
         </div>
     </div>
 </div>
@@ -263,17 +269,17 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-            
-            
+
+
             var onlineCompanyId = @Json.Serialize(onlineCompanyId);
             if (onlineCompanyId !== null) {
                 $scope.getIdWiseCompany(onlineCompanyId);
-                $scope.loadProducts(onlineCompanyId,0);
+                $scope.loadProducts(onlineCompanyId, 0);
                 $scope.setInvoiceNo(onlineCompanyId, $scope.issueDate);
                 $scope.saveDisabled = false;
             }
-            
-            
+
+
         });
         $scope.CopyType = 'First Copy';
         $scope.invoiceType = 0;
@@ -316,7 +322,7 @@
         };
 
 
-       
+
 
         $scope.blankForOld = function () {
             $scope.blankPrice();
@@ -355,10 +361,10 @@
 
         $scope.searchCompany = function (startingKey) {
             if (startingKey && startingKey.length > 1) {
-             let Url = '';
-            if (window.location.hostname == 'localhost')
+                let Url = '';
+                if (window.location.hostname == 'localhost')
                     Url = '/Company/GetCompanyListByKey';
-            else
+                else
                     Url = '/AccountingNew/Company/GetCompanyListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
@@ -399,7 +405,7 @@
             }
         }
 
-        $scope.loadProducts = function (cId,type) {
+        $scope.loadProducts = function (cId, type) {
             var params = {
                 cId: cId,
                 type: type
@@ -488,11 +494,11 @@
                         }
                         else if (
                             ledgerId == 44 ||
-                            
+
                             ledgerId == 2253 ||
-                            
+
                             ledgerId == 22254 ||
-                          
+
                             ledgerId == 26451
                         ) {
                             var serviceName = "";
@@ -523,7 +529,7 @@
                                 formattedeDate +
                                 " for the following position(s):\n\n" +
                                 shiftedProduct.product;
-                        } if (shiftedProduct.product.trim() === "VAT (AP)" ) {
+                        } if (shiftedProduct.product.trim() === "VAT (AP)") {
                             comments = "Add: VAT@5% Under Service Code: S099.10 (IT Enabled Services)";
                         } else {
                             comments =
@@ -595,7 +601,7 @@
                 .catch(function (error) {
                     console.log(error);
                 });
-        };        
+        };
 
         $scope.shiftData = [];
         $scope.go = function () {
@@ -836,7 +842,7 @@
                             alert("Invoice information is successfully saved.");
                             $scope.saveDisabled = true;
                             $scope.saveSpinner = false;
-                           
+
 
                             $scope.blankPrice();
                             $scope.loadProducts($scope.selectedCompany.id, 1);
@@ -962,7 +968,7 @@
             $scope.toggleExtraButtons();
             const listId = $scope.selectedRow.id;
             const invoiceId = $scope.selectedRow.sbName;
-            if (listId == 0) { 
+            if (listId == 0) {
                 alert("select any Invoice first");
                 return;
             }
@@ -1009,7 +1015,7 @@
         };
 
         $scope.SendMail = function (sMail, sChallan) {
-            
+
             const format = 'pdf'; // Use default format if not selected
             const invoiceId = $scope.selectedRow.sbName;
             const copyType = $scope.CopyType;
@@ -1027,7 +1033,7 @@
                     console.log(error);
                 })
         };
-       
+
 
 
     });

@@ -728,6 +728,7 @@
 
             $scope.showTable = true;
             $scope.makeInvoiceBtn = false;
+            $scope.receivedDate = new Date();
         }
 
         $scope.emptyBouncedFielsWithDueOrPaidCheckbox = function () {
@@ -1225,7 +1226,6 @@
         }
 
         $scope.submit = function () {
-            debugger
             var isBounced = $scope.isBounced;
             var chequeNo = $scope.chequeNo;
             var bouncedDate = $scope.bouncedDate.toISOString().split('T')[0];

@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                                <script type="text/javascript">
-                                                    window.location.href = '@Url.Action("Index", "Home")';
-                                                </script>
+        <script type="text/javascript">
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
     }
     else
     {
@@ -26,477 +26,475 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
 
-<h3 class="text-center alert-primary" style="margin-top:-10px">Edit Sale</h3>
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <h3 class="text-center" style="margin-top:-10px">Edit Sale</h3>
 
-<div ng-app="myApp">
-    <div ng-controller="myController">
-        <div class="col-sm-12">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Company</label>
-                        <div class="col-sm-9">
-                            <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="company" ng-keyup="searchCompany(company)">
-                            @* <select class="form-control form-control-sm" size="10" ng-model="comList" style="position:absolute;z-index:999;width: 200px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
-                            <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
-                            </select> *@
+                <div class="col-sm-12">
+                    <div class="row mt-3">
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Company</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="company" ng-keyup="searchCompany(company)">
+                                    @* <select class="form-control form-control-sm" size="10" ng-model="comList" style="position:absolute;z-index:999;width: 200px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                                    <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                                    </select> *@
+                                </div>
+                            </div>
+                            <div>Select a company</div>
+                            <select class="form-control form-control-sm" size="10" ng-model="comList" style="height:225px;border:1px solid lightgray">
+                                <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                            </select>
+
+                            <div class="row mt-2">
+                                <div class="col-sm-3">
+                                    <button class="btn btn-success btn-sm" ng-click="regularSalesBtn()">Regular List</button>
+                                </div>
+                                <div class="col-sm-3">
+                                    <button class="btn btn-primary btn-sm" ng-click="deletedSalesBtn()">Deleted List</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6" style="margin-top:-10px">
+                            <fieldset class="border p-2">
+                                <legend class="float-none w-auto fs-5">
+                                    Sale Information
+                                </legend>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Sales Price</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control form-control-sm text-end" ng-model="salesPrice">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">VAT Amount</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control form-control-sm text-end" ng-model="vatAmount">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-2 col-form-label mt-3">Duration</label>
+                                    <div class="col-sm-4">
+                                        <label>From Date</label>
+                                        <input type="date" ng-change="updateDuration()" class="form-control form-control-sm" ng-model="fromDate">
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <label>To Date</label>
+                                        <input type="date" ng-change="updateDuration()" class="form-control form-control-sm" ng-model="toDate">
+                                    </div>
+                                    <div class="col-sm-2">
+                                        <label>Duration</label>
+                                        <input class="form-control form-control-sm text-center" ng-model="duration">
+                                    </div>
+                                </div>
+                                <div class="form-group row mt-2">
+                                    <label class="col-sm-3 col-form-label">Billing Contact</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control form-control-sm" ng-model="billingContact">
+                                            <option value="0" selected>Select</option>
+                                            <option ng-repeat="o in getBillingPersonData" value="{{o.id}}">{{o.name}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Ref No.</label>
+                                    <div class="col-sm-9">
+                                        <input type="number" class="form-control form-control-sm" ng-model="refNo">
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-3 col-form-label">Sales Person</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-control form-control-sm" ng-model="salesPerson">
+                                            <option value="0" selected>select</option>
+                                            <option ng-repeat="o in salesPersons" value="{{o.salesPersonID}}">{{o.salesPersonName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </fieldset>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-12 mt-2">
+                        <div class="pull-left text-left" ng-show="isVisible">
+                            <div class="col-sm-12 row">
+                                <div class="col-sm-6">
+                                    Show
+                                    <select id="page" ng-model="itemsPerPage">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="40">40</option>
+                                        <option value="50" selected>50</option>
+                                        <option value="60">60</option>
+                                        <option value="80">80</option>
+                                        <option value="100">100</option>
+                                        <option value="500">500</option>
+                                        <option value="1000">1000</option>
+                                        <option value="3000">3000</option>
+                                        <option value="5000">5000</option>
+                                        <option value="10000">10000</option>
+                                        <option value="10000000">All</option>
+                                    </select>
+                                    entries per page. (Total:{{totalItems}} data)
+                                </div>
+                                <div class="col-sm-6 d-flex justify-content-end">
+                                    <nav aria-label="...">
+                                        <ul class="pagination">
+                                            <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                                <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+
+                                            <!-- The ng-repeat code you provided -->
+                                            <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                                <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                            </li>
+
+                                            <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                                <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                    <div>Select a company</div>
-                    <select class="form-control form-control-sm" size="10" ng-model="comList" style="height:225px;border:1px solid lightgray">
-                        <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
-                    </select>
 
+
+
+                    <div style="height: 213px; overflow-y: auto;border:1px solid lightgray" ng-show="showTable">
+                        <table class="table table-bordered table-striped table-sm" style="white-space:nowrap;">
+                            <thead class="table-info">
+                                <tr>
+                                    <th style="text-align:center">SNo</th>
+                                    <th style="text-align:center">Product name</th>
+                                    <th style="text-align:center">From</th>
+                                    <th style="text-align:center">To</th>
+                                    <th style="text-align:center">Duration</th>
+                                    <th style="text-align:center">Price(Tk)</th>
+                                    <th style="text-align:center">Due(Tk)</th>
+                                    <th style="text-align:center">Posted</th>
+                                    <th style="text-align:center">VAT(Tk)</th>
+                                    <th style="text-align:center">Invoice No</th>
+                                </tr>
+                            </thead>
+                            <tbody style="height:130px">
+                                <tr ng-repeat="o in salesData" ng-click="selectRegularRow(o, $index+1)" ng-class="{'selected-row':o===selectedRow}" ng-style="{'background-color': o.isCancel == 1 ? '#FF7D7D' : ''}">
+                                    <td style="text-align:center">{{$index+1}}</td>
+                                    <td style="text-align:center">{{o.sbName}}</td>
+                                    <td style="text-align:center">{{o.from}}</td>
+                                    <td style="text-align:center">{{o.to}}</td>
+                                    <td style="text-align:center">{{o.duration}}</td>
+                                    <td style="text-align:right">{{o.salesPrice | number:2}}</td>
+                                    <td style="text-align:right">{{o.accReceivale | number:2}}</td>
+                                    <td style="text-align:center">{{o.posted ? 'Yes' : 'No'}}</td>
+                                    <td style="text-align:right">{{o.tax | number:2}}</td>
+                                    <td style="text-align:center">{{o.invoiceNo}}</td>
+                                </tr>
+                            </tbody>
+                            <tr>
+                                <th colspan="5" style="text-align:right">Total</th>
+                                <th style="text-align:right">{{sumTotalAmount | number:2}}</th>
+                                <th style="text-align:right">{{sumDuesAmount | number:2}}</th>
+                                <th colspan="3"></th>
+
+                            </tr>
+                        </table>
+                    </div>
+
+
+                    <div class="col-sm-12">
+                        <div class="pull-left text-left" ng-show="isVisibleDelete">
+                            <div class="col-sm-12 row">
+                                <div class="col-sm-6">
+                                    Show
+                                    <select id="page" ng-model="itemsPerPage">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="40">40</option>
+                                        <option value="50" selected>50</option>
+                                        <option value="60">60</option>
+                                        <option value="80">80</option>
+                                        <option value="100">100</option>
+                                        <option value="500">500</option>
+                                        <option value="1000">1000</option>
+                                        <option value="3000">3000</option>
+                                        <option value="5000">5000</option>
+                                        <option value="10000">10000</option>
+                                        <option value="10000000">All</option>
+                                    </select>
+                                    entries per page. (Total:{{totalItems}} data)
+                                </div>
+                                <div class="col-sm-6 d-flex justify-content-end">
+                                    <nav aria-label="...">
+                                        <ul class="pagination">
+                                            <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                                <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                                    <span aria-hidden="true">&laquo;</span>
+                                                </a>
+                                            </li>
+
+                                            <!-- The ng-repeat code you provided -->
+                                            <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                                <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                            </li>
+
+                                            <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                                <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                                    <span aria-hidden="true">&raquo;</span>
+                                                </a>
+                                            </li>
+                                        </ul>
+                                    </nav>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div style="height: 200px; overflow-y: auto;border:2px solid gray" ng-show="showDeletedTable">
+                        <table class="table table-bordered table-striped table-sm">
+                            <thead class="table-info">
+                                <tr>
+                                    <th style="text-align:center">SNo</th>
+                                    <th style="text-align:center">Product name</th>
+                                    <th style="text-align:center">Invoice No</th>
+                                    <th style="text-align:center">Deleted Date</th>
+                                    <th style="text-align:center">Price(Tk)</th>
+                                    <th style="text-align:center">VAT(Tk)</th>
+                                    <th style="text-align:center">Deleted Reason</th>
+                                </tr>
+                            </thead>
+                            <tbody style="height:130px">
+                                <tr ng-repeat="data in deletedSalesData">
+                                    <td style="text-align:center">{{$index+1}}</td>
+                                    <td style="text-align:center">{{data.serviceName}}</td>
+                                    <td style="text-align:center">{{data.invoiceNo}}</td>
+                                    <td style="text-align:center">{{data.cancellationDate}}</td>
+                                    <td style="text-align:right">{{data.totalPrice | number:2}}</td>
+                                    <td style="text-align:right">{{data.totalVat | number:2}}</td>
+                                    <td style="text-align:center">{{data.deleteReason}}</td>
+                                </tr>
+
+                            </tbody>
+                            <tr>
+                                <th colspan="4" style="text-align:right">Total</th>
+                                <th style="text-align:right">{{sumTotalPrice | number:2}}</th>
+                                <th style="text-align:right">{{sumTotalVat | number:2}}</th>
+                                <th></th>
+                            </tr>
+                        </table>
+                    </div>
                     <div class="row mt-2">
                         <div class="col-sm-3">
-                            <button class="btn btn-success btn-sm" ng-click="regularSalesBtn()">Regular List</button>
+                            <button class="btn btn-danger btn-sm px-4" ng-click="delete()" ng-disabled="deleteBtn">Delete</button>
                         </div>
                         <div class="col-sm-3">
-                            <button class="btn btn-primary btn-sm" ng-click="deletedSalesBtn()">Deleted List</button>
+                            <button class="btn btn-primary btn-sm px-4" ng-click="update()" ng-disabled="updateBtn">Update</button>
+                        </div>
+                        <div class="col-sm-3 text-end">
+                            <button class="btn btn-success btn-sm" ng-click="makeJournal()" ng-disabled="makeJournalBtn">Make Journal</button>
+                        </div>
+                        <div class="col-sm-3 text-end">
+                            <button class="btn btn-warning btn-sm" ng-click="makeInvoice()" ng-disabled="makeInvoiceBtn">Make Invoice</button>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-6">
-                    <fieldset class="border p-2">
-                        <legend class="float-none w-auto fs-5">
-                            Sale Information
-                        </legend>
 
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Sales Price</label>
-                                <div class="col-sm-9">
-                                    <input type="number" class="form-control form-control-sm text-end" ng-model="salesPrice">
+                <div class="modal fade" id="deletedReasonModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Sale Delete Reason</h5>
+                                <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body px-4">
+                                <div class="row">
+                                    <label>Delete Reason</label>
+                                    <textarea type="text" ng-model="reason" class="form-control form-control-sm"></textarea>
+                                </div>
+                                <div class="row">
+                                    <label>Delete Date</label>
+                                    <input type="date" ng-model="deleteDate" class="form-control form-control-sm" />
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">VAT Amount</label>
-                                <div class="col-sm-9">
-                                    <input type="number" class="form-control form-control-sm text-end" ng-model="vatAmount">
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary btn-sm" ng-click="finalDelete()">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="makeJournalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Journal Date</h5>
+                                <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row px-5">
+                                    <p class="text-center">Give the journal date</p>
+                                    <input type="date" ng-model="journalDate" class="col-sm-8 form-control form-control-sm" />
                                 </div>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-2 col-form-label mt-3">Duration</label>
-                                <div class="col-sm-4">
-                                    <label>From Date</label>
-                                    <input type="date" ng-change="updateDuration()" class="form-control form-control-sm" ng-model="fromDate">
-                                </div>
-                                <div class="col-sm-4">
-                                    <label>To Date</label>
-                                    <input type="date" ng-change="updateDuration()" class="form-control form-control-sm" ng-model="toDate">
-                                </div>
-                                <div class="col-sm-2">
-                                    <label>Duration</label>
-                                    <input class="form-control form-control-sm text-center" ng-model="duration">
-                                </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary btn-sm" ng-click="okForMakeJournal()">OK</button>
                             </div>
-                            <div class="form-group row mt-2">
-                                <label class="col-sm-3 col-form-label">Billing Contact</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control form-control-sm" ng-model="billingContact">
-                                        <option value="0" selected>Select</option>
-                                        <option ng-repeat="o in getBillingPersonData" value="{{o.id}}">{{o.name}}</option>
-                                    </select>
-                                </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade" id="customConfirmation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content px-5 py-5">
+                            <p class="text-center">Are you sure you want to generate Credit Note?</p>
+                            <button ng-click="confirmYes()">Yes</button>
+                            <button class="mt-3" ng-click="confirmNo()">No</button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="trialBalanceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Trial Balance</h5>
+                                <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Ref No.</label>
-                                <div class="col-sm-9">
-                                    <input type="number" class="form-control form-control-sm" ng-model="refNo">
-                                </div>
-                            </div>
-                            <div class="form-group row">
-                                <label class="col-sm-3 col-form-label">Sales Person</label>
-                                <div class="col-sm-9">
-                                    <select class="form-control form-control-sm" ng-model="salesPerson">
-                                        <option value="0" selected>select</option>
-                                        <option ng-repeat="o in salesPersons" value="{{o.salesPersonID}}">{{o.salesPersonName}}</option>
-                                    </select>
-                                </div>
-                            </div>
-                    </fieldset>
-
-
-                   
-
-                </div>
-
-
-
-            </div>
-            <div class="col-sm-12 mt-3">
-                <div class="pull-left text-left" ng-show="isVisible">
-                    <div class="col-sm-12 row">
-                        <div class="col-sm-6">
-                            Show
-                            <select id="page" ng-model="itemsPerPage">
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="40">40</option>
-                                <option value="50" selected>50</option>
-                                <option value="60">60</option>
-                                <option value="80">80</option>
-                                <option value="100">100</option>
-                                <option value="500">500</option>
-                                <option value="1000">1000</option>
-                                <option value="3000">3000</option>
-                                <option value="5000">5000</option>
-                                <option value="10000">10000</option>
-                                <option value="10000000">All</option>
-                            </select>
-                            entries per page. (Total:{{totalItems}} data)
-                        </div>
-                        <div class="col-sm-6 d-flex justify-content-end">
-                            <nav aria-label="...">
-                                <ul class="pagination">
-                                    <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
-                                        <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-
-                                    <!-- The ng-repeat code you provided -->
-                                    <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
-                                        <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
-                                    </li>
-
-                                    <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
-                                        <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-
-            <div style="height: 200px; overflow-y: auto;border:2px solid gray" ng-show="showTable">
-                <table class="table table-bordered table-striped table-sm" style="white-space:nowrap;">
-                    <thead class="table-info">
-                        <tr>
-                            <th style="text-align:center">SNo</th>
-                            <th style="text-align:center">Product name</th>
-                            <th style="text-align:center">From</th>
-                            <th style="text-align:center">To</th>
-                            <th style="text-align:center">Duration</th>
-                            <th style="text-align:center">Price(Tk)</th>
-                            <th style="text-align:center">Due(Tk)</th>
-                            <th style="text-align:center">Posted</th>
-                            <th style="text-align:center">VAT(Tk)</th>
-                            <th style="text-align:center">Invoice No</th>
-                        </tr>
-                    </thead>
-                    <tbody style="height:130px">
-                        <tr ng-repeat="o in salesData" ng-click="selectRegularRow(o, $index+1)" ng-class="{'selected-row':o===selectedRow}" ng-style="{'background-color': o.isCancel == 1 ? '#FF7D7D' : ''}">
-                            <td style="text-align:center">{{$index+1}}</td>
-                            <td style="text-align:center">{{o.sbName}}</td>
-                            <td style="text-align:center">{{o.from}}</td>
-                            <td style="text-align:center">{{o.to}}</td>
-                            <td style="text-align:center">{{o.duration}}</td>
-                            <td style="text-align:right">{{o.salesPrice | number:2}}</td>
-                            <td style="text-align:right">{{o.accReceivale | number:2}}</td>
-                            <td style="text-align:center">{{o.posted ? 'Yes' : 'No'}}</td>
-                            <td style="text-align:right">{{o.tax | number:2}}</td>
-                            <td style="text-align:center">{{o.invoiceNo}}</td>
-                        </tr>
-                    </tbody>
-                    <tr>
-                        <th colspan="5" style="text-align:right">Total</th>
-                        <th style="text-align:right">{{sumTotalAmount | number:2}}</th>
-                        <th style="text-align:right">{{sumDuesAmount | number:2}}</th>
-                        <th colspan="3"></th>
-
-                    </tr>
-                </table>
-            </div>
-
-
-            <div class="col-sm-12">
-                <div class="pull-left text-left" ng-show="isVisibleDelete">
-                    <div class="col-sm-12 row">
-                        <div class="col-sm-6">
-                            Show
-                            <select id="page" ng-model="itemsPerPage">
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="40">40</option>
-                                <option value="50" selected>50</option>
-                                <option value="60">60</option>
-                                <option value="80">80</option>
-                                <option value="100">100</option>
-                                <option value="500">500</option>
-                                <option value="1000">1000</option>
-                                <option value="3000">3000</option>
-                                <option value="5000">5000</option>
-                                <option value="10000">10000</option>
-                                <option value="10000000">All</option>
-                            </select>
-                            entries per page. (Total:{{totalItems}} data)
-                        </div>
-                        <div class="col-sm-6 d-flex justify-content-end">
-                            <nav aria-label="...">
-                                <ul class="pagination">
-                                    <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
-                                        <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
-                                            <span aria-hidden="true">&laquo;</span>
-                                        </a>
-                                    </li>
-
-                                    <!-- The ng-repeat code you provided -->
-                                    <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
-                                        <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
-                                    </li>
-
-                                    <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
-                                        <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
-                                            <span aria-hidden="true">&raquo;</span>
-                                        </a>
-                                    </li>
-                                </ul>
-                            </nav>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-
-            <div style="height: 200px; overflow-y: auto;border:2px solid gray" ng-show="showDeletedTable">
-                <table class="table table-bordered table-striped table-sm">
-                    <thead class="table-info">
-                        <tr>
-                            <th style="text-align:center">SNo</th>
-                            <th style="text-align:center">Product name</th>
-                            <th style="text-align:center">Invoice No</th>
-                            <th style="text-align:center">Deleted Date</th>
-                            <th style="text-align:center">Price(Tk)</th>
-                            <th style="text-align:center">VAT(Tk)</th>
-                            <th style="text-align:center">Deleted Reason</th>
-                        </tr>
-                    </thead>
-                    <tbody style="height:130px">
-                        <tr ng-repeat="data in deletedSalesData">
-                            <td style="text-align:center">{{$index+1}}</td>
-                            <td style="text-align:center">{{data.serviceName}}</td>
-                            <td style="text-align:center">{{data.invoiceNo}}</td>
-                            <td style="text-align:center">{{data.cancellationDate}}</td>
-                            <td style="text-align:right">{{data.totalPrice | number:2}}</td>
-                            <td style="text-align:right">{{data.totalVat | number:2}}</td>
-                            <td style="text-align:center">{{data.deleteReason}}</td>
-                        </tr>
-
-                    </tbody>
-                    <tr>
-                        <th colspan="4" style="text-align:right">Total</th>
-                        <th style="text-align:right">{{sumTotalPrice | number:2}}</th>
-                        <th style="text-align:right">{{sumTotalVat | number:2}}</th>
-                        <th></th>
-                    </tr>
-                </table>
-            </div>
-            <div class="row mt-2">
-                <div class="col-sm-3">
-                    <button class="btn btn-danger btn-sm px-4" ng-click="delete()" ng-disabled="deleteBtn">Delete</button>
-                </div>
-                <div class="col-sm-3">
-                    <button class="btn btn-primary btn-sm px-4" ng-click="update()" ng-disabled="updateBtn">Update</button>
-                </div>
-                <div class="col-sm-3 text-end">
-                    <button class="btn btn-success btn-sm" ng-click="makeJournal()" ng-disabled="makeJournalBtn">Make Journal</button>
-                </div>
-                <div class="col-sm-3 text-end">
-                    <button class="btn btn-warning btn-sm" ng-click="makeInvoice()" ng-disabled="makeInvoiceBtn">Make Invoice</button>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="deletedReasonModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Sale Delete Reason</h5>
-                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body px-4">
-                        <div class="row">
-                            <label>Delete Reason</label>
-                            <textarea type="text" ng-model="reason" class="form-control form-control-sm"></textarea>
-                        </div>
-                        <div class="row">
-                            <label>Delete Date</label>
-                            <input type="date" ng-model="deleteDate" class="form-control form-control-sm" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary btn-sm" ng-click="finalDelete()">Delete</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="modal fade" id="makeJournalModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Journal Date</h5>
-                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row px-5">
-                            <p class="text-center">Give the journal date</p>
-                            <input type="date" ng-model="journalDate" class="col-sm-8 form-control form-control-sm" />
-                        </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary btn-sm" ng-click="okForMakeJournal()">OK</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-      
-        <div class="modal fade" id="customConfirmation" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-                <div class="modal-content px-5 py-5">
-                    <p class="text-center">Are you sure you want to generate Credit Note?</p>
-                    <button ng-click="confirmYes()">Yes</button>
-                    <button class="mt-3" ng-click="confirmNo()">No</button>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="modal fade" id="trialBalanceModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog modal-xl">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Trial Balance</h5>
-                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row">
-                            <div class="col-sm-12">
-                               <div class="row">
-                                    <div class="col-sm-2">
-                                        <label><input type="radio" ng-model="radio" value="0" ng-checked="radio==0" ng-change="changeDateRadio()" />&nbsp; By Date</label><br />
-                                        <label class="mt-2"><input type="radio" ng-model="radio" value="1" ng-change="changeSaleRadio()" />&nbsp; By Sale</label>
-                                    </div>
-                                    <div class="col-sm-8">
-                                        
-                                        <table ng-show="showSalesFilterTable" class="table table-bordered table-sm" style="font-size:15px">
-                                            <tr style="background-color:skyblue">
-                                                <td>Sl#</td>
-                                                <td>Company</td>
-                                                <td>Product name</td>
-                                                <td>Amount</td>
-                                                <td>Sales Date</td>
-                                            </tr>
-                                            <tbody>
-                                                <tr ng-repeat="data in trialBalanceData">
-                                                    <td>{{$index + 1}}</td>
-                                                    <td>{{data.name}}</td>
-                                                    <td>{{data.sbName}}</td>
-                                                    <td>{{data.salesPrice | number:2}}</td>
-                                                    <td>{{data.sDate}}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                    <div class="col-sm-2">
-                                        <label>From</label>
-                                        <input type="date" class="form-control form-control-sm" ng-model="fromDateForTrial" ng-change="fromDateWise()" ng-disabled="fromDisable"/>
-                                        <label>From</label>
-                                        <input type="date" class="form-control form-control-sm" ng-model="toDateForTrial" ng-change="toDateWise()" ng-disabled="toDisable"/>
-                                    </div>
-
+                            <div class="modal-body">
+                                <div class="row">
                                     <div class="col-sm-12">
-                                        <div class="pull-left text-left" ng-show="isVisibleDateFilterTable">
-                                            <div class="col-sm-12 row">
-                                                <div class="col-sm-6">
-                                                    Show
-                                                    <select id="page" ng-model="itemsPerPage" ng-change="paginationChange()">
-                                                        <option value="10">10</option>
-                                                        <option value="20">20</option>
-                                                        <option value="40">40</option>
-                                                        <option value="50" selected>50</option>
-                                                        <option value="60">60</option>
-                                                        <option value="80">80</option>
-                                                        <option value="100">100</option>
-                                                        <option value="500">500</option>
-                                                        <option value="1000">1000</option>
-                                                        <option value="3000">3000</option>
-                                                        <option value="5000">5000</option>
-                                                        <option value="10000">10000</option>
-                                                        <option value="10000000">All</option>
-                                                    </select>
-                                                    entries per page. (Total:{{totalItems}} data)
-                                                </div>
-                                                <div class="col-sm-6 d-flex justify-content-end">
-                                                    <nav aria-label="...">
-                                                        <ul class="pagination">
-                                                            <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
-                                                                <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
-                                                                    <span aria-hidden="true">&laquo;</span>
-                                                                </a>
-                                                            </li>
+                                        <div class="row">
+                                            <div class="col-sm-2">
+                                                <label><input type="radio" ng-model="radio" value="0" ng-checked="radio==0" ng-change="changeDateRadio()" />&nbsp; By Date</label><br />
+                                                <label class="mt-2"><input type="radio" ng-model="radio" value="1" ng-change="changeSaleRadio()" />&nbsp; By Sale</label>
+                                            </div>
+                                            <div class="col-sm-8">
 
-                                                            <!-- The ng-repeat code you provided -->
-                                                            <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
-                                                                <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
-                                                            </li>
+                                                <table ng-show="showSalesFilterTable" class="table table-bordered table-sm" style="font-size:15px">
+                                                    <tr style="background-color:skyblue">
+                                                        <td>Sl#</td>
+                                                        <td>Company</td>
+                                                        <td>Product name</td>
+                                                        <td>Amount</td>
+                                                        <td>Sales Date</td>
+                                                    </tr>
+                                                    <tbody>
+                                                        <tr ng-repeat="data in trialBalanceData">
+                                                            <td>{{$index + 1}}</td>
+                                                            <td>{{data.name}}</td>
+                                                            <td>{{data.sbName}}</td>
+                                                            <td>{{data.salesPrice | number:2}}</td>
+                                                            <td>{{data.sDate}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <div class="col-sm-2">
+                                                <label>From</label>
+                                                <input type="date" class="form-control form-control-sm" ng-model="fromDateForTrial" ng-change="fromDateWise()" ng-disabled="fromDisable" />
+                                                <label>From</label>
+                                                <input type="date" class="form-control form-control-sm" ng-model="toDateForTrial" ng-change="toDateWise()" ng-disabled="toDisable" />
+                                            </div>
 
-                                                            <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
-                                                                <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
-                                                                    <span aria-hidden="true">&raquo;</span>
-                                                                </a>
-                                                            </li>
-                                                        </ul>
-                                                    </nav>
+                                            <div class="col-sm-12">
+                                                <div class="pull-left text-left" ng-show="isVisibleDateFilterTable">
+                                                    <div class="col-sm-12 row">
+                                                        <div class="col-sm-6">
+                                                            Show
+                                                            <select id="page" ng-model="itemsPerPage" ng-change="paginationChange()">
+                                                                <option value="10">10</option>
+                                                                <option value="20">20</option>
+                                                                <option value="40">40</option>
+                                                                <option value="50" selected>50</option>
+                                                                <option value="60">60</option>
+                                                                <option value="80">80</option>
+                                                                <option value="100">100</option>
+                                                                <option value="500">500</option>
+                                                                <option value="1000">1000</option>
+                                                                <option value="3000">3000</option>
+                                                                <option value="5000">5000</option>
+                                                                <option value="10000">10000</option>
+                                                                <option value="10000000">All</option>
+                                                            </select>
+                                                            entries per page. (Total:{{totalItems}} data)
+                                                        </div>
+                                                        <div class="col-sm-6 d-flex justify-content-end">
+                                                            <nav aria-label="...">
+                                                                <ul class="pagination">
+                                                                    <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                                                        <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                                                            <span aria-hidden="true">&laquo;</span>
+                                                                        </a>
+                                                                    </li>
+
+                                                                    <!-- The ng-repeat code you provided -->
+                                                                    <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                                                        <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                                                    </li>
+
+                                                                    <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                                                        <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                                                            <span aria-hidden="true">&raquo;</span>
+                                                                        </a>
+                                                                    </li>
+                                                                </ul>
+                                                            </nav>
+                                                        </div>
+                                                    </div>
                                                 </div>
+                                            </div>
+
+                                            <div class="mt-3" style="height:300px;overflow-y:auto;white-space:nowrap;">
+                                                <table ng-show="showDateFilterTable" class="table table-bordered table-striped table-sm" style="border:2px solid gray">
+                                                    <tr style="font-weight:bold">
+                                                        <td>Sl#</td>
+                                                        <td>Id</td>
+                                                        <td>Ledger name</td>
+                                                        <td>Description</td>
+                                                        <td>Debt</td>
+                                                        <td>Credit</td>
+                                                        <td>Date</td>
+                                                    </tr>
+                                                    <tbody>
+                                                        <tr ng-repeat="data in getDateFilterData">
+                                                            <td>{{$index + 1}}</td>
+                                                            <td>{{data.id}}</td>
+                                                            <td>{{data.sbName}}</td>
+                                                            <td>{{data.description}}</td>
+                                                            <td>{{data.debt | number:2}}</td>
+                                                            <td>{{data.credit | number:2}}</td>
+                                                            <td>{{data.jDate}}</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+
                                             </div>
                                         </div>
                                     </div>
-
-                                    <div class="mt-3" style="height:300px;overflow-y:auto;white-space:nowrap;">
-                                        <table ng-show="showDateFilterTable" class="table table-bordered table-striped table-sm" style="border:2px solid gray">
-                                            <tr style="font-weight:bold">
-                                                <td>Sl#</td>
-                                                <td>Id</td>
-                                                <td>Ledger name</td>
-                                                <td>Description</td>
-                                                <td>Debt</td>
-                                                <td>Credit</td>
-                                                <td>Date</td>
-                                            </tr>
-                                            <tbody>
-                                                <tr ng-repeat="data in getDateFilterData">
-                                                    <td>{{$index + 1}}</td>
-                                                    <td>{{data.id}}</td>
-                                                    <td>{{data.sbName}}</td>
-                                                    <td>{{data.description}}</td>
-                                                    <td>{{data.debt | number:2}}</td>
-                                                    <td>{{data.credit | number:2}}</td>
-                                                    <td>{{data.jDate}}</td>
-                                                </tr>
-                                            </tbody>
-                                        </table>
-
-                                    </div>
-                               </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary btn-sm" ng-click="ok()">OK</button>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary btn-sm" ng-click="ok()">OK</button>
-                    </div>
                 </div>
+
             </div>
         </div>
-
     </div>
 </div>
 
@@ -524,11 +522,11 @@
             $scope.currentPage = 1;
             $scope.totalItems = 0;
             $scope.updateDuration();
-            $scope.duration='';
+            $scope.duration = '';
             $scope.radio = '1';
         });
 
-        
+
 
         $scope.deleteDate = new Date();
         $scope.fromDateForTrial = new Date();
@@ -775,7 +773,7 @@
         }
 
         $scope.updateSelectedRowIndex = function (rowNum, oldName, newName, oldSid, newSid, tno) {
-           
+
             var confirmResult = confirm('You have changed product name.\nDo you want to change the product for this sale?');
 
             if (!confirmResult)
@@ -1008,7 +1006,7 @@
                                         if (response.data == 'Success') {
                                             if (posted == 'Yes') {
                                                 var user = @userId
-                                                        var userId = user.toString();
+                                                            var userId = user.toString();
                                                 let requestBodyModel2 = {
                                                     sid: $scope.selectedRow.id.toString(),
                                                     vatId: $scope.selectedRow.taxId.toString(),
@@ -1041,7 +1039,7 @@
                                                 if (isPostConfirmed) {
 
                                                     var user = @userId
-                                                            var userId = user.toString();
+                                                                var userId = user.toString();
                                                     let requestBodyModel3 = {
                                                         SId: $scope.selectedRow.id.toString(),
                                                         Amount: newAmount.toString(),
@@ -1179,7 +1177,7 @@
             }
         }
 
-        $scope.getJournals=function(pageNo, pageSize, tno, from, end){
+        $scope.getJournals = function (pageNo, pageSize, tno, from, end) {
             $scope.from = new Date(from);
             $scope.end = new Date(end);
             $scope.formatedFromDateForTrial = $scope.from.toISOString().split('T')[0];
@@ -1213,7 +1211,7 @@
         $scope.toDateWise = function () {
             $scope.getJournals($scope.currentPage, $scope.itemsPerPage, '-1', $scope.fromDateForTrial, $scope.toDateForTrial);
         }
-        
+
         $scope.changeDateRadio = function () {
             $scope.getJournals($scope.currentPage, $scope.itemsPerPage, '-1', $scope.fromDateForTrial, $scope.toDateForTrial);
             $scope.trialBalanceData = [];
@@ -1242,7 +1240,7 @@
             $http.get(Url)
                 .then(function (response) {
                     $scope.closingDate = response.data;
-                   
+
                 }, function (error) {
                     console.error(error);
                 });
@@ -1251,11 +1249,11 @@
         $scope.okForMakeJournal = function () {
             var from = $scope.journalDate;
             var to = new Date($scope.closingDate);
-           
+
             if (from <= to) {
                 confirm("You cannot post journal on or before '" + $scope.closingDate + "'.\nPlease give another date.");
             }
-            else{
+            else {
                 var jsonData = {
                     SId: $scope.selectedRow.id.toString(),
                     Amount: $scope.selectedRow.salesPrice.toString(),
@@ -1280,7 +1278,7 @@
                             $("#makeJournalModal").modal('hide');
                             $scope.getSales($scope.currentPage, $scope.itemsPerPage, $scope.comList, 0);
                             alert("All Journal entry have been completed.")
-                            
+
                         }
                     });
             }

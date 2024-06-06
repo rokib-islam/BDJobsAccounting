@@ -233,5 +233,106 @@ namespace AccountingSystem.Repository
 
         }
 
+        public async Task<string> InsertOrUpdateGrossSalary([FromBody] Acknowledgement_GrossSalary_TA_Model model)
+        {
+            var res = "";
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@EmployeeId", model.EmployeeId);
+                    parameters.Add("@GrossSalary", model.GrossSalary);
+                    parameters.Add("@GrossSalaryEffectiveDate", model.GrossSalaryEffectiveDate);
+                    parameters.Add("@ID", model.ID);
+
+                    await _db.ExecuteAsync("USP_InsertOrUpdateGrossSalary", parameters, commandType: CommandType.StoredProcedure);
+                    res = "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+                res = ex.ToString();
+            }
+            return res;
+        }
+
+        public async Task<List<Acknowledgement_GrossSalary_TA_Model>> GetGrossSalaryByEmployeeId(int employeeId)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var query = "SELECT g.Id, g.GrossSalary, g.GrossSalaryEffectiveDate FROM GrossSalaryLog g LEFT JOIN EmployeeInfo e ON g.EmployeeId=e.EmployeeId WHERE g.EmployeeId= @employeeId";
+                var parameters = new { EmployeeId = employeeId };
+
+                var result = await _db.QueryAsync<Acknowledgement_GrossSalary_TA_Model>(query, parameters);
+                return result.ToList();
+            }
+
+        }
+
+        public async Task<string> InsertOrUpdateTA([FromBody] Acknowledgement_GrossSalary_TA_Model model)
+        {
+            var res = "";
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@EmployeeId", model.EmployeeId);
+                    parameters.Add("@TA", model.TA);
+                    parameters.Add("@TAEffectiveDate", model.TAEffectiveDate);
+                    parameters.Add("@ID", model.ID);
+
+                    await _db.ExecuteAsync("USP_InsertOrUpdateTA", parameters, commandType: CommandType.StoredProcedure);
+                    res = "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+                res = ex.ToString();
+            }
+            return res;
+        }
+
+        public async Task<List<Acknowledgement_GrossSalary_TA_Model>> GetTaByEmployeeId(int employeeId)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var query = "SELECT g.Id, g.TA, g.TAEffectiveDate FROM TALog g LEFT JOIN EmployeeInfo e ON g.EmployeeId=e.EmployeeId WHERE g.EmployeeId= @employeeId";
+                var parameters = new { EmployeeId = employeeId };
+
+                var result = await _db.QueryAsync<Acknowledgement_GrossSalary_TA_Model>(query, parameters);
+                return result.ToList();
+            }
+
+        }
+
+        public async Task<List<EmployeeModel>> LoadAllEmployeeInfo()
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = await _db.QueryAsync<EmployeeModel> ("USP_LoadAllEmployeeInfo", new { }, commandType:CommandType.StoredProcedure);
+                return result.ToList();
+            }
+        }
+
+        public async Task<string> ImportACS()
+        {
+            var res = "";
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {                   
+                    await _db.ExecuteAsync("[dbo].[INSERT_employee_From _ACS]", new { }, commandType: CommandType.StoredProcedure);
+                    res = "Imported Successfully from ACS";
+                }
+            }
+            catch (Exception ex)
+            {
+                res = ex.ToString();
+            }
+            return res;
+        }
+
     }
 }

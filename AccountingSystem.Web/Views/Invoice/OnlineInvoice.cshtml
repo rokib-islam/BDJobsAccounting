@@ -5,112 +5,115 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
 </head>
-
-<div ng-app="myApp">
-    <div ng-controller="myController">
-        <div class="row">
-            <div class="col-sm-12">
-                <h4 class="text-center alert-primary" style="margin-top:-10px">Online Invoice</h4>
-                <div class="row justify-content-center">
-                    <div class="col-sm-2">
-                        <label>Status</label>
-                        <select class="form-control form-control-sm" ng-model="status">
-                            <option value="Success">Success</option>
-                            <option value="Failed">Failed</option>
-                        </select>
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h4 class="text-center" style="margin-top:-10px">Online Invoice</h4>
+                        <div class="row justify-content-center">
+                            <div class="col-sm-2">
+                                <label>Status</label>
+                                <select class="form-control form-control-sm" ng-model="status">
+                                    <option value="Success">Success</option>
+                                    <option value="Failed">Failed</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Payment Mode</label>
+                                <select class="form-control form-control-sm" ng-model="paymentMode">
+                                    <option value="All">All</option>
+                                    <option value="SSL">SSL</option>
+                                    <option value="bKash">bKash</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <label>Service Name</label>
+                                <select class="form-control form-control-sm" ng-model="serviceName">
+                                    <option value="All">All</option>
+                                    <option value="Hot Jobs Listing (Blue Collar)">Hot Jobs Listing (Blue Collar)</option>
+                                    <option value="Hot Jobs Listing">Hot Jobs Listing</option>
+                                    <option value="Online Job Posting-Stand-out (Blue Color)">Online Job Posting-Stand-out (Blue Color)</option>
+                                    <option value="Online Job Posting (Stand-out)">Online Job Posting (Stand-out)</option>
+                                    <option value="Job Posting-Stand-out (BCP)">Job Posting-Stand-out (BCP)</option>
+                                    <option value="Online Job Posting (Stand-out Premium)">Online Job Posting (Stand-out Premium)</option>
+                                    <option value="Online Job Posting-Basic (Uddokta BC)">Online Job Posting-Basic (Uddokta BC)</option>
+                                    <option value="Online Job Posting-Basic (Uddokta)">Online Job Posting-Basic (Uddokta)</option>
+                                    <option value="Online Job Posting (PNPL)">Online Job Posting (PNPL)</option>
+                                    <option value="Online Job Posting-Basic-Regional (Blue Color)">Online Job Posting-Basic-Regional (Blue Color)</option>
+                                    <option value="Online Job Posting (Basic) Regional">Online Job Posting (Basic) Regional</option>
+                                    <option value="Online Job Posting-Basic (Blue Color)">Online Job Posting-Basic (Blue Color)</option>
+                                    <option value="Online Job Posting (Basic)">Online Job Posting (Basic)</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <label>From Date</label>
+                                <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
+                            </div>
+                            <div class="col-sm-2">
+                                <label>To Date</label>
+                                <input type="date" class="form-control form-control-sm" ng-model="toDate" />
+                            </div>
+                            <div class="col-sm-1 mt-4">
+                                <button class="btn btn-primary btn-sm px-4" ng-click="load()">Load</button>
+                            </div>
+                            <div class="col-sm-1 mt-4">
+                                <button class="btn btn-success btn-sm px-4" ng-disabled="disableExcelButton" ng-click="excel()">Excel</button>
+                            </div>
+                        </div>
                     </div>
-                    <div class="col-sm-2">
-                        <label>Payment Mode</label>
-                        <select class="form-control form-control-sm" ng-model="paymentMode">
-                            <option value="All">All</option>
-                            <option value="SSL">SSL</option>
-                            <option value="bKash">bKash</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-2">
-                        <label>Service Name</label>
-                        <select class="form-control form-control-sm" ng-model="serviceName">
-                            <option value="All">All</option>
-                            <option value="Hot Jobs Listing (Blue Collar)">Hot Jobs Listing (Blue Collar)</option>
-                            <option value="Hot Jobs Listing">Hot Jobs Listing</option>
-                            <option value="Online Job Posting-Stand-out (Blue Color)">Online Job Posting-Stand-out (Blue Color)</option>
-                            <option value="Online Job Posting (Stand-out)">Online Job Posting (Stand-out)</option>
-                            <option value="Job Posting-Stand-out (BCP)">Job Posting-Stand-out (BCP)</option>
-                            <option value="Online Job Posting (Stand-out Premium)">Online Job Posting (Stand-out Premium)</option>
-                            <option value="Online Job Posting-Basic (Uddokta BC)">Online Job Posting-Basic (Uddokta BC)</option>
-                            <option value="Online Job Posting-Basic (Uddokta)">Online Job Posting-Basic (Uddokta)</option>
-                            <option value="Online Job Posting (PNPL)">Online Job Posting (PNPL)</option>
-                            <option value="Online Job Posting-Basic-Regional (Blue Color)">Online Job Posting-Basic-Regional (Blue Color)</option>
-                            <option value="Online Job Posting (Basic) Regional">Online Job Posting (Basic) Regional</option>
-                            <option value="Online Job Posting-Basic (Blue Color)">Online Job Posting-Basic (Blue Color)</option>
-                            <option value="Online Job Posting (Basic)">Online Job Posting (Basic)</option>
-                        </select>
-                    </div>
-                    <div class="col-sm-2">
-                        <label>From Date</label>
-                        <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
-                    </div>
-                    <div class="col-sm-2">
-                        <label>To Date</label>
-                        <input type="date" class="form-control form-control-sm" ng-model="toDate" />
-                    </div>
-                    <div class="col-sm-1 mt-4">
-                        <button class="btn btn-primary btn-sm px-4" ng-click="load()">Load</button>
-                    </div>
-                    <div class="col-sm-1 mt-4">
-                        <button class="btn btn-success btn-sm px-4" ng-disabled="disableExcelButton" ng-click="excel()">Excel</button>
-                    </div>
+                    <table ng-show="showTable" class="table table-bordered table-sm mt-3" style="font-size:15px" id="tableData">
+                        <thead>
+                            <tr style="background-color:skyblue">
+                                <th class="text-center">Sl#</th>
+                                <th class="text-center">Company Name</th>
+                                <th class="text-center">Service Name</th>
+                                <th class="text-center">Job Title</th>
+                                <th class="text-center">Price</th>
+                                @* <th class="text-center">Vat</th> *@
+                                <th class="text-center">Status</th>
+                                <th class="text-center">Invoice No</th>
+                                <th class="text-center">Post Date</th>
+                                <th class="text-center">Transaction No</th>
+                                <th class="text-center">Payment Mode</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in onlineData">
+                                <td class="text-center">{{$index + 1}}</td>
+                                <td class="text-center">{{data.companyName}}</td>
+                                <td class="text-center">{{data.serviceName}}</td>
+                                <td class="text-center">{{data.title}}</td>
+                                <td class="text-end">{{(data.price + data.vat) | number}}</td>
+                                @* <td class="text-end">{{data.vat | number}}</td> *@
+                                <td class="text-center">{{data.status}}</td>
+                                <td class="text-center">{{data.invoiceNo}}</td>
+                                <td class="text-center">{{data.postDate | date: "dd-MM-yyyy"}}</td>
+                                <td class="text-center">{{data.transactionNo}}</td>
+                                <td class="text-center">{{data.paymentMode}}</td>
+                                @* <td class="text-center" ng-if="data.status == 'Success'">
+                                <button class="btn btn-success btn-sm" ng-click="Rick(data.jP_ID)">Reconcile</button>
+                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner"></span>
+                                </td> *@
+                                <td class="text-center" ng-if="data.status == 'Failed'">
+                                    <button class="btn btn-success btn-sm" ng-click="Rick($index)">Reconcile</button>
+                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner[$index]"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tfoot>
+                            <tr style="font-weight:bold">
+                                <td colspan="4" style="text-align:right">Total</td>
+                                <td>{{totalSumPriceVat | number}}</td>
+                                @* <td>{{totalVat | number}}</td> *@
+                                <td colspan="6"></td>
+                            </tr>
+                        </tfoot>
+                    </table>
                 </div>
             </div>
-            <table ng-show="showTable" class="table table-bordered table-sm mt-3" style="font-size:15px" id="tableData">
-                <thead>
-                    <tr style="background-color:skyblue">
-                        <th class="text-center">Sl#</th>
-                        <th class="text-center">Company Name</th>
-                        <th class="text-center">Service Name</th>
-                        <th class="text-center">Job Title</th>
-                        <th class="text-center">Price</th>
-                        @* <th class="text-center">Vat</th> *@
-                        <th class="text-center">Status</th>
-                        <th class="text-center">Invoice No</th>
-                        <th class="text-center">Post Date</th>
-                        <th class="text-center">Transaction No</th>
-                        <th class="text-center">Payment Mode</th>
-                        <th class="text-center">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr ng-repeat="data in onlineData">
-                        <td class="text-center">{{$index + 1}}</td>
-                        <td class="text-center">{{data.companyName}}</td>
-                        <td class="text-center">{{data.serviceName}}</td>
-                        <td class="text-center">{{data.title}}</td>
-                        <td class="text-end">{{(data.price + data.vat) | number}}</td>
-                        @* <td class="text-end">{{data.vat | number}}</td> *@
-                        <td class="text-center">{{data.status}}</td>
-                        <td class="text-center">{{data.invoiceNo}}</td>
-                        <td class="text-center">{{data.postDate | date: "dd-MM-yyyy"}}</td>
-                        <td class="text-center">{{data.transactionNo}}</td>
-                        <td class="text-center">{{data.paymentMode}}</td>
-                        @* <td class="text-center" ng-if="data.status == 'Success'">
-                        <button class="btn btn-success btn-sm" ng-click="Rick(data.jP_ID)">Reconcile</button>
-                        &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner"></span>
-                        </td> *@
-                        <td class="text-center" ng-if="data.status == 'Failed'">
-                            <button class="btn btn-success btn-sm" ng-click="Rick($index)">Reconcile</button>
-                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner[$index]"></span>
-                        </td>
-                    </tr>
-                </tbody>
-                <tfoot>
-                    <tr style="font-weight:bold">
-                        <td colspan="4" style="text-align:right">Total</td>
-                        <td>{{totalSumPriceVat | number}}</td>
-                        @* <td>{{totalVat | number}}</td> *@
-                        <td colspan="6"></td>
-                    </tr>
-                </tfoot>
-            </table>
         </div>
     </div>
 </div>
