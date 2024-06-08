@@ -323,8 +323,8 @@ namespace AccountingSystem.Repository
             {
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {                   
-                    await _db.ExecuteAsync("[dbo].[INSERT_employee_From _ACS]", new { }, commandType: CommandType.StoredProcedure);
-                    res = "Imported Successfully from ACS";
+                    var result = await _db.ExecuteAsync("[dbo].[INSERT_employee_From _ACS]", new { }, commandType: CommandType.StoredProcedure);
+                    res = $"{result} rows imported successfully from ACS.";
                 }
             }
             catch (Exception ex)
