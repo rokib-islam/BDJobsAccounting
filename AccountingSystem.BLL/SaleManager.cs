@@ -155,5 +155,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.SMSAlertApplyLimitCountForBilling(ServiceName);
         }
+
+        public Task<dynamic> PostSMSAlertApplyLimitSalePostingEmployeer(CVAndSMSPurchesModel data)
+        {
+            return _repository.PostSMSAlertApplyLimitSalePostingEmployeer(data);
+        }
     }
 }

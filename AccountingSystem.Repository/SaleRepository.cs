@@ -853,7 +853,7 @@ namespace AccountingSystem.Repository
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
                 {
 
-                    var result = (await _db.QueryAsync<MonetizationPosting>("USP_SMSAlert_ApplyLimit_Sale_Postings_New", new { ServiceName = ServiceName },
+                    var result = (await _db.QueryAsync<MonetizationPosting>("USP_SMSAlert_ApplyLimit_Sale_Postings_JobSeeker", new { ServiceName = ServiceName },
                         commandType: CommandType.StoredProcedure)).FirstOrDefault();
 
                     return result;
@@ -908,6 +908,45 @@ namespace AccountingSystem.Repository
             catch (Exception ex)
             {
 
+                throw ex;
+            }
+
+        }
+        public async Task<dynamic> PostSMSAlertApplyLimitSalePostingEmployeer(CVAndSMSPurchesModel data)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    data.OPID,
+                    data.ClientID,
+                    data.CP_ID,
+                    data.Acc_Id,
+                    data.Quantity,
+                    data.ServiceGroup,
+                    data.ServiceID,
+                    data.ReceivedDate,
+                    data.TransDate,
+                    data.PaidAmount,
+                    data.Amount,
+                    data.DetailInfo,
+                    data.TransID,
+                    data.PaidBy,
+                    data.ServiceName
+                };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {
+
+                    var result = (await _db.QueryAsync<dynamic>("USP_SMSAlert_ApplyLimit_Sale_Postings_Employeer", parameters,
+                        commandType: CommandType.StoredProcedure)).FirstOrDefault();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
                 throw ex;
             }
 

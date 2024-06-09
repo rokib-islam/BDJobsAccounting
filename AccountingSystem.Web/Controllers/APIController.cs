@@ -7,13 +7,14 @@ namespace AccountingSystem.Web.Controllers
     public class APIController : Controller
     {
         private readonly IInvoiceManager _InvoiceManager;
-       
+        private readonly ISaleManager _SaleManager;
 
 
-        public APIController(IInvoiceManager InvoiceManagerManager)
+
+        public APIController(IInvoiceManager InvoiceManagerManager, ISaleManager saleManager)
         {
             _InvoiceManager = InvoiceManagerManager;
-           
+            _SaleManager = saleManager;
         }
 
         [HttpPost]
@@ -81,6 +82,15 @@ namespace AccountingSystem.Web.Controllers
         public async Task<IActionResult> AutoCashCollection_For_Payment_Doc_test([FromBody] CashCollectionAutoViewModel OnlineInvoice)
         {
             var responseList = await _InvoiceManager.AutoCashCollection_For_Payment_Doc_test(OnlineInvoice);
+
+            return await Task.FromResult(Ok(responseList));
+        }
+
+        [HttpPost]
+        [Route("api/PostSMSAlertApplyLimitSalePostingEmployeer")]
+        public async Task<IActionResult> PostSMSAlertApplyLimitSalePostingEmployeer([FromBody] CVAndSMSPurchesModel data)
+        {
+            var responseList = await _SaleManager.PostSMSAlertApplyLimitSalePostingEmployeer(data);
 
             return await Task.FromResult(Ok(responseList));
         }
