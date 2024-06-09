@@ -89,5 +89,41 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
+        public async Task<IActionResult> InsertOrUpdateGrossSalary([FromBody] Acknowledgement_GrossSalary_TA_Model model)
+        {
+            var result = await _EmployeeManager.InsertOrUpdateGrossSalary(model);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> GetGrossSalaryByEmployeeId(int employeeId)
+        {
+            var result = await _EmployeeManager.GetGrossSalaryByEmployeeId(employeeId);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> InsertOrUpdateTA([FromBody] Acknowledgement_GrossSalary_TA_Model model)
+        {
+            var result = await _EmployeeManager.InsertOrUpdateTA(model);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> GetTaByEmployeeId(int employeeId)
+        {
+            var result = await _EmployeeManager.GetTaByEmployeeId(employeeId);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> LoadAllEmployeeInfo()
+        {
+            var result = await _EmployeeManager.LoadAllEmployeeInfo();
+            return Json(result);
+        }
+
+        public async Task<IActionResult> ImportACS()
+        {
+            var result = await _EmployeeManager.ImportACS();
+            return Json(result);
+        }
+
     }
 }

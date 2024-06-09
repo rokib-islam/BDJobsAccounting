@@ -4,190 +4,202 @@
     var userId = Context.Session.GetInt32("UserID");
 }
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
-<div ng-app="myApp">
-    <div ng-controller="myController">
-        <div class="row">
-            <h5 style="margin-top:-10px" class="alert-primary text-center">Online Payment Varification</h5>
 
-            <div class="col-sm-2">
-                <label>From Date:</label>
-                <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
-            </div>
-            <div class="col-sm-2">
-                <label>To Date:</label>
-                <input type="date" class="form-control form-control-sm" ng-model="toDate" />
-            </div>
-            <div class="col-sm-2">
-                <label>Status:</label>
-                <select class="form-control form-control-sm" ng-model="verified">
-                    <option value="">All</option>
-                    <option value="1">Verified</option>
-                    <option value="2">Rejected</option>
-                </select>
-            </div>
-            <div class="col-sm-2">
-                <label>Payment Mode:</label>
-                <select class="form-control form-control-sm" ng-model="PaymentMode">
-                    <option value="">All</option>
-                    <option value="1">Bkash</option>
-                    <option value="2">Nagad</option>
-                    <option value="3">Upay</option>
-                    @* <option value="4">Bank Deposit</option>
-                    <option value="5">Bank Transfer</option>
-                    <option value="6">Nexus Pay</option> *@
-                    <option value="7">Southeast Bank PLC</option>
-                    <option value="8">Brac Bank PLC</option>
-                    <option value="9">Mutual Trust Bank PLC</option>
-                    <option value="10">United Commercial Bank PLC</option>
-                    <option value="11">Dutch-Bangla Bank PLC</option>
-                    <option value="12">Standard Chartered Bank</option>
-
-
-                   
-
-                </select>
-            </div>
-            <div class="col-sm-3 mt-4">
-                <button class="btn btn-primary btn-sm px-4" ng-click="search()">Search
-                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
-                </button>
-            </div>
-
-
-            <div class="col-sm-12">
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
                 <div class="row">
-                    <div class="col-sm-5">
-                        <div class="pull-left text-left" style="margin-top:20px;" ng-show="isVisible">
-                            Show
-                            <select id="page" ng-model="itemsPerPage">
-                                <option value="10">10</option>
-                                <option value="20">20</option>
-                                <option value="40">40</option>
-                                <option value="50" selected>50</option>
-                                <option value="60">60</option>
-                                <option value="80">80</option>
-                                <option value="100">100</option>
-                                <option value="500">500</option>
-                                <option value="1000">1000</option>
-                                <option value="3000">3000</option>
-                                <option value="5000">5000</option>
-                                <option value="10000">10000</option>
-                                <option value="10000000">All</option>
-                            </select>
-                            entries per page. (Total:{{totalItems}} data)
+                    <h4 style="margin-top:-10px" class="text-center">Online Payment Varification</h4>
 
-                        </div>
+                    <div class="col-sm-3">
+                        <label>From Date:</label>
+                        <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
                     </div>
-                    <div class="col-sm-7 d-flex justify-content-end">
-                        <nav aria-label="..." class="mt-3">
-                            <ul class="pagination">
-                                <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
-                                    <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
-                                        <span aria-hidden="true">&laquo;</span>
-                                    </a>
-                                </li>
-
-                                <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
-                                    <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
-                                </li>
-
-                                <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
-                                    <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
-                                        <span aria-hidden="true">&raquo;</span>
-                                    </a>
-                                </li>
-                            </ul>
-                        </nav>
+                    <div class="col-sm-3">
+                        <label>To Date:</label>
+                        <input type="date" class="form-control form-control-sm" ng-model="toDate" />
                     </div>
-                </div>
-                
-            </div>
-
-            <table ng-show="showTable" class="table table-bordered table-sm mt-1" style="font-size:15px">
-                <tr style="background-color:skyblue ; text-align: center">
-                    <th>#</th>
-                    <th>Bill</th>
-                    <th>Company</th>
-                    <th>Service</th>
-                    <th>Billing Contact Info</th>
-                    <th>Paid Amount</th>
-                    <th>Claient Comment</th>
-                    <th>TDS & VDS</th>
-                    <th>Payment Mode</th>
-                   
-                    <th>Payment Info</th>
-                    <th>Action</th>
-                </tr>
-                <tbody>
-                    <tr ng-repeat="data in paymentVarificationData">
-                        <td>{{$index + 1}}</td>
-                        <td>Question: {{data.quotationID}} <br />
-                            {{data.quotationNo}} <br /> 
-                            {{data.uploadDateTime}}
-                        </td>
-                        <td>{{data.companyName}} <br /> 
-                            {{data.companyAddress}} <br /> 
-                            Company ID: {{data.companyID}} <br /> 
-                            AGM: {{data.companyAGM}}
-                        </td>
-                        <td>{{data.serviceName}} <br /> 
-                            {{data.jobTitle}} <br /> 
-                            Invoice No: {{data.invoiceNo}} <br />
-                            Job ID: {{data.jobID}} <br /> 
-                            Total Cost: {{data.totalCost}}
-                        </td>
-                        <td>{{data.billerName}} <br /> 
-                            {{data.billerEmail}} <br /> 
-                            {{data.billerMobile}}
-                        </td>
+                    <div class="col-sm-2">
+                        <label>Status:</label>
+                        <select class="form-control form-control-sm" ng-model="verified">
+                            <option value="">All</option>
+                            <option value="1">Verified</option>
+                            <option value="2">Rejected</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <label>Payment Mode:</label>
+                        <select class="form-control form-control-sm" ng-model="PaymentMode">
+                            <option value="">All</option>
+                            <option value="1">Bkash</option>
+                            <option value="2">Nagad</option>
+                            <option value="3">Upay</option>
+                            @* <option value="4">Bank Deposit</option>
+                            <option value="5">Bank Transfer</option>
+                            <option value="6">Nexus Pay</option> *@
+                            <option value="7">Southeast Bank PLC</option>
+                            <option value="8">Brac Bank PLC</option>
+                            <option value="9">Mutual Trust Bank PLC</option>
+                            <option value="10">United Commercial Bank PLC</option>
+                            <option value="11">Dutch-Bangla Bank PLC</option>
+                            <option value="12">Standard Chartered Bank</option>
 
 
-                        <td style="text-align: right;">
-                            {{data.paidAmount}}
-                        </td>
-                        <td>
-                            {{data.clientComment}}
-                        </td>
-                        <td>
-                            TDS : {{data.tds}} <br />
-                            VDS : {{data.vds}} <br />
-                            
-                        </td>
-                        <td>
-                            {{data.paymentType}}
-                        </td>
 
-                        <td>
-                            {{data.referenceNo}} <br />
-                            <a href="{{data.paymentDocumentLink}}" target="_blank">Payment Document Link</a>
-                        </td>
-                       @*  <td>
-                            {{data.billerEmail}} <br />
-                            {{data.billerMobile}}
-                        </td> *@
-                        <td>
-                            <span ng-if="data.verified == 1">Verified</span>
-                            <span ng-if="data.verified == 2">Rejected <br /> 
-                                comment: {{data.comment}}</span>
-                            <div ng-if="!data.verified">
-                                <input type="radio" ng-model="data.verification" value="1"> Verify<br />
-                                <input type="radio" ng-model="data.verification" value="2"> Reject
-                                <div ng-show="data.verification == 1">
-                                    <input type="text" class="form-control form-control-sm" ng-model="data.TDS" placeholder="TDS" ng-disabled="data.totalCost === data.paidAmount" ng-change="updateTDS(data)"><br />
-                                    <input type="text" class="form-control form-control-sm" ng-model="data.VDS" placeholder="VDS" ng-disabled="data.totalCost === data.paidAmount" ng-change="updateVDS(data)"><br />
-                                    JDate :<input type="date" class="form-control form-control-sm" ng-model="JDate" placeholder="JDate">
+
+                        </select>
+                    </div>
+                    <div class="col-sm-2 mt-4">
+                        <button class="btn btn-primary btn-sm px-4" ng-click="search()">
+                            Search
+                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
+                        </button>
+                    </div>
+
+
+                    <div class="col-sm-12">
+                        <div class="row">
+                            <div class="col-sm-5">
+                                <div class="pull-left text-left" style="margin-top:20px;" ng-show="isVisible">
+                                    Show
+                                    <select id="page" ng-model="itemsPerPage">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="40">40</option>
+                                        <option value="50" selected>50</option>
+                                        <option value="60">60</option>
+                                        <option value="80">80</option>
+                                        <option value="100">100</option>
+                                        <option value="500">500</option>
+                                        <option value="1000">1000</option>
+                                        <option value="3000">3000</option>
+                                        <option value="5000">5000</option>
+                                        <option value="10000">10000</option>
+                                        <option value="10000000">All</option>
+                                    </select>
+                                    entries per page. (Total:{{totalItems}} data)
+
                                 </div>
-                                <div ng-show="data.verification == 2">
-                                    <textarea type="text" class="form-control form-control-sm" ng-model="data.Comment" placeholder="Reject Comment"></textarea>
-                                </div>
-                                
-                                <button class="btn btn-success btn-sm mt-1" ng-click="submit(data.quotationID, data.verification,data.Comment,data.TDS,data.VDS,JDate )">Submit</button>
                             </div>
-                        </td>
+                            <div class="col-sm-7 d-flex justify-content-end">
+                                <nav aria-label="..." class="mt-3">
+                                    <ul class="pagination">
+                                        <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                            <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
 
-                    </tr>
-                </tbody>
-            </table>
+                                        <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                            <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                        </li>
+
+                                        <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                            <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <table ng-show="showTable" class="table table-bordered table-sm mt-1" style="font-size:15px">
+                        <tr style="background-color:skyblue ; text-align: center">
+                            <th>#</th>
+                            <th>Bill</th>
+                            <th>Company</th>
+                            <th>Service</th>
+                            <th>Billing Contact Info</th>
+                            <th>Paid Amount</th>
+                            <th>Claient Comment</th>
+                            <th>TDS & VDS</th>
+                            <th>Payment Mode</th>
+
+                            <th>Payment Info</th>
+                            <th>Action</th>
+                        </tr>
+                        <tbody>
+                            <tr ng-repeat="data in paymentVarificationData">
+                                <td>{{$index + 1}}</td>
+                                <td>
+                                    Question: {{data.quotationID}} <br />
+                                    {{data.quotationNo}} <br />
+                                    {{data.uploadDateTime}}
+                                </td>
+                                <td>
+                                    {{data.companyName}} <br />
+                                    {{data.companyAddress}} <br />
+                                    Company ID: {{data.companyID}} <br />
+                                    AGM: {{data.companyAGM}}
+                                </td>
+                                <td>
+                                    {{data.serviceName}} <br />
+                                    {{data.jobTitle}} <br />
+                                    Invoice No: {{data.invoiceNo}} <br />
+                                    Job ID: {{data.jobID}} <br />
+                                    Total Cost: {{data.totalCost}}
+                                </td>
+                                <td>
+                                    {{data.billerName}} <br />
+                                    {{data.billerEmail}} <br />
+                                    {{data.billerMobile}}
+                                </td>
+
+
+                                <td style="text-align: right;">
+                                    {{data.paidAmount}}
+                                </td>
+                                <td>
+                                    {{data.clientComment}}
+                                </td>
+                                <td>
+                                    TDS : {{data.tds}} <br />
+                                    VDS : {{data.vds}} <br />
+
+                                </td>
+                                <td>
+                                    {{data.paymentType}}
+                                </td>
+
+                                <td>
+                                    {{data.referenceNo}} <br />
+                                    <a href="{{data.paymentDocumentLink}}" target="_blank">Payment Document Link</a>
+                                </td>
+                                @*  <td>
+                                {{data.billerEmail}} <br />
+                                {{data.billerMobile}}
+                                </td> *@
+                                <td>
+                                    <span ng-if="data.verified == 1">Verified</span>
+                                    <span ng-if="data.verified == 2">
+                                        Rejected <br />
+                                        comment: {{data.comment}}
+                                    </span>
+                                    <div ng-if="!data.verified">
+                                        <input type="radio" ng-model="data.verification" value="1"> Verify<br />
+                                        <input type="radio" ng-model="data.verification" value="2"> Reject
+                                        <div ng-show="data.verification == 1">
+                                            <input type="text" class="form-control form-control-sm" ng-model="data.TDS" placeholder="TDS" ng-disabled="data.totalCost === data.paidAmount" ng-change="updateTDS(data)"><br />
+                                            <input type="text" class="form-control form-control-sm" ng-model="data.VDS" placeholder="VDS" ng-disabled="data.totalCost === data.paidAmount" ng-change="updateVDS(data)"><br />
+                                            JDate :<input type="date" class="form-control form-control-sm" ng-model="JDate" placeholder="JDate">
+                                        </div>
+                                        <div ng-show="data.verification == 2">
+                                            <textarea type="text" class="form-control form-control-sm" ng-model="data.Comment" placeholder="Reject Comment"></textarea>
+                                        </div>
+
+                                        <button class="btn btn-success btn-sm mt-1" ng-click="submit(data.quotationID, data.verification,data.Comment,data.TDS,data.VDS,JDate )">Submit</button>
+                                    </div>
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -204,7 +216,7 @@
             $scope.maxPageLength = 5;
             $scope.currentPage = 1;
             $scope.totalItems = 0;
-           
+
         })
         $scope.JDate = new Date();
         $scope.updateVDS = function (data) {

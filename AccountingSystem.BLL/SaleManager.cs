@@ -17,9 +17,9 @@ namespace AccountingSystem.BLL
         {
             await _repository.FixDownloadIssue();
         }
-        public async Task<List<JobListV2ViewModel>> GetOnlineJobList(string CName, int Verified, int LedgerID)
+        public async Task<List<JobListV2ViewModel>> GetOnlineJobList(string FromDate, string ToDate, string CName, int Verified, int LedgerID)
         {
-            return await _repository.GetOnlineJobList(CName, Verified, LedgerID);
+            return await _repository.GetOnlineJobList(FromDate, ToDate, CName, Verified, LedgerID);
         }
         public async Task<List<JobViewModel>> GetJobs(int cpId, string date, int adType, int adRegion)
         {
@@ -145,6 +145,15 @@ namespace AccountingSystem.BLL
         public Task<MonetizationPosting> PostSMSAlertApplyLimitSalePostingNew(string ServiceName)
         {
             return _repository.PostSMSAlertApplyLimitSalePostingNew(ServiceName);
+        }
+        public Task<List<AutoBillingModel_Response>> AutoBillingData(AutoBillingModel model)
+        {
+            return _repository.AutoBillingData(model);
+        }
+
+        public Task<int> SMSAlertApplyLimitCountForBilling(string ServiceName)
+        {
+            return _repository.SMSAlertApplyLimitCountForBilling(ServiceName);
         }
     }
 }

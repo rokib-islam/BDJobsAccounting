@@ -7,7 +7,7 @@ namespace AccountingSystem.Abstractions.BLL
     {
         //Users GetUsers(string userName, string password);
         Task FixDownloadIssue();
-        Task<List<JobListV2ViewModel>> GetOnlineJobList(string CName, int Verified, int LedgerID);
+        Task<List<JobListV2ViewModel>> GetOnlineJobList(string FromDate, string ToDate, string CName, int Verified, int LedgerID);
         Task<List<JobViewModel>> GetJobs(int cpId, string date, int adType, int adRegion);
         Task DeleteOnlineJob(int jpId);
         Task<bool> IsAllUploaded();
@@ -34,5 +34,7 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<SalesPerson>> GetSalesPersonListByKey(string startingKey);
         Task<int> DownloadCandidateMonetizationAsync();
         Task<MonetizationPosting> PostSMSAlertApplyLimitSalePostingNew(string ServiceName);
+        Task<List<AutoBillingModel_Response>> AutoBillingData(AutoBillingModel model);
+        Task<int> SMSAlertApplyLimitCountForBilling(string ServiceName);
     }
 }

@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                        <script type="text/javascript">
-                                            window.location.href = '@Url.Action("Index", "Home")';
-                                        </script>
+        <script type="text/javascript">
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
     }
     else
     {
@@ -21,7 +21,7 @@
 <style>
     .selected-row {
         border: 2px solid black !important;
-        background-color:lightgray;
+        background-color: lightgray;
     }
 
     .custom-margin-top {
@@ -34,562 +34,564 @@
 </style>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
-
-<div ng-app="myApp">
-    <div ng-controller="myController">
-        <div class="row" style="font-size:14px !important">
-            <h4 class="alert-primary text-center" style="margin-top:-10px">Cash Collection</h4>
-
-            <div class="col-sm-6">
-                <div class="form-group row">
-                    <label class="col-sm-3 col-form-label">Company</label>
-                    <div class="col-sm-9">
-                        <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="company" ng-keyup="searchCompany(company)">
-                    </div>
-                </div>
-                <div>Select a company</div>
-                <select class="form-control form-control-sm" size="15" ng-model="comList" style="height:225px;border:1px solid lightgray">
-                    <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
-                </select>
-
-                <div class="row mt-2">
-                    <div class="col-sm-6">
-                        <label class="fw-bold">Payment List</label>
-                    </div>
-                    <div class="col-sm-6">
-                        <button class="btn btn-info btn-sm float-end px-4"><strong>Unpaid</strong></button>
-                    </div>
-                </div>
-
-                <div class="mt-2" style="height: 165px; overflow-y: auto;border:1px solid lightgray">
-                    <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
-                        <thead class="thead-light">
-                            <tr class="text-center">
-                                <th class="border">Sl#</th>
-                                <th class="border">Payment</th>
-                                <th class="border acenter">Tax</th>
-                                <th class="border">Date</th>
-                                <th class="border">Posted</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="o in paymentListData" ng-click="selectRowForpaymentList(o)" ng-class="{ 'selected-row': o === selectedRowForpaymentList }" ng-style="{'background-color': o.badDebt ? '#FF8080' : ''}">
-                                <td class="border text-center">{{$index + 1}}</td>
-                                <td class="border text-end">{{o.cash}}</td>
-                                <td class="border text-end">{{o.salesTax}}</td>
-                                <td class="border text-center">{{o.receivedDate}}</td>
-                                <td class="border text-center">{{o.posted ? 'Yes' : 'No'}}</td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <h4 class="text-center" style="margin-top:-10px">Cash Collection</h4>
                 <div class="row mt-3">
-                    <div class="col-sm-4">
-                        <button class="btn btn-primary btn-sm px-4" ng-click="performAction('UPDATE')" ng-disabled="showBtnUpdate"><strong>Update</strong></button>
-                    </div>
-                    <div class="col-sm-4">
-                        <button class="btn btn-success btn-sm px-4" ng-click="performAction('INSERT')" ng-disabled="showBtnInsert">
-                            <strong>Insert</strong>
-                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
-                        </button>
-                    </div>
-                    <div class="col-sm-4">
-                        <button class="btn btn-info btn-sm" ng-click="postToOnlineBtn()"><strong>Post to Online</strong></></button>
-                    </div>
-                </div>
-
-                <div class="row">
-                    <div class="col-sm-12">
-                        <fieldset class="border p-2">
-                            <legend class="float-none w-auto p-2 fs-6 fw-bold">
-                                Cheque Bounced Section
-                            </legend>
-
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="row">
-                                        <div class="col-sm-6">
-                                            <div class="row">
-                                                <div class="col-sm-1"><input type="checkbox" ng-model="isBounced" ng-disabled="bouncedChequeFieldsDisabled" ng-change="bouncedChequeFieldsEmpty()"></div>
-                                                <div class="col-sm-10">IsBounced</div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-6">
-                                            <div class="row">
-                                                <div class="col-sm-4">Cheque No</div>
-                                                <div class="col-sm-8"><input type="text" class="form-control form-control-sm text-end" ng-model="chequeNo" ng-disabled="bouncedChequeFieldsDisabled"></div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="col-sm-6">
+                        <div class="form-group row">
+                            <label class="col-sm-3 col-form-label">Company</label>
+                            <div class="col-sm-9">
+                                <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="company" ng-keyup="searchCompany(company)">
                             </div>
+                        </div>
+                        <div>Select a company</div>
+                        <select class="form-control form-control-sm" size="15" ng-model="comList" style="height:225px;border:1px solid lightgray">
+                            <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                        </select>
 
-                            <div class="row">
-                                <div class="col-sm-12">
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <label class="fw-bold">Payment List</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-info btn-sm float-end px-4"><strong>Unpaid</strong></button>
+                            </div>
+                        </div>
+
+                        <div class="mt-2" style="height: 165px; overflow-y: auto;border:1px solid lightgray">
+                            <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th class="border">Sl#</th>
+                                        <th class="border">Payment</th>
+                                        <th class="border acenter">Tax</th>
+                                        <th class="border">Date</th>
+                                        <th class="border">Posted</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="o in paymentListData" ng-click="selectRowForpaymentList(o)" ng-class="{ 'selected-row': o === selectedRowForpaymentList }" ng-style="{'background-color': o.badDebt ? '#FF8080' : ''}">
+                                        <td class="border text-center">{{$index + 1}}</td>
+                                        <td class="border text-end">{{o.cash}}</td>
+                                        <td class="border text-end">{{o.salesTax}}</td>
+                                        <td class="border text-center">{{o.receivedDate}}</td>
+                                        <td class="border text-center">{{o.posted ? 'Yes' : 'No'}}</td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-sm-4">
+                                <button class="btn btn-primary btn-sm px-4" ng-click="performAction('UPDATE')" ng-disabled="showBtnUpdate"><strong>Update</strong></button>
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-success btn-sm px-4" ng-click="performAction('INSERT')" ng-disabled="showBtnInsert">
+                                    <strong>Insert</strong>
+                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
+                                </button>
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-info btn-sm" ng-click="postToOnlineBtn()"><strong>Post to Online</strong></></button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <fieldset class="border p-2">
+                                    <legend class="float-none w-auto p-2 fs-6 fw-bold">
+                                        Cheque Bounced Section
+                                    </legend>
+
                                     <div class="row">
-                                        <div class="col-sm-6 mt-1">
+                                        <div class="col-sm-12">
                                             <div class="row">
-                                                <div class="col-sm-4">Date</div>
-                                                <div class="col-sm-8">
-                                                    <input type="date" class="form-control form-control-sm select" ng-model="bouncedDate" ng-disabled="bouncedChequeFieldsDisabled">
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-1"><input type="checkbox" ng-model="isBounced" ng-disabled="bouncedChequeFieldsDisabled" ng-change="bouncedChequeFieldsEmpty()"></div>
+                                                        <div class="col-sm-10">IsBounced</div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6">
+                                                    <div class="row">
+                                                        <div class="col-sm-4">Cheque No</div>
+                                                        <div class="col-sm-8"><input type="text" class="form-control form-control-sm text-end" ng-model="chequeNo" ng-disabled="bouncedChequeFieldsDisabled"></div>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-6 mt-1">
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-sm-12">
                                             <div class="row">
-                                                <div class="col-sm-4">Amount</div>
-                                                <div class="col-sm-8"><input type="text" class="form-control form-control-sm text-end" value="0.00" ng-model="bouncedAmount" ng-disabled="bouncedChequeFieldsDisabled"></div>
+                                                <div class="col-sm-6 mt-1">
+                                                    <div class="row">
+                                                        <div class="col-sm-4">Date</div>
+                                                        <div class="col-sm-8">
+                                                            <input type="date" class="form-control form-control-sm select" ng-model="bouncedDate" ng-disabled="bouncedChequeFieldsDisabled">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-6 mt-1">
+                                                    <div class="row">
+                                                        <div class="col-sm-4">Amount</div>
+                                                        <div class="col-sm-8"><input type="text" class="form-control form-control-sm text-end" value="0.00" ng-model="bouncedAmount" ng-disabled="bouncedChequeFieldsDisabled"></div>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </div>
 
-                            <div class="row mt-1">
-                                <div class="col-sm-12">
-                                    <div class="row">
-                                        <div class="col-sm-1">Note</div>
-                                        <div class="col-sm-11">
-                                            <textarea type="text" class="form-control form-control-sm" ng-model="bouncedNote" ng-disabled="bouncedChequeFieldsDisabled"></textarea>
+                                    <div class="row mt-1">
+                                        <div class="col-sm-12">
+                                            <div class="row">
+                                                <div class="col-sm-2">Note</div>
+                                                <div class="col-sm-10">
+                                                    <textarea type="text" class="form-control form-control-sm" ng-model="bouncedNote" ng-disabled="bouncedChequeFieldsDisabled"></textarea>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="mt-2">
+                                        <button type="button" class="btn btn-success btn-sm float-end" ng-click="submit()" ng-disabled="bouncedChequeFieldsDisabled"><strong>Submit</strong></button>
+                                    </div>
+                                </fieldset>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <label>Show due invoices &nbsp; <input type="checkbox" ng-model="due" ng-change="getInvoices()" /></label>
+                            </div>
+                            <div class="col-sm-6">
+                                <label class="float-end"><input type="checkbox" ng-model="paid" ng-change="getInvoices()" />&nbsp; Show paid invoices </label>
+                            </div>
+                        </div>
+                        <div class="mt-2" style="height: 183px; overflow-y: auto;border:1px solid lightgray">
+                            <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
+                                <thead class="thead-light">
+                                    <tr class="text-center">
+                                        <th class="border">Sl#</th>
+                                        <th class="border">Invoice No.</th>
+                                        <th class="border acenter">Amount</th>
+                                        <th class="border">Uploaded</th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="o in invoiceData" ng-click="selectRow(o)" ng-class="{ 'selected-row': o === selectedRow }">
+                                        <td class="border text-center">{{$index + 1}}</td>
+                                        <td class="border text-center">{{o.invoice_No}}</td>
+                                        <td class="border text-end">{{o.tAmount}}</td>
+                                        <td class="border text-center">{{o.uploadedPaymentStatus}}</td>
+
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="row mt-2">
+                            <div class="col-sm-6">
+                                <label class="fw-bold">Sales List</label>
+                            </div>
+                            <div class="col-sm-6">
+                                <button class="btn btn-info btn-sm float-end"><strong>Collection Note</strong></button>
+                            </div>
+                        </div>
+                        <div class="mt-2" style="height:100px; overflow-y: auto;border:1px solid lightgray">
+                            <table class="table table-bordered table-hover table-sm">
+                                <tbody>
+                                    <tr ng-repeat="o in salesListData" ng-click="selectRowForSalesList(o)" ng-class="{ 'selected-row': o === selectedRowForSalesList }">
+                                        <td>{{$index+1}}. {{o.sbName}} TK. {{o.amount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <fieldset class="border p-2">
+                            <legend class="float-none w-auto p-2 fs-6 fw-bold">Payment Nature</legend>
+                            <div class="row">
+                                <div class="col-sm-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4">Date</label>
+                                        <div class="col-sm-8">
+                                            <input type="date" ng-model="receivedDate" class="form-control form-control-sm" />
+
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group row">
+                                        <label class="col-sm-4">Amount</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" ng-model="amount" class="form-control form-control-sm" style="text-align:right" />
+                                        </div>
+                                    </div>
+                                </div>
 
-                            <div class="mt-2">
-                                <button type="button" class="btn btn-success btn-sm float-end" ng-click="submit()" ng-disabled="bouncedChequeFieldsDisabled"><strong>Submit</strong></button>
+                                <div class="mt-2">
+                                    <div class="border-bottom border-1">Payment Status</div>
+                                </div>
+
+                                <div class="col-sm-12 mt-2">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+
+                                            <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'bKashAgentCollection' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-12 px-1" ng-click="toggleFieldset('bKashAgentCollection', 16, 31259)">
+                                                        <div class="col-sm-12">
+                                                            bKash Agent Collection
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'BankInfo' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-sm-12" ng-click="toggleFieldset('BankInfo', 2, 0)">
+                                                        <div class="col-sm-12">
+                                                            Cheque
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" ng-show="showFieldset === 'BankInfo'">
+                                                    <div class="col-sm-12">
+                                                        <fieldset class="border p-2">
+                                                            <legend class="float-none w-auto p-2 fs-6">
+                                                                Bank Info
+                                                            </legend>
+                                                            <div class="row custom-margin-top">
+                                                                <div class="col-sm-12">
+                                                                    <div class="row">
+                                                                        <div class="col-sm-12">
+                                                                            <select class="form-select form-select-sm" ng-model="ledgerList">
+                                                                                <option value=""></option>
+                                                                                <option ng-repeat="ledger in allLedgerData" value="{{ledger.id}}">{{ledger.ladgerName}}</option>
+                                                                            </select>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="row" style="margin-top: 3px;">
+                                                                        <div class="col-sm-5">
+                                                                            Cheque No.
+                                                                        </div>
+                                                                        <div class="col-sm-7">
+                                                                            <input name="cheq no" type="text" ng-model="chequeNo" class="form-control form-control-sm">
+                                                                        </div>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'VATType' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-sm-12" ng-click="toggleFieldset('VATType', 3, 0)">
+                                                        <div class="col-sm-12">
+                                                            VAT
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" ng-show="showFieldset === 'VATType'">
+                                                    <div class="col-sm-12">
+                                                        <fieldset class="border p-2">
+                                                            <legend class="float-none w-auto p-2 fs-6">
+                                                                VAT Type
+                                                            </legend>
+                                                            <div class="row custom-margin-top">
+                                                                <div class="col-sm-12">
+                                                                    <select class="form-select form-select-sm" ng-model="vatType">
+                                                                        <option value=""></option>
+
+                                                                        <option value="28747">Accounts Receivable-VDS</option>
+                                                                        <option value="31074">Accounts Receivable-TDS</option>
+
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'BadDebt' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-12 px-1" ng-click="toggleFieldset('BadDebt', 4, 378)">
+                                                        <div class="col-sm-12">
+                                                            Bad Debt
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'Nagad' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-sm-12" ng-click="toggleFieldset('Nagad', 5, 28724)">
+                                                        <div class="col-sm-12">
+                                                            Nagad Mobile A/C
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" ng-show="showFieldset === 'Nagad'">
+                                                    <div class="col-sm-12">
+                                                        <fieldset class="border p-2">
+                                                            <legend class="float-none w-auto p-2 fs-6">
+                                                                Reference No:
+                                                            </legend>
+                                                            <div class="row custom-margin-top">
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" ng-model="refNagadNo" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SSL' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-sm-12" ng-click="toggleFieldset('SSL', 6, 849)">
+                                                        <div class="col-sm-12">
+                                                            SSL Marchant A/C
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" ng-show="showFieldset === 'SSL'">
+                                                    <div class="col-sm-12">
+                                                        <fieldset class="border p-2">
+                                                            <legend class="float-none w-auto p-2 fs-6">
+                                                                Reference No:
+                                                            </legend>
+                                                            <div class="row custom-margin-top">
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" ng-model="refSSLNo" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'bKash' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-sm-12" ng-click="toggleFieldset('bKash', 7, 1030)">
+                                                        <div class="col-sm-12">
+                                                            bKash Marchant A/C
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" ng-show="showFieldset === 'bKash'">
+                                                    <div class="col-sm-12">
+                                                        <fieldset class="border p-2">
+                                                            <legend class="float-none w-auto p-2 fs-6">
+                                                                Reference No:
+                                                            </legend>
+                                                            <div class="row custom-margin-top">
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" ng-model="refbKashNo" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'DiscountOfSales' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-12 px-1" ng-click="toggleFieldset('DiscountOfSales', 8, 850)">
+                                                        <div class="col-sm-12">
+                                                            Discount of Sales
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+
+                                        </div>
+
+                                        <div class="col-sm-6">
+                                            <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'AmarPay' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-sm-12" ng-click="toggleFieldset('AmarPay', 15, 31237)">
+                                                        <div class="col-sm-12">
+                                                            AmarPay Marchant A/C
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" ng-show="showFieldset === 'AmarPay'">
+                                                    <div class="col-sm-12">
+                                                        <fieldset class="border p-2">
+                                                            <legend class="float-none w-auto p-2 fs-6">
+                                                                Reference No:
+                                                            </legend>
+                                                            <div class="row custom-margin-top">
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" ng-model="refAmarNo" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SouthEast' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-sm-12" ng-click="toggleFieldset('SouthEast', 10, 411)">
+                                                        <div class="col-sm-12">
+                                                            Southeast
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" ng-show="showFieldset === 'SouthEast'">
+                                                    <div class="col-sm-12">
+                                                        <fieldset class="border p-2">
+                                                            <legend class="float-none w-auto p-2 fs-6">
+                                                                Reference No:
+                                                            </legend>
+                                                            <div class="row custom-margin-top">
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" ng-model="refSoutheastNo" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'Brac' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-sm-12" ng-click="toggleFieldset('Brac', 11, 851)">
+                                                        <div class="col-sm-12">
+                                                            Brac
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" ng-show="showFieldset === 'Brac'">
+                                                    <div class="col-sm-12">
+                                                        <fieldset class="border p-2">
+                                                            <legend class="float-none w-auto p-2 fs-6">
+                                                                Reference No:
+                                                            </legend>
+                                                            <div class="row custom-margin-top">
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" ng-model="refBracNo" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SCB' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-sm-12" ng-click="toggleFieldset('SCB', 12, 647)">
+                                                        <div class="col-sm-12">
+                                                            SCB
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" ng-show="showFieldset === 'SCB'">
+                                                    <div class="col-sm-12">
+                                                        <fieldset class="border p-2">
+                                                            <legend class="float-none w-auto p-2 fs-6">
+                                                                Reference No:
+                                                            </legend>
+                                                            <div class="row custom-margin-top">
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" ng-model="refSCBNo" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'UCB' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-sm-12" ng-click="toggleFieldset('UCB', 13, 28816)">
+                                                        <div class="col-sm-12">
+                                                            UCB
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" ng-show="showFieldset === 'UCB'">
+                                                    <div class="col-sm-12">
+                                                        <fieldset class="border p-2">
+                                                            <legend class="float-none w-auto p-2 fs-6">
+                                                                Reference No:
+                                                            </legend>
+                                                            <div class="row custom-margin-top">
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" ng-model="refUCBNo" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'OnlinePayment' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-sm-12" ng-click="toggleFieldset('OnlinePayment', 14, 2262)">
+                                                        <div class="col-sm-12">
+                                                            Online Payment Payable
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-sm-12" ng-show="showFieldset === 'OnlinePayment'">
+                                                    <div class="col-sm-12">
+                                                        <fieldset class="border p-2">
+                                                            <legend class="float-none w-auto p-2 fs-6">
+                                                                Reference No:
+                                                            </legend>
+                                                            <div class="row custom-margin-top">
+                                                                <div class="col-sm-12">
+                                                                    <input type="text" ng-model="refONLNo" class="form-control input-sm">
+                                                                </div>
+                                                            </div>
+                                                        </fieldset>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'OnlineCollection' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-12 px-1" ng-click="toggleFieldset('OnlineCollection', 9, 3342)">
+                                                        <div class="col-sm-12">
+                                                            Online Collection Charges
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'Cash' }">
+                                                <div class="col-sm-12 border-bottom border-1 pb-2">
+                                                    <div class="col-12 px-1" ng-click="toggleFieldset('Cash', 1, 46)">
+                                                        <div class="col-sm-12">
+                                                            Cash
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <input type="hidden" ng-model="payment" />
+                                            <input type="hidden" ng-model="paymentId" />
+                                            <input type="hidden" ng-model="accountReceivable" />
+                                            <input type="hidden" ng-model="invoiceNo" />
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </fieldset>
                     </div>
                 </div>
-
-            </div>
-            <div class="col-sm-6">
-                <div class="row">
-                    <div class="col-sm-6">
-                        <label>Show due invoices &nbsp; <input type="checkbox" ng-model="due" ng-change="getInvoices()" /></label>
-                    </div>
-                    <div class="col-sm-6">
-                        <label class="float-end"><input type="checkbox" ng-model="paid" ng-change="getInvoices()" />&nbsp; Show paid invoices </label>
-                    </div>
-                </div>
-                <div class="mt-2" style="height: 183px; overflow-y: auto;border:1px solid lightgray">
-                    <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
-                        <thead class="thead-light">
-                            <tr class="text-center">
-                                <th class="border">Sl#</th>
-                                <th class="border">Invoice No.</th>
-                                <th class="border acenter">Amount</th>
-                                <th class="border">Uploaded</th>
-
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr ng-repeat="o in invoiceData" ng-click="selectRow(o)" ng-class="{ 'selected-row': o === selectedRow }">
-                                <td class="border text-center">{{$index + 1}}</td>
-                                <td class="border text-center">{{o.invoice_No}}</td>
-                                <td class="border text-end">{{o.tAmount}}</td>
-                                <td class="border text-center">{{o.uploadedPaymentStatus}}</td>
-
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-
-                <div class="row mt-2">
-                    <div class="col-sm-6">
-                        <label class="fw-bold">Sales List</label>
-                    </div>
-                    <div class="col-sm-6">
-                        <button class="btn btn-info btn-sm float-end"><strong>Collection Note</strong></button>
-                    </div>
-                </div>
-                <div class="mt-2" style="height:100px; overflow-y: auto;border:1px solid lightgray">
-                    <table class="table table-bordered table-hover table-sm">
-                        <tbody>
-                            <tr ng-repeat="o in salesListData" ng-click="selectRowForSalesList(o)" ng-class="{ 'selected-row': o === selectedRowForSalesList }">
-                                <td>{{$index+1}}. {{o.sbName}} TK. {{o.amount}}</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-                <fieldset class="border p-2">
-                    <legend class="float-none w-auto p-2 fs-6 fw-bold">Payment Nature</legend>
-                    <div class="row">
-                        <div class="col-sm-6">
-                            <div class="form-group row">
-                                <label class="col-sm-4">Date</label>
-                                <div class="col-sm-8">
-                                    <input type="date" ng-model="receivedDate" class="form-control form-control-sm" />
-
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-sm-6">
-                            <div class="form-group row">
-                                <label class="col-sm-4">Amount</label>
-                                <div class="col-sm-8">
-                                    <input type="text" ng-model="amount" class="form-control form-control-sm" style="text-align:right" />
-                                </div>
-                            </div>
-                        </div>
-
-                        <div class="mt-2">
-                            <div class="border-bottom border-1">Payment Status</div>
-                        </div>
-
-                        <div class="col-sm-12 mt-2">
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    
-                                    <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'bKashAgentCollection' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-12 px-1" ng-click="toggleFieldset('bKashAgentCollection', 16, 31259)">
-                                                <div class="col-sm-12">
-                                                    bKash Agent Collection
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'BankInfo' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-sm-12" ng-click="toggleFieldset('BankInfo', 2, 0)">
-                                                <div class="col-sm-12">
-                                                    Cheque
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12" ng-show="showFieldset === 'BankInfo'">
-                                            <div class="col-sm-12">
-                                                <fieldset class="border p-2">
-                                                    <legend class="float-none w-auto p-2 fs-6">
-                                                        Bank Info
-                                                    </legend>
-                                                    <div class="row custom-margin-top">
-                                                        <div class="col-sm-12">
-                                                            <div class="row">
-                                                                <div class="col-sm-12">
-                                                                    <select class="form-select form-select-sm" ng-model="ledgerList">
-                                                                        <option value=""></option>
-                                                                        <option ng-repeat="ledger in allLedgerData" value="{{ledger.id}}">{{ledger.ladgerName}}</option>
-                                                                    </select>
-                                                                </div>
-                                                            </div>
-                                                            <div class="row" style="margin-top: 3px;">
-                                                                <div class="col-sm-5">
-                                                                    Cheque No.
-                                                                </div>
-                                                                <div class="col-sm-7">
-                                                                    <input name="cheq no" type="text" ng-model="chequeNo" class="form-control form-control-sm">
-                                                                </div>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'VATType' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-sm-12" ng-click="toggleFieldset('VATType', 3, 0)">
-                                                <div class="col-sm-12">
-                                                    VAT
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12" ng-show="showFieldset === 'VATType'">
-                                            <div class="col-sm-12">
-                                                <fieldset class="border p-2">
-                                                    <legend class="float-none w-auto p-2 fs-6">
-                                                        VAT Type
-                                                    </legend>
-                                                    <div class="row custom-margin-top">
-                                                        <div class="col-sm-12">
-                                                            <select class="form-select form-select-sm" ng-model="vatType">
-                                                                <option value=""></option>
-
-                                                                <option value="28747">Accounts Receivable-VDS</option>
-                                                                <option value="31074">Accounts Receivable-TDS</option>
-
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'BadDebt' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-12 px-1" ng-click="toggleFieldset('BadDebt', 4, 378)">
-                                                <div class="col-sm-12">
-                                                    Bad Debt
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'Nagad' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-sm-12" ng-click="toggleFieldset('Nagad', 5, 28724)">
-                                                <div class="col-sm-12">
-                                                    Nagad Mobile A/C
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12" ng-show="showFieldset === 'Nagad'">
-                                            <div class="col-sm-12">
-                                                <fieldset class="border p-2">
-                                                    <legend class="float-none w-auto p-2 fs-6">
-                                                        Reference No:
-                                                    </legend>
-                                                    <div class="row custom-margin-top">
-                                                        <div class="col-sm-12">
-                                                            <input type="text" ng-model="refNagadNo" class="form-control input-sm">
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SSL' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-sm-12" ng-click="toggleFieldset('SSL', 6, 849)">
-                                                <div class="col-sm-12">
-                                                    SSL Marchant A/C
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12" ng-show="showFieldset === 'SSL'">
-                                            <div class="col-sm-12">
-                                                <fieldset class="border p-2">
-                                                    <legend class="float-none w-auto p-2 fs-6">
-                                                        Reference No:
-                                                    </legend>
-                                                    <div class="row custom-margin-top">
-                                                        <div class="col-sm-12">
-                                                            <input type="text" ng-model="refSSLNo" class="form-control input-sm">
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'bKash' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-sm-12" ng-click="toggleFieldset('bKash', 7, 1030)">
-                                                <div class="col-sm-12">
-                                                    bKash Marchant A/C
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12" ng-show="showFieldset === 'bKash'">
-                                            <div class="col-sm-12">
-                                                <fieldset class="border p-2">
-                                                    <legend class="float-none w-auto p-2 fs-6">
-                                                        Reference No:
-                                                    </legend>
-                                                    <div class="row custom-margin-top">
-                                                        <div class="col-sm-12">
-                                                            <input type="text" ng-model="refbKashNo" class="form-control input-sm">
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'DiscountOfSales' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-12 px-1" ng-click="toggleFieldset('DiscountOfSales', 8, 850)">
-                                                <div class="col-sm-12">
-                                                    Discount of Sales
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    
-                                </div>
-
-                                <div class="col-sm-6">
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'AmarPay' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-sm-12" ng-click="toggleFieldset('AmarPay', 15, 31237)">
-                                                <div class="col-sm-12">
-                                                    AmarPay Marchant A/C
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12" ng-show="showFieldset === 'AmarPay'">
-                                            <div class="col-sm-12">
-                                                <fieldset class="border p-2">
-                                                    <legend class="float-none w-auto p-2 fs-6">
-                                                        Reference No:
-                                                    </legend>
-                                                    <div class="row custom-margin-top">
-                                                        <div class="col-sm-12">
-                                                            <input type="text" ng-model="refAmarNo" class="form-control input-sm">
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SouthEast' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-sm-12" ng-click="toggleFieldset('SouthEast', 10, 411)">
-                                                <div class="col-sm-12">
-                                                    Southeast
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12" ng-show="showFieldset === 'SouthEast'">
-                                            <div class="col-sm-12">
-                                                <fieldset class="border p-2">
-                                                    <legend class="float-none w-auto p-2 fs-6">
-                                                        Reference No:
-                                                    </legend>
-                                                    <div class="row custom-margin-top">
-                                                        <div class="col-sm-12">
-                                                            <input type="text" ng-model="refSoutheastNo" class="form-control input-sm">
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'Brac' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-sm-12" ng-click="toggleFieldset('Brac', 11, 851)">
-                                                <div class="col-sm-12">
-                                                    Brac
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12" ng-show="showFieldset === 'Brac'">
-                                            <div class="col-sm-12">
-                                                <fieldset class="border p-2">
-                                                    <legend class="float-none w-auto p-2 fs-6">
-                                                        Reference No:
-                                                    </legend>
-                                                    <div class="row custom-margin-top">
-                                                        <div class="col-sm-12">
-                                                            <input type="text" ng-model="refBracNo" class="form-control input-sm">
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'SCB' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-sm-12" ng-click="toggleFieldset('SCB', 12, 647)">
-                                                <div class="col-sm-12">
-                                                    SCB
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12" ng-show="showFieldset === 'SCB'">
-                                            <div class="col-sm-12">
-                                                <fieldset class="border p-2">
-                                                    <legend class="float-none w-auto p-2 fs-6">
-                                                        Reference No:
-                                                    </legend>
-                                                    <div class="row custom-margin-top">
-                                                        <div class="col-sm-12">
-                                                            <input type="text" ng-model="refSCBNo" class="form-control input-sm">
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'UCB' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-sm-12" ng-click="toggleFieldset('UCB', 13, 28816)">
-                                                <div class="col-sm-12">
-                                                    UCB
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12" ng-show="showFieldset === 'UCB'">
-                                            <div class="col-sm-12">
-                                                <fieldset class="border p-2">
-                                                    <legend class="float-none w-auto p-2 fs-6">
-                                                        Reference No:
-                                                    </legend>
-                                                    <div class="row custom-margin-top">
-                                                        <div class="col-sm-12">
-                                                            <input type="text" ng-model="refUCBNo" class="form-control input-sm">
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <div class="px-1 pb-1" ng-class="{ 'selected-div': showFieldset === 'OnlinePayment' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-sm-12" ng-click="toggleFieldset('OnlinePayment', 14, 2262)">
-                                                <div class="col-sm-12">
-                                                    Online Payment Payable
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-sm-12" ng-show="showFieldset === 'OnlinePayment'">
-                                            <div class="col-sm-12">
-                                                <fieldset class="border p-2">
-                                                    <legend class="float-none w-auto p-2 fs-6">
-                                                        Reference No:
-                                                    </legend>
-                                                    <div class="row custom-margin-top">
-                                                        <div class="col-sm-12">
-                                                            <input type="text" ng-model="refONLNo" class="form-control input-sm">
-                                                        </div>
-                                                    </div>
-                                                </fieldset>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'OnlineCollection' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-12 px-1" ng-click="toggleFieldset('OnlineCollection', 9, 3342)">
-                                                <div class="col-sm-12">
-                                                    Online Collection Charges
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="pb-1" ng-class="{ 'selected-div': showFieldset === 'Cash' }">
-                                        <div class="col-sm-12 border-bottom border-1 pb-2">
-                                            <div class="col-12 px-1" ng-click="toggleFieldset('Cash', 1, 46)">
-                                                <div class="col-sm-12">
-                                                    Cash
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    <input type="hidden" ng-model="payment" />
-                                    <input type="hidden" ng-model="paymentId" />
-                                    <input type="hidden" ng-model="accountReceivable" />
-                                    <input type="hidden" ng-model="invoiceNo" />
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </fieldset>
             </div>
         </div>
     </div>
@@ -600,7 +602,7 @@
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.payment = 1;
-            $scope.paymentId = 46;
+            $scope.paymentId = 31259;
             $scope.getAllLedger();
             $scope.receivedDate = new Date();
             $scope.bouncedDate = new Date();
@@ -726,6 +728,7 @@
 
             $scope.showTable = true;
             $scope.makeInvoiceBtn = false;
+            $scope.receivedDate = new Date();
         }
 
         $scope.emptyBouncedFielsWithDueOrPaidCheckbox = function () {
@@ -790,7 +793,7 @@
                 $scope.getSalesList();
                 if (!$scope.due && $scope.paid) {
                     $scope.getBouncedData($scope.selectedRow.invoice_No);
-                } 
+                }
             }
         };
 
@@ -1264,12 +1267,12 @@
         $scope.bouncedChequeFieldsEmpty = function () {
             if (!$scope.isBounced) {
                 $scope.chequeNo = '';
-                $scope.bouncedAmount = '';
+                $scope.bouncedAmount = 0;
                 $scope.bouncedNote = '';
                 $scope.bouncedDate = new Date();
             }
         };
-        
+
         $scope.getBouncedData = function (invoiceNo) {
             let Url = '';
             if (window.location.hostname == 'localhost')
@@ -1285,7 +1288,7 @@
                     $scope.chequeNo = $scope.bouncedData[0].bouncedCheckNo;
                     $scope.bouncedAmount = $scope.bouncedData[0].bouncedAmount;
                     $scope.bouncedNote = $scope.bouncedData[0].bouncedNote;
-                    $scope.bouncedDate = new Date($scope.bouncedData[0].bouncedCheckDate);
+                    $scope.bouncedDate = $scope.bouncedData[0].bouncedCheckDate == '1900-01-01T00:00:00' || $scope.bouncedData[0].bouncedCheckDate == "0001-01-01T00:00:00" ? new Date() : new Date($scope.bouncedData[0].bouncedCheckDate);
 
                 }, function (error) {
                     console.error(error);

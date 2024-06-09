@@ -9,9 +9,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-            <script type="text/javascript">
-                window.location.href = '@Url.Action("Index", "Home")';
-            </script>
+        <script type="text/javascript">
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
     }
     else
     {
@@ -23,428 +23,435 @@
         border: 3px solid black !important;
     }
 </style>
-<h3 class="text-center alert-primary" style="margin-top:-10px">Online Jobs</h3>
-
-<div ng-app="myApp">
-    <div ng-controller="myController">
-        <div class="col-sm-12">
-            <div class="row" style="margin-top:-15px">
-                <div class="col-sm-8">
-                    <div class="row">
-                        <div class="col-sm-3">
-                            <label class="col-form-label">From</label>
-                            <input type="date" class="form-control form-control-sm" ng-model="from" />
-                        </div>
-                        <div class="col-sm-3">
-                            <label class="col-form-label">To</label>
-                            <input type="date" class="form-control form-control-sm" ng-model="to" />
-                        </div>
-                        <div class="col-sm-2 text-center mt-5">
-                            <label><input type="checkbox" ng-model="PNPL" /> PNPL</label>
-                        </div>
-                        <div class="col-sm-4">
-                            <button class="btn btn-info btn-sm mt-5" ng-click="download()">Download Jobs
-                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="downloadSpinner"></span>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="row" style="margin-top:-10px">
-                        <div class="col-sm-3">
-                            <label>Search By Company</label>
-                            <input type="text" class="form-control form-control-sm" ng-model="cname" />
-                        </div>
-                        <div class="col-sm-3">
-                            <label>Search By Service</label>
-                            <select type="text" class="form-control form-control-sm" ng-model="service">
-                                <option value="0">Select</option>
-                                <option ng-repeat="o in services" value="{{o.serviceId}}" data-ledgerid="{{o.ledgerId}}">{{o.serviceName}}</option>
-                            </select>
-                        </div>
-                        <div class="col-sm-2 text-center mt-4">
-                            <label><input type="checkbox" ng-model="verified" /> Varified</label>
-                        </div>
-                        <div class="col-sm-4 mt-4">
-                            <button class="btn btn-primary btn-sm" ng-click="search()" style="padding-left:45px;padding-right:45px">GO
-                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="goSpinner"></span>
-                            </button>
-                        </div>
-                    </div>
-                </div>
-               
-                <div class="col-sm-4 mt-3">
-                    <button class="btn btn-info btn-sm float-right" ng-click="showVarificationModal()">Company Varification</button>
-                    <div class="float-right">
-                        <label class="control-label float-right" style="font-weight: normal;">Paid Online</label>
-                        <span style="border: 1px solid gray; background: #FFE6A8; height: 15px; width: 15px; margin: 8px 5px; " class="float-right"></span>
-                        <label class="control-label float-right" style="font-weight: normal;">Standout</label>
-                        <span style="border: 1px solid gray; background: #C5C69D; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                        <label class="control-label float-right" style="font-weight: normal;">Regional</label>
-                        <span style="border: 1px solid gray; background: #F3CCFF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                        <label class="control-label float-right" style="font-weight: normal;">Blue Collar</label>
-                        <span style="border: 1px solid gray; background: #0BB5FF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                        <label class="control-label float-right" style="font-weight: normal;">Verified</label>
-                        <span style="border: 1px solid gray; background: #9C27B0; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span><br />
-                        <label class="control-label float-right" style="font-weight: normal;">Premium</label>
-                        <span style="border: 1px solid gray; background: #D5F5E3; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                        <label class="control-label float-right" style="font-weight: normal;">SME</label>
-                        <span style="border: 1px solid gray; background: #f7adad; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                        <label class="control-label float-right" style="font-weight: normal;">LN</label>
-                        <span style="border: 1px solid gray; background: #0CFBFF; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-                        <label class="control-label float-right" style="font-weight: normal;">HJ</label>
-                        <span style="border: 1px solid gray; background: #9bc76b; height: 15px; width: 15px; margin: 8px 5px;" class="float-right"></span>
-
-                    </div>
-                </div>
-            </div>            
-            <div class="row mt-2" style="height: 200px; overflow-y: auto;border:2px solid gray">
-                <table class="table table-bordered table-hover table-sm">
-                    <thead class="thead-light">
-                        <tr class="text-center" style="white-space:nowrap;">
-                            <th class="border">Sl#</th>
-                            <th class="border">CP Id</th>
-                            <th class="border acenter">Name Of Company</th>
-                            <th class="border acenter">Sales Date</th>
-                            <th class="border acenter">Service Name</th>
-                            <th class="border">Job Posted</th>
-                            <th class="border">Total Job Posted</th>
-                            <th class="border">Company Status</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="o in companyData" ng-style="getRowStyle(o)" ng-click="selectRow(o)" ng-class="{ 'selected-row': o === selectedRow }">
-                            <td class="border text-center">{{$index + 1}}</td>
-                            <td class="border">{{o.cP_ID}}</td>
-                            <td class="border">{{o.cName}}</td>
-                            <td class="border" style="white-space:nowrap;">{{o.postingDate}}</td>
-                            <td class="border">{{getJobPostingType(o.addType, o.blueCollar, o.jType, o.region)}}</td>
-                            <td class="border text-center">{{o.jobPosted}}</td>
-                            <td class="border text-center">{{o.totalJobPosted}}</td>
-                            <td class="border text-center">{{o.companyStatus}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-        <div class="row mt-2">
-            <div class="col-sm-7">
-                <label class="fw-bold">Job titles of</label>
-            </div>
-            <div class="col-sm-5">
-                <div class="form-group row">
-                    <label class="col-sm-5 table-hover fw-bold">Invoices to Upload</label>
-                    <div class="col-sm-6">
-                        <select class="form-control form-control-sm" ng-model="invoice" ng-change="serviceChange()">
-                            <option value="0" selected>Select</option>
-                            <option ng-repeat="o in uploadToInviceData" value="{{o.ledgerId}}" data-serviceid="{{o.serviceId}}">{{o.serviceName}}</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-7" style="height: 150px; overflow-y: auto; margin-top:-10px;">
-                <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
-                    <thead class="thead-light">
-                        <tr>
-                            <th>Sl#</th>
-                            <th class="acenter">Job title</th>
-                            <th>Type</th>
-                            <th>Posted</th>
-                            <th>ValidDate</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="o in jobData" ng-click="selectJob(o)" ng-class="{ 'selected-row': o === selectedJob }">
-                            <td>{{$index+1}}</td>
-                            <td>{{o.title}}</td>
-                            <td>{{o.addType}}</td>
-                            <td>{{o.postingDate}}</td>
-                            <td>{{o.validDate}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-            <div class="col-sm-5 row ml-2" style="height: 150px; overflow-y: auto;margin-top:-10px;">
-                <table class="table table-bordered table-hover table-sm" style="white-space:nowrap;">
-                    <thead class="thead-light">
-                        <tr>
-                            <th class="acenter">Sl#</th>
-                            <th class="acenter">Job Title</th>
-                            <th class="acenter">Invoice No</th>
-                            <th class="acenter">Price</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="o in invoiceData" ng-click="dataLoadInInvoicePrice(o)" ng-class="{ 'selected-row': o === selectInvoice }">
-                            <td>{{$index+1}}</td>
-                            <td>{{o.title}}</td>
-                            <td ng-if="o.companyID == 0">{{o.invoice_No}}</td>
-                            <td>{{o.tAmount}}</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-        </div>
-
-
-        <div class="col-sm-12 mt-2">
-            <div class="row">
-                <div class="col-sm-4">
-                    <div class="form-group row">
-                        <label class="col-sm-4">Invoice No</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" ng-model="invoiceNo" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group row">
-                        <label class="col-sm-4">Billing To</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" ng-model="billingTo" />
-                        </div>
-                    </div>
-                </div>
-                <div class="col-sm-4">
-                    <div class="form-group row">
-                        <label class="col-sm-4">Invoice Price</label>
-                        <div class="col-sm-8">
-                            <input type="text" class="form-control form-control-sm" ng-model="invoicePrice" />
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <div class="col-sm-12">
-            <div class="row" style=" margin-top: 10px; margin-bottom: 10px; padding-left: 0;padding-right: 0;">
-                <div class="col-sm-3">
-                    <button class="btn btn-primary btn-sm" ng-click="refresh()" style="padding-left:45px;padding-right:45px">Refresh
-                        &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="refreshSpinner"></span>
-                    </button>
-                </div>
-                <div class="col-sm-3">
-                    <button class="btn btn-primary btn-sm" ng-click="makeSale()" style="padding-left:45px;padding-right:45px" ng-disabled="!makeBtn">Make Sale</button>
-                </div>
-                <div class="col-sm-3">
-                    <button class="btn btn-primary btn-sm" ng-click="delete()" style="padding-left:45px;padding-right:45px" ng-disabled="!deleteBtn">Delete</button>
-                </div>
-                <div class="col-sm-3">
-                    <button class="btn btn-primary btn-sm" ng-click="uploadInvoice()" style="padding-left:45px;padding-right:45px" ng-disabled="!uploadBtn">Upload Invoice
-                        &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="UploadInvoiceSpinner"></span>
-                    </button>
-                </div>
-            </div>
-        </div>
-
-
-        <div class="modal fade" id="varificationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" style="max-width: 80%;">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h7 class="modal-title" id="exampleModalLabel" style="margin-bottom:-10px;font-weight:bold;margin-top:-10px">Company Varification</h7>
-                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body" style="margin-top:-10px">
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <h3 class="text-center" style="margin-top:-10px">Online Jobs</h3>
+                <div class="row" style="margin-top:-30px">
+                    <div class="col-sm-8">
                         <div class="row">
-                            <div class="col-sm-12">
-                                <div class="row">
-                                    <div class="col-sm-6">
-                                        <div class="row px-2">
-                                            <div class="col-sm-7">
-                                                <span>View Company list from online</span>
-                                                <div>
-                                                    <label><input type="radio" name="radio" ng-model="radioBtn" value="0" ng-change="radioChange()" ng-checked="radioBtn === 0">&nbsp; New</label>
-                                                    <label class="ml-3"><input type="radio" name="radio" ng-model="radioBtn" value="1" ng-change="radioChange()">&nbsp; All</label>
-                                                </div>
-                                            </div>
-                                            <div class="col-sm-5">
-                                                @*                                                 <button class="btn btn-info btn-sm pull-right" ng-click="showDetail()">Show details from online</button>
-                                                *@
-                                            </div>
-                                        </div>
-                                        <select class="form-control form-control-sm" ng-model="onlineCompanies" size="6" style="height:120px">
-                                            <option ng-repeat="o in getOnlineCompanies" ng-click="selectComRow(o)" ng-class="{ 'selected-row': o === selectedComRow }" value="{{o.cp_id}}" data-accid="{{o.acc_Id}}">{{o.cname}}</option>
-                                        </select>
-                                        <div class="mt-1">
-                                            <span>Details of online registered company</span>
-                                        </div>
-                                        <div class="px-2 mt-1" style="border:2px solid gray; height:330px">
-                                            <div class="text-center">
-                                                <input class="form-control form-control-sm col-sm-10 offset-1 my-2 text-center" style="background-color:lightskyblue;font-weight:bold" placeholder="Name of Company" ng-model="companyName" disabled />
-
-                                            </div>
-                                            <div class="form-group row">
-                                                <label class="col-sm-4">Address:</label>
-                                                <div class="col-sm-8">
-                                                    <input class="form-control form-control-sm" ng-model="address" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="row" style="margin-top:-10px">
-                                                <div class="col-sm-5">
-                                                    <div class="form-group row">
-                                                        <label class="col-sm-4">City:</label>
-                                                        <div class="col-sm-8">
-                                                            <input class="form-control form-control-sm" ng-model="city" disabled />
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-sm-6">
-                                                    <div class="form-group row">
-                                                        <label class="col-sm-4">District:</label>
-                                                        <div class="col-sm-8">
-                                                            <select class="form-control form-control-sm" ng-model="district">
-                                                                <option value="0" selected>Select</option>
-                                                                <option ng-repeat="o in districtData" value="{{o.districtID}}">{{o.districtName}}</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group row" style="margin-top:-10px">
-                                                <label class="col-sm-4">Phone:</label>
-                                                <div class="col-sm-8">
-                                                    <input class="form-control form-control-sm" ng-model="phone" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="form-group row" style="margin-top:-10px">
-                                                <label class="col-sm-4">Email:</label>
-                                                <div class="col-sm-8">
-                                                    <input class="form-control form-control-sm" ng-model="email" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="form-group row" style="margin-top:-10px">
-                                                <label class="col-sm-4">Contact Person:</label>
-                                                <div class="col-sm-8">
-                                                    <input class="form-control form-control-sm" ng-model="contactPerson" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="form-group row" style="margin-top:-10px">
-                                                <label class="col-sm-4">Designation:</label>
-                                                <div class="col-sm-8">
-                                                    <input class="form-control form-control-sm" ng-model="designation" disabled />
-                                                </div>
-                                            </div>
-                                            <div class="form-group row" style="margin-top:-10px">
-                                                <label class="col-sm-5">Account created on:</label>
-                                                <div class="col-sm-7">
-                                                    <input class="form-control form-control-sm" ng-model="acCreated" disabled />
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-6">
-                                        <div class="row px-2">
-                                            <label>List of Companies in local database</label>
-                                            <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="localCompanies" ng-keyup="searchCompany(localCompanies)">
-                                            <select class="form-control form-control-sm" size="10" ng-model="comList" style="height:115px;">
-                                                <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
-                                            </select>
-                                            @* <input class="form-control form-control-sm" style="margin-top:15px" ng-model="txtCompanies" />
-                                            <input class="form-control form-control-sm mt-2" ng-model="localCompanies" style="height:90px;" /> *@
-                                            <div class="mt-1">
-                                                Details of local inserted company
-                                            </div>
-                                            <div class="px-2 mt-1" style="border:2px solid gray; height:330px">
-                                                <div class="text-center">
-                                                    <input class="form-control form-control-sm col-sm-10 offset-1 my-2 text-center" style="background-color:lightskyblue;font-weight:bold" placeholder="Name of Company" ng-model="companyNameExist" disabled />
-
-                                                </div>
-                                                <div class="form-group row">
-                                                    <label class="col-sm-4">Address:</label>
-                                                    <div class="col-sm-8">
-                                                        <input class="form-control form-control-sm" ng-model="addressExist" disabled />
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-sm-5">
-                                                        <div class="form-group row">
-                                                            <label class="col-sm-4">City:</label>
-                                                            <div class="col-sm-8">
-                                                                <input class="form-control form-control-sm" ng-model="cityExist" disabled />
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <div class="form-group row">
-                                                            <label class="col-sm-4">District:</label>
-                                                            <div class="col-sm-8">
-                                                                @* <input class="form-control form-control-sm" ng-model="districtExist" disabled /> *@
-                                                                <select class="form-control form-control-sm" ng-model="districtExist" disabled>
-                                                                    <option ng-repeat="o in districtData" value="{{o.districtID}}">{{o.districtName}}</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row" style="margin-top:-10px">
-                                                    <label class="col-sm-4">Phone:</label>
-                                                    <div class="col-sm-8">
-                                                        <input class="form-control form-control-sm" ng-model="phoneExist" disabled />
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row" style="margin-top:-10px">
-                                                    <label class="col-sm-4">Email:</label>
-                                                    <div class="col-sm-8">
-                                                        <input class="form-control form-control-sm" ng-model="emailExist" disabled />
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row" style="margin-top:-10px">
-                                                    <label class="col-sm-4">Contact Person:</label>
-                                                    <div class="col-sm-8">
-                                                        <input class="form-control form-control-sm" ng-model="contactPersonExist" disabled />
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row" style="margin-top:-10px">
-                                                    <label class="col-sm-4">Designation:</label>
-                                                    <div class="col-sm-8">
-                                                        <input class="form-control form-control-sm" ng-model="designationExist" disabled />
-                                                    </div>
-                                                </div>
-                                                <div class="form-group row" style="margin-top:-10px">
-                                                    <label class="col-sm-5">Local Compay ID:</label>
-                                                    <div class="col-sm-7">
-                                                        <input class="form-control form-control-sm" ng-model="localCompanyIdExist" disabled />
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="row mt-1" style="border:2px solid gray;margin-left:0px;margin-right:-7px">
-                                    <div class="col-sm-10">
-                                        <div style="font-weight:bold;color:green">
-                                            If onLine company is not found in local company list then you must add information of onLine company into local company database (Click Insert)
-                                        </div>
-                                        <div class="form-group row">
-                                            <div class="col-sm-10" style="font-weight:bold;color:brown">
-                                                If onLine company information is exist in local company list but onLine company is showed as 'New' then write the ID number of local company and click Update
-                                            </div>
-                                            <input class="form-control form-control-sm col-sm-2" ng-model="accId" />
-                                        </div>
-                                    </div>
-                                    <div class="col-sm-2 mt-2">
-                                        <button class="btn btn-success btn-sm" ng-click="insert()" ng-disabled="insertDisable">Insert
-                                        </button>
-                                        <button class="btn btn-primary btn-sm" ng-click="update()" ng-disabled="updateDisable">Update</button>
-                                    </div>
-                                </div>
-
+                            <div class="col-sm-3">
+                                <label class="col-form-label">From</label>
+                                <input type="date" class="form-control form-control-sm" ng-model="from" />
+                            </div>
+                            <div class="col-sm-3">
+                                <label class="col-form-label">To</label>
+                                <input type="date" class="form-control form-control-sm" ng-model="to" />
+                            </div>
+                            <div class="col-sm-2 text-center mt-5">
+                                <label><input type="checkbox" ng-model="PNPL" /> PNPL</label>
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-info btn-sm mt-5" ng-click="download()">
+                                    Download Jobs
+                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="downloadSpinner"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="row" style="margin-top:-10px">
+                            <div class="col-sm-3">
+                                <label>Search By Company</label>
+                                <input type="text" class="form-control form-control-sm" ng-model="cname" />
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Search By Service</label>
+                                <select type="text" class="form-control form-control-sm" ng-model="service">
+                                    <option value="0">Select</option>
+                                    <option ng-repeat="o in services" value="{{o.serviceId}}" data-ledgerid="{{o.ledgerId}}">{{o.serviceName}}</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2 text-center mt-4">
+                                <label><input type="checkbox" ng-model="verified" /> Varified</label>
+                            </div>
+                            <div class="col-sm-4 mt-4">
+                                <button class="btn btn-primary btn-sm" ng-click="search()" style="padding-left:45px;padding-right:45px">
+                                    GO
+                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="goSpinner"></span>
+                                </button>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+
+                    <div class="col-sm-4 mt-3">
+                        <button class="btn btn-info btn-sm float-right" ng-click="showVarificationModal()">Company Varification</button>
+                        <div class="float-end">
+                            <div class="d-flex flex-wrap flex-row-reverse">
+                                <label >Paid Online</label>
+                                <span style="border: 1px solid gray; background: #FFE6A8; height: 15px; width: 15px; margin: 8px 5px;"></span>
+                                <label>Standout</label>
+                                <span style="border: 1px solid gray; background: #C5C69D; height: 15px; width: 15px; margin: 8px 5px;"></span>
+                                <label>Regional</label>
+                                <span style="border: 1px solid gray; background: #F3CCFF; height: 15px; width: 15px; margin: 8px 5px;"></span>
+                                <label>Blue Collar</label>
+                                <span style="border: 1px solid gray; background: #0BB5FF; height: 15px; width: 15px; margin: 8px 5px;"></span>
+                                <label>Verified</label>
+                                <span style="border: 1px solid gray; background: #9C27B0; height: 15px; width: 15px; margin: 8px 5px;"></span>
+                                <label>Premium</label>
+                                <span style="border: 1px solid gray; background: #D5F5E3; height: 15px; width: 15px; margin: 8px 5px;"></span>
+                                <label>SME</label>
+                                <span style="border: 1px solid gray; background: #f7adad; height: 15px; width: 15px; margin: 8px 5px;"></span>
+                                <label>LN</label>
+                                <span style="border: 1px solid gray; background: #0CFBFF; height: 15px; width: 15px; margin: 8px 5px;"></span>
+                                <label>HJ</label>
+                                <span style="border: 1px solid gray; background: #9bc76b; height: 15px; width: 15px; margin: 8px 5px;"></span>
+
+                            </div>
+                            
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-2" style="height: 190px; overflow-y: auto;border:1px solid lightgray">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="thead-light">
+                            <tr class="text-center" style="white-space:nowrap;">
+                                <th class="border">Sl#</th>
+                                <th class="border">CP Id</th>
+                                <th class="border acenter">Name Of Company</th>
+                                <th class="border acenter">Sales Date</th>
+                                <th class="border acenter">Service Name</th>
+                                <th class="border">Job Posted</th>
+                                <th class="border">Total Job Posted</th>
+                                <th class="border">Company Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="o in companyData" ng-style="getRowStyle(o)" ng-click="selectRow(o)" ng-class="{ 'selected-row': o === selectedRow }">
+                                <td class="border text-center">{{$index + 1}}</td>
+                                <td class="border">{{o.cP_ID}}</td>
+                                <td class="border">{{o.cName}}</td>
+                                <td class="border" style="white-space:nowrap;">{{o.postingDate}}</td>
+                                <td class="border">{{getJobPostingType(o.addType, o.blueCollar, o.jType, o.region)}}</td>
+                                <td class="border text-center">{{o.jobPosted}}</td>
+                                <td class="border text-center">{{o.totalJobPosted}}</td>
+                                <td class="border text-center">{{o.companyStatus}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="row mt-2">
+                    <div class="col-sm-7">
+                        <label class="fw-bold">Job titles of</label>
+                    </div>
+                    <div class="col-sm-5">
+                        <div class="form-group row">
+                            <label class="col-sm-5 table-hover fw-bold">Invoices to Upload</label>
+                            <div class="col-sm-6">
+                                <select class="form-control form-control-sm" ng-model="invoice" ng-change="serviceChange()">
+                                    <option value="0" selected>Select</option>
+                                    <option ng-repeat="o in uploadToInviceData" value="{{o.ledgerId}}" data-serviceid="{{o.serviceId}}">{{o.serviceName}}</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="margin-top:-8px">
+                    <div class="col-sm-7">
+                        <div style="height: 190px; overflow-y: auto;border:1px solid lightgray">
+                            <table class="table table-bordered table-hover table-sm">
+                                <thead class="thead-light">
+                                    <tr class="text-center" style="white-space:nowrap;">
+                                        <th>Sl#</th>
+                                        <th class="acenter">Job title</th>
+                                        <th>Type</th>
+                                        <th>Posted</th>
+                                        <th>ValidDate</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="o in jobData" ng-click="selectJob(o)" ng-class="{ 'selected-row': o === selectedJob }">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{o.title}}</td>
+                                        <td>{{o.addType}}</td>
+                                        <td>{{o.postingDate}}</td>
+                                        <td>{{o.validDate}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    <div class="col-sm-5">
+                        <div style="height: 190px; overflow-y: auto;border:1px solid lightgray">
+                            <table class="table table-bordered table-hover table-sm">
+                                <thead class="thead-light">
+                                    <tr class="text-center" style="white-space:nowrap;">
+                                        <th class="acenter">Sl#</th>
+                                        <th class="acenter">Job Title</th>
+                                        <th class="acenter">Invoice No</th>
+                                        <th class="acenter">Price</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="o in invoiceData" ng-click="dataLoadInInvoicePrice(o)" ng-class="{ 'selected-row': o === selectInvoice }">
+                                        <td>{{$index+1}}</td>
+                                        <td>{{o.title}}</td>
+                                        <td ng-if="o.companyID == 0">{{o.invoice_No}}</td>
+                                        <td>{{o.tAmount}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12 mt-2">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group row">
+                                <label class="col-sm-4">Invoice No</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" ng-model="invoiceNo" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group row">
+                                <label class="col-sm-4">Billing To</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" ng-model="billingTo" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group row">
+                                <label class="col-sm-4">Invoice Price</label>
+                                <div class="col-sm-8">
+                                    <input type="text" class="form-control form-control-sm" ng-model="invoicePrice" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-3">
+                            <button class="btn btn-primary btn-sm" ng-click="refresh()" style="padding-left:45px;padding-right:45px">
+                                Refresh
+                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="refreshSpinner"></span>
+                            </button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-primary btn-sm" ng-click="makeSale()" style="padding-left:45px;padding-right:45px" ng-disabled="!makeBtn">Make Sale</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-primary btn-sm" ng-click="delete()" style="padding-left:45px;padding-right:45px" ng-disabled="!deleteBtn">Delete</button>
+                        </div>
+                        <div class="col-sm-3">
+                            <button class="btn btn-primary btn-sm" ng-click="uploadInvoice()" style="padding-left:45px;padding-right:45px" ng-disabled="!uploadBtn">
+                                Upload Invoice
+                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="UploadInvoiceSpinner"></span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id="varificationModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" style="max-width: 80%;">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h7 class="modal-title" id="exampleModalLabel" style="margin-bottom:-10px;font-weight:bold;margin-top:-10px">Company Varification</h7>
+                                <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body" style="margin-top:-10px">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <div class="row px-2">
+                                                    <div class="col-sm-7">
+                                                        <span>View Company list from online</span>
+                                                        <div>
+                                                            <label><input type="radio" name="radio" ng-model="radioBtn" value="0" ng-change="radioChange()" ng-checked="radioBtn === 0">&nbsp; New</label>
+                                                            <label class="ml-3"><input type="radio" name="radio" ng-model="radioBtn" value="1" ng-change="radioChange()">&nbsp; All</label>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-sm-5">
+                                                        @*                                                 <button class="btn btn-info btn-sm pull-right" ng-click="showDetail()">Show details from online</button>
+                                                        *@
+                                                    </div>
+                                                </div>
+                                                <select class="form-control form-control-sm" ng-model="onlineCompanies" size="6" style="height:120px">
+                                                    <option ng-repeat="o in getOnlineCompanies" ng-click="selectComRow(o)" ng-class="{ 'selected-row': o === selectedComRow }" value="{{o.cp_id}}" data-accid="{{o.acc_Id}}">{{o.cname}}</option>
+                                                </select>
+                                                <div class="mt-1">
+                                                    <span>Details of online registered company</span>
+                                                </div>
+                                                <div class="px-2 mt-1" style="border:2px solid lightgray; height:330px">
+                                                    <div class="text-center">
+                                                        <input class="form-control form-control-sm col-sm-10 offset-1 my-2 text-center" style="background-color:lightskyblue;font-weight:bold" placeholder="Name of Company" ng-model="companyName" disabled />
+
+                                                    </div>
+                                                    <div class="form-group row">
+                                                        <label class="col-sm-4">Address:</label>
+                                                        <div class="col-sm-8">
+                                                            <input class="form-control form-control-sm" ng-model="address" disabled />
+                                                        </div>
+                                                    </div>
+                                                    <div class="row" style="margin-top:-10px">
+                                                        <div class="col-sm-5">
+                                                            <div class="form-group row">
+                                                                <label class="col-sm-4">City:</label>
+                                                                <div class="col-sm-8">
+                                                                    <input class="form-control form-control-sm" ng-model="city" disabled />
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-sm-6">
+                                                            <div class="form-group row">
+                                                                <label class="col-sm-4">District:</label>
+                                                                <div class="col-sm-8">
+                                                                    <select class="form-control form-control-sm" ng-model="district">
+                                                                        <option value="0" selected>Select</option>
+                                                                        <option ng-repeat="o in districtData" value="{{o.districtID}}">{{o.districtName}}</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row" style="margin-top:-10px">
+                                                        <label class="col-sm-4">Phone:</label>
+                                                        <div class="col-sm-8">
+                                                            <input class="form-control form-control-sm" ng-model="phone" disabled />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row" style="margin-top:-10px">
+                                                        <label class="col-sm-4">Email:</label>
+                                                        <div class="col-sm-8">
+                                                            <input class="form-control form-control-sm" ng-model="email" disabled />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row" style="margin-top:-10px">
+                                                        <label class="col-sm-4">Contact Person:</label>
+                                                        <div class="col-sm-8">
+                                                            <input class="form-control form-control-sm" ng-model="contactPerson" disabled />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row" style="margin-top:-10px">
+                                                        <label class="col-sm-4">Designation:</label>
+                                                        <div class="col-sm-8">
+                                                            <input class="form-control form-control-sm" ng-model="designation" disabled />
+                                                        </div>
+                                                    </div>
+                                                    <div class="form-group row" style="margin-top:-10px">
+                                                        <label class="col-sm-5">Account created on:</label>
+                                                        <div class="col-sm-7">
+                                                            <input class="form-control form-control-sm" ng-model="acCreated" disabled />
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <div class="row px-2">
+                                                    <label>List of Companies in local database</label>
+                                                    <input class="form-control form-control-sm" placeholder="Search Company Here" autocomplete="off" ng-model="localCompanies" ng-keyup="searchCompany(localCompanies)">
+                                                    <select class="form-control form-control-sm" size="10" ng-model="comList" style="height:115px;">
+                                                        <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                                                    </select>
+                                                    @* <input class="form-control form-control-sm" style="margin-top:15px" ng-model="txtCompanies" />
+                                                    <input class="form-control form-control-sm mt-2" ng-model="localCompanies" style="height:90px;" /> *@
+                                                    <div class="mt-1">
+                                                        Details of local inserted company
+                                                    </div>
+                                                    <div class="px-2 mt-1" style="border:2px solid lightgray; height:330px">
+                                                        <div class="text-center">
+                                                            <input class="form-control form-control-sm col-sm-10 offset-1 my-2 text-center" style="background-color:lightskyblue;font-weight:bold" placeholder="Name of Company" ng-model="companyNameExist" disabled />
+
+                                                        </div>
+                                                        <div class="form-group row">
+                                                            <label class="col-sm-4">Address:</label>
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control form-control-sm" ng-model="addressExist" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-sm-5">
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-4">City:</label>
+                                                                    <div class="col-sm-8">
+                                                                        <input class="form-control form-control-sm" ng-model="cityExist" disabled />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-sm-6">
+                                                                <div class="form-group row">
+                                                                    <label class="col-sm-4">District:</label>
+                                                                    <div class="col-sm-8">
+                                                                        @* <input class="form-control form-control-sm" ng-model="districtExist" disabled /> *@
+                                                                        <select class="form-control form-control-sm" ng-model="districtExist" disabled>
+                                                                            <option ng-repeat="o in districtData" value="{{o.districtID}}">{{o.districtName}}</option>
+                                                                        </select>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row" style="margin-top:-10px">
+                                                            <label class="col-sm-4">Phone:</label>
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control form-control-sm" ng-model="phoneExist" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row" style="margin-top:-10px">
+                                                            <label class="col-sm-4">Email:</label>
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control form-control-sm" ng-model="emailExist" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row" style="margin-top:-10px">
+                                                            <label class="col-sm-4">Contact Person:</label>
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control form-control-sm" ng-model="contactPersonExist" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row" style="margin-top:-10px">
+                                                            <label class="col-sm-4">Designation:</label>
+                                                            <div class="col-sm-8">
+                                                                <input class="form-control form-control-sm" ng-model="designationExist" disabled />
+                                                            </div>
+                                                        </div>
+                                                        <div class="form-group row" style="margin-top:-10px">
+                                                            <label class="col-sm-5">Local Compay ID:</label>
+                                                            <div class="col-sm-7">
+                                                                <input class="form-control form-control-sm" ng-model="localCompanyIdExist" disabled />
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row mt-1" style="border:2px solid lightgray;margin-left:0px;margin-right:-7px">
+                                            <div class="col-sm-10">
+                                                <div style="font-weight:bold;color:green">
+                                                    If onLine company is not found in local company list then you must add information of onLine company into local company database (Click Insert)
+                                                </div>
+                                                <div class="form-group row">
+                                                    <div class="col-sm-10" style="font-weight:bold;color:brown">
+                                                        If onLine company information is exist in local company list but onLine company is showed as 'New' then write the ID number of local company and click Update
+                                                    </div>
+                                                    <input class="form-control form-control-sm col-sm-2" ng-model="accId" />
+                                                </div>
+                                            </div>
+                                            <div class="col-sm-2 mt-2">
+                                                <button class="btn btn-success btn-sm" ng-click="insert()" ng-disabled="insertDisable">
+                                                    Insert
+                                                </button>
+                                                <button class="btn btn-primary btn-sm" ng-click="update()" ng-disabled="updateDisable">Update</button>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
-
-
-
-
-
     </div>
 </div>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
@@ -591,7 +598,7 @@
         }
 
         $scope.download = function () {
-            
+
             var fromDate = $scope.from;
             var toDate = $scope.to;
             var PNPL = $scope.PNPL ? 1 : 0;
@@ -632,7 +639,8 @@
             var selectedService = $scope.services.find(function (s) {
                 return s.serviceId == $scope.service;
             });
-
+            var fromDate = $scope.from.toISOString().split('T')[0];
+            var toDate = $scope.to.toISOString().split('T')[0];
             var LedgerID = selectedService ? selectedService.ledgerId : 0;
             var CName = $scope.cname == "" || $scope.cname == undefined ? "" : $scope.cname;
             var Verified = $scope.verified == "" || $scope.verified == undefined ? 0 : $scope.verified;
@@ -644,7 +652,7 @@
                 Url = '/AccountingNew/Sale/GetOnlineJobList';
 
             $scope.refreshSpinner = true;
-            $http.get(Url, { params: { CName: CName, Verified: Verified, LedgerID: LedgerID } })
+            $http.get(Url, { params: { FromDate: fromDate, ToDate: toDate, CName: CName, Verified: Verified, LedgerID: LedgerID } })
                 .then(function (response) {
                     $scope.companyData = response.data;
                     $scope.refreshSpinner = false;
@@ -794,9 +802,9 @@
                 var onlineProduct = "";
                 if (type == "Stand-out") {
                     if ($scope.selectedJob.blueCollar > 0) {
-                       // onlineProduct = "Online Job Posting-Stand-out (Blue Color)";
+                        // onlineProduct = "Online Job Posting-Stand-out (Blue Color)";
                         onlineProduct = "Online Job Posting (Premium Listing-BC)";
-                    } if( $scope.selectedRow.jType =='H') {
+                    } if ($scope.selectedRow.jType == 'H') {
                         // onlineProduct = "Online Job Posting-Stand-out (Blue Color)";
                         onlineProduct = "Hot Job Advertisement";
                     } else {
@@ -923,7 +931,7 @@
             $scope.billingContact = $scope.billingTo ? $scope.billingTo : "";
             $scope.price = $scope.invoicePrice.toString();
             $scope.opId = $scope.selectInvoice.opId.toString();
-            
+
             $scope.serviceID = $scope.selectInvoice.serviceID;
             $scope.companyID = $scope.selectInvoice.cP_ID;
             $scope.companyName = $scope.selectInvoice.name;
@@ -959,7 +967,7 @@
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
-                    
+
                     var val = response.data;
                     if (val.connection === false) {
                         confirm(val.message);
@@ -976,7 +984,7 @@
                             else
                                 Url = '/AccountingNew/Invoice/UpdateInvoice';
 
-                            
+
                             $http.post(Url, { invoiceNo: InvoiceNo })
                                 .then(function (val1) {
 
@@ -990,7 +998,7 @@
                                     $scope.UploadInvoiceSpinner = false;
                                 })
                                 .catch(function (error) {
-                                    
+
                                     console.log(error);
                                     $scope.UploadInvoiceSpinner = false;
                                 });
@@ -999,7 +1007,7 @@
                         confirm(val.message);
                         $scope.UploadInvoiceSpinner = false;
                     }
-                    
+
                 })
                 .catch(function (error) {
                     console.log(error);
@@ -1149,7 +1157,7 @@
 
 
         $scope.insert = function () {
-            
+
             $scope.action = "Insert";
             $scope.cpId = $scope.selectedComRow.cP_Id;
             $scope.name = $scope.companyName;
@@ -1214,7 +1222,7 @@
 
                             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                                 .then(function (response) {
-                                    
+
                                     $scope.val = response.data;
 
                                     if ($scope.val == 1) {
@@ -1231,7 +1239,7 @@
                                         if (confirm("All information of the company '" + $scope.name + "' has been inserted successfully. And also updated the online database. " + m + "")) {
                                             return;
                                         }
-                                        
+
                                     }
                                 })
                                 .catch(function (error) {

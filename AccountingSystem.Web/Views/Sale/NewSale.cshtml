@@ -44,9 +44,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                    <script type="text/javascript">
-                        window.location.href = '@Url.Action("Index", "Home")';
-                    </script>
+        <script type="text/javascript">
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
     }
     else
     {
@@ -62,242 +62,251 @@
     }
 </style>
 
-<h3 class="text-center alert-primary" style="margin-top:-10px">New Sale</h3>
-<div ng-app="myApp">
-    <div ng-controller="myController">
-        <div class="col-sm-12" style="padding-left:10px;padding-right:10px">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Company</label>
-                        <div class="col-sm-9">
-                            <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
-                            <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 390px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
-                                <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
-                            </select>
-                        </div>
-                    </div>
-                    <fieldset class="border p-2">
-                        <legend class="float-none w-auto fs-5">
-                            Sales Information
-                        </legend>
-                        <div class="form-group row mt-4">
-                            <label class="col-sm-4 col-form-label">Sales Price</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control form-control-sm text-right" ng-model="salesPrice" ng-change="updateTableValues()" ng-disabled="salesPriceDisabled" />
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="form-group row">
-                                    <label class="col-sm-5 col-form-label">VAT Rate</label>
-                                    <div class="col-sm-7">
-                                        <input type="text" class="form-control form-control-sm text-right" ng-model="taxType" ng-disabled="taxTypeDisabled" />
-                                        @* <select class="form-select form-select-sm text-right" ng-model="taxType">
-                                        <option ng-repeat="o in taxTypes" value="{{o.id}}">{{selectedVatRate}} %</option>
-                                        </select> *@
-                                    </div>
+
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <h3 class="text-center" style="margin-top:-10px">New Sale</h3>
+                <div class="col-sm-12" style="padding-left:10px;padding-right:10px">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Company</label>
+                                <div class="col-sm-9">
+                                    <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
+                                    <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 380px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                                        <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group row">
-                                    <label class="col-sm-4 col-form-label">Amount</label>
+                            <fieldset class="border p-2">
+                                <legend class="float-none w-auto fs-5">
+                                    Sales Information
+                                </legend>
+                                <div class="form-group row mt-4">
+                                    <label class="col-sm-4 col-form-label">Sales Price</label>
                                     <div class="col-sm-8">
-                                        <input type="text" class="form-control form-control-sm text-right" ng-model="amount" ng-disabled="amountDisable" />
+                                        <input type="text" class="form-control form-control-sm text-right" ng-model="salesPrice" ng-change="updateTableValues()" ng-disabled="salesPriceDisabled" />
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-5 col-form-label">VAT Rate</label>
+                                            <div class="col-sm-7">
+                                                <input type="text" class="form-control form-control-sm text-right" ng-model="taxType" ng-disabled="taxTypeDisabled" />
+                                                @* <select class="form-select form-select-sm text-right" ng-model="taxType">
+                                                <option ng-repeat="o in taxTypes" value="{{o.id}}">{{selectedVatRate}} %</option>
+                                                </select> *@
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-4 col-form-label">Amount</label>
+                                            <div class="col-sm-8">
+                                                <input type="text" class="form-control form-control-sm text-right" ng-model="amount" ng-disabled="amountDisable" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
 
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">{{titleChange}}</label>
-                            <div class="col-sm-8">
-                                <input class="form-control form-control-sm" ng-model="jobTitle" ng-hide="inputTitleDisabled">
-                                <select class="form-select form-select-sm" ng-model="jobTitleList" ng-show="titleDisabled">
-                                    <option ng-repeat="o in jobTitleData" value="{{o.jp_Id}}" data-title="{{o.title}}">{{o.title}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Billing Person</label>
-                            <div class="col-sm-8">
-                                <input class="form-control form-control-sm" placeholder="Search Billing Person Here" autocomplete="off" ng-model="searchKeyword" ng-keyup="searchBillingPerson()">
-                                @* <select class="form-select form-select-sm" size="10" ng-model="billingPersonList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="billingPersonListVisible && (getBillingPersonData && getBillingPersonData.length > 0 && getBillingPersonData[0].name !== '')" ng-change="loadDesignation()">
-                                <option ng-repeat="o in getBillingPersonData | filter:searchFilter" value="{{o.name}}" ng-click="selectBillingPerson(o)">{{o.name}}</option>
-                                </select> *@
-
-                                <select class="form-select form-select-sm" size="10" ng-model="billingPersonList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="dropdownVisible" ng-change="loadDesignation()">
-                                    <option ng-repeat="o in searchFilter()" value="{{o.name}}" ng-click="selectBillingPerson(o)">{{o.name}}</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Designation</label>
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control form-control-sm" ng-model="designation" />
-                                <input type="text" class="form-control form-control-sm" ng-model="Email" hidden />
-                                <input type="text" class="form-control form-control-sm" ng-model="Mobile" hidden />
-                            </div>
-                        </div>
-                        <div class="form-group row" ng-show="showWorkshopDate">
-                            <label class="col-sm-4 col-form-label">Workshop Date</label>
-                            <div class="col-sm-8">
-                                <input type="date" class="form-control form-control-sm" ng-model="workshopDate" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Reference No</label>
-                            <div class="col-sm-8">
-                                <input class="form-control form-control-sm" ng-model="referenceNo" />
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Sales Person</label>
-                            <div class="col-sm-8">
-                                <select class="form-select form-select-sm" ng-model="salesPerson">
-                                    <option value="0" selected>select</option>
-                                    <option ng-repeat="o in salesPersons" value="{{o.salesPersonID}}">{{o.salesPersonName}}</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group row">
-                            <label class="col-sm-4 col-form-label">Comments</label>
-                            <div class="col-sm-8">
-                                <textarea class="form-control form-control-sm" ng-model="comments"></textarea>
-                            </div>
-                        </div>
-
-                        <div class="row mt-2">
-                            <div class="col-sm-6 d-flex justify-content-end">
-                                <button class="btn btn-success btn-sm px-5" ng-disabled="saveButtonDisabled" ng-click="save()">
-                                    Save
-                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
-                                </button>
-                            </div>
-                            <div class="col-sm-6">
-                                <button class="btn btn-primary btn-sm px-4" ng-click="makeInvoice()" ng-disabled="makeInvoiceDisable">Make Invoice</button>
-                            </div>
-                        </div>
-                    </fieldset>
-
-                </div>
-                <div class="col-sm-6">
-                    <div class="form-group row">
-                        <label class="col-sm-3 col-form-label">Product Name</label>
-                        @* <div class="col-sm-9">
-                        <input class="form-control form-control-sm" placeholder="Search Product Here" autocomplete="off" ng-model="searchQueryProduct" ng-keyup="searchProduct(searchQueryProduct)">
-                        <select class="form-control form-control-sm" size="10" ng-model="proList" style="position:absolute;z-index:999;width: 400px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="getProductList.length > 0">
-                        <option ng-repeat="product in getProductList" value="{{product.id}}" ng-click="selectProduct(product)">{{product.ladgerName}}</option>
-                        </select>
-                        </div> *@
-
-                        <div class="col-sm-9">
-                            <select class="form-select form-select-sm" ng-model="proList" ng-change="updateVatRate()">
-                                <option value="0">List of Products</option>
-                                <option ng-repeat="product in getProductList" value="{{product.id}}" data-vatRate="{{product.vatRate}}" ng-click="selectProduct(product)">{{product.ladgerName}}</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <fieldset class="border p-2">
-                        <legend class="float-none w-auto fs-5">
-                            This Product is valid for
-                        </legend>
-                        <div class="row mt-4">
-                            <div class="col-sm-6">
-                                <label>
-                                    <label><input ng-model="radioValue" ng-change="updateDuration()" value="1" type="radio" checked>&nbsp; One/less than one month</label>
-                                </label>
-                            </div>
-                            <div class="col-sm-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">From</label>
-                                    <div class="col-sm-9">
-                                        <input ng-model="dateFrom" ng-change="updateDuration()" class="form-control form-control-sm" type="date">
+                                    <label class="col-sm-4 col-form-label">{{titleChange}}</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control form-control-sm" ng-model="jobTitle" ng-hide="inputTitleDisabled">
+                                        <select class="form-select form-select-sm" ng-model="jobTitleList" ng-show="titleDisabled">
+                                            <option ng-repeat="o in jobTitleData" value="{{o.jp_Id}}" data-title="{{o.title}}">{{o.title}}</option>
+                                        </select>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <label>
-                                    <input ng-model="radioValue" ng-change="updateDuration()" value="2" type="radio">&nbsp; more than one month
-                                </label><br />
-                                Duration
-                                <input ng-model="month" maxlength="2" size="2" readonly style="text-align: center;" ng-disabled="radioValue !== '2'"> months
-                            </div>
-                            <div class="col-sm-6">
                                 <div class="form-group row">
-                                    <label class="col-sm-3 col-form-label">To</label>
-                                    <div class="col-sm-9">
-                                        <input ng-model="dateTo" ng-change="updateDuration()" class="form-control form-control-sm" type="date" ng-disabled="radioValue !== '2'">
+                                    <label class="col-sm-4 col-form-label">Billing Person</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control form-control-sm" placeholder="Search Billing Person Here" autocomplete="off" ng-model="searchKeyword" ng-keyup="searchBillingPerson()">
+                                        @* <select class="form-select form-select-sm" size="10" ng-model="billingPersonList" style="position:absolute;z-index:999;width: 300px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="billingPersonListVisible && (getBillingPersonData && getBillingPersonData.length > 0 && getBillingPersonData[0].name !== '')" ng-change="loadDesignation()">
+                                        <option ng-repeat="o in getBillingPersonData | filter:searchFilter" value="{{o.name}}" ng-click="selectBillingPerson(o)">{{o.name}}</option>
+                                        </select> *@
+
+                                        <select class="form-select form-select-sm" size="10" ng-model="billingPersonList" style="position:absolute;z-index:999;width: 320px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="dropdownVisible" ng-change="loadDesignation()">
+                                            <option ng-repeat="o in searchFilter()" value="{{o.name}}" ng-click="selectBillingPerson(o)">{{o.name}}</option>
+                                        </select>
                                     </div>
                                 </div>
-                            </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Designation</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" class="form-control form-control-sm" ng-model="designation" />
+                                        <input type="text" class="form-control form-control-sm" ng-model="Email" hidden />
+                                        <input type="text" class="form-control form-control-sm" ng-model="Mobile" hidden />
+                                    </div>
+                                </div>
+                                <div class="form-group row" ng-show="showWorkshopDate">
+                                    <label class="col-sm-4 col-form-label">Workshop Date</label>
+                                    <div class="col-sm-8">
+                                        <input type="date" class="form-control form-control-sm" ng-model="workshopDate" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Reference No</label>
+                                    <div class="col-sm-8">
+                                        <input class="form-control form-control-sm" ng-model="referenceNo" />
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Sales Person</label>
+                                    <div class="col-sm-8">
+                                        <select class="form-select form-select-sm" ng-model="salesPerson">
+                                            <option value="0" selected>select</option>
+                                            <option ng-repeat="o in salesPersons" value="{{o.salesPersonID}}">{{o.salesPersonName}}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Comments</label>
+                                    <div class="col-sm-8">
+                                        <textarea class="form-control form-control-sm" ng-model="comments"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-2">
+                                    <div class="col-sm-6 d-flex justify-content-end">
+                                        <button class="btn btn-success btn-sm px-5" ng-disabled="saveButtonDisabled" ng-click="save()">
+                                            Save
+                                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <button class="btn btn-primary btn-sm px-4" ng-click="makeInvoice()" ng-disabled="makeInvoiceDisable">Make Invoice</button>
+                                    </div>
+                                </div>
+                            </fieldset>
+
                         </div>
-                    </fieldset>
+                        <div class="col-sm-6">
+                            <div class="form-group row">
+                                <label class="col-sm-3 col-form-label">Product Name</label>
+                                @* <div class="col-sm-9">
+                                <input class="form-control form-control-sm" placeholder="Search Product Here" autocomplete="off" ng-model="searchQueryProduct" ng-keyup="searchProduct(searchQueryProduct)">
+                                <select class="form-control form-control-sm" size="10" ng-model="proList" style="position:absolute;z-index:999;width: 400px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="getProductList.length > 0">
+                                <option ng-repeat="product in getProductList" value="{{product.id}}" ng-click="selectProduct(product)">{{product.ladgerName}}</option>
+                                </select>
+                                </div> *@
 
-
-
-
-                    <fieldset class="border p-2 mt-3">
-                        <legend class="float-none w-auto fs-5">
-                            Sales Information
-                        </legend>
-                        <div class="row mt-4">
-                            <div class="col-sm-6">
-                                <label>No. fo invoice(s) would be created</label>
+                                <div class="col-sm-9">
+                                    <select class="form-select form-select-sm" ng-model="proList" ng-change="updateVatRate()">
+                                        <option value="0">List of Products</option>
+                                        <option ng-repeat="product in getProductList" value="{{product.id}}" data-vatRate="{{product.vatRate}}" ng-click="selectProduct(product)">{{product.ladgerName}}</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="col-sm-6">
-                                <input type="number" class="form-control form-control-sm text-right" ng-model="invoiceNo" ng-change="generateRows()">
-                            </div>
+
+                            <fieldset class="border p-2">
+                                <legend class="float-none w-auto fs-5">
+                                    This Product is valid for
+                                </legend>
+                                <div class="row mt-4">
+                                    <div class="col-sm-6">
+                                        <label>
+                                            <label><input ng-model="radioValue" ng-change="updateDuration()" value="1" type="radio" checked>&nbsp; One/less than one month</label>
+                                        </label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">From</label>
+                                            <div class="col-sm-9">
+                                                <input ng-model="dateFrom" ng-change="updateDuration()" class="form-control form-control-sm" type="date">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>
+                                            <input ng-model="radioValue" ng-change="updateDuration()" value="2" type="radio">&nbsp; more than one month
+                                        </label><br />
+                                        Duration
+                                        <input ng-model="month" maxlength="2" size="2" readonly style="text-align: center;" ng-disabled="radioValue !== '2'"> months
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <div class="form-group row">
+                                            <label class="col-sm-3 col-form-label">To</label>
+                                            <div class="col-sm-9">
+                                                <input ng-model="dateTo" ng-change="updateDuration()" class="form-control form-control-sm" type="date" ng-disabled="radioValue !== '2'">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </fieldset>
+
+
+
+
+                            <fieldset class="border p-2 mt-3">
+                                <legend class="float-none w-auto fs-5">
+                                    Sales Information
+                                </legend>
+                                <div class="row mt-4">
+                                    <div class="col-sm-6">
+                                        <label>No. fo invoice(s) would be created</label>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <input type="number" class="form-control form-control-sm text-right" ng-model="invoiceNo" ng-change="generateRows()">
+                                    </div>
+                                </div>
+                                <div>Give the schedule</div>
+                                <div class="mt-2">
+
+                                    <div style="height: 190px; overflow-y: auto;border:1px solid lightgray">
+                                        <table class="table table-bordered table-hover table-sm">
+                                            <thead class="thead-light">
+                                                <tr class="text-center" style="white-space:nowrap;">
+                                                    <th>SL No</th>
+                                                    <th>SDate</th>
+                                                    <th>Amount</th>
+                                                    <th>VAT</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr ng-repeat="row in rows">
+                                                    <td>{{$index+1}}</td>
+                                                    <td><input type="date" ng-model="row.sDate" class="form-control form-control-sm" /></td>
+                                                    <td class="text-right">{{row.salesPrice}}</td>
+                                                    <td class="text-right">{{row.taxAmount}}</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                   
+                                </div>
+                            </fieldset>
                         </div>
-                        <div>Give the schedule</div>
-                        <div class="mt-2">
-                            <table class="table table-bordered table-sm" style="height:150px;">
-                                <thead>
-                                    <tr>
-                                        <th>SL No</th>
-                                        <th>SDate</th>
-                                        <th>Amount</th>
-                                        <th>VAT</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr ng-repeat="row in rows">
-                                        <td>{{$index+1}}</td>
-                                        <td><input type="date" ng-model="row.sDate" class="form-control form-control-sm" /></td>
-                                        <td class="text-right">{{row.salesPrice}}</td>
-                                        <td class="text-right">{{row.taxAmount}}</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </fieldset>
+                    </div>
                 </div>
-            </div>
-        </div>
 
 
 
-        <div class="modal fade" id="closejournal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Journal Date</h5>
-                        <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <div class="row px-5">
-                            <p class="text-center">Give the journal date.</p>
-                            <input type="date" ng-model="journalDate" class="col-sm-8 offset-2 form-control form-control-sm" />
+                <div class="modal fade" id="closejournal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Journal Date</h5>
+                                <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row px-5">
+                                    <p class="text-center">Give the journal date.</p>
+                                    <input type="date" ng-model="journalDate" class="col-sm-8 offset-2 form-control form-control-sm" />
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                <button type="button" class="btn btn-primary btn-sm" ng-disabled="okButtonDisabled" ng-click="ok()">OK</button>
+                            </div>
                         </div>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary btn-sm" ng-disabled="okButtonDisabled" ng-click="ok()">OK</button>
                     </div>
                 </div>
             </div>
@@ -511,7 +520,7 @@
                     $scope.inputTitleDisabled = false;
                     $scope.showWorkshopDate = true;
                 } else {
-                    $scope.titleChange = 'Job Title'; 
+                    $scope.titleChange = 'Job Title';
                     $scope.titleDisabled = true;
                     $scope.inputTitleDisabled = true;
                     $scope.showWorkshopDate = false;
@@ -525,7 +534,7 @@
                 } else {
                     $scope.titleChange = 'Job Title';
                     $scope.titleDisabled = true;
-                    $scope.inputTitleDisabled = true; 
+                    $scope.inputTitleDisabled = true;
                     $scope.showWorkshopDate = false;
                 }
             }
@@ -711,7 +720,7 @@
                     } else {
                         // $scope.jobTitle = $scope.jobTitleData[0].jp_Id.toString();
                         $scope.jobTitleList = onlineJpId.toString();
-                        
+
                     }
 
                     $scope.dateFrom = new Date($scope.jobTitleData[0].postingDate);
@@ -875,14 +884,14 @@
             var selectedJpId = $scope.jobTitleData.find(function (s) {
                 return s.jp_Id == $scope.jobTitleList;
             });
-            var jobTitle="";
-            var jobId=0;
+            var jobTitle = "";
+            var jobId = 0;
             var onlineJpId = @onlineJobId;
             if (onlineJpId != 0) {
                 jobTitle = selectedJpId.title;
                 jobId = selectedJpId ? selectedJpId.jp_Id : 0;
             } else {
-                jobTitle= $scope.jobTitle ? $scope.jobTitle : "";
+                jobTitle = $scope.jobTitle ? $scope.jobTitle : "";
                 jobId = selectedJpId ? selectedJpId.jp_Id : 0;
             }
             let requestBodyModel = {

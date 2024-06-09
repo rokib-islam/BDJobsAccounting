@@ -24,7 +24,7 @@
 
     <style>
         .navbar-nav a:hover {
-            background-color: lightblue;
+            background-color: lightseagreen;
             cursor: pointer;
         }
 
@@ -36,7 +36,7 @@
 </head>
 <body>
     <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-light border-bottom box-shadow mb-2">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="AccountingHome">Home</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -81,7 +81,7 @@
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="NewSale">New Sale</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="EditSale">Edit Sale</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="CashCollection">Cash Collection</a>
-                                @* <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="AutoBilling">Auto Billing</a> *@
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="AutoBilling">Auto SMS Alert Apply Limit</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -130,26 +130,26 @@
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPayment">Provident Fund</a>
                             </div>
                         </li>
-                        @* <li class="nav-item dropdown">
+                        <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Payroll
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="employeeInfo">Employee Info</a>
                             </div>
-                        </li> *@
+                        </li>
                     </ul>
 
-                    <div class="navbar-text ml-auto">
+                    <div class="navbar-text ml-auto me-2" style="font-size:13px">
                         @if (!string.IsNullOrEmpty(username))
                         {
-                            <text>Welcome, @username !</text>
+                            <div class="p-1" style="border:1px solid lightgray">Welcome, @username !</div>
                         }
                         
                     </div>
                     <ul class="navbar-nav">
                         <li class="nav-item">
-                            <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Home" asp-action="LogOut">[Log Out]</a>
+                            <a class="nav-link text-dark dropdown-item p-1 fw-bold" style="border:1px solid lightgray;font-size:13px" asp-area="" asp-controller="Home" asp-action="LogOut">[Log Out]</a>
                         </li>
 
                     </ul>

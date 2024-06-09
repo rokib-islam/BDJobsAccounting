@@ -26,9 +26,9 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(true);
         }
-        public async Task<IActionResult> GetOnlineJobList(string CName, int Verified, int LedgerID)
+        public async Task<IActionResult> GetOnlineJobList(string FromDate, string ToDate, string CName, int Verified, int LedgerID)
         {
-            var data = await _SaleManager.GetOnlineJobList(CName, Verified, LedgerID);
+            var data = await _SaleManager.GetOnlineJobList(FromDate, ToDate, CName, Verified, LedgerID);
 
             return Json(data);
         }
@@ -231,7 +231,7 @@ namespace AccountingSystem.Web.Controllers
                 "DownloadCandidateMonetizationJob",
                 () => DownloadCandidateMonetizationAsync().GetAwaiter().GetResult(),
                 //Cron.Hourly
-                "0 */6 * * *"
+                "0 */2 * * *"
             );
         }
 
@@ -240,19 +240,62 @@ namespace AccountingSystem.Web.Controllers
             RecurringJob.AddOrUpdate(
                 "Candidate_Monetization_Sequential_Sale_Posting",
                 () => RunMonetizationJobsSequentially().GetAwaiter().GetResult(),
-                "0 */3 * * *" // Adjust the cron expression as needed
+                "0 */2 * * *" // Adjust the cron expression as needed
             );
         }
 
         public async Task RunMonetizationJobsSequentially()
         {
-            await SalePostMonetizationBasicAsync("Candidate Monetization-Basic");
-            await Task.Delay(TimeSpan.FromMinutes(15));
+            var count = 0;
 
-            await SalePostMonetizationBasicAsync("Candidate Monetization-Standard");
-            await Task.Delay(TimeSpan.FromMinutes(15));
+            count = await _SaleManager.SMSAlertApplyLimitCountForBilling("Candidate Monetization-Basic");
+            if (count > 100)
+            {
+                await SalePostMonetizationBasicAsync("Candidate Monetization-Basic");
+                await Task.Delay(TimeSpan.FromMinutes(10));
+            }
 
-            await SalePostMonetizationBasicAsync("Candidate Monetization-Premium");
+
+            count = await _SaleManager.SMSAlertApplyLimitCountForBilling("Candidate Monetization-Standard");
+            if (count > 100)
+            {
+                await SalePostMonetizationBasicAsync("Candidate Monetization-Standard");
+                await Task.Delay(TimeSpan.FromMinutes(10));
+            }
+
+
+            count = await _SaleManager.SMSAlertApplyLimitCountForBilling("Candidate Monetization-Premium");
+            if (count > 100)
+            {
+                await SalePostMonetizationBasicAsync("Candidate Monetization-Premium");
+                await Task.Delay(TimeSpan.FromMinutes(10));
+            }
+
+
+            count = await _SaleManager.SMSAlertApplyLimitCountForBilling("Apply Limit (Job Fair)");
+            if (count > 100)
+            {
+                await SalePostMonetizationBasicAsync("Apply Limit (Job Fair)");
+                await Task.Delay(TimeSpan.FromMinutes(10));
+            }
+
+
+            count = await _SaleManager.SMSAlertApplyLimitCountForBilling("Apply Limit (Job Seeker)");
+            if (count > 100)
+            {
+                await SalePostMonetizationBasicAsync("Apply Limit (Job Seeker)");
+                await Task.Delay(TimeSpan.FromMinutes(10));
+            }
+
+
+            count = await _SaleManager.SMSAlertApplyLimitCountForBilling("SMS Alert (Job Seeker)");
+            if (count > 100)
+            {
+                await SalePostMonetizationBasicAsync("SMS Alert (Job Seeker)");
+                await Task.Delay(TimeSpan.FromMinutes(10));
+            }
+
+
         }
 
         #endregion 
@@ -266,6 +309,12 @@ namespace AccountingSystem.Web.Controllers
 
             else
                 return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> AutoBillingData([FromBody] AutoBillingModel model)
+        {
+            var result = await _SaleManager.AutoBillingData(model);
+            return Json(result);
         }
     }
 }

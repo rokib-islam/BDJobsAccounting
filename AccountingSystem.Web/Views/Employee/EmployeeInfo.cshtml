@@ -8,9 +8,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                <script type="text/javascript">
-                                    window.location.href = '@Url.Action("Index", "Home")';
-                                </script>
+        <script type="text/javascript">
+            window.location.href = '@Url.Action("Index", "Home")';
+        </script>
     }
     else
     {
@@ -20,6 +20,7 @@
 
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
     <style>
         .disabled-div {
             pointer-events: none;
@@ -38,12 +39,12 @@
                     </div>
                     <div class="col-sm-9">
                         <div>
-                            <button class="btn btn-info btn-sm" ng-click="basicInfoButton()">Basic Info</button>
-                            <button class="btn btn-info ms-3 btn-sm" ng-click="employmentInfoButton()">Employment Info</button>
-                            <button class="btn btn-info ms-3 btn-sm" ng-click="salaryInfoButton()">Salary Info</button>
-                            <button class="btn btn-info ms-3 btn-sm" ng-click="bankAndTaxInfoButton()">Bank and Tax Info</button>
-                            <button class="btn btn-success ms-3 btn-sm" ng-click="downloadExcelBtn()">Excel</button>
-                            <button class="btn btn-success ms-3 btn-sm" ng-click="Import()">Import from ACS</button>
+                            <button class="btn btn-secondary btn-sm" ng-click="basicInfoButton()">Basic Info</button>
+                            <button class="btn btn-secondary ms-3 btn-sm" ng-click="employmentInfoButton()">Employment Info</button>
+                            <button class="btn btn-secondary ms-3 btn-sm" ng-click="salaryInfoButton()">Salary Info</button>
+                            <button class="btn btn-secondary ms-3 btn-sm" ng-click="bankAndTaxInfoButton()">Bank and Tax Info</button>
+                            <button class="btn btn-success ms-3 btn-sm" ng-click="downloadExcel()">Excel</button>
+                            <button class="btn btn-success ms-3 btn-sm" ng-click="import()">Import from ACS</button>
                         </div>
                     </div>
                 </div>
@@ -455,9 +456,9 @@
                                     <label class="col-sm-5">Gross Salary</label>
                                     <div class="col-sm-7">
                                         <input type="text" class="form-control form-control-sm" ng-model="grossSalaryInput" ng-show="grossSalaryInputShow" />
-                                        <select class="form-select form-select-sm" ng-model="grossSalary" ng-change="loadGrossSalaryEffectiveDate()" ng-show="grossSalaryListShow">
+                                        <select class="form-select form-select-sm" ng-model="grossSalaryList" ng-change="changeGrossSalaryEffectiveDate()" ng-show="grossSalaryListShow">
                                             <option value="-1">Select</option>
-                                            @* <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}" data-name="{{data.name}}">{{data.name}}</option> *@
+                                            <option ng-repeat="data in grossSalaryData" value="{{data.id}}">{{data.grossSalary}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -467,13 +468,13 @@
                                         <input type="date" class="form-control form-control-sm" ng-model="grossSalaryEffectiveDate" />
                                     </div>
                                 </div>
-                                <div class="row mt-3">                                    
+                                <div class="row mt-3">
                                     <div class="col-sm-4">
-                                        <button class="btn btn-info btn-sm px-4 float-end" ng-click="gsUpdate()" ng-disabled="gsUpdateDisabled">Update</button>
+                                        <button class="btn btn-info btn-sm px-4 float-end" ng-click="addOrUpdateGrossSalary('UPDATE')" ng-disabled="gsUpdateDisabled">Update</button>
                                     </div>
                                     <div class="col-sm-2"></div>
                                     <div class="col-sm-4">
-                                        <button class="btn btn-info btn-sm px-5" ng-click="gsAdd()" ng-disabled="gsAddDisabled">Add</button>
+                                        <button class="btn btn-info btn-sm px-5" ng-click="addOrUpdateGrossSalary('INSERT')" ng-disabled="gsAddDisabled">Add</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -492,10 +493,10 @@
                                 <div class="row mt-3">
                                     <label class="col-sm-5">TA</label>
                                     <div class="col-sm-7">
-                                        <input type="text" class="form-control form-control-sm" ng-model="taInput" ng-show="taInputShow"/>
-                                        <select class="form-select form-select-sm" ng-model="ta" ng-change="loadTaEffectiveDate()" ng-show="taListShow">
+                                        <input type="text" class="form-control form-control-sm" ng-model="taInput" ng-show="taInputShow" />
+                                        <select class="form-select form-select-sm" ng-model="taList" ng-change="changeTaEffectiveDate()" ng-show="taListShow">
                                             <option value="-1">Select</option>
-                                            @* <option ng-repeat="data in companyIdWiseContactPersonData" value="{{data.id}}" data-name="{{data.name}}">{{data.name}}</option> *@
+                                            <option ng-repeat="data in taData" value="{{data.id}}">{{data.ta}}</option>
                                         </select>
                                     </div>
                                 </div>
@@ -505,13 +506,13 @@
                                         <input type="date" class="form-control form-control-sm" ng-model="taEffectiveDate" />
                                     </div>
                                 </div>
-                                <div class="row mt-3">                                    
+                                <div class="row mt-3">
                                     <div class="col-sm-4">
-                                        <button class="btn btn-info btn-sm px-4 float-end" ng-click="taUpdate()" ng-disabled="taUpdateDisabled">Update</button>
+                                        <button class="btn btn-info btn-sm px-4 float-end" ng-click="addOrUpdateTa('UPDATE')" ng-disabled="taUpdateDisabled">Update</button>
                                     </div>
                                     <div class="col-sm-2"></div>
                                     <div class="col-sm-4">
-                                        <button class="btn btn-info btn-sm px-5" ng-click="taAdd()" ng-disabled="taAddDisabled">Add</button>
+                                        <button class="btn btn-info btn-sm px-5" ng-click="addOrUpdateTa('INSERT')" ng-disabled="taAddDisabled">Add</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -597,7 +598,7 @@
                                         <select class="form-select form-select-sm" ng-model="acknowledge" ng-show="acknowledgeListShow" ng-change="updateReturnYear()">
                                             <option value="-1">Select</option>
                                             <option ng-repeat="data in acknowlegementData" value="{{data.id}}">{{data.acknowledgementNo}}</option>
-                                        </select>                                        
+                                        </select>
                                     </div>
                                 </div>
                                 <div class="row mt-2">
@@ -606,13 +607,13 @@
                                         <input class="form-control form-control-sm" ng-model="returnYear" />
                                     </div>
                                 </div>
-                                <div class="row mt-3">                                    
+                                <div class="row mt-3">
                                     <div class="col-sm-4">
-                                        <button class="btn btn-info btn-sm px-4 float-end" ng-click="addOrUpdateAcknowledgeUpdate('UPDATE')" ng-disabled="acknowledgeUpdateDisabled">Update</button>
+                                        <button class="btn btn-info btn-sm px-4 float-end" ng-click="addOrUpdateAcknowledge('UPDATE')" ng-disabled="acknowledgeUpdateDisabled">Update</button>
                                     </div>
                                     <div class="col-sm-2"></div>
                                     <div class="col-sm-4">
-                                        <button class="btn btn-info btn-sm px-5" ng-click="addOrUpdateAcknowledgeUpdate('INSERT')" ng-disabled="acknowledgeAddDisabled">Add</button>
+                                        <button class="btn btn-info btn-sm px-5" ng-click="addOrUpdateAcknowledge('INSERT')" ng-disabled="acknowledgeAddDisabled">Add</button>
                                     </div>
                                 </div>
                             </fieldset>
@@ -620,13 +621,113 @@
                     </div>
                 </div>
 
-                <div class="row mt-3">
+                <div class="row mt-4">
                     <div class="col-sm-6">
                         <button class="btn btn-primary btn-sm col-sm-4 float-end " ng-click="insertOrUpdate('UPDATE')" ng-disabled="updateDisabled">Update</button>
                     </div>
                     <div class="col-sm-6">
                         <button class="btn btn-success btn-sm col-sm-4" ng-click="insertOrUpdate('INSERT')" ng-disabled="addDisabled">Add</button>
                     </div>
+                </div>
+                <div style="white-space:nowrap;margin-top:20px" ng-show="showTable">
+                    <table class="table table-bordered table-striped">
+                        <thead>
+                            <tr class="text-center">
+                                <th>SL NO.</th>
+                                <th>Employee Id</th>
+                                <th>Employee Id No</th>
+                                <th>Employee Name</th>
+                                <th>Fathers Name</th>
+                                <th>Mothers Name</th>
+                                <th>Husband Or Wife Name</th>
+                                <th>Gender</th>
+                                <th>Date Of Birth</th>
+                                <th>Blood Group</th>
+                                <th>Mobile No</th>
+                                <th>Email</th>
+                                <th>NID</th>
+                                <th>E-Tin</th>
+                                <th>Present Address</th>
+                                <th>Permanent Address</th>
+                                <th>Rank</th>
+                                <th>Designation</th>
+                                <th>Department</th>
+                                <th>Function</th>
+                                <th>Employment Status</th>
+                                <th>Joining Date</th>
+                                <th>Effective Date</th>
+                                <th>Increment Effective Month</th>
+                                <th>Supervisory Role</th>
+                                <th>Supervisor Name</th>
+                                <th>Job Location</th>
+                                <th>PF Activation</th>
+                                <th>PF Activation Start Date</th>
+                                <th>PF Activation End Date</th>
+                                <th>Resignation Date</th>
+                                <th>Active Status</th>
+                                <th>OT Applicable</th>
+                                <th>Lunch Allowance</th>
+                                <th>BankAc Name</th>
+                                <th>Bank Name</th>
+                                <th>Branch Name</th>
+                                <th>BankAc No</th>
+                                <th>Routing No</th>
+                                <th>Branch Code</th>
+                                <th>Bkash No</th>
+                                <th>Default Payment Mode</th>
+                                <th>Tax Acknowledgement No</th>
+                                <th>Year</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in employeeAllData">
+                                <td class="text-center">{{$index + 1}}</td>
+                                <td class="text-center">{{data.employeeId}}</td>
+                                <td class="text-center">{{data.employeeIdNo}}</td>
+                                <td class="text-center">{{data.employeeName}}</td>
+                                <td class="text-center">{{data.fathersName}}</td>
+                                <td class="text-center">{{data.mothersName}}</td>
+                                <td class="text-center">{{data.husbandOrWifeName}}</td>
+                                <td class="text-center">{{data.gender}}</td>
+                                <td class="text-center">{{data.dateOfBirth | date: dd-MM-yyyy}}</td>
+                                <td class="text-center">{{data.bloodGroup}}</td>
+                                <td class="text-center">{{data.mobileNo}}</td>
+                                <td class="text-center">{{data.email}}</td>
+                                <td class="text-center">{{data.nid}}</td>
+                                <td class="text-center">{{data.eTin}}</td>
+                                <td class="text-center">{{data.presentAddress}}</td>
+                                <td class="text-center">{{data.permanentAddress}}</td>
+                                <td class="text-center">{{data.rank}}</td>
+                                <td class="text-center">{{data.designation}}</td>
+                                <td class="text-center">{{data.department}}</td>
+                                <td class="text-center">{{data.function}}</td>
+                                <td class="text-center">{{data.employmentStatus}}</td>
+                                <td class="text-center">{{data.joiningDate | date: dd-MM-yyyy}}</td>
+                                <td class="text-center">{{data.effectiveDate | date: dd-MM-yyyy}}</td>
+                                <td class="text-center">{{data.incrementEffectiveMonth}}</td>
+                                <td class="text-center">{{data.supervisoryRole}}</td>
+                                <td class="text-center">{{data.supervisorName}}</td>
+                                <td class="text-center">{{data.jobLocation}}</td>
+                                <td class="text-center">{{data.pdfActivation}}</td>
+                                <td class="text-center">{{data.pdfActivationStartDate | date: dd-MM-yyyy}}</td>
+                                <td class="text-center">{{data.pdfActivationEndDate | date: dd-MM-yyyy}}</td>
+                                <td class="text-center">{{data.resignationDate | date: dd-MM-yyyy}}</td>
+                                <td class="text-center">{{data.activeStatus}}</td>
+                                <td class="text-center">{{data.otApplicable}}</td>
+                                <td class="text-center">{{data.lunchAllowance}}</td>
+                                <td class="text-center">{{data.bankAcName}}</td>
+                                <td class="text-center">{{data.bankName}}</td>
+                                <td class="text-center">{{data.branchName}}</td>
+                                <td class="text-center">{{data.bankAcNo}}</td>
+                                <td class="text-center">{{data.routingNo}}</td>
+                                <td class="text-center">{{data.branchCode}}</td>
+                                <td class="text-center">{{data.bkashNo}}</td>
+                                <td class="text-center">{{data.defaultPaymentMode}}</td>
+                                <td class="text-center">{{data.acknowledgementNo}}</td>
+                                <td class="text-center">{{data.returnYear}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
@@ -642,8 +743,10 @@
             $scope.loadFunction();
             $scope.loadRank();
             $scope.loadSupervisor();
+            $scope.LoadAllEmployeeInfo();
         })
-        
+
+        $scope.showTable = false;
         $scope.basicInfo = true;
         $scope.employeeIdDisabled = true;
         $scope.updateDisabled = true;
@@ -676,6 +779,9 @@
         $scope.taxRadioBtn = '2';
         $scope.gsRadioBtn = '2';
         $scope.taRadioBtn = '2';
+        $scope.taList = '-1';
+        $scope.grossSalaryList = '-1';
+        $scope.acknowledge = '-1';
 
         $scope.changeSupervisor = function () {
             if ($scope.supervisoryRole == "1") {
@@ -717,11 +823,14 @@
                 $scope.acknowledgeAddDisabled = false;
                 $scope.acknowledgeInputShow = true;
                 $scope.acknowledgeListShow = false;
+                $scope.returnYear = '';
             } else {
                 $scope.acknowledgeAddDisabled = true;
                 $scope.acknowledgeUpdateDisabled = false;
                 $scope.acknowledgeInputShow = false;
                 $scope.acknowledgeListShow = true;
+                $scope.returnYear = '';
+                $scope.acknowledge = '-1';
             }
         }
 
@@ -731,11 +840,14 @@
                 $scope.gsAddDisabled = false;
                 $scope.grossSalaryInputShow = true;
                 $scope.grossSalaryListShow = false;
+                $scope.grossSalaryEffectiveDate = '';
             } else {
                 $scope.gsAddDisabled = true;
                 $scope.gsUpdateDisabled = false;
                 $scope.grossSalaryListShow = true;
                 $scope.grossSalaryInputShow = false;
+                $scope.grossSalaryEffectiveDate = '';
+                $scope.grossSalaryList = '-1';
             }
         }
 
@@ -745,11 +857,14 @@
                 $scope.taAddDisabled = false;
                 $scope.taInputShow = true;
                 $scope.taListShow = false;
+                $scope.taEffectiveDate = '';
             } else {
                 $scope.taAddDisabled = true;
                 $scope.taUpdateDisabled = false;
                 $scope.taListShow = true;
                 $scope.taInputShow = false;
+                $scope.taEffectiveDate = '';
+                $scope.taList = '-1';
             }
         }
 
@@ -784,7 +899,9 @@
             $scope.isDisabled = false;
             $scope.getEmployeeInfoById($scope.selectedEmployee.employeeId);
             $scope.loadAcknolegementInfo($scope.selectedEmployee.employeeId);
-        }       
+            $scope.loadGrossSalaryInfo($scope.selectedEmployee.employeeId);
+            $scope.loadTaInfo($scope.selectedEmployee.employeeId);
+        }
 
         $scope.loadDepartment = function () {
             let Url = '';
@@ -983,7 +1100,7 @@
                 MothersName: mothersName,
                 HusbandOrWifeName: husbandOrWifeName,
                 Gender: gender,
-                DateOfBirth: dateOfBirth,
+                DateOfBirth: dateOfBirth == undefined ? '' : dateOfBirth,
                 BloodGroup: bloodGroup,
                 MobileNo: mobileNo,
                 Email: email,
@@ -998,13 +1115,13 @@
                 SupervisorId: +supervisorName,
                 JobLocation: jobLocation,
                 IncrementEffectiveMonth: incrementEffectiveMonth,
-                JoiningDate: joiningDate,
-                EffectiveDate: effectiveDate,
+                JoiningDate: joiningDate == undefined ? '' : joiningDate,
+                EffectiveDate: effectiveDate == undefined ? '' : effectiveDate,
                 PDFActivation: pdfActivation,
-                PDFActivationStartDate: pdfStartDate,
-                PDFActivationEndDate: pdfEndDate,
+                PDFActivationStartDate: pdfStartDate == undefined ? '' : pdfStartDate,
+                PDFActivationEndDate: pdfEndDate == undefined ? '' : pdfEndDate,
                 ActiveStatus: status,
-                ResignationDate: resignationDate,
+                ResignationDate: resignationDate == undefined ? '' : resignationDate,
                 OTApplicable: otApplicable,
                 LunchAllowance: lunchAllowance,
                 BankAcName: bankAcName,
@@ -1125,23 +1242,23 @@
 
                     if ($scope.employmentStatus == "Parmanent") {
                         $scope.disabledEffectiveDate = false;
-                        $scope.effectiveDate = new Date($scope.employeeData.effectiveDate);
+                        $scope.effectiveDate = $scope.employeeData.effectiveDate == '01/01/1900 00:00:00' ? '' : new Date($scope.employeeData.effectiveDate);
                     } else {
                         $scope.disabledEffectiveDate = true;
                     }
-                    
+
                     $scope.status = $scope.employeeData.activeStatus == true ? "1" : "0";
 
                     if ($scope.status == "1") {
                         $scope.disabledResignationDate = true;
                     } else {
                         $scope.disabledResignationDate = false;
-                        $scope.resignationDate = new Date($scope.employeeData.resignationDate);
+                        $scope.resignationDate = $scope.employeeData.resignationDate == '01/01/1900 00:00:00' ? '' : new Date($scope.employeeData.resignationDate);
                     }
 
                     $scope.pfActivation = $scope.employeeData.pdfActivation == true ? "1" : "0";
-                    $scope.pfStartDate = new Date($scope.employeeData.pdfActivationStartDate);
-                    $scope.pfEndDate = new Date($scope.employeeData.pdfActivationEndDate);
+                    $scope.pfStartDate = $scope.employeeData.pdfActivationStartDate == '01/01/1900 00:00:00' ? '' : new Date($scope.employeeData.pdfActivationStartDate);
+                    $scope.pfEndDate = $scope.employeeData.pdfActivationEndDate == '01/01/1900 00:00:00' ? '' : new Date($scope.employeeData.pdfActivationEndDate);
                     $scope.otApplicable = $scope.employeeData.otApplicable == true ? "1" : "0";
                     $scope.lunchAllowance = $scope.employeeData.lunchAllowance == true ? "1" : "0";
                     $scope.bankAcName = $scope.employeeData.bankAcName;
@@ -1157,7 +1274,7 @@
                 });
         };
 
-        $scope.addOrUpdateAcknowledgeUpdate = function (action) {
+        $scope.addOrUpdateAcknowledge = function (action) {
             if (action == 'INSERT') {
                 var access = '@accessRights.Contains("1")';
                 if (access == 'False') {
@@ -1172,10 +1289,10 @@
             }
             let requestBodyModel = {
                 EmployeeId: $scope.employeeId,
-                ID: $scope.acknowledge,
+                ID: action == 'INSERT' ? 0 : $scope.acknowledge,
                 AcknowledgementNo: action == 'INSERT' ? $scope.acknowledgeInput : $scope.acknowledgementNo,
                 ReturnYear: $scope.returnYear,
-                }
+            }
 
             let Url = '';
             if (window.location.hostname == 'localhost')
@@ -1187,7 +1304,9 @@
                 .then(function (response) {
                     if (response.data == 'Success') {
                         alert("Data Saved Successfully.");
-                        $scope.fieldsEmpty();
+                        $scope.loadAcknolegementInfo($scope.selectedEmployee.employeeId);
+                        $scope.acknowledge = '-1';
+                        $scope.returnYear = '';
                     }
                 })
                 .catch(function (error) {
@@ -1220,5 +1339,194 @@
                 $scope.returnYear = '';
             }
         };
+
+        $scope.addOrUpdateGrossSalary = function (action) {
+            if (action == 'INSERT') {
+                var access = '@accessRights.Contains("1")';
+                if (access == 'False') {
+                    alert("Sorry, You have no permission to insert a record.");
+                }
+
+                var grossSalaryEffectiveDateForInsert = new Date($scope.grossSalaryEffectiveDate);
+                grossSalaryEffectiveDateForInsert.setDate(grossSalaryEffectiveDateForInsert.getDate() + 1);
+            } else {
+                var access = '@accessRights.Contains("2")';
+                if (access == 'False') {
+                    alert("Sorry, You have no permission to update a record.");
+                }
+
+            }
+
+            let requestBodyModel = {
+                EmployeeId: $scope.employeeId,
+                ID: action == 'INSERT' ? 0 : $scope.grossSalaryList,
+                GrossSalary: action == 'INSERT' ? $scope.grossSalaryInput : $scope.grossSalary,
+                GrossSalaryEffectiveDate: action == 'INSERT' ? grossSalaryEffectiveDateForInsert : $scope.grossSalaryEffectiveDate,
+            }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/InsertOrUpdateGrossSalary';
+            else
+                Url = '/AccountingNew/Employee/InsertOrUpdateGrossSalary';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    if (response.data == 'Success') {
+                        alert("Data Saved Successfully.");
+                        $scope.loadGrossSalaryInfo($scope.selectedEmployee.employeeId);
+                        $scope.grossSalaryList = '-1';
+                        $scope.grossSalaryEffectiveDate = '';
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        $scope.loadGrossSalaryInfo = function (employeeId) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/GetGrossSalaryByEmployeeId';
+            else
+                Url = '/AccountingNew/Employee/GetGrossSalaryByEmployeeId';
+
+            $http.get(Url, { params: { employeeId: employeeId } })
+                .then(function (response) {
+                    $scope.grossSalaryData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.changeGrossSalaryEffectiveDate = function () {
+            const selectedGrossSalary = $scope.grossSalaryData.find(data => data.id == $scope.grossSalaryList);
+            if (selectedGrossSalary) {
+                $scope.grossSalary = selectedGrossSalary.grossSalary;
+                $scope.grossSalaryEffectiveDate = new Date(selectedGrossSalary.grossSalaryEffectiveDate);
+            } else {
+                $scope.grossSalaryEffectiveDate = '';
+            }
+        };
+
+        $scope.addOrUpdateTa = function (action) {
+            if (action == 'INSERT') {
+                var access = '@accessRights.Contains("1")';
+                if (access == 'False') {
+                    alert("Sorry, You have no permission to insert a record.");
+                }
+
+                var taEffectiveDateForInsert = new Date($scope.taEffectiveDate);
+                taEffectiveDateForInsert.setDate(taEffectiveDateForInsert.getDate() + 1);
+            } else {
+                var access = '@accessRights.Contains("2")';
+                if (access == 'False') {
+                    alert("Sorry, You have no permission to update a record.");
+                }
+
+            }
+
+            let requestBodyModel = {
+                EmployeeId: $scope.employeeId,
+                ID: action == 'INSERT' ? 0 : $scope.taList,
+                TA: action == 'INSERT' ? $scope.taInput : $scope.ta,
+                TAEffectiveDate: action == 'INSERT' ? taEffectiveDateForInsert : $scope.taEffectiveDate,
+            }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/InsertOrUpdateTA';
+            else
+                Url = '/AccountingNew/Employee/InsertOrUpdateTA';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    if (response.data == 'Success') {
+                        alert("Data Saved Successfully.");
+                        $scope.loadTaInfo($scope.selectedEmployee.employeeId);
+                        $scope.taList = '-1';
+                        $scope.taEffectiveDate = '';
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        $scope.loadTaInfo = function (employeeId) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/GetTaByEmployeeId';
+            else
+                Url = '/AccountingNew/Employee/GetTaByEmployeeId';
+
+            $http.get(Url, { params: { employeeId: employeeId } })
+                .then(function (response) {
+                    $scope.taData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.changeTaEffectiveDate = function () {
+            const selectedTa = $scope.taData.find(data => data.id == $scope.taList);
+            if (selectedTa) {
+                $scope.ta = selectedTa.ta;
+                $scope.taEffectiveDate = new Date(selectedTa.taEffectiveDate);
+            } else {
+                $scope.taEffectiveDate = '';
+            }
+        };
+
+        $scope.LoadAllEmployeeInfo = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Employee/LoadAllEmployeeInfo';
+            else
+                Url = '/AccountingNew/Employee/LoadAllEmployeeInfo';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.employeeAllData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+
+        };
+
+        $scope.downloadExcel = function () {
+            let wb = XLSX.utils.book_new();
+            let table = document.querySelector('.table');
+            let ws = XLSX.utils.table_to_sheet(table);
+            XLSX.utils.book_append_sheet(wb, ws, 'Employee Data');
+            XLSX.writeFile(wb, 'EmployeeData.xlsx');
+        };
+
+        $scope.import = function () {
+
+            var confirmMsg = confirm('Are you sure you want to import data?');
+            if (confirmMsg) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Employee/ImportACS';
+                else
+                    Url = '/AccountingNew/Employee/ImportACS';
+
+                $http.post(Url)
+                    .then(function (response) {
+                        alert(response.data);
+                        return false;
+                    }, function (error) {
+                        console.error(error);
+                    })
+
+            }
+            return false;
+
+
+        };
+
     });
 </script>
