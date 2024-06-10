@@ -225,6 +225,13 @@ namespace AccountingSystem.Web.Controllers
 
         }
 
+        public async Task<IActionResult> SalePostMonetizationBasicAsync_Manual([FromBody] ManualSalePostMonetizationModel model)
+        {
+            var result = await _SaleManager.PostSMSAlertApplyLimitSalePostingNew(model.ServiceName);
+            return Json(result);
+
+        }
+
         public void DownloadCandidateMonetizationJob()
         {
             RecurringJob.AddOrUpdate(

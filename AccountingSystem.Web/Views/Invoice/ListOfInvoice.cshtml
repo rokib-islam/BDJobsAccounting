@@ -1,0 +1,52 @@
+﻿@{
+    ViewData["Title"] = "ListOfInvoice";
+}
+
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <h3 class="text-center" style="margin-top:-10px">List of Invoice</h3>
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div>Product List</div>
+                        <select class="form-control form-control-sm" size="15" ng-model="proList" style="height:225px;border:1px solid lightgray">
+                            @*                             <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                            *@
+                        </select>
+                    </div>
+                    <div class="col-sm-5">
+                        <table class="table table-bordered">
+                            <tr>
+                                <td>
+                                    <input type="radio" ng-model="invoiceRadio" value="1" />&nbsp;<label>Show all valid invoices</label><br />
+                                    <input type="radio" ng-model="invoiceRadio" value="2" />&nbsp;<label>Show deleted invoices</label>
+                                </td>
+                                <td>
+                                    <input type="radio" ng-model="ascDsc" value="1" />&nbsp;<label>Ascending</label><br />
+                                    <input type="radio" ng-model="ascDsc" value="2" />&nbsp;<label>Descending</label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>
+                                    <input type="checkbox" ng-model="invoiceDuration" />&nbsp;<label>Invoice Duration</label>
+                                </td>
+                            </tr>
+                        </table>                        
+                    </div>
+                    <div class="col-sm-3">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+
+
+    });
+</script>

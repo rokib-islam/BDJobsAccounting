@@ -14,5 +14,6 @@ namespace AccountingSystem.Models.AccountViewModels
         public DateTime ToDate { get; set; }
         public int Status { get; set; }
         public string ServiceName { get; set; }
+        public string ServiceGroup { get; set; }
     }
 }
