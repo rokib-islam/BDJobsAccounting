@@ -897,7 +897,8 @@ namespace AccountingSystem.Repository
                     Fromdate = model.FromDate,
                     Todate = model.ToDate,
                     Status = model.Status,
-                    ServiceName = model.ServiceName
+                    ServiceName = model.ServiceName,
+                    ServiceGroup = model.ServiceGroup
                 };
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
                 {

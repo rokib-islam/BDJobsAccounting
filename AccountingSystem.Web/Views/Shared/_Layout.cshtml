@@ -96,8 +96,8 @@
                                 {
                                     <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="OnlinePaymentVarification">Online Payment Varification</a>
                                 }
-                                
-                            </div>
+@*                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="ListOfInvoice">List of Invoice</a>
+ *@                            </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -135,7 +135,10 @@
                                 Payroll
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="employeeInfo">Employee Info</a>
+                                @if (userId == 28 || userId == 47 || userId == 9)
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="employeeInfo">Employee Info</a>
+                                }
                             </div>
                         </li>
                     </ul>
