@@ -15,9 +15,9 @@
                         <h4 class="text-center">Auto SMS Alert Apply Limit</h4>
                     </div>
                     <div class="col-sm-2">
-                        <button class="btn btn-warning btn-sm px-3" ng-click="openModal()">Bill Manually</button>
+                        <button class="btn btn-warning btn-sm px-3" ng-click="openModal()" ng-hide="hideButton">Bill Manually</button>
                     </div>
-                   
+
 
                     <div class="col-sm-6 mt-2">
                         <div class="row">
@@ -30,11 +30,11 @@
                             </div>
                             <div class="col-sm-4">
                                 <label>From Date</label>
-                                <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
+                                <input type="date" class="form-control form-control-sm" ng-model="fromDate" ng-change="dataLoadChange()" />
                             </div>
                             <div class="col-sm-4">
                                 <label>To Date</label>
-                                <input type="date" class="form-control form-control-sm" ng-model="toDate" />
+                                <input type="date" class="form-control form-control-sm" ng-model="toDate" ng-change="dataLoadChange()" />
                             </div>
                         </div>
                     </div>
@@ -42,7 +42,7 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <label>Satus</label>
-                                <select class="form-select form-select-sm" ng-model="status">
+                                <select class="form-select form-select-sm" ng-model="status" ng-change="statusChange()">
                                     <option value="1">Done</option>
                                     <option value="0">Peding</option>
                                 </select>
@@ -69,7 +69,7 @@
                             </div>
                         </div>
                     </div>
-                                        
+
                     <div class="row mt-3" ng-show="isVisible">
                         <div class="col-sm-6">
                             <div class="pull-left text-left">
@@ -131,6 +131,7 @@
                                     <th>Paid By</th>
                                     <th>Amount</th>
                                     <th>Invoice No</th>
+                                    <th>Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -142,7 +143,12 @@
                                     <td class="text-center">{{data.paidBy}}</td>
                                     <td class="text-end">{{data.amount}}</td>
                                     <td class="text-center">{{data.invoiceNo}}</td>
-                                    
+                                    <td class="text-center">
+                                        <button class="btn btn-warning btn-sm" ng-show="showBillManuallyForEmployer" ng-click="BillManuallyForEmployer($index, data.clientID, data.cP_id, data.acc_id, data.quantity, data.serviceGroup, data.serviceID, data.transDate, data.amount, data.secAmount, data.detailInfo, data.transID, data.paidBy, data.serviceName)">
+                                            Bill Manually
+                                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner_manual_employer[$index]"></span>
+                                        </button>
+                                    </td>
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -182,7 +188,7 @@
                                 <button type="button" class="btn btn-primary btn-sm" ng-disabled="okButtonDisabled" ng-click="ok()">
                                     OK
                                     &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner_manual"></span>
-                                    </button>
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -198,6 +204,8 @@
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.spinner = false;
+
+
         });
         $scope.status = '1';
         $scope.serviceName = '0';
@@ -212,13 +220,32 @@
 
         $scope.fromDate = new Date();
         $scope.toDate = new Date();
-       
+
 
         $scope.openModal = function () {
             $("#manualBillModal").modal('show');
         }
 
-        
+        $scope.statusChange = function () {
+            if ($scope.status == '0' && $scope.serviceGroup == 'Employer') {
+                $scope.showBillManuallyForEmployer = true;
+                $scope.load();
+            } else {
+                $scope.showBillManuallyForEmployer = false;
+                $scope.load();
+            }
+        }
+
+        $scope.dataLoadChange = function () {
+            if ($scope.status == '0' && $scope.serviceGroup == 'Employer') {
+                $scope.showBillManuallyForEmployer = true;
+                $scope.load();
+            } else {
+                $scope.showBillManuallyForEmployer = false;
+                $scope.load();
+            }
+        }
+
         $scope.showSMSAlertJobSeeker = true;
         $scope.showApplyLimitJobSeeker = true;
         $scope.showApplyLimitJobFair = true;
@@ -236,6 +263,13 @@
                 $scope.showCandidateMonetizationPremium = true;
                 $scope.showCandidateMonetizationBasic = true;
                 $scope.showCandidateMonetizationStandard = true;
+                $scope.hideButton = false;
+                if ($scope.status == '0' && $scope.serviceGroup == 'Employer') {
+                    $scope.showBillManuallyForEmployer = true;
+                } else {
+                    $scope.showBillManuallyForEmployer = false;
+                }
+                $scope.load();
             } else {
                 $scope.serviceName = '0'
                 $scope.showSMSAlertEmployer = true;
@@ -246,10 +280,17 @@
                 $scope.showCandidateMonetizationPremium = false;
                 $scope.showCandidateMonetizationBasic = false;
                 $scope.showCandidateMonetizationStandard = false;
+                $scope.hideButton = true;
+                if ($scope.status == '0' && $scope.serviceGroup == 'Employer') {
+                    $scope.showBillManuallyForEmployer = true;
+                } else {
+                    $scope.showBillManuallyForEmployer = false;
+                }
+                $scope.load();
             }
-            
+
         }
-        
+
 
         $scope.load = function () {
             $scope.spinner = true;
@@ -351,6 +392,45 @@
                     alert(response.data.errorMessage);
                     $scope.spinner_manual = false;
                     $("#manualBillModal").modal('hide');
+                    $scope.load();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+        $scope.spinner_manual_employer = [];
+        $scope.BillManuallyForEmployer = function (index, clientID, cP_id, acc_id, quantity, serviceGroup, serviceID, transDate, amount, secAmount, detailInfo, transID, paidBy, serviceName) {
+            $scope.spinner_manual_employer[index] = true;
+            var abc = $scope.autoBillingData[index].opid;
+            let requestBodyModel = {
+                OPID: $scope.autoBillingData[index].opid,
+                ClientID: clientID,
+                CP_ID: cP_id,
+                Acc_Id: acc_id,
+                Quantity: quantity,
+                ServiceGroup: serviceGroup,
+                ServiceID: serviceID,
+                ReceivedDate: '',
+                TransDate: transDate,
+                PaidAmount: amount,
+                Amount: secAmount,
+                DetailInfo: detailInfo,
+                TransID: transID,
+                PaidBy: paidBy,
+                ServiceName: serviceName
+            }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/API/PostSMSAlertApplyLimitSalePostingEmployeer';
+            else
+                Url = '/AccountingNew/API/PostSMSAlertApplyLimitSalePostingEmployeer';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    alert(response.data.ErrorMessage);
+                    $scope.spinner_manual_employer[index] = false;
                     $scope.load();
                 })
                 .catch(function (error) {

@@ -15,6 +15,16 @@ namespace AccountingSystem.Models.AccountViewModels
         public decimal Amount { get; set; }
         public string InvoiceNo { get; set; }
         public string TotalRecords { get; set; }
+        public int OPID { get; set; }
+        public int ClientID { get; set; }
+        public int CP_id { get; set; }
+        public int Acc_id { get; set; }
+        public int Quantity { get; set; }
+        public int ServiceGroup { get; set; }
+        public int ServiceID { get; set; }
+        public decimal SecAmount { get; set; }
+        public string DetailInfo { get; set; }
+        public int Status { get; set; }
 
     }
 }

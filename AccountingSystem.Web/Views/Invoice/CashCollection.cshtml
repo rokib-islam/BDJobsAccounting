@@ -717,6 +717,7 @@
 
         $scope.selectedCompany = null;
         $scope.selectCompany = function (company) {
+            $scope.showBtnInsert = true;
             sbName = null;
             row = null;
 
@@ -785,7 +786,7 @@
 
         $scope.selectedRow = null;
         $scope.selectRow = function (row) {
-            $scope.showBtnInsert = false;
+            //$scope.showBtnInsert = false;
             if ($scope.selectedRow === row) {
                 $scope.selectedRow = null;
             } else {
@@ -799,6 +800,7 @@
 
         $scope.selectedRowForSalesList = null;
         $scope.selectRowForSalesList = function (row) {
+            $scope.showBtnInsert = false;
             if ($scope.selectedRowForSalesList === row) {
                 $scope.selectedRowForSalesList = null;
             } else {
@@ -1148,7 +1150,12 @@
                     if (action == 'INSERT') {
                         $scope.spinner = true;
                         var userId = @userId;
-
+                        
+                        // if($scope.selectedRowForSalesList == null){
+                        //     alert("Please select Sales List Item.");
+                        //     return false;
+                        //     $scope.spinner = false;
+                        // }
                         var jsonData = {
                             type: ($scope.payment - 1).toString(),
                             userId: userId.toString(),
