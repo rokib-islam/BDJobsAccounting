@@ -441,7 +441,7 @@ namespace AccountingSystem.Web.Controllers
                 try
                 {
                     // Retrieve user information
-                    string Image = User.FindFirstValue("SignatureImage");
+                    string Image = "";
                     var Designation = User.FindFirstValue("Designation");
                     var Email = User.FindFirstValue("Email");
                     var Mobile = User.FindFirstValue("Mobile");
@@ -456,7 +456,7 @@ namespace AccountingSystem.Web.Controllers
                     string ChallanContentType = null;
                     string ChallanFileName = null;
 
-                    string userImagePath = Path.Combine(_WebHostEnvironment.WebRootPath, "Images", Image);
+
 
                     var assembly = Assembly.GetExecutingAssembly();
 
@@ -470,6 +470,8 @@ namespace AccountingSystem.Web.Controllers
                     if (sMail)
                     {
                         var reportData = await _ReportManager.GetInvoiceReportAsync(InvoiceNo);
+                        Image = reportData.FirstOrDefault().SignatureImage;
+                        string userImagePath = Path.Combine(_WebHostEnvironment.WebRootPath, "Images", Image);
                         toMail = reportData.FirstOrDefault().AccPersonMail;
                         double totalAmount = reportData.Sum(report => report.amount);
                         string wordamount = await ConvertToWords((int)Math.Round(totalAmount));
@@ -509,6 +511,8 @@ namespace AccountingSystem.Web.Controllers
                     if (sChallan)
                     {
                         var reportData = await _ReportManager.GetChalanReportNew(InvoiceNo);
+                        Image = reportData.FirstOrDefault().SignatureImage;
+                        string userImagePath = Path.Combine(_WebHostEnvironment.WebRootPath, "Images", Image);
                         toMail = reportData.FirstOrDefault().AccPersonMail;
                         double sumTotalVat = reportData.Sum(report => report.TotalVat);
                         double sumPriceWithVat = reportData.Sum(report => report.priceWithVat);
