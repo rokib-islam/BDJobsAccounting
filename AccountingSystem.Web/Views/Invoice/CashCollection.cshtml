@@ -1181,6 +1181,10 @@
                                     alert("Success.");
                                     $scope.spinner = false;
                                     $scope.getInvoices();
+                                    $scope.paymentListData = [];
+                                    $scope.salesListData = [];
+                                    $scope.showFieldset = 'bKashAgentCollection';
+                                    $scope.paymentId = 31259;
 
                                     var userConfirmed = confirm('Do you want to upload this cash information to online?');
 

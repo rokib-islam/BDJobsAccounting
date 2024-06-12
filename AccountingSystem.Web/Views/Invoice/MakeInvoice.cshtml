@@ -276,7 +276,8 @@
                 $scope.getIdWiseCompany(onlineCompanyId);
                 $scope.loadProducts(onlineCompanyId, 0);
                 $scope.setInvoiceNo(onlineCompanyId, $scope.issueDate);
-                $scope.saveDisabled = false;
+                //$scope.saveDisabled = false;
+                $scope.saveDisabled = true;
             }
 
 
@@ -331,7 +332,7 @@
             $scope.comments = '';
             $scope.disabledCommentsTable = false;
             $scope.disabledComments = true;
-            $scope.saveDisabled = true;
+            //$scope.saveDisabled = true;
             $scope.showChallanButton = false;
             $scope.showInvoiceButton = false;
         };
@@ -342,7 +343,7 @@
             $scope.label = '';
             $scope.disabledCommentsTable = true;
             $scope.disabledComments = false;
-            $scope.saveDisabled = false;
+            //$scope.saveDisabled = false;
             $scope.showChallanButton = true;
             $scope.showInvoiceButton = true;
         };
@@ -389,7 +390,7 @@
                 $scope.disabledComments = false;
                 $scope.rightArrow = false;
                 $scope.leftArrow = false;
-                $scope.saveDisabled = false;
+                //$scope.saveDisabled = false;
 
             }
             else {
@@ -397,7 +398,7 @@
                 $scope.disabledComments = true;
                 $scope.rightArrow = true;
                 $scope.leftArrow = true;
-                $scope.saveDisabled = true;
+                //$scope.saveDisabled = true;
 
                 $scope.showChallanButton = false;
                 $scope.showInvoiceButton = false;
@@ -449,6 +450,7 @@
         $scope.totalPrice = 0;
 
         $scope.passAnother = function (shiftedProduct) {
+            $scope.saveDisabled = false
             if (shiftedProduct.product !== "") {
                 if ($scope.selectedAnotherRow === shiftedProduct) {
                     $scope.selectedAnotherRow = null;
@@ -639,6 +641,9 @@
                 var indexToRemove = $scope.shiftData.indexOf($scope.selectedAnotherRow);
                 if (indexToRemove !== -1) {
                     $scope.shiftData.splice(indexToRemove, 1);
+                    if($scope.shiftData.length == 0 ){
+                        $scope.saveDisabled = true;
+                    }
                 }
                 $scope.totalPrice -= $scope.selectedAnotherRow.amount;
                 $scope.selectedAnotherRow = null;
@@ -850,7 +855,7 @@
                             $scope.comments = '';
                             $scope.disabledCommentsTable = false;
                             $scope.disabledComments = true;
-                            $scope.saveDisabled = true;
+                            //$scope.saveDisabled = true;
                             $scope.showChallanButton = false;
                             $scope.showInvoiceButton = false;
                             $scope.invoiceType = '1';
