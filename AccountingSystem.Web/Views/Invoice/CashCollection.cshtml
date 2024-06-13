@@ -600,8 +600,7 @@
 <script>
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
-        angular.element(document).ready(function () {
-            $scope.payment = 1;
+        angular.element(document).ready(function () {            
             $scope.paymentId = 31259;
             $scope.getAllLedger();
             $scope.receivedDate = new Date();
@@ -792,6 +791,9 @@
             } else {
                 $scope.selectedRow = row;
                 $scope.getSalesList();
+                $scope.showFieldset = 'bKashAgentCollection';
+                $scope.paymentId = 31259;
+                $scope.payment = 16;
                 if (!$scope.due && $scope.paid) {
                     $scope.getBouncedData($scope.selectedRow.invoice_No);
                 }
@@ -806,8 +808,9 @@
             } else {
                 $scope.selectedRowForSalesList = row;
                 $scope.getPaymentList($scope.selectedRowForSalesList.id);
-
-
+                $scope.showFieldset = 'bKashAgentCollection';
+                $scope.paymentId = 31259;
+                $scope.payment = 16;
             }
         };
 
@@ -1183,8 +1186,7 @@
                                     $scope.getInvoices();
                                     $scope.paymentListData = [];
                                     $scope.salesListData = [];
-                                    $scope.showFieldset = 'bKashAgentCollection';
-                                    $scope.paymentId = 31259;
+                                    
 
                                     var userConfirmed = confirm('Do you want to upload this cash information to online?');
 

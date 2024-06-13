@@ -160,5 +160,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.PostSMSAlertApplyLimitSalePostingEmployeer(data);
         }
+
+        public Task<List<VatAndTaxModel_Response>> GetCompanyVatAndTax(VatAndTaxModel_Request model)
+        {
+            return _repository.GetCompanyVatAndTax(model);
+        }
     }
 }

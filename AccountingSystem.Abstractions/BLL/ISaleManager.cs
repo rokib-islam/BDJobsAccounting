@@ -37,5 +37,6 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<AutoBillingModel_Response>> AutoBillingData(AutoBillingModel model);
         Task<int> SMSAlertApplyLimitCountForBilling(string ServiceName);
         Task<dynamic> PostSMSAlertApplyLimitSalePostingEmployeer(CVAndSMSPurchesModel data);
+        Task<List<VatAndTaxModel_Response>> GetCompanyVatAndTax(VatAndTaxModel_Request model);
     }
 }

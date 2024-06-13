@@ -1,0 +1,279 @@
+﻿
+@{
+    ViewData["Title"] = "GetVatAndTax";
+}
+
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <h3 class="text-center" style="margin-top:-10px">List of Company VAT and TAX</h3>
+                <div class="row">
+                    <div class="col-sm-3">
+                        <label>Company</label>
+                        <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
+                        <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 360px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                            <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-sm-7">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label>From Date</label>
+                                        <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <label>To Date</label>
+                                        <input type="date" class="form-control form-control-sm" ng-model="toDate" />
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-3">
+                                <label>Type</label>
+                                <select class="form-select form-select-sm" ng-model="type">
+                                    <option value="0">Both</option>
+                                    <option value="1">VAT</option>
+                                    <option value="2">TAX</option>
+
+                                </select>
+                            </div>
+                            <div class="col-sm-2 mt-4">
+                                <button class="btn btn-primary btn-sm px-4" ng-click="load()">
+                                    Load
+                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
+                                </button>
+                            </div>
+                        </div>
+                        
+                    </div> 
+                </div>
+                <div class="row mt-2" ng-show="isVisible">
+                    <div class="col-sm-6">
+                        <div class="pull-left text-left">
+                            Show
+                            <select id="page" ng-model="itemsPerPage">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="40">40</option>
+                                <option value="50" selected>50</option>
+                                <option value="60">60</option>
+                                <option value="80">80</option>
+                                <option value="100">100</option>
+                                <option value="500">500</option>
+                                <option value="1000">1000</option>
+                                <option value="3000">3000</option>
+                                <option value="5000">5000</option>
+                                <option value="10000">10000</option>
+                                <option value="10000000">All</option>
+                            </select>
+                            entries per page. (Total:{{totalItems}} data)
+
+
+                        </div>
+                    </div>
+                    <div class="col-sm-6 d-flex justify-content-end">
+                        @* section paging *@
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                    <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+
+                                <!-- The ng-repeat code you provided -->
+                                <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                    <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                </li>
+
+                                <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                    <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                        @* section paging end *@
+                    </div>
+
+                </div>
+                <div class="row" style="height: 320px; overflow-y: auto;border:1px solid lightgray">
+                    <table class="table table-bordered table-hover table-sm">
+                        <thead class="thead-light">
+                            <tr style="background-color:skyblue; width:auto">
+                                <th class="text-center">Sl#</th>
+                                <th class="text-center">Company Name</th>
+                                <th class="text-center">Contact Person</th>
+                                <th class="text-center">Address</th>
+                                <th class="text-center">AIT</th>
+                                <th class="text-center">VAT</th>
+                                <th class="text-center">Total</th>
+                                <th class="text-center">Edit</th>
+                                <th class="text-center">Send Email</th>
+                                <th class="text-center">Period</th>
+                                <th class="text-center">Last Send Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in vatTaxData">
+                                <td class="text-center">{{$index + 1}}</td>
+                                <td class="text-center">{{data.name}}</td>
+                                <td class="text-center">{{data.contactPerson}}</td>
+                                <td class="text-center">{{data.address}}</td>
+                                <td class="text-center">{{data.ait}}</td>
+                                <td class="text-center">{{data.vat}}</td>
+                                <td class="text-center">{{data.total}}</td>
+                                <td class="text-center">
+                                    <button class="btn btn-primary btn-sm px-4">Edit</button>
+                                </td>
+                                <td class="text-center">
+                                    <button class="btn btn-info btn-sm px-3">Email</button>
+                                </td>
+                                <td class="text-center">{{data.period}}</td>
+                                <td>Sent Date: {{data.lastMailSendDate}} <br />Period: {{data.lastPeriod}}</td>
+
+                            </tr>
+                        </tbody>
+                        @* <tfoot>
+                            <tr style="font-weight:bold">
+                            </tr>
+                        </tfoot> *@
+                    </table>
+
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-3">
+                        <button class="btn btn-info btn-sm px-3">Show All</button>
+                    </div>
+                    <div class="col-sm-3">
+                        <button class="btn btn-info btn-sm px-3">Preview Label</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {           
+            
+        });
+        $scope.spinner = false;
+        $scope.isVisible = false;
+        $scope.type = '0';
+        $scope.itemsPerPage = '20';
+        $scope.maxPageLength = 5;
+        $scope.currentPage = 1;
+        $scope.totalItems = 0;
+
+        $scope.toDate = new Date();
+        $scope.fromDate =new Date();
+        
+        
+
+        $scope.companyList = [];
+        $scope.selectedCompany = null;
+
+        $scope.searchCompany = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Company/GetCompanyListByKey';
+                else
+                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.companyList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.companyList = [];
+            }
+        };
+
+        $scope.selectCompany = function (company) {
+            $scope.selectedCompany = company;
+            $scope.cid = $scope.selectedCompany.id;
+            $scope.searchQuery = company.name;
+            $scope.companyList = [];
+        }
+
+
+        $scope.load = function () {
+            var requestData = {
+                FromDate: $scope.fromDate == undefined ? "" : $scope.fromDate,
+                ToDate: $scope.toDate == undefined ? "" : $scope.toDate,
+                Type: $scope.type == undefined ? "" : $scope.type,
+                PageNo: $scope.currentPage == undefined ? 1 : $scope.currentPage,
+                PageSize: $scope.itemsPerPage == undefined ? 20 : $scope.itemsPerPage,
+                CompanyName: $scope.searchQuery == undefined ? "" : $scope.searchQuery.split(' (')[0]
+            };
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/GetCompanyVatAndTax';
+            else
+                Url = '/AccountingNew/Sale/GetCompanyVatAndTax';
+            $scope.spinner = true;
+            $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    $scope.vatTaxData = response.data;
+                    $scope.totalItems = response.data[0].totalRecord;
+                    $scope.spinner = false;
+                    $scope.isVisible = true;
+                }, function (error) {
+                    console.error(error);
+                })
+        }
+
+        $scope.$watch('totalItems', function () {
+            $scope.calculatePages();
+        });
+
+        $scope.$watch('itemsPerPage', function () {
+            $scope.calculatePages();
+        });
+
+        $scope.$watch('currentPage', function () {
+            if ($scope.currentPage > 1) {
+                $scope.calculatePages();
+                $scope.load();
+            }
+            else {
+                $scope.calculatePages();
+            }
+
+        });
+
+        $scope.calculatePages = function () {
+            $scope.totalPages = Math.ceil($scope.totalItems / $scope.itemsPerPage);
+            $scope.pages = [];
+
+            var startPage = Math.max(1, $scope.currentPage - Math.floor($scope.maxPageLength / 2));
+            var endPage = Math.min($scope.totalPages, startPage + $scope.maxPageLength - 1);
+
+            for (var i = startPage; i <= endPage; i++) {
+                $scope.pages.push(i);
+            }
+        };
+
+        $scope.getPages = function () {
+            return $scope.pages || [];
+        };
+
+        $scope.setCurrentPage = function (page) {
+            if (page >= 1 && page <= $scope.totalPages) {
+                $scope.currentPage = page;
+            }
+        };
+    });
+</script>
+
+

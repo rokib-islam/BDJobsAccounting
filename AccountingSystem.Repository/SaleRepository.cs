@@ -953,5 +953,33 @@ namespace AccountingSystem.Repository
 
         }
 
+        public async Task<List<VatAndTaxModel_Response>> GetCompanyVatAndTax(VatAndTaxModel_Request model)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    PageNo = model.PageNo,
+                    PageSize = model.PageSize,
+                    Fromdate = model.FromDate,
+                    Todate = model.ToDate,
+                    CompanyName = model.CompanyName,
+                    Type = model.Type,
+                    UserID = model.UserID
+                };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<VatAndTaxModel_Response>("USP_CompanyVAT_TAX", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
     }
 }

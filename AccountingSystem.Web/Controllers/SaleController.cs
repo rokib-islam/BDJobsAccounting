@@ -323,5 +323,21 @@ namespace AccountingSystem.Web.Controllers
             var result = await _SaleManager.AutoBillingData(model);
             return Json(result);
         }
+
+        public IActionResult GetVatAndTax()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> GetCompanyVatAndTax([FromBody] VatAndTaxModel_Request model)
+        {
+            var result = await _SaleManager.GetCompanyVatAndTax(model);
+            return Json(result);
+        }
     }
 }
