@@ -49,7 +49,7 @@
                         
                     </div> 
                 </div>
-                <div class="row mt-2" ng-show="isVisible">
+                <div class="row" ng-show="isVisible">
                     <div class="col-sm-6">
                         <div class="pull-left text-left">
                             Show
@@ -126,13 +126,13 @@
                                 <td class="text-center">{{data.vat}}</td>
                                 <td class="text-center">{{data.total}}</td>
                                 <td class="text-center">
-                                    <button class="btn btn-primary btn-sm px-4">Edit</button>
+                                    <button class="btn btn-primary btn-sm px-4" ng-click="openModal(data.name,data.contactPerson,data.address,data.ait,data.vat, data.total)">Edit</button>
                                 </td>
                                 <td class="text-center">
                                     <button class="btn btn-info btn-sm px-3">Email</button>
                                 </td>
                                 <td class="text-center">{{data.period}}</td>
-                                <td>Sent Date: {{data.lastMailSendDate}} <br />Period: {{data.lastPeriod}}</td>
+                                <td><span class="fw-bold">Sent Date:</span> {{data.lastMailSendDate}} <br /><span class="fw-bold">Period:</span> {{data.lastPeriod}}</td>
 
                             </tr>
                         </tbody>
@@ -149,6 +149,68 @@
                     </div>
                     <div class="col-sm-3">
                         <button class="btn btn-info btn-sm px-3">Preview Label</button>
+                    </div>
+                </div>
+
+                <div class="modal" tabindex="-1" id="openModal">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">{{modalTitle}}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body mt-3">
+                                <div class="col-sm-10 offset-1">
+                                    <div class="row">
+                                        <label class="col-sm-3">Company Name</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control form-control-sm" ng-model="name" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <label class="col-sm-3">Contact Person</label>
+                                        <div class="col-sm-9">
+                                            <input class="form-control form-control-sm" ng-model="contactPerson" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-2">
+                                        <label class="col-sm-3">Address</label>
+                                        <div class="col-sm-9">
+                                            <textarea class="form-control form-control-sm" ng-model="address"></textarea>
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3 offset-3">
+                                       <div class="col-sm-5">
+                                           AIT (TK)
+                                       </div>
+                                        <div class="col-sm-5">
+                                            {{ait}}
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3 offset-3">
+                                        <div class="col-sm-5">
+                                            VAT (TK)
+                                        </div>
+                                        <div class="col-sm-5">
+                                            {{vat}}
+                                        </div>
+                                    </div>
+                                    <div class="row mt-3 offset-3">
+                                        <div class="col-sm-5">
+                                            Total (TK)
+                                        </div>
+                                        <div class="col-sm-5">
+                                            {{total}}
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="modal-footer mt-4">
+                                <button type="button" class="btn btn-primary btn-sm px-5" ng-bind="actionButton" ng-click="save()">Update</button>
+                                <button type="button" class="btn btn-secondary btn-sm px-3" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -273,6 +335,18 @@
                 $scope.currentPage = page;
             }
         };
+
+        $scope.openModal = function (name, contactPerson, address, ait, vat, total) {
+            $("#openModal").modal('show');
+            $scope.modalTitle = "Company VAT & Tax";
+            $scope.actionButton = "Show";
+            $scope.ait = ait;
+            $scope.vat = vat;
+            $scope.total = total;
+            $scope.name = name;
+            $scope.contactPerson = contactPerson;
+            $scope.address = address;
+        }
     });
 </script>
 
