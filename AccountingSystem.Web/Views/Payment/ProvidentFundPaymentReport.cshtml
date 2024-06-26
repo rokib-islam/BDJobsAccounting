@@ -135,7 +135,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Employee/GetEmployeeListByKey';
                 else
-                    Url = '/AccountingNew/Employee/GetEmployeeListByKey';
+                    Url = '/Employee/GetEmployeeListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
@@ -166,7 +166,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Payment/LoadPfPaymentData';
             else
-                Url = '/AccountingNew/Payment/LoadPfPaymentData';
+                Url = '/Payment/LoadPfPaymentData';
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {

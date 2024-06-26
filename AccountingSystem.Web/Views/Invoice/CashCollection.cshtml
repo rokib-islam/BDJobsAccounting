@@ -701,7 +701,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/GetCompanyListByKey';
                 else
-                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+                    Url = '/Company/GetCompanyListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
@@ -767,7 +767,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Invoice/GetInvoicesForCashCollection';
                 else
-                    Url = '/AccountingNew/Invoice/GetInvoicesForCashCollection';
+                    Url = '/Invoice/GetInvoicesForCashCollection';
 
                 $http.get(Url, { params: { query: str } })
                     .then(function (response) {
@@ -984,7 +984,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/GetSalesInfo';
             else
-                Url = '/AccountingNew/Sale/GetSalesInfo';
+                Url = '/Sale/GetSalesInfo';
 
             $http.get(Url, { params: { InvoiceNo: no } })
                 .then(function (response) {
@@ -1000,7 +1000,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Ledger/GetAllEveryLedger';
             else
-                Url = '/AccountingNew/Ledger/GetAllEveryLedger';
+                Url = '/Ledger/GetAllEveryLedger';
 
             $http.get(Url, { params: { isCashCollection: "1" } })
                 .then(function (response) {
@@ -1015,7 +1015,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Payment/GetCashCollection';
             else
-                Url = '/AccountingNew/Payment/GetCashCollection';
+                Url = '/Payment/GetCashCollection';
 
             $http.get(Url, { params: { Id: id } })
                 .then(function (response) {
@@ -1037,7 +1037,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Journal/GetClosingDate';
             else
-                Url = '/AccountingNew/Journal/GetClosingDate';
+                Url = '/Journal/GetClosingDate';
 
             $http.get(Url)
                 .then(function (response) {
@@ -1058,7 +1058,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/PostToOnline';
             else
-                Url = '/AccountingNew/Invoice/PostToOnline';
+                Url = '/Invoice/PostToOnline';
 
 
             $http.post(Url, JSON.stringify(jsonData), { headers: { 'Content-Type': 'application/json' } })
@@ -1176,7 +1176,7 @@
                         if (window.location.hostname == 'localhost')
                             Url = '/Payment/InsertCashCollection';
                         else
-                            Url = '/AccountingNew/Payment/InsertCashCollection';
+                            Url = '/Payment/InsertCashCollection';
 
                         $http.post(Url, JSON.stringify(jsonData), { headers: { 'Content-Type': 'application/json' } })
                             .then(function (response) {
@@ -1220,7 +1220,7 @@
                         if (window.location.hostname == 'localhost')
                             Url = '/Payment/UpdateCashCollection';
                         else
-                            Url = '/AccountingNew/Payment/UpdateCashCollection';
+                            Url = '/Payment/UpdateCashCollection';
 
                         $http.post(Url, JSON.stringify(jsonData), { headers: { 'Content-Type': 'application/json' } })
                             .then(function (response) {
@@ -1263,7 +1263,7 @@
             if (window.location.hostname == 'localhost') {
                 Url = '/Invoice/UpdateBouncedChequeData';
             } else {
-                Url = '/AccountingNew/Invoice/UpdateBouncedChequeData';
+                Url = '/Invoice/UpdateBouncedChequeData';
             }
 
 
@@ -1291,7 +1291,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/LoadbBouncedCheckData';
             else
-                Url = '/AccountingNew/Invoice/LoadbBouncedCheckData';
+                Url = '/Invoice/LoadbBouncedCheckData';
 
             $http.get(Url, { params: { invoiceNo: invoiceNo } })
                 .then(function (response) {

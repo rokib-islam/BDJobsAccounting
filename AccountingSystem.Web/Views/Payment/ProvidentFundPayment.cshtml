@@ -155,7 +155,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Employee/GetEmployeeListByKey';
                 else
-                    Url = '/AccountingNew/Employee/GetEmployeeListByKey';
+                    Url = '/Employee/GetEmployeeListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
@@ -180,7 +180,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Ledger/GetStaffPFIAccountList';
             else
-                Url = '/AccountingNew/Ledger/GetStaffPFIAccountList';
+                Url = '/Ledger/GetStaffPFIAccountList';
 
             $http.get(Url)
                 .then(function (response) {
@@ -264,7 +264,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/InsertProvidentFundPayment';
             else
-                Url = '/AccountingNew/Employee/InsertProvidentFundPayment';
+                Url = '/Employee/InsertProvidentFundPayment';
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
