@@ -39,5 +39,6 @@ namespace AccountingSystem.Abstractions.Repository
         Task<int> SMSAlertApplyLimitCountForBilling(string ServiceName);
         Task<dynamic> PostSMSAlertApplyLimitSalePostingEmployeer(CVAndSMSPurchesModel data);
         Task<List<VatAndTaxModel_Response>> GetCompanyVatAndTax(VatAndTaxModel_Request model);
+        Task<List<SalesReconciliationModel_Response>> GetSalesReconciliation(SalesReconciliationModel_Request model);
     }
 }

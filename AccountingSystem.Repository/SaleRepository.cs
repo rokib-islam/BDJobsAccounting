@@ -981,5 +981,31 @@ namespace AccountingSystem.Repository
 
         }
 
+
+        public async Task<List<SalesReconciliationModel_Response>> GetSalesReconciliation(SalesReconciliationModel_Request model)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    PageNo = model.PageNo,
+                    Per_page_data = model.PageSize,
+                    Fdate = model.FromDate,
+                    Tdate = model.ToDate
+                };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+                {
+                    var result = await _db.QueryAsync<SalesReconciliationModel_Response>("[Accounting].[Job_Reconciliation]", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
     }
 }

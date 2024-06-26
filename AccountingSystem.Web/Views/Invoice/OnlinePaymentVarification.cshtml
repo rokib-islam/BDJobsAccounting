@@ -279,7 +279,7 @@
             $scope.spinner = true;
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
-                    $scope.paymentVarificationData = response.data.data;
+                    $scope.paymentVarificationData = response.data;
                     $scope.totalItems = response.data.totalRecords;
                     $scope.showTable = true;
                     $scope.isVisible = true;
