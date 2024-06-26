@@ -339,5 +339,20 @@ namespace AccountingSystem.Web.Controllers
             var result = await _SaleManager.GetCompanyVatAndTax(model);
             return Json(result);
         }
+
+        public IActionResult SalesReconciliation()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> GetSalesReconciliation([FromBody] SalesReconciliationModel_Request model)
+        {
+            var result = await _SaleManager.GetSalesReconciliation(model);
+            return Json(result);
+        }
     }
 }

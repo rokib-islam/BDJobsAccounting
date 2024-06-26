@@ -165,5 +165,9 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetCompanyVatAndTax(model);
         }
+        public Task<List<SalesReconciliationModel_Response>> GetSalesReconciliation(SalesReconciliationModel_Request model)
+        {
+            return _repository.GetSalesReconciliation(model);
+        }
     }
 }

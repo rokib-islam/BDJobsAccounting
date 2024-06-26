@@ -1,0 +1,294 @@
+﻿@{
+    ViewData["Title"] = "SalesReconciliation";
+}
+
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+</head>
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <div class="row">
+                    <h4 class="text-center" style="margin-top:-10px;">Sales Reconciliation</h4>
+                    <div class="row offset-1 mt-2">
+                        <div class="col-sm-4">
+                            <div class="row">
+                                <label class="col-sm-4">From Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="row">
+                                <label class="col-sm-4">To Date</label>
+                                <div class="col-sm-8">
+                                    <input type="date" class="form-control form-control-sm" ng-model="toDate" />
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-2">
+                            <button class="btn btn-success btn-sm px-5" ng-click="load()">
+                                Load
+                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="col-sm-12">
+                        <div class="row" ng-show="isVisible">
+                            <div class="col-sm-5">
+                                <div class="pull-left text-left" style="margin-top:20px;">
+                                    Show
+                                    <select id="page" ng-model="itemsPerPage">
+                                        <option value="10">10</option>
+                                        <option value="20">20</option>
+                                        <option value="40">40</option>
+                                        <option value="50" selected>50</option>
+                                        <option value="60">60</option>
+                                        <option value="80">80</option>
+                                        <option value="100">100</option>
+                                        <option value="500">500</option>
+                                        <option value="1000">1000</option>
+                                        <option value="3000">3000</option>
+                                        <option value="5000">5000</option>
+                                        <option value="10000">10000</option>
+                                        <option value="10000000">All</option>
+                                    </select>
+                                    entries per page. (Total:{{totalItems}} data)
+
+                                </div>
+                            </div>
+                            <div class="col-sm-7 d-flex justify-content-end">
+                                <nav aria-label="..." class="mt-3">
+                                    <ul class="pagination">
+                                        <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                            <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                                <span aria-hidden="true">&laquo;</span>
+                                            </a>
+                                        </li>
+
+                                        <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                            <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                        </li>
+
+                                        <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                            <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                                <span aria-hidden="true">&raquo;</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </nav>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <table ng-show="showTable" class="table table-bordered table-sm mt-3" style="font-size:15px" id="tableData">
+                        <thead>
+                            <tr style="background-color:skyblue">
+                                <th class="text-center">Sl#</th>
+                                <th class="text-center">Company Name</th>
+                                <th class="text-center">Service Name</th>
+                                <th class="text-center">Job Title</th>
+                                <th class="text-center">Price</th>
+                                <th class="text-center">Tax</th>
+                                <th class="text-center">Post Date</th>
+                                <th class="text-center">Transaction No</th>
+                                <th class="text-center">Payment Mode</th>
+                                <th class="text-center">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="data in saleReconciliationData">
+                                <td class="text-center">{{$index + 1}}</td>
+                                <td class="text-center">{{data.name}}</td>
+                                <td class="text-center">{{serviceName}}</td>
+                                <td class="text-center">{{data.jobTitle}}</td>
+                                <td class="text-end">{{(data.salesPrice) | number}}</td>
+                                <td class="text-end">{{(data.tax) | number}}</td>
+                                <td class="text-center">{{data.p | date: "dd-MM-yyyy"}}</td>
+                                <td class="text-center">{{data.transId}}</td>
+                                <td class="text-center">{{paymentMethod}}</td>       
+                                <td class="text-center">
+                                    <button class="btn btn-success btn-sm" ng-click="Rick($index)">Reconcile</button>
+                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="reconcileSpinner[$index]"></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                        @* <tfoot>
+                            <tr style="font-weight:bold">
+                                <td colspan="4" style="text-align:right">Total</td>
+                                <td>{{totalSumPriceVat | number}}</td>
+                                <td colspan="6"></td>
+                            </tr>
+                        </tfoot> *@
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+
+        angular.element(document).ready(function () {
+            $scope.showTable = false;
+            $scope.isVisible = false;
+            $scope.spinner = false;
+
+            $scope.itemsPerPage = '20';
+            $scope.maxPageLength = 5;
+            $scope.currentPage = 1;
+            $scope.totalItems = 0;
+
+        })
+
+        $scope.fromDate = new Date();
+        $scope.toDate = new Date();
+
+        $scope.load = function () {
+            var requestData = {
+                fromDate: $scope.fromDate == undefined ? "" : $scope.fromDate,
+                toDate: $scope.toDate == undefined ? "" : $scope.toDate,
+                pageNo: $scope.currentPage == undefined ? 1 : $scope.currentPage,
+                pageSize: $scope.itemsPerPage == undefined ? 20 : $scope.itemsPerPage,
+            };
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Sale/GetSalesReconciliation';
+            else
+                Url = '/AccountingNew/Sale/GetSalesReconciliation';
+            $scope.spinner = true;
+            $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+
+                    if (response.data.length > 0) {
+                        $scope.saleReconciliationData = response.data;
+                        $scope.totalItems = response.data[0].total;
+                        if ($scope.saleReconciliationData.paymentMethod == 5) {
+                            $scope.paymentMethod = 'Bkash'
+                        }
+                        else {
+                            $scope.paymentMethod = 'SSL'
+                        }
+                        angular.forEach($scope.saleReconciliationData, function (item) {
+                            if (item.addType === 1 && item.blueCollar === 1 && item.jType === 'H') {
+                                $scope.serviceName = 'Hot Jobs Listing (Blue Collar)';
+                            } 
+                            else if (item.addType === 1 && item.blueCollar === 0 && item.jType === 'H') {
+                                $scope.serviceName = 'Hot Jobs Listing';
+                            } else if (item.addType === 1 && item.blueCollar === 1 && item.jType === '') {
+                                $scope.serviceName = 'Online Job Posting-Stand-out (Blue Color)';
+                            } else if (item.addType === 1 && item.blueCollar === 0 && item.jType === '') {
+                                $scope.serviceName = 'Online Job Posting (Stand-out)';
+                            } else if (item.addType === 2 && item.blueCollar === 1) {
+                                $scope.serviceName = 'Job Posting-Stand-out (BCP)';
+                            } else if (item.addType === 2 && item.blueCollar === 0) {
+                                $scope.serviceName = 'Online Job Posting (Stand-out Premium)';
+                            } else if (item.addType === 10 && item.blueCollar === 1) {
+                                $scope.serviceName = 'Online Job Posting-Basic (Uddokta BC)';
+                            } else if (item.addType === 10 && item.blueCollar === 0) {
+                                $scope.serviceName = 'Online Job Posting-Basic (Uddokta)';
+                            } else if (item.regionalJob > 0) {
+                                if (item.regionalJob === 5) {
+                                    $scope.serviceName = 'Online Job Posting (PNPL)';
+                                } else if (item.blueCollar === 1) {
+                                    $scope.serviceName = 'Online Job Posting-Basic-Regional (Blue Color)';
+                                } else if (item.blueCollar === 0) {
+                                    $scope.serviceName = 'Online Job Posting (Basic) Regional';
+                                }
+                            } else if (item.addType === 11) {
+                                $scope.serviceName = 'JobPosting to LinkedIn';
+                            } else if (item.addType === 0 && item.blueCollar === 1) {
+                                $scope.serviceName = 'Online Job Posting-Basic (Blue Color)';
+                            } else if (item.addType === 0 && item.blueCollar === 0) {
+                                $scope.serviceName = 'Online Job Posting (Basic)';
+                            } else {
+                                $scope.serviceName = 'Unknown Service';
+                            }
+                        })
+
+                        $scope.showTable = true;
+                        $scope.isVisible = true;
+                        $scope.spinner = false;
+
+                    }
+                    else {
+                        alert('There is no data to show.');
+                        $scope.spinner = false;
+                    }
+
+                }, function (error) {
+                    console.error(error);
+                })
+        }
+
+        $scope.reconcileSpinner = [];
+        $scope.Rick = function (index) {
+            $scope.reconcileSpinner[index] = true;
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/OIvoiceReconc';
+            else
+                Url = '/AccountingNew/Invoice/OIvoiceReconc';
+
+            $http.get(Url, { params: { JP_ID: $scope.saleReconciliationData[index].jp_Id } })
+                .then(function (response) {
+                    alert(response.data);
+                    $scope.reconcileSpinner[index] = false;
+                    $scope.load();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    $scope.reconcileSpinner[index] = false;
+                });
+        };
+
+        $scope.$watch('totalItems', function () {
+            $scope.calculatePages();
+        });
+
+        $scope.$watch('itemsPerPage', function () {
+            $scope.calculatePages();
+        });
+
+        $scope.$watch('currentPage', function () {
+            if ($scope.currentPage > 1) {
+                $scope.calculatePages();
+                $scope.load();
+            }
+            else {
+                $scope.calculatePages();
+            }
+
+        });
+
+        $scope.calculatePages = function () {
+            $scope.totalPages = Math.ceil($scope.totalItems / $scope.itemsPerPage);
+            $scope.pages = [];
+
+            var startPage = Math.max(1, $scope.currentPage - Math.floor($scope.maxPageLength / 2));
+            var endPage = Math.min($scope.totalPages, startPage + $scope.maxPageLength - 1);
+
+            for (var i = startPage; i <= endPage; i++) {
+                $scope.pages.push(i);
+            }
+        };
+
+        $scope.getPages = function () {
+            return $scope.pages || [];
+        };
+
+        $scope.setCurrentPage = function (page) {
+            if (page >= 1 && page <= $scope.totalPages) {
+                $scope.currentPage = page;
+            }
+        };
+
+    })
+</script>
