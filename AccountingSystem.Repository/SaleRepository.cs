@@ -854,7 +854,7 @@ namespace AccountingSystem.Repository
                 {
 
                     var result = (await _db.QueryAsync<MonetizationPosting>("USP_SMSAlert_ApplyLimit_Sale_Postings_JobSeeker", new { ServiceName = ServiceName },
-                        commandType: CommandType.StoredProcedure)).FirstOrDefault();
+                        commandType: CommandType.StoredProcedure, commandTimeout: 180)).FirstOrDefault();
 
                     return result;
                 }
