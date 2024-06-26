@@ -247,7 +247,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/GetCompanyListByKey';
                 else
-                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+                    Url = '/Company/GetCompanyListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
@@ -282,7 +282,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/GetCompanyVatAndTax';
             else
-                Url = '/AccountingNew/Sale/GetCompanyVatAndTax';
+                Url = '/Sale/GetCompanyVatAndTax';
             $scope.spinner = true;
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {

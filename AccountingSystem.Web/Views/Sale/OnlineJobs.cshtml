@@ -484,7 +484,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/GetCompanyListByKey';
                 else
-                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+                    Url = '/Company/GetCompanyListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
@@ -572,7 +572,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Ledger/GetService';
             else
-                Url = '/AccountingNew/Ledger/GetService';
+                Url = '/Ledger/GetService';
 
             $http.get(Url, { params: { sTypy: 1 } })
                 .then(function (response) {
@@ -587,7 +587,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Ledger/GetService';
             else
-                Url = '/AccountingNew/Ledger/GetService';
+                Url = '/Ledger/GetService';
 
             $http.get(Url, { params: { sTypy: 0 } })
                 .then(function (response) {
@@ -607,7 +607,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/DownLoadOnlineJobs';
             else
-                Url = '/AccountingNew/Sale/DownLoadOnlineJobs';
+                Url = '/Sale/DownLoadOnlineJobs';
 
             $scope.downloadSpinner = true;
             $http.get(Url, { params: { fromDate: fromDate, toDate: toDate, PNPL: PNPL } })
@@ -649,7 +649,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/GetOnlineJobList';
             else
-                Url = '/AccountingNew/Sale/GetOnlineJobList';
+                Url = '/Sale/GetOnlineJobList';
 
             $scope.refreshSpinner = true;
             $http.get(Url, { params: { FromDate: fromDate, ToDate: toDate, CName: CName, Verified: Verified, LedgerID: LedgerID } })
@@ -669,7 +669,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/GetJobs';
             else
-                Url = '/AccountingNew/Sale/GetJobs';
+                Url = '/Sale/GetJobs';
             $scope.goSpinner = true;
             $http.get(Url, { params: { cpId: cpId, date: date, adType: adType, adRegion: adRegion } })
                 .then(function (response) {
@@ -743,7 +743,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Sale/DeleteOnlineJob';
                 else
-                    Url = '/AccountingNew/Sale/DeleteOnlineJob';
+                    Url = '/Sale/DeleteOnlineJob';
 
                 $http.get(Url, { params: { jpId: jpId } })
                     .then(function (response) {
@@ -857,7 +857,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Ledger/GetOnlineLedgerId';
                 else
-                    Url = '/AccountingNew/Ledger/GetOnlineLedgerId';
+                    Url = '/Ledger/GetOnlineLedgerId';
 
                 $http.get(Url, { params: { onlineProduct: onlineProduct } })
                     .then(function (response) {
@@ -879,7 +879,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/GetInvoices';
             else
-                Url = '/AccountingNew/Invoice/GetInvoices';
+                Url = '/Invoice/GetInvoices';
 
             $http.get(Url, { params: { cpId: cpId, sDate: sDate, ledgerId: ledgerId } })
                 .then(function (response) {
@@ -963,7 +963,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/UploadInvoicesOnline';
             else
-                Url = '/AccountingNew/Invoice/UploadInvoicesOnline';
+                Url = '/Invoice/UploadInvoicesOnline';
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -982,7 +982,7 @@
                             if (window.location.hostname == 'localhost')
                                 Url = '/Invoice/UpdateInvoice';
                             else
-                                Url = '/AccountingNew/Invoice/UpdateInvoice';
+                                Url = '/Invoice/UpdateInvoice';
 
 
                             $http.post(Url, { invoiceNo: InvoiceNo })
@@ -1026,7 +1026,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetOnlineCompanyList';
             else
-                Url = '/AccountingNew/Company/GetOnlineCompanyList';
+                Url = '/Company/GetOnlineCompanyList';
 
             $http.get(Url, { params: { radio: radio } })
                 .then(function (response) {
@@ -1048,7 +1048,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetDistricts';
             else
-                Url = '/AccountingNew/Company/GetDistricts';
+                Url = '/Company/GetDistricts';
 
             $http.get(Url)
                 .then(function (response) {
@@ -1065,7 +1065,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetOnlineCompanyInfo';
             else
-                Url = '/AccountingNew/Company/GetOnlineCompanyInfo';
+                Url = '/Company/GetOnlineCompanyInfo';
 
             $http.get(Url, { params: { cpId: cpId } })
                 .then(function (response) {
@@ -1092,7 +1092,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetLocalCompanyInfo';
             else
-                Url = '/AccountingNew/Company/GetLocalCompanyInfo';
+                Url = '/Company/GetLocalCompanyInfo';
 
             $http.get(Url, { params: { cpId: id } })
                 .then(function (response) {
@@ -1190,7 +1190,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/CheckCompany';
                 else
-                    Url = '/AccountingNew/Company/CheckCompany';
+                    Url = '/Company/CheckCompany';
 
                 $http.get(Url, { params: { name: $scope.name } })
                     .then(function (response) {
@@ -1218,7 +1218,7 @@
                             if (window.location.hostname == 'localhost')
                                 Url = '/Company/InsertUpdateOnlineCompany';
                             else
-                                Url = '/AccountingNew/Company/InsertUpdateOnlineCompany';
+                                Url = '/Company/InsertUpdateOnlineCompany';
 
                             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                                 .then(function (response) {
@@ -1283,7 +1283,7 @@
                     if (window.location.hostname == 'localhost')
                         Url = '/Company/CheckOnlineCompany';
                     else
-                        Url = '/AccountingNew/Company/CheckOnlineCompany';
+                        Url = '/Company/CheckOnlineCompany';
 
                     $http.get(Url, { params: { id: comId } })
                         .then(function (response) {
@@ -1309,7 +1309,7 @@
                                     if (window.location.hostname == 'localhost')
                                         Url = '/Company/InsertUpdateOnlineCompany';
                                     else
-                                        Url = '/AccountingNew/Company/InsertUpdateOnlineCompany';
+                                        Url = '/Company/InsertUpdateOnlineCompany';
 
                                     $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                                         .then(function (response) {
@@ -1344,7 +1344,7 @@
                                 if (window.location.hostname == 'localhost')
                                     Url = '/Company/InsertUpdateOnlineCompany';
                                 else
-                                    Url = '/AccountingNew/Company/InsertUpdateOnlineCompany';
+                                    Url = '/Company/InsertUpdateOnlineCompany';
 
                                 $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                                     .then(function (response) {

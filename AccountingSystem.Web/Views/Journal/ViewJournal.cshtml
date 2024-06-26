@@ -222,7 +222,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Ledger/GetAllLedger';
             else
-                Url = '/AccountingNew/Ledger/GetAllLedger';
+                Url = '/Ledger/GetAllLedger';
             $http.get(Url)
                 .then(function (response) {
                     $scope.ledgers = response.data;
@@ -241,7 +241,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Home/GetSpecificUser';
             else
-                Url = '/AccountingNew/Home/GetSpecificUser';
+                Url = '/Home/GetSpecificUser';
             $http.get(Url)
                 .then(function (response) {
                     $scope.users = response.data;
@@ -255,7 +255,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Home/GetApprovers';
             else
-                Url = '/AccountingNew/Home/GetApprovers';
+                Url = '/Home/GetApprovers';
             $http.get(Url)
                 .then(function (response) {
                     $scope.approvers = response.data;
@@ -275,7 +275,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/GetCompanyListByKey';
                 else
-                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+                    Url = '/Company/GetCompanyListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
@@ -314,7 +314,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Journal/GetJournals';
             else
-                Url = '/AccountingNew/Journal/GetJournals';
+                Url = '/Journal/GetJournals';
 
             $scope.spinner = true;
             $http.post(Url, requestData)

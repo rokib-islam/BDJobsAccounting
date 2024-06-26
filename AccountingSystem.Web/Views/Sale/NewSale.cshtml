@@ -409,7 +409,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/GetCompanyListByKey';
                 else
-                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+                    Url = '/Company/GetCompanyListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
@@ -469,7 +469,7 @@
         //         if (window.location.hostname == 'localhost')
         //             Url = '/Ledger/GetProductListByKey';
         //         else
-        //             Url = '/AccountingNew/Ledger/GetProductListByKey';
+        //             Url = '/Ledger/GetProductListByKey';
 
         //         $http.get(Url, { params: { startingKey: startingKey } })
         //             .then(function (response) {
@@ -494,7 +494,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Ledger/GetProductList';
             else
-                Url = '/AccountingNew/Ledger/GetProductList';
+                Url = '/Ledger/GetProductList';
 
             $http.get(Url)
                 .then(function (response) {
@@ -556,7 +556,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/GetSalesPersonsByProductID';
             else
-                Url = '/AccountingNew/Sale/GetSalesPersonsByProductID';
+                Url = '/Sale/GetSalesPersonsByProductID';
             $http.get(Url, { params: { productID: 2 } })
                 .then(function (response) {
                     $scope.salesPersons = response.data;
@@ -571,7 +571,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetCompanyById';
             else
-                Url = '/AccountingNew/Company/GetCompanyById';
+                Url = '/Company/GetCompanyById';
             $http.get(Url, { params: { companyId: id } })
                 .then(function (response) {
                     $scope.idWiseCompany = response.data;
@@ -603,7 +603,7 @@
         //     if (window.location.hostname == 'localhost')
         //         Url = '/Ledger/GetProductById';
         //     else
-        //         Url = '/AccountingNew/Ledger/GetProductById';
+        //         Url = '/Ledger/GetProductById';
 
         //     $http.get(Url, { params: { pId: id } })
         //         .then(function (response) {
@@ -673,7 +673,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetContactPersonsOrJobTitle';
             else
-                Url = '/AccountingNew/Company/GetContactPersonsOrJobTitle';
+                Url = '/Company/GetContactPersonsOrJobTitle';
 
             $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
@@ -709,7 +709,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetContactPersonsOrJobTitle';
             else
-                Url = '/AccountingNew/Company/GetContactPersonsOrJobTitle';
+                Url = '/Company/GetContactPersonsOrJobTitle';
             $http.get(Url, { params: { type: type, cId: cId } })
                 .then(function (response) {
                     var onlineJpId = @onlineJobId;
@@ -753,7 +753,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Ledger/GetProducts';
             else
-                Url = '/AccountingNew/Ledger/GetProducts';
+                Url = '/Ledger/GetProducts';
             $http.get(Url, { params: { admin: 0, account: 0, groupname: " ", isAll: " ", isI: " ", isVatType: 1 } })
                 .then(function (response) {
                     $scope.taxTypes = response.data.filter(function (item) {
@@ -924,7 +924,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/Save';
             else
-                Url = '/AccountingNew/Sale/Save';
+                Url = '/Sale/Save';
 
             $scope.spinner = true;
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })

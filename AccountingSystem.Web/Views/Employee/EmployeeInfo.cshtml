@@ -871,7 +871,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Employee/GetEmployeeListByKey';
                 else
-                    Url = '/AccountingNew/Employee/GetEmployeeListByKey';
+                    Url = '/Employee/GetEmployeeListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
@@ -903,7 +903,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/LoadAllDepartment';
             else
-                Url = '/AccountingNew/Employee/LoadAllDepartment';
+                Url = '/Employee/LoadAllDepartment';
 
             $http.get(Url)
                 .then(function (response) {
@@ -919,7 +919,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/LoadAllFunction';
             else
-                Url = '/AccountingNew/Employee/LoadAllFunction';
+                Url = '/Employee/LoadAllFunction';
 
             $http.get(Url)
                 .then(function (response) {
@@ -935,7 +935,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/LoadAllRank';
             else
-                Url = '/AccountingNew/Employee/LoadAllRank';
+                Url = '/Employee/LoadAllRank';
 
             $http.get(Url)
                 .then(function (response) {
@@ -951,7 +951,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/LoadSupervisor';
             else
-                Url = '/AccountingNew/Employee/LoadSupervisor';
+                Url = '/Employee/LoadSupervisor';
 
             $http.get(Url)
                 .then(function (response) {
@@ -1134,7 +1134,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/InsertOrUpdateEmployeeInfo';
             else
-                Url = '/AccountingNew/Employee/InsertOrUpdateEmployeeInfo';
+                Url = '/Employee/InsertOrUpdateEmployeeInfo';
 
             $http.post(Url, JSON.stringify(jsonData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -1196,7 +1196,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/LoadEmployeeInfoById';
             else
-                Url = '/AccountingNew/Employee/LoadEmployeeInfoById';
+                Url = '/Employee/LoadEmployeeInfoById';
             $http.get(Url, { params: { id: id } })
                 .then(function (response) {
                     $scope.employeeData = response.data[0];
@@ -1293,7 +1293,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/InsertOrUpdateAcknowledgement';
             else
-                Url = '/AccountingNew/Employee/InsertOrUpdateAcknowledgement';
+                Url = '/Employee/InsertOrUpdateAcknowledgement';
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -1314,7 +1314,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/GetAcknowledgementNoByEmployeeId';
             else
-                Url = '/AccountingNew/Employee/GetAcknowledgementNoByEmployeeId';
+                Url = '/Employee/GetAcknowledgementNoByEmployeeId';
 
             $http.get(Url, { params: { employeeId: employeeId } })
                 .then(function (response) {
@@ -1363,7 +1363,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/InsertOrUpdateGrossSalary';
             else
-                Url = '/AccountingNew/Employee/InsertOrUpdateGrossSalary';
+                Url = '/Employee/InsertOrUpdateGrossSalary';
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -1385,7 +1385,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/GetGrossSalaryByEmployeeId';
             else
-                Url = '/AccountingNew/Employee/GetGrossSalaryByEmployeeId';
+                Url = '/Employee/GetGrossSalaryByEmployeeId';
 
             $http.get(Url, { params: { employeeId: employeeId } })
                 .then(function (response) {
@@ -1441,7 +1441,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/InsertOrUpdateTA';
             else
-                Url = '/AccountingNew/Employee/InsertOrUpdateTA';
+                Url = '/Employee/InsertOrUpdateTA';
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -1462,7 +1462,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/GetTaByEmployeeId';
             else
-                Url = '/AccountingNew/Employee/GetTaByEmployeeId';
+                Url = '/Employee/GetTaByEmployeeId';
 
             $http.get(Url, { params: { employeeId: employeeId } })
                 .then(function (response) {
@@ -1495,7 +1495,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/LoadAllEmployeeInfo';
             else
-                Url = '/AccountingNew/Employee/LoadAllEmployeeInfo';
+                Url = '/Employee/LoadAllEmployeeInfo';
 
             $http.get(Url)
                 .then(function (response) {
@@ -1522,7 +1522,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Employee/ImportACS';
                 else
-                    Url = '/AccountingNew/Employee/ImportACS';
+                    Url = '/Employee/ImportACS';
 
                 $http.post(Url)
                     .then(function (response) {

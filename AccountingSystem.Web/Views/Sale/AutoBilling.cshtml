@@ -308,7 +308,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/AutoBillingData';
             else
-                Url = '/AccountingNew/Sale/AutoBillingData';
+                Url = '/Sale/AutoBillingData';
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -385,7 +385,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/SalePostMonetizationBasicAsync_Manual';
             else
-                Url = '/AccountingNew/Sale/SalePostMonetizationBasicAsync_Manual';
+                Url = '/Sale/SalePostMonetizationBasicAsync_Manual';
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -425,7 +425,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/API/PostSMSAlertApplyLimitSalePostingEmployeer';
             else
-                Url = '/AccountingNew/API/PostSMSAlertApplyLimitSalePostingEmployeer';
+                Url = '/API/PostSMSAlertApplyLimitSalePostingEmployeer';
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {

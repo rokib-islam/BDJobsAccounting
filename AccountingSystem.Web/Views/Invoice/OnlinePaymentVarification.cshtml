@@ -250,7 +250,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/VarifyOrReject';
             else
-                Url = '/AccountingNew/Invoice/VarifyOrReject';
+                Url = '/Invoice/VarifyOrReject';
 
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -275,7 +275,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/loadOnlinePaymentVarificationData';
             else
-                Url = '/AccountingNew/Invoice/loadOnlinePaymentVarificationData';
+                Url = '/Invoice/loadOnlinePaymentVarificationData';
             $scope.spinner = true;
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
