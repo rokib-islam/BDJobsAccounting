@@ -117,13 +117,14 @@
                                 </td>
                             </tr>
                         </tbody>
-                        @* <tfoot>
+                        <tfoot>
                             <tr style="font-weight:bold">
                                 <td colspan="4" style="text-align:right">Total</td>
-                                <td>{{totalSumPriceVat | number}}</td>
-                                <td colspan="6"></td>
+                                <td>{{totalPrice | number}}</td>
+                                <td>{{totalTax | number}}</td>
+                                <td colspan="3"></td>
                             </tr>
-                        </tfoot> *@
+                        </tfoot>
                     </table>
 
                 </div>
@@ -163,7 +164,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/GetSalesReconciliation';
             else
-                Url = '/AccountingNew/Sale/GetSalesReconciliation';
+                Url = '/Sale/GetSalesReconciliation';
             $scope.spinner = true;
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -171,6 +172,9 @@
                     if (response.data.length > 0) {
                         $scope.saleReconciliationData = response.data;
                         $scope.totalItems = response.data[0].total;
+                        $scope.totalPrice = response.data.reduce((a, b) => a + b.salesPrice, 0);
+                        $scope.totalTax = response.data.reduce((a, b) => a + b.tax, 0);
+
                         if ($scope.saleReconciliationData.paymentMethod == 5) {
                             $scope.paymentMethod = 'Bkash'
                         }
@@ -235,7 +239,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/OIvoiceReconc';
             else
-                Url = '/AccountingNew/Invoice/OIvoiceReconc';
+                Url = '/Invoice/OIvoiceReconc';
 
             $http.get(Url, { params: { JP_ID: $scope.saleReconciliationData[index].jp_Id } })
                 .then(function (response) {
