@@ -339,7 +339,7 @@ namespace AccountingSystem.Repository
                         var dataTable = CreateSMSAlertDataTable();
                         PopulateSMSAlertDataTable(dataTable, result);
 
-                        using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                        using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                         {
                             await _db.ExecuteAsync("USP_Candidate_Monetization_Download",
                                 new { SMSAlertApplyLimt = dataTable.AsTableValuedParameter("dbo.SMSAlertApplyLimt") },
@@ -850,7 +850,7 @@ namespace AccountingSystem.Repository
         {
             try
             {
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
 
                     var result = (await _db.QueryAsync<MonetizationPosting>("USP_SMSAlert_ApplyLimit_Sale_Postings_JobSeeker", new { ServiceName = ServiceName },
@@ -870,7 +870,7 @@ namespace AccountingSystem.Repository
         {
             try
             {
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
 
                     var result = (await _db.QueryAsync<int>("select count(*) from CandidateMonetizationLog where TNO=0 and InvoiceNo is null and Submitted=0 and ServiceName=@ServiceName", new { ServiceName })).FirstOrDefault();
@@ -900,7 +900,7 @@ namespace AccountingSystem.Repository
                     ServiceName = model.ServiceName,
                     ServiceGroup = model.ServiceGroup
                 };
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
                     var result = await _db.QueryAsync<AutoBillingModel_Response>("USP_LoadAutoBilling", parameters, commandType: CommandType.StoredProcedure);
                     return result.ToList();
