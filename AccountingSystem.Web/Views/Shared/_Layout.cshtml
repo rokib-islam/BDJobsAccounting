@@ -93,7 +93,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="MakeInvoice">Make Invoice</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="OnlineInvoice">Online Invoice</a>
-                                @if (userId == 28 || userId == 47 || userId == 120 || userId == 55 || userId == 1002)
+                                @if (userId == 28 || userId == 47 || userId == 120 || userId == 55 || userId == 1002 || userId == 9)
                                 {
                                     <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="OnlinePaymentVarification">Online Payment Varification</a>
                                 }
@@ -138,7 +138,7 @@
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="employeeInfo">Employee Info</a>
                                 }
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPayment">Provident Fund</a>
-                                @if (userId == 28)
+                                @if (userId == 28 || userId == 9)
                                 {
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPaymentReport">Provident Fund Report</a>
                                 }
