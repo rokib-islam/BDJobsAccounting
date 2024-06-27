@@ -3,6 +3,35 @@
     ViewData["Title"] = "GetVatAndTax";
 }
 
+<style>
+    .btnEdit {
+        height: 25px; /* Adjust the height as needed */
+        width: 50px; /* Adjust the width as needed */
+        background-color: dodgerblue; /* Change to your desired color */
+        color: white; /* Text color */
+        border: none; /* Remove border */
+        border-radius: 5px; /* Rounded corners, adjust as needed */
+        cursor: pointer; /* Cursor changes to pointer on hover */
+    }
+    .btnEdit:hover {
+        background-color: blue; /* Darker shade on hover */
+    }
+
+    .btnEmail {
+        height: 25px; /* Adjust the height as needed */
+        width: 50px; /* Adjust the width as needed */
+        background-color: darkorange; /* Change to your desired color */
+        color: white; /* Text color */
+        border: none; /* Remove border */
+        border-radius: 5px; /* Rounded corners, adjust as needed */
+        cursor: pointer; /* Cursor changes to pointer on hover */
+    }
+
+    .btnEmail:hover {
+        background-color: red; /* Darker shade on hover */
+    }
+</style>
+
 <div class="card">
     <div class="card-body" style="background-color:whitesmoke;font-size:14px">
         <div ng-app="myApp">
@@ -49,7 +78,7 @@
                         
                     </div> 
                 </div>
-                <div class="row" ng-show="isVisible">
+                <div class="row mt-2" ng-show="isVisible">
                     <div class="col-sm-6">
                         <div class="pull-left text-left">
                             Show
@@ -100,9 +129,9 @@
 
                 </div>
                 <div class="row" style="height: 320px; overflow-y: auto;border:1px solid lightgray">
-                    <table class="table table-bordered table-hover table-sm">
+                    <table class="table table-bordered table-striped table-sm">
                         <thead class="thead-light">
-                            <tr style="background-color:skyblue; width:auto">
+                            <tr style="background-color:skyblue;">
                                 <th class="text-center">Sl#</th>
                                 <th class="text-center">Company Name</th>
                                 <th class="text-center">Contact Person</th>
@@ -126,10 +155,10 @@
                                 <td class="text-center">{{data.vat}}</td>
                                 <td class="text-center">{{data.total}}</td>
                                 <td class="text-center">
-                                    <button class="btn btn-primary btn-sm px-4" ng-click="openModal(data.name,data.contactPerson,data.address,data.ait,data.vat, data.total)">Edit</button>
+                                    <button class="btnEdit" ng-click="openModal(data.name,data.contactPerson,data.address,data.ait,data.vat, data.total)">Edit</button>
                                 </td>
                                 <td class="text-center">
-                                    <button class="btn btn-info btn-sm px-3">Email</button>
+                                    <button class="btnEmail">Email</button>
                                 </td>
                                 <td class="text-center">{{data.period}}</td>
                                 <td><span class="fw-bold">Sent Date:</span> {{data.lastMailSendDate}} <br /><span class="fw-bold">Period:</span> {{data.lastPeriod}}</td>

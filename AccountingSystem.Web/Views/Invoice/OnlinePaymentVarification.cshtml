@@ -208,7 +208,7 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-            $scope.search();
+            //$scope.search();
             $scope.showTable = false;
             $scope.isVisible = false;
 
@@ -273,13 +273,13 @@
 
             let Url = '';
             if (window.location.hostname == 'localhost')
-                Url = '/Invoice/loadOnlinePaymentVarificationData';
+                Url = '/Invoice/LoadOnlinePaymentVarificationData';
             else
-                Url = '/Invoice/loadOnlinePaymentVarificationData';
+                Url = '/Invoice/LoadOnlinePaymentVarificationData';
             $scope.spinner = true;
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
-                    $scope.paymentVarificationData = response.data;
+                    $scope.paymentVarificationData = response.data.data;
                     $scope.totalItems = response.data.totalRecords;
                     $scope.showTable = true;
                     $scope.isVisible = true;
