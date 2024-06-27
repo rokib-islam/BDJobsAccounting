@@ -354,7 +354,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/GetCompanyListByKey';
                 else
-                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+                    Url = '/Company/GetCompanyListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
@@ -390,7 +390,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetDistricts';
             else
-                Url = '/AccountingNew/Company/GetDistricts';
+                Url = '/Company/GetDistricts';
             $http.get(Url)
                 .then(function (response) {
                     $scope.districtData = response.data;
@@ -404,7 +404,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Payment/GetBankInformation';
             else
-                Url = '/AccountingNew/Payment/GetBankInformation';
+                Url = '/Payment/GetBankInformation';
             $http.get(Url)
                 .then(function (response) {
                     $scope.bankInformationData = response.data;
@@ -418,7 +418,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetCompanyById';
             else
-                Url = '/AccountingNew/Company/GetCompanyById';
+                Url = '/Company/GetCompanyById';
             $http.get(Url, { params: { companyId: cId } })
                 .then(function (response) {
                     $scope.allCompanyData = response.data[0];
@@ -463,7 +463,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetContactPersonByCompanyId';
             else
-                Url = '/AccountingNew/Company/GetContactPersonByCompanyId';
+                Url = '/Company/GetContactPersonByCompanyId';
             $http.get(Url, { params: { companyId: cId } })
                 .then(function (response) {
                     $scope.companyIdWiseContactPersonData = response.data;
@@ -479,7 +479,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetContactPersonById';
             else
-                Url = '/AccountingNew/Company/GetContactPersonById';
+                Url = '/Company/GetContactPersonById';
             $http.get(Url, { params: { id: id } })
                 .then(function (response) {
                     $scope.contactPersonData = response.data;
@@ -543,7 +543,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/AddOrUpdatePerson';
                 else
-                    Url = '/AccountingNew/Company/AddOrUpdatePerson';
+                    Url = '/Company/AddOrUpdatePerson';
 
                 $scope.spinner = true;
                 $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
@@ -615,7 +615,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/AddOrUpdatePerson';
                 else
-                    Url = '/AccountingNew/Company/AddOrUpdatePerson';
+                    Url = '/Company/AddOrUpdatePerson';
 
                 $scope.spinner = true;
                 $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
@@ -668,7 +668,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/DeletePerson';
                 else
-                    Url = '/AccountingNew/Company/DeletePerson';
+                    Url = '/Company/DeletePerson';
 
                 $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                     .then(function (response) {
@@ -758,7 +758,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/CheckCompanyNameWithId';
             else
-                Url = '/AccountingNew/Company/CheckCompanyNameWithId';
+                Url = '/Company/CheckCompanyNameWithId';
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -794,7 +794,7 @@
                         if (window.location.hostname == 'localhost')
                             Url = '/Company/InsertOrUpdateCompany';
                         else
-                            Url = '/AccountingNew/Company/InsertOrUpdateCompany';
+                            Url = '/Company/InsertOrUpdateCompany';
 
                         $http.post(Url, JSON.stringify(companyData), { headers: { 'Content-Type': 'application/json' } })
                             .then(function (response) {
@@ -850,7 +850,7 @@
                         if (window.location.hostname == 'localhost')
                             Url = '/Company/Delete';
                         else
-                            Url = '/AccountingNew/Company/Delete';
+                            Url = '/Company/Delete';
 
                         $http.get(Url, { params: { companyId: $scope.selectedCompany.id } }, { headers: { 'Content-Type': 'application/json' } })
                             .then(function (response) {

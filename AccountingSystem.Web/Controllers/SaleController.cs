@@ -1,7 +1,10 @@
 ﻿using AccountingSystem.Abstractions.BLL;
 using AccountingSystem.Models.AccountViewModels;
+using AccountingSystem.Web.HelperMethod;
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Reporting.NETCore;
+using System.Reflection;
 using System.Security.Claims;
 
 
@@ -225,6 +228,13 @@ namespace AccountingSystem.Web.Controllers
 
         }
 
+        public async Task<IActionResult> SalePostMonetizationBasicAsync_Manual([FromBody] ManualSalePostMonetizationModel model)
+        {
+            var result = await _SaleManager.PostSMSAlertApplyLimitSalePostingNew(model.ServiceName);
+            return Json(result);
+
+        }
+
         public void DownloadCandidateMonetizationJob()
         {
             RecurringJob.AddOrUpdate(
@@ -314,6 +324,92 @@ namespace AccountingSystem.Web.Controllers
         public async Task<IActionResult> AutoBillingData([FromBody] AutoBillingModel model)
         {
             var result = await _SaleManager.AutoBillingData(model);
+            return Json(result);
+        }
+
+        public IActionResult GetVatAndTax()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> GetCompanyVatAndTax([FromBody] VatAndTaxModel_Request model)
+        {
+            var result = await _SaleManager.GetCompanyVatAndTax(model);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> ShowVatTaxReport([FromBody] VatAndTaxModel_Request model, string format, string CopyType)
+        {
+            try
+            {
+                var reportData = await _SaleManager.GetCompanyVatAndTax(model);
+                //double sumTotalVat = reportData.Sum(report => report.TotalVat);
+                //double sumPriceWithVat = reportData.Sum(report => report.priceWithVat);
+                //double sumTotalPrice = reportData.Sum(report => report.TotalPrice);
+                var datatable = Helpers.ListiToDataTable(reportData);
+
+                using var report = new LocalReport();
+                var parameters = new[]
+                {
+                //new ReportParameter("sumTotalVat", sumTotalVat.ToString("N2")),
+                //new ReportParameter("sumPriceWithVat", sumPriceWithVat.ToString("N2")),
+                //new ReportParameter("sumTotalPrice", sumTotalPrice.ToString("N2")),
+                new ReportParameter("CopyType", CopyType),
+
+                };
+
+                using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream("AccountingSystem.Web.Reports.rptShowChallan.rdlc");
+                report.LoadReportDefinition(rs);
+                report.DataSources.Add(new ReportDataSource("ShowChallan", datatable));
+                report.SetParameters(parameters);
+
+                byte[] fileContents;
+                string contentType;
+                string fileName;
+
+                if (format.ToLower() == "pdf")
+                {
+                    fileContents = report.Render("pdf");
+                    contentType = "application/pdf";
+                    fileName = "ChallanReport.pdf";
+                }
+                else if (format.ToLower() == "excel")
+                {
+                    fileContents = report.Render("excel");
+                    contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    fileName = "ChallanReport.xlsx";
+                }
+                else
+                {
+                    // Handle unsupported format
+                    return BadRequest("Unsupported format. Please specify either 'pdf' or 'excel'.");
+                }
+
+                return File(fileContents, contentType, fileName);
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while generating the report.");
+            }
+        }
+
+        public IActionResult SalesReconciliation()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> GetSalesReconciliation([FromBody] SalesReconciliationModel_Request model)
+        {
+            var result = await _SaleManager.GetSalesReconciliation(model);
             return Json(result);
         }
     }

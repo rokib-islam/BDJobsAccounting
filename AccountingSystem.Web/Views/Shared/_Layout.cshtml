@@ -82,6 +82,7 @@
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="EditSale">Edit Sale</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="CashCollection">Cash Collection</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="AutoBilling">Auto SMS Alert Apply Limit</a>
+                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="SalesReconciliation">Sales Reconciliation</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -96,8 +97,8 @@
                                 {
                                     <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="OnlinePaymentVarification">Online Payment Varification</a>
                                 }
-                                
-                            </div>
+@*                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="ListOfInvoice">List of Invoice</a>
+ *@                            </div>
                         </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -116,10 +117,7 @@
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Report" asp-action="TrailBalance">Trail Balance</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Report" asp-action="VatTaxCollectionReport">Vat Tax Collection</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="BouncedCheckReport">Bounced Cheque Report</a>
-                                @if (userId == 28)
-                                {
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPaymentReport">Provident Fund Report</a>
-                                }
+                                
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -127,7 +125,7 @@
                                 Misc
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">                               
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPayment">Provident Fund</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Sale" asp-action="GetVatAndTax">VAT & TAX</a>
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -135,7 +133,15 @@
                                 Payroll
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="employeeInfo">Employee Info</a>
+                                @if (userId == 28 || userId == 47 || userId == 9)
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="employeeInfo">Employee Info</a>
+                                }
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPayment">Provident Fund</a>
+                                @if (userId == 28)
+                                {
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPaymentReport">Provident Fund Report</a>
+                                }
                             </div>
                         </li>
                     </ul>

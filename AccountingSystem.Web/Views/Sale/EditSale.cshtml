@@ -557,7 +557,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/GetCompanyListByKey';
                 else
-                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+                    Url = '/Company/GetCompanyListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
@@ -592,7 +592,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetContactPersonByCompanyId';
             else
-                Url = '/AccountingNew/Company/GetContactPersonByCompanyId';
+                Url = '/Company/GetContactPersonByCompanyId';
 
             $http.get(Url, { params: { companyId: cId } })
                 .then(function (response) {
@@ -607,7 +607,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/GetSalesPersonsByProductID';
             else
-                Url = '/AccountingNew/Sale/GetSalesPersonsByProductID';
+                Url = '/Sale/GetSalesPersonsByProductID';
             $http.get(Url, { params: { productID: 2 } })
                 .then(function (response) {
                     $scope.salesPersons = response.data;
@@ -622,7 +622,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/GetSales';
             else
-                Url = '/AccountingNew/Sale/GetSales';
+                Url = '/Sale/GetSales';
 
             $http.get(Url, { params: { pageNo: pageNo, pageSize: pageSize, cId: cId, tno: tno } })
                 .then(function (response) {
@@ -661,7 +661,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/GetDeletedSales';
             else
-                Url = '/AccountingNew/Sale/GetDeletedSales';
+                Url = '/Sale/GetDeletedSales';
 
             $http.get(Url, { params: { pageNo: pageNo, pageSize: pageSize, cId: cId } })
                 .then(function (response) {
@@ -790,7 +790,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Sale/UpdateProduct';
                 else
-                    Url = '/AccountingNew/Sale/UpdateProduct';
+                    Url = '/Sale/UpdateProduct';
 
                 $http.post(Url, JSON.stringify(json3), { headers: { 'Content-Type': 'application/json' } })
                     .then(function (response) {
@@ -864,7 +864,7 @@
             var deleteReason = $scope.reason;
             var deleteDate = $scope.deleteDate;
 
-            var Url = window.location.hostname == 'localhost' ? '/Sale/DeleteSale' : '/AccountingNew/Sale/DeleteSale';
+            var Url = window.location.hostname == 'localhost' ? '/Sale/DeleteSale' : '/Sale/DeleteSale';
 
             $http.get(Url, {
                 params: {
@@ -972,7 +972,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Sale/GetNumberOfId';
                 else
-                    Url = '/AccountingNew/Sale/GetNumberOfId';
+                    Url = '/Sale/GetNumberOfId';
                 $http.get(Url, { params: { tno: tno } })
                     .then(function (response) {
                         if (response.data.first > 0) {
@@ -1000,7 +1000,7 @@
                                 if (window.location.hostname == 'localhost')
                                     Url = '/Sale/UpdateSaleInfo';
                                 else
-                                    Url = '/AccountingNew/Sale/UpdateSaleInfo';
+                                    Url = '/Sale/UpdateSaleInfo';
                                 $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                                     .then(function (response) {
                                         if (response.data == 'Success') {
@@ -1027,7 +1027,7 @@
                                                 if (window.location.hostname == 'localhost')
                                                     Url = '/Journal/UpdateSalesJournal';
                                                 else
-                                                    Url = '/AccountingNew/Journal/UpdateSalesJournal';
+                                                    Url = '/Journal/UpdateSalesJournal';
                                                 $http.post(Url, JSON.stringify(requestBodyModel2), { headers: { 'Content-Type': 'application/json' } })
                                                     .then(function (response) {
                                                         if (response.data == "Success") {
@@ -1057,7 +1057,7 @@
                                                     if (window.location.hostname == 'localhost')
                                                         Url = '/Sale/UpdateSalePosted';
                                                     else
-                                                        Url = '/AccountingNew/Sale/UpdateSalePosted';
+                                                        Url = '/Sale/UpdateSalePosted';
 
                                                     $http.post(Url, JSON.stringify(requestBodyModel3), { headers: { 'Content-Type': 'application/json' } })
                                                         .then(function (response) {
@@ -1100,7 +1100,7 @@
                         if (window.location.hostname == 'localhost')
                             Url = '/Sale/UpdateProduct';
                         else
-                            Url = '/AccountingNew/Sale/UpdateProduct';
+                            Url = '/Sale/UpdateProduct';
 
                         $http.post(Url, JSON.stringify(json), { headers: { 'Content-Type': 'application/json' } })
                             .then(function (response) {
@@ -1136,7 +1136,7 @@
                     if (window.location.hostname == 'localhost')
                         Url = '/Sale/UpdateSaleContactPersonAndRefNo';
                     else
-                        Url = '/AccountingNew/Sale/UpdateSaleContactPersonAndRefNo';
+                        Url = '/Sale/UpdateSaleContactPersonAndRefNo';
 
                     $http.post(Url, JSON.stringify(json2), { headers: { 'Content-Type': 'application/json' } })
                         .then(function (response) {
@@ -1194,7 +1194,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Journal/GetJournalsForTrialBalance';
             else
-                Url = '/AccountingNew/Journal/GetJournalsForTrialBalance';
+                Url = '/Journal/GetJournalsForTrialBalance';
 
             $http.post(Url, JSON.stringify(json3), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -1236,7 +1236,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Journal/GetClosingDate';
             else
-                Url = '/AccountingNew/Journal/GetClosingDate';
+                Url = '/Journal/GetClosingDate';
             $http.get(Url)
                 .then(function (response) {
                     $scope.closingDate = response.data;
@@ -1270,7 +1270,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Sale/MakeJournalOfSale';
                 else
-                    Url = '/AccountingNew/Sale/MakeJournalOfSale';
+                    Url = '/Sale/MakeJournalOfSale';
 
                 $http.post(Url, jsonData)
                     .then(function (response) {

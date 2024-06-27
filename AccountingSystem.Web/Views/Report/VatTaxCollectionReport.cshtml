@@ -5,63 +5,67 @@
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
 
-<div ng-app="myApp">
-    <div ng-controller="myController">
-        <div class="row">
-            <h4 class="alert-primary text-center" style="margin-top:-10px">VAT Tax Collection Report</h4>
-            <div class="col-sm-4">
-                <label>Company</label>
-                <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
-                <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 360px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
-                    <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
-                </select>
-            </div>
-            <div class="col-sm-3">
-                <label>From Date</label>
-                <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
-            </div>
-            <div class="col-sm-3">
-                <label>To Date</label>
-                <input type="date" class="form-control form-control-sm" ng-model="toDate" />
-            </div>
-            <div class="col-sm-2 mt-4">
-                <button class="btn btn-primary btn-sm px-4" ng-click="load()">Load</button>
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <h4 class="text-center" style="margin-top:-10px">VAT Tax Collection Report</h4>
+                <div class="row mt-3">
+                    <div class="col-sm-4">
+                        <label>Company</label>
+                        <input class="form-control form-control-sm" id="company" placeholder="Search Company Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchCompany(searchQuery)">
+                        <select class="form-control form-control-sm" size="10" id="companyList" ng-model="comList" style="position:absolute;z-index:999;width: 360px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="companyList.length > 0">
+                            <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-3">
+                        <label>From Date</label>
+                        <input type="date" class="form-control form-control-sm" ng-model="fromDate" />
+                    </div>
+                    <div class="col-sm-3">
+                        <label>To Date</label>
+                        <input type="date" class="form-control form-control-sm" ng-model="toDate" />
+                    </div>
+                    <div class="col-sm-2 mt-4">
+                        <button class="btn btn-primary btn-sm px-4" ng-click="load()">Load</button>
+                    </div>
+                </div>
+
+                <table ng-show="showTable" class="table table-bordered table-sm mt-3" style="font-size:15px">
+                    <tr style="background-color:skyblue">
+                        <td class="text-center">Sl#</td>
+                        <td class="text-center">Customer BIN</td>
+                        <td class="text-center">Name of the Customer</td>
+                        <td class="text-center">Customer Address</td>
+                        <td class="text-center">Total Value (Inc. VAT)</td>
+                        <td class="text-center">VDS (Tk.)</td>
+                        <td class="text-center">Mushok 6.3 No.</td>
+                        <td class="text-center">Mushok Date</td>
+                        <td class="text-center">VDS Certificate No</td>
+                        <td class="text-center">VDS Certificate Date</td>
+                        <td class="text-center">Govt. Account Code</td>
+                        <td class="text-center">Service Name</td>
+                    </tr>
+                    <tbody>
+                        <tr ng-repeat="data in vatTaxData">
+                            <td class="text-center">{{$index + 1}}</td>
+                            <td class="text-center">{{data.vatRegNo}}</td>
+                            <td class="text-center">{{data.name}}</td>
+                            <td class="text-end">{{data.address}}</td>
+                            <td class="text-end">{{data.tAmount | number}}</td>
+                            <td class="text-center">{{data.challanAmount}}</td>
+                            <td class="text-center">{{data.challanNo}}</td>
+                            <td class="text-center">{{data.postingDate | date: "dd-MM-yyyy"}}</td>
+                            <td class="text-center">{{data.vdS_CertificateNo}}</td>
+                            <td class="text-center">{{ data.vdS_CertificateDate === "0001-01-01T00:00:00" ? "" : (data.vdS_CertificateDate | date: "dd-MM-yyyy") }}</td>
+                            <td class="text-center">{{data.challanACCode}}</td>
+                            <td class="text-center">{{data.serviceName}}</td>
+
+                        </tr>
+                    </tbody>
+                </table>
             </div>
         </div>
-
-        <table ng-show="showTable" class="table table-bordered table-sm mt-3" style="font-size:15px">
-            <tr style="background-color:skyblue">
-                <td class="text-center">Sl#</td>
-                <td class="text-center">Customer BIN</td>
-                <td class="text-center">Name of the Customer</td>
-                <td class="text-center">Customer Address</td>
-                <td class="text-center">Total Value (Inc. VAT)</td>
-                <td class="text-center">VDS (Tk.)</td>
-                <td class="text-center">Mushok 6.3 No.</td>
-                <td class="text-center">Mushok Date</td>
-                <td class="text-center">VDS Certificate No</td>
-                <td class="text-center">VDS Certificate Date</td>
-                <td class="text-center">Govt. Account Code</td>
-                <td class="text-center">Service Name</td>
-            </tr>
-            <tbody>
-                <tr ng-repeat="data in vatTaxData">
-                    <td class="text-center">{{$index + 1}}</td>
-                    <td class="text-center">{{data.vatRegNo}}</td>
-                    <td class="text-center">{{data.name}}</td>
-                    <td class="text-end">{{data.address}}</td>
-                    <td class="text-end">{{data.tAmount | number}}</td>
-                    <td class="text-center">{{data.challanAmount}}</td>
-                    <td class="text-center">{{data.challanNo}}</td>
-                    <td class="text-center">{{data.postingDate | date: "dd-MM-yyyy"}}</td>
-                    <td class="text-center">{{data.vdS_CertificateNo}}</td>
-                    <td class="text-center">{{ data.vdS_CertificateDate === "0001-01-01T00:00:00" ? "" : (data.vdS_CertificateDate | date: "dd-MM-yyyy") }}</td>
-                    <td class="text-center">{{data.challanACCode}}</td>
-                    <td class="text-center">{{data.serviceName}}</td>
-
-                </tr>
-            </tbody>
-        </table>
     </div>
 </div>
 
@@ -81,7 +85,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/GetCompanyListByKey';
                 else
-                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+                    Url = '/Company/GetCompanyListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
@@ -115,7 +119,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Report/LoadVatTaxCollectionData';
             else
-                Url = '/AccountingNew/Report/LoadVatTaxCollectionData';
+                Url = '/Report/LoadVatTaxCollectionData';
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {

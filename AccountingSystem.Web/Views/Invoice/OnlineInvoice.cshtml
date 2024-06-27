@@ -144,7 +144,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/LoadOnlineInvoice';
             else
-                Url = '/AccountingNew/Invoice/LoadOnlineInvoice';
+                Url = '/Invoice/LoadOnlineInvoice';
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -167,7 +167,7 @@
         //     if (window.location.hostname == 'localhost')
         //         Url = '/Invoice/OIvoiceReconc';
         //     else
-        //         Url = '/AccountingNew/Invoice/OIvoiceReconc';
+        //         Url = '/Invoice/OIvoiceReconc';
 
         //     $http.get(Url, { params: { JP_ID: JP_ID } })
 
@@ -185,11 +185,11 @@
 
         $scope.Rick = function (index) {
             $scope.reconcileSpinner[index] = true;
-            var abc = $scope.onlineData[index].jP_ID;
+            //var abc = $scope.onlineData[index].jP_ID;
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/OIvoiceReconc';
             else
-                Url = '/AccountingNew/Invoice/OIvoiceReconc';
+                Url = '/Invoice/OIvoiceReconc';
 
             $http.get(Url, { params: { JP_ID: $scope.onlineData[index].jP_ID } })
                 .then(function (response) {

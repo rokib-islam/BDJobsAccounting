@@ -108,7 +108,7 @@
             const endDate = $scope.radioValueRange == 1 ? $scope.to.toISOString().split('T')[0] : $scope.selectedYear;
 
             const params = { type, startDate, endDate, format };
-            const Url = window.location.hostname === 'localhost' ? '/Report/ShowTrailBalance' : '/AccountingNew/Report/ShowTrailBalance';
+            const Url = window.location.hostname === 'localhost' ? '/Report/ShowTrailBalance' : '/Report/ShowTrailBalance';
 
 
             $http.get(Url, { params, responseType: 'blob' })

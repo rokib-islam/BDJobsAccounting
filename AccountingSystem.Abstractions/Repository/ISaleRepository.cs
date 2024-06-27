@@ -37,5 +37,8 @@ namespace AccountingSystem.Abstractions.Repository
         Task<MonetizationPosting> PostSMSAlertApplyLimitSalePostingNew(string ServiceName);
         Task<List<AutoBillingModel_Response>> AutoBillingData(AutoBillingModel model);
         Task<int> SMSAlertApplyLimitCountForBilling(string ServiceName);
+        Task<dynamic> PostSMSAlertApplyLimitSalePostingEmployeer(CVAndSMSPurchesModel data);
+        Task<List<VatAndTaxModel_Response>> GetCompanyVatAndTax(VatAndTaxModel_Request model);
+        Task<List<SalesReconciliationModel_Response>> GetSalesReconciliation(SalesReconciliationModel_Request model);
     }
 }

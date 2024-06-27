@@ -208,7 +208,7 @@
     var app = angular.module('myApp', []);
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
-            $scope.search();
+            //$scope.search();
             $scope.showTable = false;
             $scope.isVisible = false;
 
@@ -250,7 +250,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/VarifyOrReject';
             else
-                Url = '/AccountingNew/Invoice/VarifyOrReject';
+                Url = '/Invoice/VarifyOrReject';
 
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
@@ -273,9 +273,9 @@
 
             let Url = '';
             if (window.location.hostname == 'localhost')
-                Url = '/Invoice/loadOnlinePaymentVarificationData';
+                Url = '/Invoice/LoadOnlinePaymentVarificationData';
             else
-                Url = '/AccountingNew/Invoice/loadOnlinePaymentVarificationData';
+                Url = '/Invoice/LoadOnlinePaymentVarificationData';
             $scope.spinner = true;
             $http.post(Url, JSON.stringify(requestData), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {

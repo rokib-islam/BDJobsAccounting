@@ -276,7 +276,8 @@
                 $scope.getIdWiseCompany(onlineCompanyId);
                 $scope.loadProducts(onlineCompanyId, 0);
                 $scope.setInvoiceNo(onlineCompanyId, $scope.issueDate);
-                $scope.saveDisabled = false;
+                //$scope.saveDisabled = false;
+                $scope.saveDisabled = true;
             }
 
 
@@ -300,7 +301,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Company/GetCompanyById';
             else
-                Url = '/AccountingNew/Company/GetCompanyById';
+                Url = '/Company/GetCompanyById';
             $http.get(Url, { params: { companyId: id } })
                 .then(function (response) {
                     $scope.idWiseCompany = response.data;
@@ -331,7 +332,7 @@
             $scope.comments = '';
             $scope.disabledCommentsTable = false;
             $scope.disabledComments = true;
-            $scope.saveDisabled = true;
+            //$scope.saveDisabled = true;
             $scope.showChallanButton = false;
             $scope.showInvoiceButton = false;
         };
@@ -342,7 +343,7 @@
             $scope.label = '';
             $scope.disabledCommentsTable = true;
             $scope.disabledComments = false;
-            $scope.saveDisabled = false;
+            //$scope.saveDisabled = false;
             $scope.showChallanButton = true;
             $scope.showInvoiceButton = true;
         };
@@ -365,7 +366,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Company/GetCompanyListByKey';
                 else
-                    Url = '/AccountingNew/Company/GetCompanyListByKey';
+                    Url = '/Company/GetCompanyListByKey';
 
                 $http.get(Url, { params: { startingKey: startingKey } })
                     .then(function (response) {
@@ -389,7 +390,7 @@
                 $scope.disabledComments = false;
                 $scope.rightArrow = false;
                 $scope.leftArrow = false;
-                $scope.saveDisabled = false;
+                //$scope.saveDisabled = false;
 
             }
             else {
@@ -397,7 +398,7 @@
                 $scope.disabledComments = true;
                 $scope.rightArrow = true;
                 $scope.leftArrow = true;
-                $scope.saveDisabled = true;
+                //$scope.saveDisabled = true;
 
                 $scope.showChallanButton = false;
                 $scope.showInvoiceButton = false;
@@ -415,7 +416,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/GetProductsForInvoice';
             else
-                Url = '/AccountingNew/Invoice/GetProductsForInvoice';
+                Url = '/Invoice/GetProductsForInvoice';
             $http.get(Url, { params: params })
                 .then(function (response) {
                     $scope.products = response.data;
@@ -449,6 +450,7 @@
         $scope.totalPrice = 0;
 
         $scope.passAnother = function (shiftedProduct) {
+            $scope.saveDisabled = false
             if (shiftedProduct.product !== "") {
                 if ($scope.selectedAnotherRow === shiftedProduct) {
                     $scope.selectedAnotherRow = null;
@@ -567,7 +569,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Invoice/GetProductsDetails';
                 else
-                    Url = '/AccountingNew/Invoice/GetProductsDetails';
+                    Url = '/Invoice/GetProductsDetails';
                 $http.get(Url, { params: { Id: id } })
                     .then(function (response) {
                         $scope.bindData = response.data;
@@ -593,7 +595,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/GenerateInvoiceNumber';
             else
-                Url = '/AccountingNew/Invoice/GenerateInvoiceNumber';
+                Url = '/Invoice/GenerateInvoiceNumber';
             $http.get(Url, { params: params })
                 .then(function (response) {
                     $scope.invoiceNo = response.data;
@@ -639,6 +641,9 @@
                 var indexToRemove = $scope.shiftData.indexOf($scope.selectedAnotherRow);
                 if (indexToRemove !== -1) {
                     $scope.shiftData.splice(indexToRemove, 1);
+                    if($scope.shiftData.length == 0 ){
+                        $scope.saveDisabled = true;
+                    }
                 }
                 $scope.totalPrice -= $scope.selectedAnotherRow.amount;
                 $scope.selectedAnotherRow = null;
@@ -670,7 +675,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/UpdateDeleteComments';
             else
-                Url = '/AccountingNew/Invoice/UpdateDeleteComments';
+                Url = '/Invoice/UpdateDeleteComments';
 
             $http.post(Url, requestBodyModel)
                 .then(function (response) {
@@ -739,7 +744,7 @@
                         if (window.location.hostname == 'localhost')
                             Url = '/Sale/CheckOnlineJobs';
                         else
-                            Url = '/AccountingNew/Sale/CheckOnlineJobs';
+                            Url = '/Sale/CheckOnlineJobs';
                         $http.post(Url, requestBodyModel)
                             .then(function (response) {
                                 $scope.data = response.data;
@@ -779,7 +784,7 @@
             if (window.location.hostname == 'localhost')
                 Url = '/Invoice/CheckInvoiceNo';
             else
-                Url = '/AccountingNew/Invoice/CheckInvoiceNo';
+                Url = '/Invoice/CheckInvoiceNo';
 
             $http.get(Url, { params: $scope.invoiceNo })
                 .then(function (response) {
@@ -832,7 +837,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Invoice/SaveInvoice';
                 else
-                    Url = '/AccountingNew/Invoice/SaveInvoice';
+                    Url = '/Invoice/SaveInvoice';
 
                 $scope.saveSpinner = true;
                 $http.post(Url, requestBodyModel)
@@ -850,7 +855,7 @@
                             $scope.comments = '';
                             $scope.disabledCommentsTable = false;
                             $scope.disabledComments = true;
-                            $scope.saveDisabled = true;
+                            //$scope.saveDisabled = true;
                             $scope.showChallanButton = false;
                             $scope.showInvoiceButton = false;
                             $scope.invoiceType = '1';
@@ -889,7 +894,7 @@
             const isColorPad = $scope.print ? 1 : 0;
 
             const params = { InvoiceNo: invoiceId, format, isColorPad };
-            const Url = window.location.hostname === 'localhost' ? '/Report/ShowInvoice' : '/AccountingNew/Report/ShowInvoice';
+            const Url = window.location.hostname === 'localhost' ? '/Report/ShowInvoice' : '/Report/ShowInvoice';
 
             $scope.showInviceSpinner = true;
             $http.get(Url, { params, responseType: 'blob' })
@@ -929,7 +934,7 @@
             const copyType = $scope.CopyType;
 
             const params = { InvoiceNo: invoiceId, format, CopyType: copyType };
-            const Url = window.location.hostname === 'localhost' ? '/Report/ShowChallanReportNew' : '/AccountingNew/Report/ShowChallanReportNew';
+            const Url = window.location.hostname === 'localhost' ? '/Report/ShowChallanReportNew' : '/Report/ShowChallanReportNew';
 
             $scope.showChallanspinner = true;
             $http.get(Url, { params, responseType: 'blob' })
@@ -974,7 +979,7 @@
             }
 
             const params = { type: 0, list: listId, format, dtChk: $scope.dtChk, invoiceId };
-            const Url = window.location.hostname === 'localhost' ? '/Report/PreviewLabelReport' : '/AccountingNew/Report/PreviewLabelReport';
+            const Url = window.location.hostname === 'localhost' ? '/Report/PreviewLabelReport' : '/Report/PreviewLabelReport';
 
             $scope.showlabelspinner = true;
             $http.get(Url, { params, responseType: 'blob' })
@@ -1022,7 +1027,7 @@
 
             const params = { InvoiceNo: invoiceId, format, sMail, sChallan, CopyType: copyType };
             $scope.showMailpinner = true;
-            const Url = window.location.hostname === 'localhost' ? '/Report/ReportMail' : '/AccountingNew/Report/ReportMail';
+            const Url = window.location.hostname === 'localhost' ? '/Report/ReportMail' : '/Report/ReportMail';
             $http.get(Url, { params })
                 .then(function (response) {
                     $scope.showMailpinner = false;

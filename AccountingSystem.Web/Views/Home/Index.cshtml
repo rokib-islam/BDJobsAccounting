@@ -97,7 +97,7 @@
                 if (window.location.hostname == 'localhost')
                     Url = '/Home/Login';
                 else
-                    Url = 'AccountingNew/Home/Login';
+                    Url = '/Home/Login';
 
                 $http.post(Url, JSON.stringify(credentials), { headers: { 'Content-Type': 'application/json' } })
 

@@ -336,5 +336,14 @@ namespace AccountingSystem.Web.Controllers
             var result = await _InvoiceManager.LoadbBouncedCheckData(invoiceNo);
             return Json(result);
         }
+
+        public IActionResult ListOfInvoice()
+        {
+            ClaimsPrincipal claimsPrincipal = HttpContext.User;
+            if (claimsPrincipal.Identity.IsAuthenticated)
+                return View();
+            else
+                return RedirectToAction("Index", "Home");
+        }
     }
 }

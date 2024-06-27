@@ -853,8 +853,8 @@ namespace AccountingSystem.Repository
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
                 {
 
-                    var result = (await _db.QueryAsync<MonetizationPosting>("USP_SMSAlert_ApplyLimit_Sale_Postings_New", new { ServiceName = ServiceName },
-                        commandType: CommandType.StoredProcedure)).FirstOrDefault();
+                    var result = (await _db.QueryAsync<MonetizationPosting>("USP_SMSAlert_ApplyLimit_Sale_Postings_JobSeeker", new { ServiceName = ServiceName },
+                        commandType: CommandType.StoredProcedure, commandTimeout: 180)).FirstOrDefault();
 
                     return result;
                 }
@@ -897,11 +897,105 @@ namespace AccountingSystem.Repository
                     Fromdate = model.FromDate,
                     Todate = model.ToDate,
                     Status = model.Status,
-                    ServiceName = model.ServiceName
+                    ServiceName = model.ServiceName,
+                    ServiceGroup = model.ServiceGroup
                 };
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
                 {
                     var result = await _db.QueryAsync<AutoBillingModel_Response>("USP_LoadAutoBilling", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+        public async Task<dynamic> PostSMSAlertApplyLimitSalePostingEmployeer(CVAndSMSPurchesModel data)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    data.OPID,
+                    data.ClientID,
+                    data.CP_ID,
+                    data.Acc_Id,
+                    data.Quantity,
+                    data.ServiceGroup,
+                    data.ServiceID,
+                    data.ReceivedDate,
+                    data.TransDate,
+                    data.PaidAmount,
+                    data.Amount,
+                    data.DetailInfo,
+                    data.TransID,
+                    data.PaidBy,
+                    data.ServiceName
+                };
+
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {
+
+                    var result = (await _db.QueryAsync<dynamic>("USP_SMSAlert_ApplyLimit_Sale_Postings_Employeer", parameters,
+                        commandType: CommandType.StoredProcedure)).FirstOrDefault();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
+
+        public async Task<List<VatAndTaxModel_Response>> GetCompanyVatAndTax(VatAndTaxModel_Request model)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    PageNo = model.PageNo,
+                    PageSize = model.PageSize,
+                    Fromdate = model.FromDate,
+                    Todate = model.ToDate,
+                    CompanyName = model.CompanyName,
+                    Type = model.Type,
+                    UserID = model.UserID
+                };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var result = await _db.QueryAsync<VatAndTaxModel_Response>("USP_CompanyVAT_TAX", parameters, commandType: CommandType.StoredProcedure);
+                    return result.ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+        }
+
+
+        public async Task<List<SalesReconciliationModel_Response>> GetSalesReconciliation(SalesReconciliationModel_Request model)
+        {
+            try
+            {
+                var parameters = new
+                {
+                    PageNo = model.PageNo,
+                    Per_page_data = model.PageSize,
+                    Fdate = model.FromDate,
+                    Tdate = model.ToDate
+                };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("OnlineConnection")))
+                {
+                    var result = await _db.QueryAsync<SalesReconciliationModel_Response>("[Accounting].[Job_Reconciliation]", parameters, commandType: CommandType.StoredProcedure);
                     return result.ToList();
                 }
             }
