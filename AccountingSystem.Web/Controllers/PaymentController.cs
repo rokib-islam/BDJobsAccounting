@@ -74,5 +74,15 @@ namespace AccountingSystem.Web.Controllers
             var result = await _PaymentManager.LoadPfPaymentData(model);
             return Json(result);
         }
+
+        public IActionResult PaymentModule()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
     }
 }

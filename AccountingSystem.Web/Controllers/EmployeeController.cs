@@ -125,5 +125,15 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
+        public IActionResult EmployeeSalaryPosting()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
     }
 }
