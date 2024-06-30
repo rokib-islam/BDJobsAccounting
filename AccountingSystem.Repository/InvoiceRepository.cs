@@ -718,6 +718,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@TDS", parameters.TDS);
                     dynamicParameters.Add("@VDS", parameters.VDS);
                     dynamicParameters.Add("@JDate", parameters.jDate);
+                    dynamicParameters.Add("@Q_job", parameters.Q_job);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
@@ -769,6 +770,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@TDS", parameters.TDS);
                     dynamicParameters.Add("@VDS", parameters.VDS);
                     dynamicParameters.Add("@JDate", parameters.jDate);
+                    dynamicParameters.Add("@Q_job", parameters.Q_job);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
