@@ -72,33 +72,35 @@
                             <tbody>
                                 <tr>
                                     <td>Employee Contribution</td>
-                                    <td><input class="form-control form-control-sm text-end" ng-model="empContribution_pay" ng-change="paymentTotal()" ng-click="setContribution('empPay')" commaseparator /></td>
-                                    <td><input class="form-control form-control-sm text-end" ng-model="empContribution_adj" ng-change="adjTotal()" ng-click="setContribution('empAdj')" commaseparator /></td>
+                                    <td><input class="form-control form-control-sm text-end" ng-model="empContribution_pay" ng-change="paymentTotal()" ng-click="setContribution('empPay')" restrict-two-decimals /></td>
+                                    <td><input class="form-control form-control-sm text-end" ng-model="empContribution_adj" ng-change="adjTotal()" ng-click="setContribution('empAdj')" restrict-two-decimals /></td>
                                 </tr>
                                 <tr>
                                     <td>Company Contribution</td>
-                                    <td><input class="form-control form-control-sm text-end" ng-model="comContribution_pay" ng-change="paymentTotal()" ng-click="setContribution('comPay')" commaseparator /></td>
-                                    <td><input class="form-control form-control-sm text-end" ng-model="comContribution_adj" ng-change="adjTotal()" ng-click="setContribution('comAdj')" commaseparator /></td>
+                                    <td><input class="form-control form-control-sm text-end" ng-model="comContribution_pay" ng-change="paymentTotal()" ng-click="setContribution('comPay')" restrict-two-decimals /></td>
+                                    <td><input class="form-control form-control-sm text-end" ng-model="comContribution_adj" ng-change="adjTotal()" ng-click="setContribution('comAdj')" restrict-two-decimals /></td>
                                 </tr>
                                 <tr>
                                     <td>Shared Profit for Employee Contribution</td>
-                                    <td><input class="form-control form-control-sm text-end" ng-model="empProfitCont_pay" ng-change="paymentTotal()" ng-click="setContribution('empProfitPay')" commaseparator /></td>
-                                    <td><input class="form-control form-control-sm text-end" ng-model="empProfitCont_adj" ng-change="adjTotal()" ng-click="setContribution('empProfitAdj')" commaseparator /></td>
+                                    <td><input class="form-control form-control-sm text-end" ng-model="empProfitCont_pay" ng-change="paymentTotal()" ng-click="setContribution('empProfitPay')" restrict-two-decimals /></td>
+                                    <td><input class="form-control form-control-sm text-end" ng-model="empProfitCont_adj" ng-change="adjTotal()" ng-click="setContribution('empProfitAdj')" restrict-two-decimals /></td>
                                 </tr>
                                 <tr>
                                     <td>Shared Profit for Company Contribution</td>
-                                    <td><input class="form-control form-control-sm text-end" ng-model="comProfitCont_pay" ng-change="paymentTotal()" ng-click="setContribution('comProfitPay')" commaseparator /></td>
-                                    <td><input class="form-control form-control-sm text-end" ng-model="comProfitCont_adj" ng-change="adjTotal()" ng-click="setContribution('comProfitAdj')" commaseparator /></td>
+                                    <td><input class="form-control form-control-sm text-end" ng-model="comProfitCont_pay" ng-change="paymentTotal()" ng-click="setContribution('comProfitPay')" restrict-two-decimals /></td>
+                                    <td><input class="form-control form-control-sm text-end" ng-model="comProfitCont_adj" ng-change="adjTotal()" ng-click="setContribution('comProfitAdj')" restrict-two-decimals /></td>
                                 </tr>
                                 <tr>
                                     <td>Total</td>
-                                    <td><input class="form-control form-control-sm text-end" ng-model="empTotal" ng-disabled="disabledEmpTotal" commaseparator /></td>
-                                    <td><input class="form-control form-control-sm text-end" ng-model="comTotal" ng-disabled="disabledComTotal" commaseparator /></td>
+                                    <td><input class="form-control form-control-sm text-end" ng-model="empTotal" ng-disabled="disabledEmpTotal" restrict-two-decimals /></td>
+                                    <td><input class="form-control form-control-sm text-end" ng-model="comTotal" ng-disabled="disabledComTotal" restrict-two-decimals /></td>
                                 </tr>
                             </tbody>
                         </table>
                         <div class="text-end">
-                            <button class="btn btn-success px-5" ng-click="save()">Save</button>
+                            <button class="btn btn-success px-5" ng-click="save()">Save
+                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
+                            </button>
                         </div>
                     </div>
                 </div>
@@ -109,43 +111,135 @@
 
 
 <script>
-    var app = angular.module('myApp', []);
-    app.directive('commaseparator', function ($filter) {
-        'use strict';
-        return {
-            require: 'ngModel',
-            link: function (scope, elem, attrs, ctrl) {
-                if (!ctrl) {
-                    return;
+    var app = angular.module('myApp', [])
+        .directive('restrictTwoDecimals', function () {
+            return {
+                restrict: 'A',
+                link: function (scope, element) {
+                    element.on('input', function () {
+                        var value = element.val();
+                        if (value.indexOf('.') !== -1) {
+                            var parts = value.split('.');
+                            if (parts[1].length > 2) {
+                                parts[1] = parts[1].substring(0, 2);
+                                value = parts.join('.');
+                                element.val(value);
+                            }
+                        }
+                    });
                 }
-                ctrl.$formatters.unshift(function () {
-                    return $filter('number')(ctrl.$modelValue);
-                });
-                ctrl.$parsers.unshift(function (viewValue) {
-                    var plainNumber = viewValue.replace(/[\,\.\-\+]/g, ''),
-                        b = $filter('number')(plainNumber);
-                    elem.val(b);
-                    return plainNumber;
-                });
-            }
-        };
-    });
+            };
+        });
+    // app.directive('commaseparator', function ($filter) {
+    //     'use strict';
+    //     return {
+    //         require: 'ngModel',
+    //         link: function (scope, elem, attrs, ctrl) {
+    //             if (!ctrl) {
+    //                 return;
+    //             }
+    //             ctrl.$formatters.unshift(function () {
+    //                 return $filter('number')(ctrl.$modelValue);
+    //             });
+    //             ctrl.$parsers.unshift(function (viewValue) {
+    //                 var plainNumber = viewValue.replace(/[\,\.\-\+]/g, ''),
+    //                     b = $filter('number')(plainNumber);
+    //                 elem.val(b);
+    //                 return plainNumber;
+    //             });
+    //         }
+    //     };
+    // });
+    //     app.directive('fractionInput', function () {
+    //     return {
+    //         restrict: 'A',
+    //         require: 'ngModel',
+    //         link: function (scope, element, attrs, ctrl) {
+    //             const MAX_DECIMAL_PLACES = 2; // Adjust as needed
+
+    //             ctrl.$parsers.unshift(function (viewValue) {
+    //                 const formattedValue = viewValue.replace(/[^0-9\.]/g, ''); // Allow only numbers and decimal point
+
+    //                 if (formattedValue.split('.').length > 2) {
+    //                     return ctrl.$viewValue; // Prevent multiple decimal points
+    //                 }
+
+    //                 if (formattedValue.endsWith('.')) {
+    //                     formattedValue += '0'; // Add trailing zero if input ends with decimal
+    //                 }
+
+    //                 const parts = formattedValue.split('.');
+    //                 const integerPart = parseFloat(parts[0]);
+    //                 let decimalPart = 0;
+    //                 if (parts.length > 1) {
+    //                     decimalPart = parseFloat('0.' + parts[1]);
+    //                     decimalPart = Math.round(decimalPart * Math.pow(10, MAX_DECIMAL_PLACES)) / Math.pow(10, MAX_DECIMAL_PLACES); // Limit decimal places
+    //                 }
+
+    //                 const newValue = integerPart + decimalPart;
+    //                 ctrl.$setViewValue(newValue);
+    //                 ctrl.$render();
+    //                 return newValue;
+    //             });
+    //         }
+    //     };
+    // });
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.loadLedgerList();
             $scope.disabledEmpTotal = true;
             $scope.disabledComTotal = true;
+            $scope.spinner = false;
+
+            $scope.empContribution_pay = 0;
+            $scope.empContribution_adj = 0;
+            $scope.comContribution_pay = 0;
+            $scope.comContribution_adj = 0;
+            $scope.empProfitCont_pay = 0;
+            $scope.empProfitCont_adj = 0;
+            $scope.comProfitCont_pay = 0;
+            $scope.comProfitCont_adj = 0;
+            $scope.empTotal = 0;
+            $scope.comTotal = 0;
         })
         $scope.ledgerName = '14761';
         $scope.paymentDate = new Date();
 
+        // $scope.paymentTotal = function () {
+        //     $scope.empTotal = parseFloat($scope.empContribution_pay == undefined ? 0 : $scope.empContribution_pay) + parseFloat($scope.comContribution_pay == undefined ? 0 : $scope.comContribution_pay) + parseFloat($scope.empProfitCont_pay == undefined ? 0 : $scope.empProfitCont_pay) + parseFloat($scope.comProfitCont_pay == undefined ? 0 : $scope.comProfitCont_pay);
+        // }
+
         $scope.paymentTotal = function () {
-            $scope.empTotal = parseFloat($scope.empContribution_pay == undefined ? 0 : $scope.empContribution_pay) + parseFloat($scope.comContribution_pay == undefined ? 0 : $scope.comContribution_pay) + parseFloat($scope.empProfitCont_pay == undefined ? 0 : $scope.empProfitCont_pay) + parseFloat($scope.comProfitCont_pay == undefined ? 0 : $scope.comProfitCont_pay);
-        }
+            // Calculate the total contributions
+            var empContribution = parseFloat($scope.empContribution_pay || 0);
+            var comContribution = parseFloat($scope.comContribution_pay || 0);
+            var empProfitContribution = parseFloat($scope.empProfitCont_pay || 0);
+            var comProfitContribution = parseFloat($scope.comProfitCont_pay || 0);
+
+            // Sum up the contributions
+            var total = empContribution + comContribution + empProfitContribution + comProfitContribution;
+
+            // Format the total to two decimal places
+            $scope.empTotal = total.toFixed(2);
+        };
+
+        // $scope.adjTotal = function () {
+        //     $scope.comTotal = parseFloat($scope.empContribution_adj == undefined ? 0 : $scope.empContribution_adj) + parseFloat($scope.comContribution_adj == undefined ? 0 : $scope.comContribution_adj) + parseFloat($scope.empProfitCont_adj == undefined ? 0 : $scope.empProfitCont_adj) + parseFloat($scope.comProfitCont_adj == undefined ? 0 : $scope.comProfitCont_adj);
+        // }
 
         $scope.adjTotal = function () {
-            $scope.comTotal = parseFloat($scope.empContribution_adj == undefined ? 0 : $scope.empContribution_adj) + parseFloat($scope.comContribution_adj == undefined ? 0 : $scope.comContribution_adj) + parseFloat($scope.empProfitCont_adj == undefined ? 0 : $scope.empProfitCont_adj) + parseFloat($scope.comProfitCont_adj == undefined ? 0 : $scope.comProfitCont_adj);
-        }
+            // Calculate the adjusted total contributions
+            var empContributionAdj = parseFloat($scope.empContribution_adj || 0);
+            var comContributionAdj = parseFloat($scope.comContribution_adj || 0);
+            var empProfitContAdj = parseFloat($scope.empProfitCont_adj || 0);
+            var comProfitContAdj = parseFloat($scope.comProfitCont_adj || 0);
+
+            // Sum up the adjusted contributions
+            var totalAdj = empContributionAdj + comContributionAdj + empProfitContAdj + comProfitContAdj;
+
+            // Format the adjusted total to two decimal places
+            $scope.comTotal = totalAdj.toFixed(2);
+        };
 
         $scope.employeeList = [];
         $scope.selectedEmployee = null;
@@ -246,6 +340,7 @@
                 UserId: @userId
                 }
 
+            
             if (requestBodyModel.PaymentDate == undefined) {
                 alert("Payment Date Required.");
                 return false;
@@ -259,7 +354,7 @@
                 alert("Payment Reference Required.");
                 return false;
             }
-
+            $scope.spinner = true;
             let Url = '';
             if (window.location.hostname == 'localhost')
                 Url = '/Employee/InsertProvidentFundPayment';
@@ -271,6 +366,7 @@
                     if (response.data == 'Success') {
                         alert("Data Saved Successfully.");
                         $scope.fieldsEmpty();
+                        $scope.spinner = false;
                     }
                 })
                 .catch(function (error) {
@@ -282,15 +378,17 @@
             $scope.searchQuery = '';
             $scope.ledgerName = '14761';
             $scope.paymentRef = '';
-            $scope.paymentDate = new Date();
-            $scope.empContribution_pay = '';
-            $scope.empContribution_adj = '';
-            $scope.comContribution_pay = '';
-            $scope.comContribution_adj = '';
-            $scope.empProfitCont_pay = '';
-            $scope.empProfitCont_adj = '';
-            $scope.comProfitCont_pay = '';
-            $scope.comProfitCont_adj = '';
+            //$scope.paymentDate = new Date();
+            $scope.empContribution_pay = 0;
+            $scope.empContribution_adj = 0;
+            $scope.comContribution_pay = 0;
+            $scope.comContribution_adj = 0;
+            $scope.empProfitCont_pay = 0;
+            $scope.empProfitCont_adj = 0;
+            $scope.comProfitCont_pay = 0;
+            $scope.comProfitCont_adj = 0;
+            $scope.empTotal = 0;
+            $scope.comTotal = 0;
         };
 
     })
