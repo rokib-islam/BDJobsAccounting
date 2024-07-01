@@ -923,7 +923,7 @@ namespace AccountingSystem.Repository
                 };
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
-                    var result = await _db.QueryAsync<AutoBillingModel_Response>("USP_LoadAutoBilling", parameters, commandType: CommandType.StoredProcedure);
+                    var result = await _db.QueryAsync<AutoBillingModel_Response>("USP_LoadAutoBilling", parameters, commandType: CommandType.StoredProcedure, commandTimeout: 180);
                     return result.ToList();
                 }
             }
