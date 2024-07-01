@@ -22,6 +22,10 @@ namespace AccountingSystem.BLL
             return await _repository.GetEmployeeListByKey(key);
         }
 
+        public async Task<List<VendorModel>> GetVendorListByKey(string key)
+        {
+            return await _repository.GetVendorListByKey(key);
+        }
         public async Task<string> InsertProvidentFundPayment(InsertProvidentFundPaymentModel model)
         {
             return await _repository.InsertProvidentFundPayment(model);

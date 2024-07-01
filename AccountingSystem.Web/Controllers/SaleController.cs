@@ -230,7 +230,7 @@ namespace AccountingSystem.Web.Controllers
 
         public async Task<IActionResult> SalePostMonetizationBasicAsync_Manual([FromBody] ManualSalePostMonetizationModel model)
         {
-            var result = await _SaleManager.PostSMSAlertApplyLimitSalePostingNew(model.ServiceName);
+            var result = await _SaleManager.PostSMSAlertApplyLimitSalePostingNew_Manual(model.ServiceName, model.ReceivedDate, model.FromDate, model.ToDate);
             return Json(result);
 
         }

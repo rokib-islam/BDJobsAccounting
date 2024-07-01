@@ -83,5 +83,9 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetStaffPFIAccountList();
         }
+        public async Task<List<LedgerViewModel>> GetLedgerName()
+        {
+            return await _repository.GetLedgerName();
+        }
     }
 }

@@ -25,6 +25,12 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
+        public async Task<IActionResult> GetVendorListByKey(string startingKey)
+        {
+            var result = await _EmployeeManager.GetVendorListByKey(startingKey);
+            return Json(result);
+        }
+
         public async Task<IActionResult> InsertProvidentFundPayment([FromBody] InsertProvidentFundPaymentModel model)
         {
             var resp = await _EmployeeManager.InsertProvidentFundPayment(model);

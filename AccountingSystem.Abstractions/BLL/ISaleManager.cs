@@ -34,6 +34,7 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<SalesPerson>> GetSalesPersonListByKey(string startingKey);
         Task<int> DownloadCandidateMonetizationAsync();
         Task<MonetizationPosting> PostSMSAlertApplyLimitSalePostingNew(string ServiceName);
+        Task<MonetizationPosting> PostSMSAlertApplyLimitSalePostingNew_Manual(string ServiceName, string ReceivedDate, string FromDate, string ToDate);
         Task<List<AutoBillingModel_Response>> AutoBillingData(AutoBillingModel model);
         Task<int> SMSAlertApplyLimitCountForBilling(string ServiceName);
         Task<dynamic> PostSMSAlertApplyLimitSalePostingEmployeer(CVAndSMSPurchesModel data);
