@@ -20,5 +20,6 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<LedgerViewModel>> GetProductById(int pId);
         Task<List<LoadServiceListModel>> LoadServiceList(LoadServiceListModel model);
         Task<List<LedgerViewModel>> GetStaffPFIAccountList();
+        Task<List<LedgerViewModel>> GetLedgerName();
     }
 }

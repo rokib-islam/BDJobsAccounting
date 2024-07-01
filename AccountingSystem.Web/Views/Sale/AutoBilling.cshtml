@@ -169,19 +169,28 @@
                                 <h5 class="modal-title" id="exampleModalLabel">Journal Date</h5>
                                 <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
                             </div>
-                            <div class="modal-body">
-                                <div class="row px-5">
-                                    <label>Select Service Name</label>
-                                    <select class="form-select form-select-sm" ng-model="serviceName_manual">
-                                        <option value="0">Select</option>
-                                        <option value="Candidate Monetization-Standard">Candidate Monetization-Standard</option>
-                                        <option value="Candidate Monetization-Basic">Candidate Monetization-Basic</option>
-                                        <option value="Candidate Monetization-Premium">Candidate Monetization-Premium</option>
-                                        <option value="Apply Limit (Job Fair)">Apply Limit (Job Fair)</option>
-                                        <option value="Apply Limit (Job Seeker)">Apply Limit (Job Seeker)</option>
-                                        <option value="SMS Alert (Job Seeker)">SMS Alert (Job Seeker)</option>
-                                    </select>
+                            <div class="modal-body px-4">
+                                <div class="row">
+                                    <label class="col-sm-3">Service Name</label>
+                                    <div class="col-sm-9">
+                                        <select class="form-select form-select-sm" ng-model="serviceName_manual">
+                                            <option value="0">Select Service Name</option>
+                                            <option value="Candidate Monetization-Standard">Candidate Monetization-Standard</option>
+                                            <option value="Candidate Monetization-Basic">Candidate Monetization-Basic</option>
+                                            <option value="Candidate Monetization-Premium">Candidate Monetization-Premium</option>
+                                            <option value="Apply Limit (Job Fair)">Apply Limit (Job Fair)</option>
+                                            <option value="Apply Limit (Job Seeker)">Apply Limit (Job Seeker)</option>
+                                            <option value="SMS Alert (Job Seeker)">SMS Alert (Job Seeker)</option>
+                                        </select>
+                                    </div>                                   
                                 </div>
+
+                                <div class="row mt-2">
+                                    <label class="col-sm-3">JDate</label>
+                                    <div class="col-sm-9">
+                                        <input type="date" class="form-control form-control-sm" ng-model="jDate" />
+                                    </div>
+                                </div>                                
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
@@ -220,6 +229,7 @@
 
         $scope.fromDate = new Date();
         $scope.toDate = new Date();
+        $scope.jDate = new Date();
 
 
         $scope.openModal = function () {
@@ -297,8 +307,8 @@
             let requestBodyModel = {
                 PageNo: $scope.currentPage,
                 PageSize: $scope.itemsPerPage,
-                FromDate: $scope.fromDate,
-                ToDate: $scope.toDate,
+                FromDate: $scope.fromDate.toISOString().split('T')[0],
+                ToDate: $scope.toDate.toISOString().split('T')[0],
                 Status: $scope.status,
                 ServiceName: $scope.serviceName.toString(),
                 ServiceGroup: $scope.serviceGroup.toString()
@@ -378,7 +388,10 @@
         $scope.ok = function () {
             $scope.spinner_manual = true;
             let requestBodyModel = {
-                ServiceName: $scope.serviceName_manual.toString()
+                ServiceName: $scope.serviceName_manual.toString(),
+                ReceivedDate: $scope.jDate.toISOString().split('T')[0],
+                FromDate: $scope.fromDate.toISOString().split('T')[0],
+                ToDate: $scope.toDate.toISOString().split('T')[0],
             }
 
             let Url = '';

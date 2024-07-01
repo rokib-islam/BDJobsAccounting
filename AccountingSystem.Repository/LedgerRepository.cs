@@ -304,6 +304,19 @@ namespace AccountingSystem.Repository
             }
 
         }
+
+        public async Task<List<LedgerViewModel>> GetLedgerName()
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var query = "SELECT * FROM Ledger WHERE MGroup = 'Expense'";
+                var parameters = new { };
+
+                var result = await _db.QueryAsync<LedgerViewModel>(query, parameters);
+                return result.ToList();
+            }
+
+        }
     }
 
 

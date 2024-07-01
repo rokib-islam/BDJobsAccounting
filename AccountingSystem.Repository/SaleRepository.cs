@@ -866,6 +866,27 @@ namespace AccountingSystem.Repository
             }
 
         }
+
+        public async Task<MonetizationPosting> PostSMSAlertApplyLimitSalePostingNew_Manual(string ServiceName, string ReceivedDate, string FromDate, string ToDate)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    var result = (await _db.QueryAsync<MonetizationPosting>("USP_SMSAlert_ApplyLimit_Sale_Postings_JobSeeker", new { ServiceName = ServiceName, ReceivedDate = ReceivedDate, fDate = FromDate, tDate = ToDate },
+                        commandType: CommandType.StoredProcedure, commandTimeout: 180)).FirstOrDefault();
+
+                    return result;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+        }
         public async Task<int> SMSAlertApplyLimitCountForBilling(string ServiceName)
         {
             try

@@ -11,5 +11,8 @@ namespace AccountingSystem.Abstractions.BLL
 
         Task<List<BankInformationModel>> GetBankInformation();
         Task<List<LoadPfPaymentDataResponseModel>> LoadPfPaymentData(LoadPfPaymentDataModel model);
+        Task<List<VatSectionModel>> GetVatSection();
+        Task<List<VatSectionModel>> GetVatRateAsync(int id);
+        Task<string> InsertPaymentModule(PaymentModuleModel model);
     }
 }

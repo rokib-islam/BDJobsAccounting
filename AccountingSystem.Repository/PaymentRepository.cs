@@ -2,6 +2,7 @@
 using AccountingSystem.AppLicationDbContext.AccountingDatabase;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using System.Data;
@@ -165,5 +166,64 @@ namespace AccountingSystem.Repository
             }
 
         }
+
+        public async Task<List<VatSectionModel>> GetVatSection()
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var result = await _db.QueryAsync<VatSectionModel>("SELECT Id, VatSectionName FROM VatSection", new { });
+                return result.ToList();
+            }
+        }
+
+        public async Task<List<VatSectionModel>> GetVatRateAsync(int id)
+        {
+            await using var db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection"));
+            var result = await db.QueryAsync<VatSectionModel>(
+                "SELECT Id, VatSectionName, VatRate FROM VatSection WHERE Id = @id",
+                new { Id = id }
+            );
+            return result.ToList();
+        }
+
+        public async Task<string> InsertPaymentModule(PaymentModuleModel model)
+        {
+            var res = "";
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new DynamicParameters();
+                    parameters.Add("@Date", model.Date);
+                    parameters.Add("@PostingType", model.PostingType);
+                    parameters.Add("@VendorId", model.VendorId);
+                    parameters.Add("@ItemLedgerId", model.ItemLedgerId);
+                    parameters.Add("@PayableLedgerId", model.PayableLedgerId);
+                    parameters.Add("@BillReferenceNo", model.BillReferenceNo);
+                    parameters.Add("@BillAmount", model.BillAmount);
+                    parameters.Add("@VATSectionId", model.VATSectionId);
+                    parameters.Add("@MushokNo", model.MushokNo);
+                    parameters.Add("@MushokDate", model.MushokDate);
+                    parameters.Add("@VATAmount", model.VATAmount);
+                    parameters.Add("@TotalBill", model.TotalBill);
+                    parameters.Add("@Narration", model.Narration);
+                    parameters.Add("@PaymentStatus", model.PaymentStatus);
+                    parameters.Add("@VarifiedById", model.VarifiedById);
+                    parameters.Add("@VarifiedDate", model.VarifiedDate);
+                    parameters.Add("@EntryBy", model.EntryBy);
+                    parameters.Add("@EntryDate", model.EntryDate);
+                    
+
+                    await _db.ExecuteAsync("USP_InsertPaymentModuleInfo", parameters, commandType: CommandType.StoredProcedure);
+                    res = "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+                res = ex.ToString();
+            }
+            return res;
+        }
+
     }
 }

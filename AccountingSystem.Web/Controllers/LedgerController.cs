@@ -211,6 +211,12 @@ namespace AccountingSystem.Web.Controllers
             var result = await _LedgerManager.GetStaffPFIAccountList();
             return Json(result);
         }
+        
+        public async Task<IActionResult> GetLedgerName()
+        {
+            var result = await _LedgerManager.GetLedgerName();
+            return Json(result);
+        }
     }
 
 
