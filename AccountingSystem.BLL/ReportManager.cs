@@ -35,5 +35,10 @@ namespace AccountingSystem.BLL
         {
             return await _repository.LoadVatTaxCollectionData(model);
         }
+
+        public async Task<List<JournalVoucherReport>> GetVoucherReportAsync(int Jid)
+        {
+            return await _repository.GetVoucherReportAsync(Jid);
+        }
     }
 }

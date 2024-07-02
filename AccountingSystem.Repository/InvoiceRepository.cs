@@ -1068,6 +1068,59 @@ namespace AccountingSystem.Repository
 
             }
         }
+
+        public async Task<OnlineInvoiceResponseModel> CreatePaybaleByJobPost(OnlineInvoiceRequestModel parameters)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {
+                    var dynamicParameters = new DynamicParameters();
+                    dynamicParameters.Add("@acc_id", parameters.Acc_Id);
+                    dynamicParameters.Add("@JP_ID", parameters.Jp_Id);
+                    dynamicParameters.Add("@AddType", parameters.AddType);
+                    dynamicParameters.Add("@Regional", parameters.Regional);
+                    dynamicParameters.Add("@BlueCollar", parameters.BlueCollar);
+                    dynamicParameters.Add("@SalesPrice", parameters.SalesPrice);
+                    dynamicParameters.Add("@Tax", parameters.Tax);
+                    dynamicParameters.Add("@SDate", parameters.SDate);
+                    dynamicParameters.Add("@EDate", parameters.EDate);
+                    dynamicParameters.Add("@SalesPersonName", parameters.SalesPersonName);
+                    dynamicParameters.Add("@billingContact", parameters.BillingContact);
+                    dynamicParameters.Add("@Designation", parameters.Designation);
+                    dynamicParameters.Add("@Title", parameters.Title);
+                    dynamicParameters.Add("@companyName", parameters.CompanyName);
+                    dynamicParameters.Add("@address", parameters.Address);
+                    dynamicParameters.Add("@city", parameters.City);
+                    dynamicParameters.Add("@phone", parameters.Phone);
+                    dynamicParameters.Add("@email", parameters.Email);
+                    dynamicParameters.Add("@CP_ID", parameters.Cp_Id);
+                    dynamicParameters.Add("@DistrictID", parameters.DistrictId);
+                    dynamicParameters.Add("@BINNo", parameters.BINNo);
+                    //dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
+                    //dynamicParameters.Add("@PaymentMode", parameters.PaymentMethod);
+                    dynamicParameters.Add("@JType", parameters.JType);
+                    //dynamicParameters.Add("@TDS", parameters.TDS);
+                    //dynamicParameters.Add("@VDS", parameters.VDS);
+                    dynamicParameters.Add("@JDate", parameters.jDate);
+                    //dynamicParameters.Add("@Q_job", parameters.Q_job);
+
+
+                    var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
+                        "USP_OnlineInvoice_without_CashCollection",
+                        dynamicParameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return invoices.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions accordingly
+                throw new Exception("Error retrieving invoices.", ex);
+            }
+        }
+
     }
 
 }

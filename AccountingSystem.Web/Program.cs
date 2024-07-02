@@ -103,7 +103,7 @@ using (var scope = app.Services.CreateScope())
 {
     var saleController = scope.ServiceProvider.GetRequiredService<SaleController>();
     saleController.DownloadCandidateMonetizationJob();
-    // saleController.SalesPostingMonetizationJobs();
+    saleController.SalesPostingMonetizationJobs();
 
 }
 

@@ -34,6 +34,7 @@ namespace AccountingSystem.Abstractions.Repository
         Task<List<LoadBouncedCheckDataModel>> LoadBouncedCheckData(LoadBouncedCheckDataModel model);
         Task<string> UpdateBouncedChequeData(UpdateBouncedChequeDataModel data);
         Task<List<LoadbBouncedCheckDataModel>> LoadbBouncedCheckData(string invoiceNo);
+        Task<OnlineInvoiceResponseModel> CreatePaybaleByJobPost(OnlineInvoiceRequestModel parameters);
 
     }
 
