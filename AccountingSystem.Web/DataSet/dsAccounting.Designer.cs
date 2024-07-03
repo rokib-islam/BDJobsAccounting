@@ -32,6 +32,8 @@ namespace AccountingSystem.Web.DataSet {
         
         private USP_LIST_OF_LABEL_RPTDataTable tableUSP_LIST_OF_LABEL_RPT;
         
+        private USP_JOURNAL_VOUCHER_RPTDataTable tableUSP_JOURNAL_VOUCHER_RPT;
+        
         private global::System.Data.SchemaSerializationMode _schemaSerializationMode = global::System.Data.SchemaSerializationMode.IncludeSchema;
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -71,6 +73,9 @@ namespace AccountingSystem.Web.DataSet {
                 }
                 if ((ds.Tables["USP_LIST_OF_LABEL_RPT"] != null)) {
                     base.Tables.Add(new USP_LIST_OF_LABEL_RPTDataTable(ds.Tables["USP_LIST_OF_LABEL_RPT"]));
+                }
+                if ((ds.Tables["USP_JOURNAL_VOUCHER_RPT"] != null)) {
+                    base.Tables.Add(new USP_JOURNAL_VOUCHER_RPTDataTable(ds.Tables["USP_JOURNAL_VOUCHER_RPT"]));
                 }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
@@ -127,6 +132,16 @@ namespace AccountingSystem.Web.DataSet {
         public USP_LIST_OF_LABEL_RPTDataTable USP_LIST_OF_LABEL_RPT {
             get {
                 return this.tableUSP_LIST_OF_LABEL_RPT;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        [global::System.ComponentModel.Browsable(false)]
+        [global::System.ComponentModel.DesignerSerializationVisibility(global::System.ComponentModel.DesignerSerializationVisibility.Content)]
+        public USP_JOURNAL_VOUCHER_RPTDataTable USP_JOURNAL_VOUCHER_RPT {
+            get {
+                return this.tableUSP_JOURNAL_VOUCHER_RPT;
             }
         }
         
@@ -209,6 +224,9 @@ namespace AccountingSystem.Web.DataSet {
                 if ((ds.Tables["USP_LIST_OF_LABEL_RPT"] != null)) {
                     base.Tables.Add(new USP_LIST_OF_LABEL_RPTDataTable(ds.Tables["USP_LIST_OF_LABEL_RPT"]));
                 }
+                if ((ds.Tables["USP_JOURNAL_VOUCHER_RPT"] != null)) {
+                    base.Tables.Add(new USP_JOURNAL_VOUCHER_RPTDataTable(ds.Tables["USP_JOURNAL_VOUCHER_RPT"]));
+                }
                 this.DataSetName = ds.DataSetName;
                 this.Prefix = ds.Prefix;
                 this.Namespace = ds.Namespace;
@@ -266,6 +284,12 @@ namespace AccountingSystem.Web.DataSet {
                     this.tableUSP_LIST_OF_LABEL_RPT.InitVars();
                 }
             }
+            this.tableUSP_JOURNAL_VOUCHER_RPT = ((USP_JOURNAL_VOUCHER_RPTDataTable)(base.Tables["USP_JOURNAL_VOUCHER_RPT"]));
+            if ((initTable == true)) {
+                if ((this.tableUSP_JOURNAL_VOUCHER_RPT != null)) {
+                    this.tableUSP_JOURNAL_VOUCHER_RPT.InitVars();
+                }
+            }
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -284,6 +308,8 @@ namespace AccountingSystem.Web.DataSet {
             base.Tables.Add(this.tableUSP_TRIAL_BALANCE_RPT);
             this.tableUSP_LIST_OF_LABEL_RPT = new USP_LIST_OF_LABEL_RPTDataTable();
             base.Tables.Add(this.tableUSP_LIST_OF_LABEL_RPT);
+            this.tableUSP_JOURNAL_VOUCHER_RPT = new USP_JOURNAL_VOUCHER_RPTDataTable();
+            base.Tables.Add(this.tableUSP_JOURNAL_VOUCHER_RPT);
         }
         
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
@@ -307,6 +333,12 @@ namespace AccountingSystem.Web.DataSet {
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         private bool ShouldSerializeUSP_LIST_OF_LABEL_RPT() {
+            return false;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        private bool ShouldSerializeUSP_JOURNAL_VOUCHER_RPT() {
             return false;
         }
         
@@ -376,6 +408,9 @@ namespace AccountingSystem.Web.DataSet {
         
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
         public delegate void USP_LIST_OF_LABEL_RPTRowChangeEventHandler(object sender, USP_LIST_OF_LABEL_RPTRowChangeEvent e);
+        
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public delegate void USP_JOURNAL_VOUCHER_RPTRowChangeEventHandler(object sender, USP_JOURNAL_VOUCHER_RPTRowChangeEvent e);
         
         /// <summary>
         ///Represents the strongly named DataTable class.
@@ -2252,6 +2287,422 @@ namespace AccountingSystem.Web.DataSet {
         }
         
         /// <summary>
+        ///Represents the strongly named DataTable class.
+        ///</summary>
+        [global::System.Serializable()]
+        [global::System.Xml.Serialization.XmlSchemaProviderAttribute("GetTypedTableSchema")]
+        public partial class USP_JOURNAL_VOUCHER_RPTDataTable : global::System.Data.TypedTableBase<USP_JOURNAL_VOUCHER_RPTRow> {
+            
+            private global::System.Data.DataColumn columnsbname;
+            
+            private global::System.Data.DataColumn columndescription;
+            
+            private global::System.Data.DataColumn columndebt;
+            
+            private global::System.Data.DataColumn columncredit;
+            
+            private global::System.Data.DataColumn columnjdate;
+            
+            private global::System.Data.DataColumn columnPostedBy;
+            
+            private global::System.Data.DataColumn columndes1;
+            
+            private global::System.Data.DataColumn columnPostDate;
+            
+            private global::System.Data.DataColumn columnApprBy;
+            
+            private global::System.Data.DataColumn columndes2;
+            
+            private global::System.Data.DataColumn columnApprovalDate;
+            
+            private global::System.Data.DataColumn columnVoucherNo;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public USP_JOURNAL_VOUCHER_RPTDataTable() {
+                this.TableName = "USP_JOURNAL_VOUCHER_RPT";
+                this.BeginInit();
+                this.InitClass();
+                this.EndInit();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal USP_JOURNAL_VOUCHER_RPTDataTable(global::System.Data.DataTable table) {
+                this.TableName = table.TableName;
+                if ((table.CaseSensitive != table.DataSet.CaseSensitive)) {
+                    this.CaseSensitive = table.CaseSensitive;
+                }
+                if ((table.Locale.ToString() != table.DataSet.Locale.ToString())) {
+                    this.Locale = table.Locale;
+                }
+                if ((table.Namespace != table.DataSet.Namespace)) {
+                    this.Namespace = table.Namespace;
+                }
+                this.Prefix = table.Prefix;
+                this.MinimumCapacity = table.MinimumCapacity;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected USP_JOURNAL_VOUCHER_RPTDataTable(global::System.Runtime.Serialization.SerializationInfo info, global::System.Runtime.Serialization.StreamingContext context) : 
+                    base(info, context) {
+                this.InitVars();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn sbnameColumn {
+                get {
+                    return this.columnsbname;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn descriptionColumn {
+                get {
+                    return this.columndescription;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn debtColumn {
+                get {
+                    return this.columndebt;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn creditColumn {
+                get {
+                    return this.columncredit;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn jdateColumn {
+                get {
+                    return this.columnjdate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PostedByColumn {
+                get {
+                    return this.columnPostedBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn des1Column {
+                get {
+                    return this.columndes1;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn PostDateColumn {
+                get {
+                    return this.columnPostDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ApprByColumn {
+                get {
+                    return this.columnApprBy;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn des2Column {
+                get {
+                    return this.columndes2;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn ApprovalDateColumn {
+                get {
+                    return this.columnApprovalDate;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataColumn VoucherNoColumn {
+                get {
+                    return this.columnVoucherNo;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            [global::System.ComponentModel.Browsable(false)]
+            public int Count {
+                get {
+                    return this.Rows.Count;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public USP_JOURNAL_VOUCHER_RPTRow this[int index] {
+                get {
+                    return ((USP_JOURNAL_VOUCHER_RPTRow)(this.Rows[index]));
+                }
+            }
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event USP_JOURNAL_VOUCHER_RPTRowChangeEventHandler USP_JOURNAL_VOUCHER_RPTRowChanging;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event USP_JOURNAL_VOUCHER_RPTRowChangeEventHandler USP_JOURNAL_VOUCHER_RPTRowChanged;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event USP_JOURNAL_VOUCHER_RPTRowChangeEventHandler USP_JOURNAL_VOUCHER_RPTRowDeleting;
+            
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public event USP_JOURNAL_VOUCHER_RPTRowChangeEventHandler USP_JOURNAL_VOUCHER_RPTRowDeleted;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void AddUSP_JOURNAL_VOUCHER_RPTRow(USP_JOURNAL_VOUCHER_RPTRow row) {
+                this.Rows.Add(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public USP_JOURNAL_VOUCHER_RPTRow AddUSP_JOURNAL_VOUCHER_RPTRow(string sbname, string description, double debt, double credit, System.DateTime jdate, string PostedBy, string des1, System.DateTime PostDate, string ApprBy, string des2, System.DateTime ApprovalDate, string VoucherNo) {
+                USP_JOURNAL_VOUCHER_RPTRow rowUSP_JOURNAL_VOUCHER_RPTRow = ((USP_JOURNAL_VOUCHER_RPTRow)(this.NewRow()));
+                object[] columnValuesArray = new object[] {
+                        sbname,
+                        description,
+                        debt,
+                        credit,
+                        jdate,
+                        PostedBy,
+                        des1,
+                        PostDate,
+                        ApprBy,
+                        des2,
+                        ApprovalDate,
+                        VoucherNo};
+                rowUSP_JOURNAL_VOUCHER_RPTRow.ItemArray = columnValuesArray;
+                this.Rows.Add(rowUSP_JOURNAL_VOUCHER_RPTRow);
+                return rowUSP_JOURNAL_VOUCHER_RPTRow;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public override global::System.Data.DataTable Clone() {
+                USP_JOURNAL_VOUCHER_RPTDataTable cln = ((USP_JOURNAL_VOUCHER_RPTDataTable)(base.Clone()));
+                cln.InitVars();
+                return cln;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataTable CreateInstance() {
+                return new USP_JOURNAL_VOUCHER_RPTDataTable();
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal void InitVars() {
+                this.columnsbname = base.Columns["sbname"];
+                this.columndescription = base.Columns["description"];
+                this.columndebt = base.Columns["debt"];
+                this.columncredit = base.Columns["credit"];
+                this.columnjdate = base.Columns["jdate"];
+                this.columnPostedBy = base.Columns["PostedBy"];
+                this.columndes1 = base.Columns["des1"];
+                this.columnPostDate = base.Columns["PostDate"];
+                this.columnApprBy = base.Columns["ApprBy"];
+                this.columndes2 = base.Columns["des2"];
+                this.columnApprovalDate = base.Columns["ApprovalDate"];
+                this.columnVoucherNo = base.Columns["VoucherNo"];
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            private void InitClass() {
+                this.columnsbname = new global::System.Data.DataColumn("sbname", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnsbname);
+                this.columndescription = new global::System.Data.DataColumn("description", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndescription);
+                this.columndebt = new global::System.Data.DataColumn("debt", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndebt);
+                this.columncredit = new global::System.Data.DataColumn("credit", typeof(double), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columncredit);
+                this.columnjdate = new global::System.Data.DataColumn("jdate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnjdate);
+                this.columnPostedBy = new global::System.Data.DataColumn("PostedBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPostedBy);
+                this.columndes1 = new global::System.Data.DataColumn("des1", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndes1);
+                this.columnPostDate = new global::System.Data.DataColumn("PostDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnPostDate);
+                this.columnApprBy = new global::System.Data.DataColumn("ApprBy", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnApprBy);
+                this.columndes2 = new global::System.Data.DataColumn("des2", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columndes2);
+                this.columnApprovalDate = new global::System.Data.DataColumn("ApprovalDate", typeof(global::System.DateTime), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnApprovalDate);
+                this.columnVoucherNo = new global::System.Data.DataColumn("VoucherNo", typeof(string), null, global::System.Data.MappingType.Element);
+                base.Columns.Add(this.columnVoucherNo);
+                this.columnsbname.AllowDBNull = false;
+                this.columnsbname.MaxLength = 50;
+                this.columndescription.MaxLength = 2500;
+                this.columndebt.AllowDBNull = false;
+                this.columncredit.AllowDBNull = false;
+                this.columnjdate.AllowDBNull = false;
+                this.columnPostedBy.AllowDBNull = false;
+                this.columnPostedBy.MaxLength = 50;
+                this.columndes1.MaxLength = 50;
+                this.columnPostDate.AllowDBNull = false;
+                this.columnApprBy.AllowDBNull = false;
+                this.columnApprBy.MaxLength = 50;
+                this.columndes2.MaxLength = 50;
+                this.columnVoucherNo.AllowDBNull = false;
+                this.columnVoucherNo.MaxLength = 15;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public USP_JOURNAL_VOUCHER_RPTRow NewUSP_JOURNAL_VOUCHER_RPTRow() {
+                return ((USP_JOURNAL_VOUCHER_RPTRow)(this.NewRow()));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Data.DataRow NewRowFromBuilder(global::System.Data.DataRowBuilder builder) {
+                return new USP_JOURNAL_VOUCHER_RPTRow(builder);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override global::System.Type GetRowType() {
+                return typeof(USP_JOURNAL_VOUCHER_RPTRow);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanged(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanged(e);
+                if ((this.USP_JOURNAL_VOUCHER_RPTRowChanged != null)) {
+                    this.USP_JOURNAL_VOUCHER_RPTRowChanged(this, new USP_JOURNAL_VOUCHER_RPTRowChangeEvent(((USP_JOURNAL_VOUCHER_RPTRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowChanging(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowChanging(e);
+                if ((this.USP_JOURNAL_VOUCHER_RPTRowChanging != null)) {
+                    this.USP_JOURNAL_VOUCHER_RPTRowChanging(this, new USP_JOURNAL_VOUCHER_RPTRowChangeEvent(((USP_JOURNAL_VOUCHER_RPTRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleted(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleted(e);
+                if ((this.USP_JOURNAL_VOUCHER_RPTRowDeleted != null)) {
+                    this.USP_JOURNAL_VOUCHER_RPTRowDeleted(this, new USP_JOURNAL_VOUCHER_RPTRowChangeEvent(((USP_JOURNAL_VOUCHER_RPTRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            protected override void OnRowDeleting(global::System.Data.DataRowChangeEventArgs e) {
+                base.OnRowDeleting(e);
+                if ((this.USP_JOURNAL_VOUCHER_RPTRowDeleting != null)) {
+                    this.USP_JOURNAL_VOUCHER_RPTRowDeleting(this, new USP_JOURNAL_VOUCHER_RPTRowChangeEvent(((USP_JOURNAL_VOUCHER_RPTRow)(e.Row)), e.Action));
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void RemoveUSP_JOURNAL_VOUCHER_RPTRow(USP_JOURNAL_VOUCHER_RPTRow row) {
+                this.Rows.Remove(row);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public static global::System.Xml.Schema.XmlSchemaComplexType GetTypedTableSchema(global::System.Xml.Schema.XmlSchemaSet xs) {
+                global::System.Xml.Schema.XmlSchemaComplexType type = new global::System.Xml.Schema.XmlSchemaComplexType();
+                global::System.Xml.Schema.XmlSchemaSequence sequence = new global::System.Xml.Schema.XmlSchemaSequence();
+                dsAccounting ds = new dsAccounting();
+                global::System.Xml.Schema.XmlSchemaAny any1 = new global::System.Xml.Schema.XmlSchemaAny();
+                any1.Namespace = "http://www.w3.org/2001/XMLSchema";
+                any1.MinOccurs = new decimal(0);
+                any1.MaxOccurs = decimal.MaxValue;
+                any1.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any1);
+                global::System.Xml.Schema.XmlSchemaAny any2 = new global::System.Xml.Schema.XmlSchemaAny();
+                any2.Namespace = "urn:schemas-microsoft-com:xml-diffgram-v1";
+                any2.MinOccurs = new decimal(1);
+                any2.ProcessContents = global::System.Xml.Schema.XmlSchemaContentProcessing.Lax;
+                sequence.Items.Add(any2);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute1 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute1.Name = "namespace";
+                attribute1.FixedValue = ds.Namespace;
+                type.Attributes.Add(attribute1);
+                global::System.Xml.Schema.XmlSchemaAttribute attribute2 = new global::System.Xml.Schema.XmlSchemaAttribute();
+                attribute2.Name = "tableTypeName";
+                attribute2.FixedValue = "USP_JOURNAL_VOUCHER_RPTDataTable";
+                type.Attributes.Add(attribute2);
+                type.Particle = sequence;
+                global::System.Xml.Schema.XmlSchema dsSchema = ds.GetSchemaSerializable();
+                if (xs.Contains(dsSchema.TargetNamespace)) {
+                    global::System.IO.MemoryStream s1 = new global::System.IO.MemoryStream();
+                    global::System.IO.MemoryStream s2 = new global::System.IO.MemoryStream();
+                    try {
+                        global::System.Xml.Schema.XmlSchema schema = null;
+                        dsSchema.Write(s1);
+                        for (global::System.Collections.IEnumerator schemas = xs.Schemas(dsSchema.TargetNamespace).GetEnumerator(); schemas.MoveNext(); ) {
+                            schema = ((global::System.Xml.Schema.XmlSchema)(schemas.Current));
+                            s2.SetLength(0);
+                            schema.Write(s2);
+                            if ((s1.Length == s2.Length)) {
+                                s1.Position = 0;
+                                s2.Position = 0;
+                                for (; ((s1.Position != s1.Length) 
+                                            && (s1.ReadByte() == s2.ReadByte())); ) {
+                                    ;
+                                }
+                                if ((s1.Position == s1.Length)) {
+                                    return type;
+                                }
+                            }
+                        }
+                    }
+                    finally {
+                        if ((s1 != null)) {
+                            s1.Close();
+                        }
+                        if ((s2 != null)) {
+                            s2.Close();
+                        }
+                    }
+                }
+                xs.Add(dsSchema);
+                return type;
+            }
+        }
+        
+        /// <summary>
         ///Represents strongly named DataRow class.
         ///</summary>
         public partial class USP_Show_InvoiceRow : global::System.Data.DataRow {
@@ -3784,6 +4235,222 @@ namespace AccountingSystem.Web.DataSet {
         }
         
         /// <summary>
+        ///Represents strongly named DataRow class.
+        ///</summary>
+        public partial class USP_JOURNAL_VOUCHER_RPTRow : global::System.Data.DataRow {
+            
+            private USP_JOURNAL_VOUCHER_RPTDataTable tableUSP_JOURNAL_VOUCHER_RPT;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            internal USP_JOURNAL_VOUCHER_RPTRow(global::System.Data.DataRowBuilder rb) : 
+                    base(rb) {
+                this.tableUSP_JOURNAL_VOUCHER_RPT = ((USP_JOURNAL_VOUCHER_RPTDataTable)(this.Table));
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string sbname {
+                get {
+                    return ((string)(this[this.tableUSP_JOURNAL_VOUCHER_RPT.sbnameColumn]));
+                }
+                set {
+                    this[this.tableUSP_JOURNAL_VOUCHER_RPT.sbnameColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string description {
+                get {
+                    try {
+                        return ((string)(this[this.tableUSP_JOURNAL_VOUCHER_RPT.descriptionColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'description\' in table \'USP_JOURNAL_VOUCHER_RPT\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableUSP_JOURNAL_VOUCHER_RPT.descriptionColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public double debt {
+                get {
+                    return ((double)(this[this.tableUSP_JOURNAL_VOUCHER_RPT.debtColumn]));
+                }
+                set {
+                    this[this.tableUSP_JOURNAL_VOUCHER_RPT.debtColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public double credit {
+                get {
+                    return ((double)(this[this.tableUSP_JOURNAL_VOUCHER_RPT.creditColumn]));
+                }
+                set {
+                    this[this.tableUSP_JOURNAL_VOUCHER_RPT.creditColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime jdate {
+                get {
+                    return ((global::System.DateTime)(this[this.tableUSP_JOURNAL_VOUCHER_RPT.jdateColumn]));
+                }
+                set {
+                    this[this.tableUSP_JOURNAL_VOUCHER_RPT.jdateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string PostedBy {
+                get {
+                    return ((string)(this[this.tableUSP_JOURNAL_VOUCHER_RPT.PostedByColumn]));
+                }
+                set {
+                    this[this.tableUSP_JOURNAL_VOUCHER_RPT.PostedByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string des1 {
+                get {
+                    try {
+                        return ((string)(this[this.tableUSP_JOURNAL_VOUCHER_RPT.des1Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'des1\' in table \'USP_JOURNAL_VOUCHER_RPT\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableUSP_JOURNAL_VOUCHER_RPT.des1Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime PostDate {
+                get {
+                    return ((global::System.DateTime)(this[this.tableUSP_JOURNAL_VOUCHER_RPT.PostDateColumn]));
+                }
+                set {
+                    this[this.tableUSP_JOURNAL_VOUCHER_RPT.PostDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string ApprBy {
+                get {
+                    return ((string)(this[this.tableUSP_JOURNAL_VOUCHER_RPT.ApprByColumn]));
+                }
+                set {
+                    this[this.tableUSP_JOURNAL_VOUCHER_RPT.ApprByColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string des2 {
+                get {
+                    try {
+                        return ((string)(this[this.tableUSP_JOURNAL_VOUCHER_RPT.des2Column]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'des2\' in table \'USP_JOURNAL_VOUCHER_RPT\' is DBNull.", e);
+                    }
+                }
+                set {
+                    this[this.tableUSP_JOURNAL_VOUCHER_RPT.des2Column] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public System.DateTime ApprovalDate {
+                get {
+                    try {
+                        return ((global::System.DateTime)(this[this.tableUSP_JOURNAL_VOUCHER_RPT.ApprovalDateColumn]));
+                    }
+                    catch (global::System.InvalidCastException e) {
+                        throw new global::System.Data.StrongTypingException("The value for column \'ApprovalDate\' in table \'USP_JOURNAL_VOUCHER_RPT\' is DBNull." +
+                                "", e);
+                    }
+                }
+                set {
+                    this[this.tableUSP_JOURNAL_VOUCHER_RPT.ApprovalDateColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public string VoucherNo {
+                get {
+                    return ((string)(this[this.tableUSP_JOURNAL_VOUCHER_RPT.VoucherNoColumn]));
+                }
+                set {
+                    this[this.tableUSP_JOURNAL_VOUCHER_RPT.VoucherNoColumn] = value;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsdescriptionNull() {
+                return this.IsNull(this.tableUSP_JOURNAL_VOUCHER_RPT.descriptionColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetdescriptionNull() {
+                this[this.tableUSP_JOURNAL_VOUCHER_RPT.descriptionColumn] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isdes1Null() {
+                return this.IsNull(this.tableUSP_JOURNAL_VOUCHER_RPT.des1Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setdes1Null() {
+                this[this.tableUSP_JOURNAL_VOUCHER_RPT.des1Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool Isdes2Null() {
+                return this.IsNull(this.tableUSP_JOURNAL_VOUCHER_RPT.des2Column);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void Setdes2Null() {
+                this[this.tableUSP_JOURNAL_VOUCHER_RPT.des2Column] = global::System.Convert.DBNull;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public bool IsApprovalDateNull() {
+                return this.IsNull(this.tableUSP_JOURNAL_VOUCHER_RPT.ApprovalDateColumn);
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public void SetApprovalDateNull() {
+                this[this.tableUSP_JOURNAL_VOUCHER_RPT.ApprovalDateColumn] = global::System.Convert.DBNull;
+            }
+        }
+        
+        /// <summary>
         ///Row event argument class
         ///</summary>
         [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
@@ -3905,6 +4572,40 @@ namespace AccountingSystem.Web.DataSet {
             [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
             [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
             public USP_LIST_OF_LABEL_RPTRow Row {
+                get {
+                    return this.eventRow;
+                }
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public global::System.Data.DataRowAction Action {
+                get {
+                    return this.eventAction;
+                }
+            }
+        }
+        
+        /// <summary>
+        ///Row event argument class
+        ///</summary>
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public class USP_JOURNAL_VOUCHER_RPTRowChangeEvent : global::System.EventArgs {
+            
+            private USP_JOURNAL_VOUCHER_RPTRow eventRow;
+            
+            private global::System.Data.DataRowAction eventAction;
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public USP_JOURNAL_VOUCHER_RPTRowChangeEvent(USP_JOURNAL_VOUCHER_RPTRow row, global::System.Data.DataRowAction action) {
+                this.eventRow = row;
+                this.eventAction = action;
+            }
+            
+            [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+            [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+            public USP_JOURNAL_VOUCHER_RPTRow Row {
                 get {
                     return this.eventRow;
                 }
@@ -4848,6 +5549,214 @@ namespace AccountingSystem.Web.DataSet.dsAccountingTableAdapters {
                 this.Adapter.SelectCommand.Parameters[2].Value = ((string)(listIds));
             }
             dsAccounting.USP_LIST_OF_LABEL_RPTDataTable dataTable = new dsAccounting.USP_LIST_OF_LABEL_RPTDataTable();
+            this.Adapter.Fill(dataTable);
+            return dataTable;
+        }
+    }
+    
+    /// <summary>
+    ///Represents the connection and commands used to retrieve and save data.
+    ///</summary>
+    [global::System.ComponentModel.DesignerCategoryAttribute("code")]
+    [global::System.ComponentModel.ToolboxItem(true)]
+    [global::System.ComponentModel.DataObjectAttribute(true)]
+    [global::System.ComponentModel.DesignerAttribute("Microsoft.VSDesigner.DataSource.Design.TableAdapterDesigner, Microsoft.VSDesigner" +
+        ", Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a")]
+    [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+    public partial class USP_JOURNAL_VOUCHER_RPTTableAdapter : global::System.ComponentModel.Component {
+        
+        private global::Microsoft.Data.SqlClient.SqlDataAdapter _adapter;
+        
+        private global::Microsoft.Data.SqlClient.SqlConnection _connection;
+        
+        private global::Microsoft.Data.SqlClient.SqlTransaction _transaction;
+        
+        private global::Microsoft.Data.SqlClient.SqlCommand[] _commandCollection;
+        
+        private bool _clearBeforeFill;
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public USP_JOURNAL_VOUCHER_RPTTableAdapter() {
+            this.ClearBeforeFill = true;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        protected internal global::Microsoft.Data.SqlClient.SqlDataAdapter Adapter {
+            get {
+                if ((this._adapter == null)) {
+                    this.InitAdapter();
+                }
+                return this._adapter;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        internal global::Microsoft.Data.SqlClient.SqlConnection Connection {
+            get {
+                if ((this._connection == null)) {
+                    this.InitConnection();
+                }
+                return this._connection;
+            }
+            set {
+                this._connection = value;
+                if ((this.Adapter.InsertCommand != null)) {
+                    this.Adapter.InsertCommand.Connection = value;
+                }
+                if ((this.Adapter.DeleteCommand != null)) {
+                    this.Adapter.DeleteCommand.Connection = value;
+                }
+                if ((this.Adapter.UpdateCommand != null)) {
+                    this.Adapter.UpdateCommand.Connection = value;
+                }
+                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
+                    if ((this.CommandCollection[i] != null)) {
+                        ((global::Microsoft.Data.SqlClient.SqlCommand)(this.CommandCollection[i])).Connection = value;
+                    }
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        internal global::Microsoft.Data.SqlClient.SqlTransaction Transaction {
+            get {
+                return this._transaction;
+            }
+            set {
+                this._transaction = value;
+                for (int i = 0; (i < this.CommandCollection.Length); i = (i + 1)) {
+                    this.CommandCollection[i].Transaction = this._transaction;
+                }
+                if (((this.Adapter != null) 
+                            && (this.Adapter.DeleteCommand != null))) {
+                    this.Adapter.DeleteCommand.Transaction = this._transaction;
+                }
+                if (((this.Adapter != null) 
+                            && (this.Adapter.InsertCommand != null))) {
+                    this.Adapter.InsertCommand.Transaction = this._transaction;
+                }
+                if (((this.Adapter != null) 
+                            && (this.Adapter.UpdateCommand != null))) {
+                    this.Adapter.UpdateCommand.Transaction = this._transaction;
+                }
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        protected global::Microsoft.Data.SqlClient.SqlCommand[] CommandCollection {
+            get {
+                if ((this._commandCollection == null)) {
+                    this.InitCommandCollection();
+                }
+                return this._commandCollection;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        public bool ClearBeforeFill {
+            get {
+                return this._clearBeforeFill;
+            }
+            set {
+                this._clearBeforeFill = value;
+            }
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        private void InitAdapter() {
+            this._adapter = new global::Microsoft.Data.SqlClient.SqlDataAdapter();
+            global::System.Data.Common.DataTableMapping tableMapping = new global::System.Data.Common.DataTableMapping();
+            tableMapping.SourceTable = "Table";
+            tableMapping.DataSetTable = "USP_JOURNAL_VOUCHER_RPT";
+            tableMapping.ColumnMappings.Add("sbname", "sbname");
+            tableMapping.ColumnMappings.Add("description", "description");
+            tableMapping.ColumnMappings.Add("debt", "debt");
+            tableMapping.ColumnMappings.Add("credit", "credit");
+            tableMapping.ColumnMappings.Add("jdate", "jdate");
+            tableMapping.ColumnMappings.Add("PostedBy", "PostedBy");
+            tableMapping.ColumnMappings.Add("des1", "des1");
+            tableMapping.ColumnMappings.Add("PostDate", "PostDate");
+            tableMapping.ColumnMappings.Add("ApprBy", "ApprBy");
+            tableMapping.ColumnMappings.Add("des2", "des2");
+            tableMapping.ColumnMappings.Add("ApprovalDate", "ApprovalDate");
+            tableMapping.ColumnMappings.Add("VoucherNo", "VoucherNo");
+            this._adapter.TableMappings.Add(tableMapping);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        private void InitConnection() {
+            this._connection = new global::Microsoft.Data.SqlClient.SqlConnection();
+            this._connection.ConnectionString = "Data Source=34.126.156.95;Initial Catalog=Accounting;Persist Security Info=True;U" +
+                "ser ID=buAccounting;TrustServerCertificate=True";
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        private void InitCommandCollection() {
+            this._commandCollection = new global::Microsoft.Data.SqlClient.SqlCommand[1];
+            this._commandCollection[0] = new global::Microsoft.Data.SqlClient.SqlCommand();
+            this._commandCollection[0].Connection = this.Connection;
+            this._commandCollection[0].CommandText = "dbo.USP_JOURNAL_VOUCHER_RPT";
+            this._commandCollection[0].CommandType = global::System.Data.CommandType.StoredProcedure;
+            global::Microsoft.Data.SqlClient.SqlParameter param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@RETURN_VALUE";
+            param.DbType = global::System.Data.DbType.Int32;
+            param.SqlDbType = global::System.Data.SqlDbType.Int;
+            param.Size = 4;
+            param.Direction = global::System.Data.ParameterDirection.ReturnValue;
+            param.IsNullable = true;
+            param.SourceColumn = null;
+            this._commandCollection[0].Parameters.Add(param);
+            param = new global::Microsoft.Data.SqlClient.SqlParameter();
+            param.ParameterName = "@JID";
+            param.DbType = global::System.Data.DbType.Int32;
+            param.SqlDbType = global::System.Data.SqlDbType.Int;
+            param.Size = 4;
+            param.IsNullable = true;
+            param.SourceColumn = null;
+            this._commandCollection[0].Parameters.Add(param);
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Fill, true)]
+        public virtual int Fill(dsAccounting.USP_JOURNAL_VOUCHER_RPTDataTable dataTable, global::System.Nullable<int> JID) {
+            this.Adapter.SelectCommand = this.CommandCollection[0];
+            if ((JID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(JID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            if ((this.ClearBeforeFill == true)) {
+                dataTable.Clear();
+            }
+            int returnValue = this.Adapter.Fill(dataTable);
+            return returnValue;
+        }
+        
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Data.Design.TypedDataSetGenerator", "17.0.0.0")]
+        [global::System.ComponentModel.Design.HelpKeywordAttribute("vs.data.TableAdapter")]
+        [global::System.ComponentModel.DataObjectMethodAttribute(global::System.ComponentModel.DataObjectMethodType.Select, true)]
+        public virtual dsAccounting.USP_JOURNAL_VOUCHER_RPTDataTable GetData(global::System.Nullable<int> JID) {
+            this.Adapter.SelectCommand = this.CommandCollection[0];
+            if ((JID.HasValue == true)) {
+                this.Adapter.SelectCommand.Parameters[1].Value = ((int)(JID.Value));
+            }
+            else {
+                this.Adapter.SelectCommand.Parameters[1].Value = global::System.DBNull.Value;
+            }
+            dsAccounting.USP_JOURNAL_VOUCHER_RPTDataTable dataTable = new dsAccounting.USP_JOURNAL_VOUCHER_RPTDataTable();
             this.Adapter.Fill(dataTable);
             return dataTable;
         }

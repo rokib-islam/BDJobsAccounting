@@ -13,6 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <None Remove="Reports\rptJournalVoucherReport.rdlc" />
     <None Remove="Reports\rptLabelPrevire.rdlc" />
     <None Remove="Reports\rptShowChallanForMail.rdlc" />
     <None Remove="Reports\rptTrailBalance.rdlc" />
@@ -20,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Reports\rptJournalVoucherReport.rdlc" />
     <EmbeddedResource Include="Reports\rptLabelPrevire.rdlc" />
     <EmbeddedResource Include="Reports\rptShowChallanForMail.rdlc" />
     <EmbeddedResource Include="Reports\rptTrailBalance.rdlc" />
