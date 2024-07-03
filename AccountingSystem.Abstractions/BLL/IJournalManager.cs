@@ -12,5 +12,8 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<InvoiceViewModel>> GetVoucherListAsync(int year, int month);
 
         Task<object> GetJournalsForTrialBalance(string pageNo, string pageSize, string tno, string fromDate, string endDate);
+        Task<int> GetMaxJournalId();
+        Task<string> SaveJournalsAsync(List<JouralView> journals);
+        Task<string> MakeJournalVoucherAsync(int jId, string postDate);
     }
 }
