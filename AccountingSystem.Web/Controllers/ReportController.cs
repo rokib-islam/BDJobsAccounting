@@ -713,7 +713,7 @@ namespace AccountingSystem.Web.Controllers
             }
         }
 
-        public async Task<IActionResult> ShowJournalVoucher(int Jid, string format, int isColorPad)
+        public async Task<IActionResult> ShowJournalVoucher(int Jid, string format)
         {
             try
             {

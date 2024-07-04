@@ -132,7 +132,7 @@ namespace AccountingSystem.Repository
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
 
-                    var sqlQuery = "USP_JOURNAL_VOUCHER_RPT @JID";
+                    var sqlQuery = "USP_JOURNAL_VOUCHER_RPT";
                     var parameters = new { JID = Jid };
 
                     var result = await _db.QueryAsync<JournalVoucherReport>(sqlQuery, parameters, commandType: CommandType.StoredProcedure);

@@ -3,6 +3,7 @@ using AccountingSystem.Models.AccountViewModels;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using System.Security.Cryptography;
 
 namespace AccountingSystem.Web.Controllers
 {
@@ -55,6 +56,40 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(result);
         }
+
+        public IActionResult MakeJournal()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> GetMaxJournalId()
+        {
+            var result = await _journalManager.GetMaxJournalId();
+
+            return Json(result);
+        }
+
+
+
+        public async Task<IActionResult> SaveJournalUpdateLedgerMakeVoucher([FromBody] List<JouralView> journals)
+        {
+            var isSuccess = true;
+            await _journalManager.SaveJournalsAsync(journals);
+            await _journalManager.MakeJournalVoucherAsync(journals[0].jid, journals[0].PostDate.ToString());
+
+            return Json(isSuccess);
+        }
+        //public async Task<IActionResult> MakeJournalVoucherAsync(int jId, string postDate)
+        //{
+        //    var result = await _journalManager.MakeJournalVoucherAsync(jId, postDate);
+
+        //    return Json(isSuccess);
+        //}
 
     }
 }

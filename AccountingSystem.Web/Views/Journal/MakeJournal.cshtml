@@ -1,0 +1,325 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "MakeJournal";
+
+    var userId = Context.Session.GetInt32("UserID");
+    var accessRight = Context.Session.GetString("AccessRight");
+
+    var accessRights = new string[0];
+
+    if (string.IsNullOrEmpty(accessRight))
+    {
+                                <script type="text/javascript">
+                                    window.location.href = '@Url.Action("Index", "Home")';
+                                </script>
+    }
+    else
+    {
+        accessRights = accessRight.Split(',');
+    }
+}
+
+
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <h4 class="text-center" style="margin-top:-10px;">Make Journal</h4>
+                <div class="row mt-3">
+                    <label class="col-sm-1">Journal Date</label>
+                    <div class="col-sm-3">
+                        <input type="date" class="form-control form-control-sm" ng-model="jDate" />
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-sm-12 table-responsive">
+                        <table class="table table-condensed table-bordered" id="journalTable">
+                            <thead>
+                                <tr class="text-center">
+                                    <th style="width:300px">Acc Name</th>
+                                    <th>Description</th>
+                                    <th>Debt</th>
+                                    <th>Credit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="entry in entries">
+                                    <td>
+                                        <select ng-click="openLedger(entry)" class="form-select form-select-sm" ng-model="entry.accName" style="width:400px;overflow-y:auto" ng-disabled="entry.disabled">
+                                            <option ng-repeat="data in ledgersWithBalanceList" value="{{data.id}}">{{data.groupName}}</option>
+                                        </select>
+                                    </td>
+                                    <td><input class="form-control form-control-sm" type="text" ng-model="entry.description" ng-disabled="entry.disabled" /></td>
+                                    <td><input type="number" class="form-control form-control-sm text-end" ng-model="entry.debt" ng-disabled="entry.disabled" ng-change="updateDebt(entry,$index)" /></td>
+                                    <td><input type="number" class="form-control form-control-sm text-end" ng-model="entry.credit" ng-disabled="entry.disabled" ng-change="updateCredit(entry,$index)" /></td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="2" class="text-end">Total</th>
+                                    <th>
+                                        <input class="form-control form-control-sm text-end" ng-model="totalDebit" ng-disabled="disabledTotalDebit" />
+                                    </th>
+                                    <th>
+                                        <input class="form-control form-control-sm text-end" ng-model="totalCredit" ng-disabled="disabledTotalCredit" />
+                                    </th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+
+                <div class="text-center">
+                    <button class="btn btn-success px-5" ng-click="saveJournal()">Save Journal
+                        &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showSpinner"></span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+            $scope.GetLedgersWithBalance();
+            $scope.loadClosingDate();
+            $scope.GetMaxJournalId();
+        })
+        $scope.showSpinner = false;
+        $scope.entries = [
+            { accName: '', description: '', debt: '', credit: '', disabled: false },
+            { accName: '', description: '', debt: '', credit: '', disabled: true },
+            { accName: '', description: '', debt: '', credit: '', disabled: true },
+            { accName: '', description: '', debt: '', credit: '', disabled: true },
+            { accName: '', description: '', debt: '', credit: '', disabled: true },
+            { accName: '', description: '', debt: '', credit: '', disabled: true }
+        ];
+        $scope.jDate = new Date();
+        $scope.jDate = new Date($scope.jDate);
+        function formatDate(date) {
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            var year = date.getFullYear();
+            return ('0' + month).slice(-2) + '/' + ('0' + day).slice(-2) + '/' + year;
+        }
+        $scope.formatedJDate = formatDate($scope.jDate);
+
+        $scope.disabledTotalDebit = true;
+        $scope.disabledTotalCredit = true;
+        $scope.ledgersWithBalanceList = [];
+
+        $scope.openLedger = function (entry) {
+            $scope.selectedRowIndex = entry;
+        };
+
+        $scope.updateDebt = function (entry, index) {
+            $scope.currentEntry = $scope.entries[index];
+            if (entry.debt > 0) {
+                entry.credit = 0;
+            }
+            $scope.calculateTotalDebit();
+            $scope.calculateTotalCredit();
+            $scope.entries[index + 1].disabled = false;
+        };
+
+        $scope.updateCredit = function (entry, index) {
+            $scope.currentEntry = $scope.entries[index];
+            if (entry.credit > 0) {
+                entry.debt = 0;
+            }
+            $scope.calculateTotalCredit();
+            $scope.calculateTotalDebit();
+            $scope.entries[index + 1].disabled = false;
+        };
+
+        // $scope.enableNextRow = function (entry, index) {
+        //     if (index < $scope.entries.length - 1) {
+        //         $scope.currentEntry = $scope.entries[index];
+        //         if ($scope.currentEntry.debt > 0 || $scope.currentEntry.credit > 0) {
+        //             if ($scope.currentEntry.debt > 0) {
+        //                 $scope.currentEntry.credit = 0;
+        //             }
+        //             else if ($scope.currentEntry.credit > 0) {
+        //                 $scope.currentEntry.debt = 0;
+        //             }
+                    
+        //             $scope.entries[index + 1].disabled = false;
+        //         }
+        //     }
+        //     $scope.calculateTotalDebit();
+        //     $scope.calculateTotalCredit();
+        // };
+
+        $scope.calculateTotalDebit = function () {
+            $scope.totalDebit = $scope.entries.reduce(function (total, entry) {
+                return total + (parseFloat(entry.debt) || 0);
+            }, 0);
+        };
+        $scope.calculateTotalCredit = function () {
+            $scope.totalCredit = $scope.entries.reduce(function (total, entry) {
+                return total + (parseFloat(entry.credit) || 0);
+            }, 0)
+        }
+
+        $scope.GetLedgersWithBalance = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Ledger/GetLedgersWithBalance';
+            else
+                Url = '/Ledger/GetLedgersWithBalance';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.ledgersWithBalanceList = response.data;
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+        $scope.loadClosingDate = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Journal/GetClosingDate';
+            else
+                Url = '/Journal/GetClosingDate';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.closingDateData = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+        };
+
+        $scope.GetMaxJournalId = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Journal/GetMaxJournalId';
+            else
+                Url = '/Journal/GetMaxJournalId';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.maxJournalId = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+        };
+
+        $scope.saveJournal = function () {
+            var access = '@accessRights.Contains("1")';
+            if (access == 'False') {
+                alert("Sorry, You have no permission to save a journal.");
+            } else {
+                var date1 = new Date($scope.closingDateData);
+                var date2 = new Date($scope.jDate);
+                if ($scope.currentEntry.accName == "") {
+                    alert("Please select Account Name.");
+                }
+                else if (date2 <= date1) {
+                    alert("You can not add a journal on or before the closing date :" + $scope.closingDateData + ".");
+                }
+                else if ($scope.totalDebit != $scope.totalCredit) {
+                    alert("There is no record for make a journal.");
+                }
+                else {
+                    var userConfirmed = confirm("Are you sure you want to save this Journal entry?");
+                    if (userConfirmed) {
+                        //$scope.GetMaxJournalId();
+                        $scope.jId = $scope.maxJournalId + 1;
+                        var journals = $scope.entries.filter(function (entry) {
+                            return entry.accName || entry.description || entry.debt || entry.credit;
+                        });
+
+                        var today = new Date();
+                        var toDate = (today.getMonth() + 1).toString().padStart(2, '0') + "/" + today.getDate().toString().padStart(2, '0') + "/" + today.getFullYear();
+                        $scope.postDate = toDate;
+
+                        var extendedJournals = journals.map(function (entry) {
+                            return {
+                                sid: +entry.accName,
+                                Description: entry.description,
+                                Debt: entry.debt,
+                                Credit: entry.credit,
+                                jid: $scope.jId,
+                                jDate: $scope.formatedJDate,
+                                PostDate: $scope.postDate,
+                                UserID: @userId,
+                            };
+                        });
+                        if (extendedJournals.length> 0) {
+                            $scope.showSpinner = true;
+                            let Url = '';
+                            if (window.location.hostname == 'localhost')
+                                Url = '/Journal/SaveJournalUpdateLedgerMakeVoucher';
+                            else
+                                Url = '/Journal/SaveJournalUpdateLedgerMakeVoucher';
+
+                            $http.post(Url, JSON.stringify(extendedJournals), { headers: { 'Content-Type': 'application/json' } })
+                                .then(function (response) {
+                                    if (response.data == true) {
+                                        var userConfirmed2 = confirm('Journals have been saved successfully. Do you want to view this journal voucher?');
+                                        if (userConfirmed2) {
+                                            $scope.showSpinner = false;
+                                            $scope.downloadReportChallan();
+
+                                        }
+                                    }
+                                })
+                                .catch(function (error) {
+                                    console.log(error);
+                                })
+                        }
+                    }
+                }
+            }
+
+        }
+
+        $scope.downloadReportChallan = function () {
+            debugger
+            const format = 'pdf'; // Use default format if not selected
+            const jId = $scope.jId;
+            const params = { Jid: jId, format: format };
+            const Url = window.location.hostname === 'localhost' ? '/Report/ShowJournalVoucher' : '/Report/ShowJournalVoucher';
+
+            $http.get(Url, { params, responseType: 'blob' })
+                .then(response => {
+                    const blob = new Blob([response.data], { type: response.headers('Content-Type') });
+                    const filename = response.headers('Content-Disposition').split(';')[1].split('=')[1];
+
+                    if (format === 'excel') {
+                        // Download Excel file
+                        const link = document.createElement('a');
+                        link.href = URL.createObjectURL(blob);
+                        link.download = filename;
+                        document.body.appendChild(link);
+                        link.click();
+                        document.body.removeChild(link);
+                    } else if (format === 'pdf') {
+                        // Open PDF file in a new window with proper user feedback
+                        try {
+                            const pdfData = URL.createObjectURL(blob);
+                            window.open(pdfData, '_blank');
+                        } catch (err) {
+                            console.error('Error opening PDF:', err);
+                            alert('An error occurred while opening the PDF. Please check your browser settings and try again.');
+                        } finally {
+                            URL.revokeObjectURL(pdfData); // Always revoke created URL objects
+                        }
+                    } else {
+                        console.error('Unsupported format:', format);
+                        alert('The selected format is not supported. Please choose PDF or Excel.');
+                    }
+                });
+        };
+    });
+
+</script>
+
+
