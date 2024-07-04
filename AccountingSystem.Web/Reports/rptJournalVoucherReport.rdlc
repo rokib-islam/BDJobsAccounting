@@ -240,7 +240,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>=First(Fields!jdate.Value, "JournalVoucher")</Value>
+                    <Value>=First(Fields!PostDate.Value, "JournalVoucher")</Value>
                     <Style />
                   </TextRun>
                 </TextRuns>
@@ -326,7 +326,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox8</rd:DefaultName>
@@ -356,7 +358,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox10</rd:DefaultName>
@@ -386,7 +390,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox12</rd:DefaultName>
@@ -416,7 +422,9 @@
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox14</rd:DefaultName>
@@ -440,21 +448,23 @@
                   <TablixCells>
                     <TablixCell>
                       <CellContents>
-                        <Textbox Name="Textbox9">
+                        <Textbox Name="Textbox11">
                           <CanGrow>true</CanGrow>
                           <KeepTogether>true</KeepTogether>
                           <Paragraphs>
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>=RowNumber("description")</Value>
+                                  <Value>=RowNumber(Nothing)</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Center</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
-                          <rd:DefaultName>Textbox9</rd:DefaultName>
+                          <rd:DefaultName>Textbox11</rd:DefaultName>
                           <Style>
                             <Border>
                               <Color>LightGrey</Color>
@@ -508,10 +518,14 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!debt.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>#,##0.00</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>debt</rd:DefaultName>
@@ -538,10 +552,14 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Fields!credit.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>#,##0.00</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>credit</rd:DefaultName>
@@ -610,7 +628,7 @@
                                   <Style />
                                 </TextRun>
                                 <TextRun>
-                                  <Value>)</Value>
+                                  <Value> Only)</Value>
                                   <Style />
                                 </TextRun>
                               </TextRuns>
@@ -641,10 +659,14 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Parameters!SumAmount.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>#,##0.00</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox24</rd:DefaultName>
@@ -671,10 +693,14 @@
                               <TextRuns>
                                 <TextRun>
                                   <Value>=Parameters!SumAmount.Value</Value>
-                                  <Style />
+                                  <Style>
+                                    <Format>#,##0.00</Format>
+                                  </Style>
                                 </TextRun>
                               </TextRuns>
-                              <Style />
+                              <Style>
+                                <TextAlign>Right</TextAlign>
+                              </Style>
                             </Paragraph>
                           </Paragraphs>
                           <rd:DefaultName>Textbox25</rd:DefaultName>
@@ -689,6 +715,7 @@
                             <PaddingBottom>2pt</PaddingBottom>
                           </Style>
                         </Textbox>
+                        <rd:Selected>true</rd:Selected>
                       </CellContents>
                     </TablixCell>
                   </TablixCells>
@@ -1010,7 +1037,7 @@
             </Border>
           </Style>
         </PageFooter>
-        <PageHeight>8cm</PageHeight>
+        <PageHeight>29.7cm</PageHeight>
         <PageWidth>21cm</PageWidth>
         <LeftMargin>0cm</LeftMargin>
         <RightMargin>0cm</RightMargin>

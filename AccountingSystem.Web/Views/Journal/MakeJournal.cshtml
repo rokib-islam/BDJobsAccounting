@@ -9,9 +9,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                    <script type="text/javascript">
-                        window.location.href = '@Url.Action("Index", "Home")';
-                    </script>
+                                <script type="text/javascript">
+                                    window.location.href = '@Url.Action("Index", "Home")';
+                                </script>
     }
     else
     {
@@ -50,8 +50,8 @@
                                         </select>
                                     </td>
                                     <td><input class="form-control form-control-sm" type="text" ng-model="entry.description" ng-disabled="entry.disabled" /></td>
-                                    <td><input type="number" class="form-control form-control-sm" ng-model="entry.debt" ng-disabled="entry.disabled" ng-change="enableNextRow(entry,$index)" /></td>
-                                    <td><input type="number" class="form-control form-control-sm" ng-model="entry.credit" ng-disabled="entry.disabled" ng-change="enableNextRow(entry,$index)" /></td>
+                                    <td><input type="number" class="form-control form-control-sm text-end" ng-model="entry.debt" ng-disabled="entry.disabled" ng-change="updateDebt(entry,$index)" /></td>
+                                    <td><input type="number" class="form-control form-control-sm text-end" ng-model="entry.credit" ng-disabled="entry.disabled" ng-change="updateCredit(entry,$index)" /></td>
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -88,7 +88,7 @@
         angular.element(document).ready(function () {
             $scope.GetLedgersWithBalance();
             $scope.loadClosingDate();
-            $scope.MaxJournalId();
+            $scope.GetMaxJournalId();
         })
         $scope.showSpinner = false;
         $scope.entries = [
@@ -117,22 +117,43 @@
             $scope.selectedRowIndex = entry;
         };
 
-        $scope.enableNextRow = function (entry, index) {
-            if (index < $scope.entries.length - 1) {
-                var currentEntry = $scope.entries[index];
-                if (currentEntry.debt > 0 || currentEntry.credit > 0) {
-                    if (entry.debt > 0) {
-                        entry.credit = 0.00;
-                    }
-                    else if (entry.credit > 0) {
-                        entry.debt = 0.00;
-                    }
-                    $scope.entries[index + 1].disabled = false;
-                }
+        $scope.updateDebt = function (entry, index) {
+            $scope.currentEntry = $scope.entries[index];
+            if (entry.debt > 0) {
+                entry.credit = 0;
             }
             $scope.calculateTotalDebit();
             $scope.calculateTotalCredit();
+            $scope.entries[index + 1].disabled = false;
         };
+
+        $scope.updateCredit = function (entry, index) {
+            $scope.currentEntry = $scope.entries[index];
+            if (entry.credit > 0) {
+                entry.debt = 0;
+            }
+            $scope.calculateTotalCredit();
+            $scope.calculateTotalDebit();
+            $scope.entries[index + 1].disabled = false;
+        };
+
+        // $scope.enableNextRow = function (entry, index) {
+        //     if (index < $scope.entries.length - 1) {
+        //         $scope.currentEntry = $scope.entries[index];
+        //         if ($scope.currentEntry.debt > 0 || $scope.currentEntry.credit > 0) {
+        //             if ($scope.currentEntry.debt > 0) {
+        //                 $scope.currentEntry.credit = 0;
+        //             }
+        //             else if ($scope.currentEntry.credit > 0) {
+        //                 $scope.currentEntry.debt = 0;
+        //             }
+                    
+        //             $scope.entries[index + 1].disabled = false;
+        //         }
+        //     }
+        //     $scope.calculateTotalDebit();
+        //     $scope.calculateTotalCredit();
+        // };
 
         $scope.calculateTotalDebit = function () {
             $scope.totalDebit = $scope.entries.reduce(function (total, entry) {
@@ -175,7 +196,7 @@
                 })
         };
 
-        $scope.MaxJournalId = function () {
+        $scope.GetMaxJournalId = function () {
             let Url = '';
             if (window.location.hostname == 'localhost')
                 Url = '/Journal/GetMaxJournalId';
@@ -197,7 +218,10 @@
             } else {
                 var date1 = new Date($scope.closingDateData);
                 var date2 = new Date($scope.jDate);
-                if (date2 <= date1) {
+                if ($scope.currentEntry.accName == "") {
+                    alert("Please select Account Name.");
+                }
+                else if (date2 <= date1) {
                     alert("You can not add a journal on or before the closing date :" + $scope.closingDateData + ".");
                 }
                 else if ($scope.totalDebit != $scope.totalCredit) {
@@ -206,7 +230,7 @@
                 else {
                     var userConfirmed = confirm("Are you sure you want to save this Journal entry?");
                     if (userConfirmed) {
-                        
+                        //$scope.GetMaxJournalId();
                         $scope.jId = $scope.maxJournalId + 1;
                         var journals = $scope.entries.filter(function (entry) {
                             return entry.accName || entry.description || entry.debt || entry.credit;

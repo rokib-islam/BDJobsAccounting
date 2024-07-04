@@ -3,9 +3,9 @@
     public class JournalVoucherReport
     {
         public string ApprBy { get; set; }
-        public DateTime ApprovalDate { get; set; }
-        public DateTime PostDate { get; set; }
-        public DateTime jdate { get; set; }
+        public string ApprovalDate { get; set; }
+        public string PostDate { get; set; }
+        public string jdate { get; set; }
         public string Postedby { get; set; }
         public string VoucherNo { get; set; }
         public double credit { get; set; }
