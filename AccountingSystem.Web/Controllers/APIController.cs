@@ -103,5 +103,13 @@ namespace AccountingSystem.Web.Controllers
 
             return await Task.FromResult(Ok(responseList));
         }
+        [HttpPost]
+        [Route("api/AutoCashCollection_Cart_Payment")]
+        public async Task<IActionResult> AutoCashCollection_Cart_Payment([FromBody] CashCollectionAutoViewModel OnlineInvoice)
+        {
+            var responseList = await _InvoiceManager.AutoCashCollection_Multiple_Invoice(OnlineInvoice);
+
+            return await Task.FromResult(Ok(responseList));
+        }
     }
 }

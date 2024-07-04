@@ -158,5 +158,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.CreatePaybaleByJobPost(parameters);
         }
+
+        public Task<CashCollectionAutoReponse> AutoCashCollection_Multiple_Invoice(CashCollectionAutoViewModel parameters)
+        {
+            return _repository.AutoCashCollection_Multiple_Invoice(parameters);
+        }
     }
 }

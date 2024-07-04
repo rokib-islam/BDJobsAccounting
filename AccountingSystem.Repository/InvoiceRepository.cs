@@ -1120,6 +1120,40 @@ namespace AccountingSystem.Repository
                 throw new Exception("Error retrieving invoices.", ex);
             }
         }
+        public async Task<CashCollectionAutoReponse> AutoCashCollection_Multiple_Invoice(CashCollectionAutoViewModel parameters)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {
+                    var dynamicParameters = new DynamicParameters();
+                    dynamicParameters.Add("@InvoiceNo", parameters.InvoiceNo);
+                    dynamicParameters.Add("@SalesPrice", parameters.SalesPrice);
+                    dynamicParameters.Add("@DiscountedPrice", parameters.DiscountedPrice);
+                    dynamicParameters.Add("@PaymentMode", parameters.PaymentMode);
+                    dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
+                    dynamicParameters.Add("@SDate", parameters.SDate);
+                    dynamicParameters.Add("@CP_Id", parameters.CP_Id);
+                    dynamicParameters.Add("@TDS", parameters.TDS);
+                    dynamicParameters.Add("@VDS", parameters.VDS);
+                    dynamicParameters.Add("@JDate", parameters.jDate);
+
+
+
+                    var invoices = await _db.QueryAsync<CashCollectionAutoReponse>(
+                        "USP_Auto_CashCollection_Multiple_Invoice",
+                        dynamicParameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return invoices.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions accordingly
+                throw new Exception("Error retrieving invoices.", ex);
+            }
+        }
 
     }
 
