@@ -565,10 +565,11 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@SalesPersonID", parameters.Salesperson);
                     dynamicParameters.Add("@FromRange", parameters.FromRange);
                     dynamicParameters.Add("@ToRange", parameters.ToRange);
+                    dynamicParameters.Add("@Zone",parameters.Zone);
 
 
                     var invoices = await _db.QueryAsync<InvoiceViewModel>(
-                        "USP_LIST_OF_INVOICE_V1",
+                        "USP_LIST_OF_INVOICE_V1_NEW",
                         dynamicParameters,
                         commandType: CommandType.StoredProcedure);
 
