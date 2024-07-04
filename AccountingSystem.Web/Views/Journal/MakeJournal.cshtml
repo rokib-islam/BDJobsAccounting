@@ -306,11 +306,13 @@
                         try {
                             const pdfData = URL.createObjectURL(blob);
                             window.open(pdfData, '_blank');
+                            location.reload();
                         } catch (err) {
                             console.error('Error opening PDF:', err);
                             alert('An error occurred while opening the PDF. Please check your browser settings and try again.');
                         } finally {
                             URL.revokeObjectURL(pdfData); // Always revoke created URL objects
+                           
                         }
                     } else {
                         console.error('Unsupported format:', format);
