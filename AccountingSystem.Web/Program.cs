@@ -106,6 +106,6 @@ using (var scope = app.Services.CreateScope())
     saleController.SalesPostingMonetizationJobs();
 
 }
-
+app.UseMiddleware<SessionRestoreMiddleware>();
 
 app.Run();
