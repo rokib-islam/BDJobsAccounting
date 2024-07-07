@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.BLL;
 using AccountingSystem.Models.AccountViewModels;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,13 +11,17 @@ namespace AccountingSystem.Web.Controllers
     public class InvoiceController : Controller
     {
         private readonly IInvoiceManager _InvoiceManager;
+        private readonly ILedgerManager _ledgerManager;
+        private readonly ISaleManager _saleManager;
         private readonly HttpClient _httpClient;
 
 
-        public InvoiceController(IInvoiceManager InvoiceManagerManager, HttpClient httpClient)
+        public InvoiceController(IInvoiceManager InvoiceManagerManager, HttpClient httpClient,ILedgerManager ledgerManager,ISaleManager saleManager)
         {
             _InvoiceManager = InvoiceManagerManager;
             _httpClient = httpClient;
+            _ledgerManager = ledgerManager;
+            _saleManager = saleManager;
         }
         public IActionResult Index()
         {
@@ -344,6 +349,18 @@ namespace AccountingSystem.Web.Controllers
                 return View();
             else
                 return RedirectToAction("Index", "Home");
+        }
+
+        public async Task<IActionResult> GetSalesPersonsByProductID(int productID)
+        {
+            var returnValue = await _saleManager.GetSalesPersons(2);
+            return Json(returnValue);
+        }
+        public async Task<IActionResult> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType)
+        {
+            var data = await _ledgerManager.GetProducts(0, 0, "Revenue", "All", "I", 0);
+
+            return Json(data);
         }
     }
 }

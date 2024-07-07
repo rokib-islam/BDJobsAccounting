@@ -8,11 +8,11 @@ namespace AccountingSystem.BLL
     public class InvoiceManager : IInvoiceManager
     {
         private readonly IInvoiceRepository _repository;
-        private readonly ILedgerManager _accountRepository;
-        public InvoiceManager(IInvoiceRepository repository, ILedgerManager accountRepository) //: base(repository)
+ 
+        public InvoiceManager(IInvoiceRepository repository) //: base(repository)
         {
             _repository = repository;
-            _accountRepository = accountRepository;
+
         }
 
         public Task<bool> CheckInvoiceNo(string invoiceNo)
@@ -155,11 +155,6 @@ namespace AccountingSystem.BLL
         public async Task<List<LoadbBouncedCheckDataModel>> LoadbBouncedCheckData(string invoiceNo)
         {
             return await _repository.LoadbBouncedCheckData(invoiceNo);
-        }
-
-        public async Task<List<LedgerViewModel>> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType)
-        {
-            return await _accountRepository.GetProducts(admin, account, groupname, isAll, isI, isVatType);
         }
     }
 }
