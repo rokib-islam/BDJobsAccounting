@@ -328,7 +328,7 @@
         $scope.productList = [];
         $scope.selectedInvoices = [];
 
-
+        // get products
         $scope.getProducts = function() {
             $http.get('/Invoice/GetProducts')
                 .then(function (response) {
@@ -338,6 +338,10 @@
                     console.error(error);
                 });
         }
+
+        // GetInvoiceList
+        // 
+
         $scope.getProducts();
     });
 </script>
