@@ -45,13 +45,13 @@
                             <tbody>
                                 <tr ng-repeat="entry in entries">
                                     <td>
-                                        <select ng-click="openLedger(entry)" class="form-select form-select-sm" ng-model="entry.accName" style="width:400px;overflow-y:auto" ng-disabled="entry.disabled">
+                                        <select ng-click="openLedger(entry)" class="form-select form-select-sm" ng-model="entry.accName" style="width:400px;overflow-y:auto" ng-disabled="entry.disabled" enter-key>
                                             <option ng-repeat="data in ledgersWithBalanceList" value="{{data.id}}">{{data.groupName}}</option>
                                         </select>
                                     </td>
-                                    <td><input class="form-control form-control-sm" type="text" ng-model="entry.description" ng-disabled="entry.disabled" /></td>
-                                    <td><input type="number" class="form-control form-control-sm text-end" ng-model="entry.debt" ng-disabled="entry.disabled" ng-change="updateDebt(entry,$index)" /></td>
-                                    <td><input type="number" class="form-control form-control-sm text-end" ng-model="entry.credit" ng-disabled="entry.disabled" ng-change="updateCredit(entry,$index)" /></td>
+                                    <td><input class="form-control form-control-sm" type="text" ng-model="entry.description" ng-disabled="entry.disabled" enter-key /></td>
+                                    <td><input type="number" class="form-control form-control-sm text-end" ng-model="entry.debt" ng-disabled="entry.disabled" ng-change="updateDebt(entry,$index)" enter-key /></td>
+                                    <td><input type="number" class="form-control form-control-sm text-end" ng-model="entry.credit" ng-disabled="entry.disabled" ng-change="updateCredit(entry,$index)" enter-key /></td>
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -84,6 +84,24 @@
 
 <script>
     var app = angular.module('myApp', []);
+    app.directive('enterKey', function () {
+        return {
+            restrict: 'A',
+            link: function (scope, element, attrs) {
+                element.bind('keydown keypress', function (event) {
+                    if (event.which === 13) { // Enter key code
+                        event.preventDefault();
+                        const fields = Array.from(document.querySelectorAll('input, select'));
+                        const index = fields.indexOf(event.target);
+                        if (index > -1 && index < fields.length - 1) {
+                            fields[index + 1].focus();
+                        }
+                    }
+                });
+            }
+        };
+    });
+
     app.controller('myController', function ($scope, $http) {
         angular.element(document).ready(function () {
             $scope.GetLedgersWithBalance();
@@ -100,14 +118,14 @@
             { accName: '', description: '', debt: '', credit: '', disabled: true }
         ];
         $scope.jDate = new Date();
-        $scope.jDate = new Date($scope.jDate);
-        function formatDate(date) {
-            var month = date.getMonth() + 1;
-            var day = date.getDate();
-            var year = date.getFullYear();
-            return ('0' + month).slice(-2) + '/' + ('0' + day).slice(-2) + '/' + year;
-        }
-        $scope.formatedJDate = formatDate($scope.jDate);
+        // $scope.jDate = new Date($scope.jDate);
+        // function formatDate(date) {
+        //     var month = date.getMonth() + 1;
+        //     var day = date.getDate();
+        //     var year = date.getFullYear();
+        //     return ('0' + month).slice(-2) + '/' + ('0' + day).slice(-2) + '/' + year;
+        // }
+        // $scope.formatedJDate = formatDate($scope.jDate);
 
         $scope.disabledTotalDebit = true;
         $scope.disabledTotalCredit = true;
@@ -247,7 +265,7 @@
                                 Debt: entry.debt,
                                 Credit: entry.credit,
                                 jid: $scope.jId,
-                                jDate: $scope.formatedJDate,
+                                jDate: $scope.jDate.toISOString().split('T')[0],
                                 PostDate: $scope.postDate,
                                 UserID: @userId,
                             };
@@ -282,7 +300,6 @@
         }
 
         $scope.downloadReportChallan = function () {
-            debugger
             const format = 'pdf'; // Use default format if not selected
             const jId = $scope.jId;
             const params = { Jid: jId, format: format };

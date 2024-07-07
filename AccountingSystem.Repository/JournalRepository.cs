@@ -180,7 +180,7 @@ namespace AccountingSystem.Repository
                 using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
 
-                    jId = await _db.QueryFirstOrDefaultAsync<int>("SELECT MAX(Jid) FROM Journal");
+                    jId = await _db.QueryFirstOrDefaultAsync<int>("SELECT MAX(Jid) FROM Journal", commandTimeout:30);
                 }
             }
             catch (Exception ex)
