@@ -719,6 +719,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@VDS", parameters.VDS);
                     dynamicParameters.Add("@JDate", parameters.jDate);
                     dynamicParameters.Add("@Q_job", parameters.Q_job);
+                    dynamicParameters.Add("@IsUpgrade", parameters.IsUpgrade);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
@@ -771,6 +772,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@VDS", parameters.VDS);
                     dynamicParameters.Add("@JDate", parameters.jDate);
                     dynamicParameters.Add("@Q_job", parameters.Q_job);
+                    dynamicParameters.Add("@IsUpgrade", parameters.IsUpgrade);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
