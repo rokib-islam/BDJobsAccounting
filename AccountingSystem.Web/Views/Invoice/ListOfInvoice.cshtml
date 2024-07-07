@@ -188,9 +188,11 @@
 
                         <div class="col-md-4">
                             <div>
-                                <lable class=" form-label">Sales Person</lable>
-                                <input type="text" class="form-control input-sm" id="" placeholder="search sales person">
-
+                                <label class="form-label">Sales Person</label>
+                                <input type="text" class="form-control input-sm" ng-model="salesPersonInput" ng-keyup="getSalesPersonsByKey($event)" placeholder="search sales person">
+                                <select class="form-control" ng-model="selectedSalesPerson" ng-options="person.SalesPersonID as person.SalesPersonName for person in salesPersonList" ng-show="salesPersonList.length > 0">
+                                    <option value="">Select Salesperson</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -327,21 +329,40 @@
 
         $scope.productList = [];
         $scope.selectedInvoices = [];
+        $scope.salesPersonInput = '';
+        $scope.salesPersonList = [];
+        $scope.selectedSalesPerson = '';
 
-        // get products
-        $scope.getProducts = function() {
+        // Fetch products and populate the product list
+        $scope.getProducts = function () {
             $http.get('/Invoice/GetProducts')
                 .then(function (response) {
-                    console.log(response.data);
                     $scope.productList = response.data;
                 }, function (error) {
                     console.error(error);
                 });
-        }
+        };
 
-        // GetInvoiceList
-        // 
+        // Fetch salesperson list based on the input key
+        $scope.getSalesPersonsByKey = function (event) {
+            if (event.keyCode != 13 && event.keyCode != 27) {
+                var str = $scope.salesPersonInput.trim();
+                if (str !== "") {
+                    var jsonData = { startingKey: str };
+                    $http.post('/Invoice/GetSalesPersonListByKey', jsonData)
+                        .then(function (response) {
+                            $scope.salesPersonList = response.data;
+                            console.log(response.data)
+                        }, function (error) {
+                            console.error(error);
+                        });
+                } else {
+                    $scope.salesPersonList = [];
+                }
+            }
+        };
 
+        // Initial fetch of products
         $scope.getProducts();
     });
 </script>
