@@ -15,11 +15,13 @@
   <ItemGroup>
     <None Remove="Reports\rptLabelPrevire.rdlc" />
     <None Remove="Reports\rptShowChallanForMail.rdlc" />
+    <None Remove="Reports\rptShowInvoiceList.rdlc" />
     <None Remove="Reports\rptTrailBalance.rdlc" />
     <None Remove="Reports\rptViewInvoiceForMail.rdlc" />
   </ItemGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="Reports\rptShowInvoiceList.rdlc" />
     <EmbeddedResource Include="Reports\rptLabelPrevire.rdlc" />
     <EmbeddedResource Include="Reports\rptShowChallanForMail.rdlc" />
     <EmbeddedResource Include="Reports\rptTrailBalance.rdlc" />

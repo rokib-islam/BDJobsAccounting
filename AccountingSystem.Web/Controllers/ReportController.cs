@@ -19,7 +19,7 @@ namespace AccountingSystem.Web.Controllers
     {
         private readonly IReportManager _ReportManager;
         private readonly IInvoiceManager _InvoiceManager;
-        private readonly IWebHostEnvironment _WebHostEnvironment;
+        private readonly IWebHostEnvironment _WebHostEnvironment; 
 
         public ReportController(IReportManager ReportManager, IInvoiceManager invoiceManager, IWebHostEnvironment WebHostEnv)
         {
@@ -147,6 +147,67 @@ namespace AccountingSystem.Web.Controllers
                 return StatusCode(500, "An error occurred while generating the report.");
             }
         }
+
+
+
+        public async Task<IActionResult> ShowInvoiceList(string format, int isColorPad, GetInvoiceListParam param)
+        {
+            try
+            {
+                double totalAmount = 0;
+                var reportData = await _InvoiceManager.GetInvoicesAsync(param);
+                var fullPayment = reportData.FirstOrDefault().FullPayment;
+                totalAmount = reportData.Sum(report => report.TAmount);
+
+                string wordamount = await ConvertToWords((int)Math.Round(totalAmount));
+                var datatable = Helpers.ListiToDataTable(reportData);
+
+                using var report = new LocalReport();
+                var parameters = new[]
+                {
+                new ReportParameter("SumAmount", totalAmount.ToString("N2")),
+                new ReportParameter("AmountInWord", wordamount),
+                new ReportParameter("isColorPad", isColorPad.ToString("0")),
+                new ReportParameter("FullPayment", fullPayment.ToString())
+            };
+
+                using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream("AccountingSystem.Web.Reports.rptShowInvoiceList.rdlc");
+                report.LoadReportDefinition(rs);
+                report.DataSources.Add(new ReportDataSource("ShowInvoiceList", datatable));
+                report.SetParameters(parameters);
+
+                byte[] fileContents;
+                string contentType;
+                string fileName;
+
+                if (format.ToLower() == "pdf")
+                {
+                    fileContents = report.Render("pdf");
+                    contentType = "application/pdf";
+                    fileName = "InvoiceReport.pdf";
+                }
+                else if (format.ToLower() == "excel")
+                {
+                    fileContents = report.Render("excel");
+                    contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    fileName = "InvoiceReport.xlsx";
+                }
+                else
+                {
+                    return BadRequest("Unsupported format. Please specify either 'pdf' or 'excel'.");
+                }
+
+                return File(fileContents, contentType, fileName);
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while generating the report.");
+            }
+        }
+
+
+
+
         public async Task<IActionResult> ShowChallanReportNew(string InvoiceNo, string format, string CopyType)
         {
             try
