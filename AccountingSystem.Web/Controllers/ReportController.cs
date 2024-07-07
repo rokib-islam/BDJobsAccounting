@@ -167,7 +167,7 @@ namespace AccountingSystem.Web.Controllers
                 {
                 new ReportParameter("SumAmount", totalAmount.ToString("N2")),
                 new ReportParameter("AmountInWord", wordamount),
-                new ReportParameter("isColorPad", isColorPad.ToString("0")),
+                new ReportParameter("isColorPad", isColorPad.ToString()),
                 new ReportParameter("FullPayment", fullPayment.ToString())
             };
 
