@@ -362,5 +362,11 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(data);
         }
+
+        public async Task<IActionResult> GetSalesPersonListByKey(string startingKey)
+        {
+            var result = await _saleManager.GetSalesPersonListByKey(startingKey);
+            return Json(result);
+        }
     }
 }
