@@ -133,12 +133,7 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(results);
         }
-        public async Task<IActionResult> GetInvoiceList(GetInvoiceListParam parameters)
-        {
-            var results = await _InvoiceManager.GetInvoicesAsync(parameters);
-
-            return Json(results);
-        }
+       
 
 
 
@@ -367,6 +362,13 @@ namespace AccountingSystem.Web.Controllers
         {
             var result = await _saleManager.GetSalesPersonListByKey(startingKey);
             return Json(result);
+        }
+
+        public async Task<IActionResult> GetInvoiceList([FromBody] GetInvoiceListParam parameters)
+        {
+            var results = await _InvoiceManager.GetInvoicesAsync(parameters);
+
+            return Json(results);
         }
     }
 }

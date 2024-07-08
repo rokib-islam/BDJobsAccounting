@@ -180,21 +180,23 @@
 
                         <div class="col-md-4">
                             <div>
-                                <lable class=" form-label">Search by Location</lable>
+                                <lable class=" form-label mb-2">Search by Location</lable>
                                 <input type="text" class="form-control input-sm" id="searchByLocation">
 
                             </div>
                         </div>
 
-                        <div class="col-md-4">
-                            <div>
-                                <label class="form-label">Sales Person</label>
-                                <input type="text" class="form-control input-sm" ng-model="salesPersonInput" ng-keyup="getSalesPersonsByKey($event)" placeholder="search sales person">
-                                <select class="form-control" ng-model="selectedSalesPerson" ng-options="person.SalesPersonID as person.SalesPersonName for person in salesPersonList" ng-show="salesPersonList.length > 0">
-                                    <option value="">Select Salesperson</option>
+                        <div class="col-sm-4">
+                           <div>
+                                <label class=" form-label mb-2">Sales Person</label>
+                                <input class="form-control input-sm" id="salesPerson" placeholder="Search Sales Person Here" autocomplete="off" ng-model="salesPersonInput" ng-keyup="getSalesPersonsByKey($event)">
+                                <select class="form-select input-sm" size="10" id="salesPersonList" ng-model="selectedSalesPerson" style="position:absolute;z-index:999;width: 360px; overflow:auto; background: white none repeat scroll 0% 0%;" ng-show="salesPersonList.length > 0">
+                                    <option ng-repeat="person in salesPersonList" value="{{person.salesPersonID}}" ng-click="selectSalesPerson(person)">{{person.salesPersonName}}</option>
                                 </select>
-                            </div>
+                           </div>
+
                         </div>
+
                     </div>
                 </div>
 
@@ -207,7 +209,7 @@
 
         <div class="row mt-5">
             <div class=" d-flex align-items-center justify-content-center">
-                <button class="btn btn-primary px-4"> Load</button>
+                <button class="btn btn-primary px-4" type="button" ng-click="load()">Load</button>
             </div>
         </div>
 
@@ -331,7 +333,7 @@
         $scope.selectedInvoices = [];
         $scope.salesPersonInput = '';
         $scope.salesPersonList = [];
-        $scope.selectedSalesPerson = '';
+        $scope.selectedSalesPerson = [];
 
         // Fetch products and populate the product list
         $scope.getProducts = function () {
@@ -345,23 +347,193 @@
 
         // Fetch salesperson list based on the input key
         $scope.getSalesPersonsByKey = function (event) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/GetSalesPersonListByKey';
+            else
+                Url = '/Invoice/GetSalesPersonListByKey';
+
             if (event.keyCode != 13 && event.keyCode != 27) {
                 var str = $scope.salesPersonInput.trim();
                 if (str !== "") {
-                    var jsonData = { startingKey: str };
-                    $http.post('/Invoice/GetSalesPersonListByKey', jsonData)
+                    console.log(str);
+                    $http.get(Url, { params: { startingKey: str } })
                         .then(function (response) {
-                            $scope.salesPersonList = response.data;
-                            console.log(response.data)
-                        }, function (error) {
-                            console.error(error);
+                            if (response.data == 0) {
+                                $scope.salesPersonList = []
+                                return false;
+                            }else {
+                                $scope.salesPersonList = response.data;
+                                console.log(response.data);
+                                return true;
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            $scope.salesPersonList = [];
+
                         });
-                } else {
+                }else {
                     $scope.salesPersonList = [];
                 }
+            } else if (event.keyCode == 27) {
+                // Clear search input and results if 'Esc' key is pressed
+                $scope.salesPersonInput = '';
+                $scope.salesPersonList = [];
             }
         };
 
+
+        $scope.selectSalesPerson = function (person) {
+            $scope.selectedSalesPerson = person;
+            $scope.salesPersonInput = person.salesPersonName;
+            $scope.salesPersonList = [];
+
+            // Add selected person to the array if not already added
+            if (!$scope.selectedSalesPersons.find(p => p.salesPersonID === person.salesPersonID)) {
+                $scope.selectedSalesPersons.push(person);
+            }
+        };
+
+        $scope.params = {
+            pageNo: 1,
+            pageSize: "10",
+            productId: "'0'",
+            validity: "0",
+            Operator: "",
+            fDuration: 0,
+            tDuration: 0,
+            fullPayment: "0",
+            blacklisted: 0,
+            order: "ASC",
+            location: "",
+            salesperson: "0",
+            fromRange: "",
+            toRange: "",
+            Zone: ""
+        };
+
+        $scope.loadInvoices = function () {
+            var url = '';
+            if (window.location.hostname == 'localhost')
+                url = '/Invoice/GetInvoiceList';
+            else
+                url = '/Invoice/GetInvoiceList';
+
+            var requestData = {
+                pageNo: $scope.params.pageNo,
+                pageSize: $scope.params.pageSize,
+                productId: $scope.params.productId,
+                validity: $scope.params.validity,
+                Operator: $scope.params.Operator,
+                fDuration: $scope.params.fDuration,
+                tDuration: $scope.params.tDuration,
+                fullPayment: $scope.params.fullPayment,
+                blacklisted: $scope.params.blacklisted,
+                order: $scope.params.order,
+                location: $scope.params.location,
+                salesperson: $scope.params.salesperson,
+                fromRange: $scope.params.fromRange,
+                toRange: $scope.params.toRange,
+                Zone: $scope.params.Zone
+            };
+
+            $http.post('/Invoice/GetInvoiceList', { params: requestData })
+                .then(function (response) {
+                    console.log('Success:', response.data);
+                    $scope.responseData = response.data;
+
+                    var total = 0;
+                    var cnt = (($scope.params.pageNo - 1) * $scope.params.pageSize) + 1;
+                    angular.forEach(response.data, function (value) {
+                        // Your logic to handle response data goes here
+                        // For example:
+                        total = value.TotalInvoices;
+                        cnt++;
+                    });
+
+                    // Pagination logic
+                    var pager = Math.ceil(total / $scope.params.pageSize);
+                    pager = pager === 0 ? 1 : pager;
+
+                    $scope.totalPages = pager;
+                    $scope.currentPage = $scope.params.pageNo;
+
+                    // Enable/disable buttons based on response
+                    $scope.showList = response.data.length === 0 ? true : false;
+                    $scope.showInvList = false;
+
+                    // Your additional logic to handle the response
+                })
+                .catch(function (error) {
+                    console.error('Error:', error);
+                });
+        };
+
+        // another try
+
+        $scope.disableExcelButton = true;
+        $scope.showTable = false;
+        $scope.status = 'Success';
+        $scope.paymentMode = 'All';
+        $scope.serviceName = 'All';
+        $scope.fromDate = new Date();
+        $scope.toDate = new Date();
+
+
+        $scope.pageNo = 1;
+        $scope.pageSize = "10";
+        $scope.productId = '0';
+        $scope.validity = "0";
+        $scope.Operator = "";
+        $scope.fDuration = 0;
+        $scope.tDuration = 0;
+        $scope.fullPayment = "0";
+        $scope.blacklisted = 0;
+        $scope.order = "ASC";
+        $scope.location = "";
+        $scope.salesperson = "0";
+        $scope.fromRange = "";
+        $scope.toRange = "";
+        $scope.Zone = "";
+
+
+        
+        $scope.onlineData = []
+        $scope.load = function () {
+            let requestBodyModel = {
+                PageNo: $scope.pageNo,
+                PageSize: $scope.pageSize,
+                ProductId: $scope.productId,
+                Validity: $scope.validity,
+                Operator: $scope.Operator,
+                FromDuration: $scope.fDuration,
+                ToDuration: $scope.tDuration,
+                FullPayment: $scope.fullPayment,
+                Blacklisted: $scope.blacklisted,
+                Order: $scope.order,
+                Location: $scope.location,
+                Salesperson: $scope.salesperson,
+                FromRange: $scope.fromRange,
+                ToRange: $scope.toRange,
+                Zone: $scope.Zone
+            };
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/GetInvoiceList';
+            else
+                Url = '/Invoice/GetInvoiceList';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    $scope.onlineData = response.data;
+                    console.log(response.data)
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
         // Initial fetch of products
         $scope.getProducts();
     });
