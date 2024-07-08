@@ -26,7 +26,7 @@
             <div ng-controller="myController">
                 <h4 class="text-center" style="margin-top:-10px;">Make Journal</h4>
                 <div class="row mt-3">
-                    <label class="col-sm-1">Journal Date</label>
+                    <label class="col-sm-2">Journal Date</label>
                     <div class="col-sm-3">
                         <input type="date" class="form-control form-control-sm" ng-model="jDate" />
                     </div>
@@ -52,6 +52,12 @@
                                     <td><input class="form-control form-control-sm" type="text" ng-model="entry.description" ng-disabled="entry.disabled" enter-key /></td>
                                     <td><input type="number" class="form-control form-control-sm text-end" ng-model="entry.debt" ng-disabled="entry.disabled" ng-change="updateDebt(entry,$index)" enter-key /></td>
                                     <td><input type="number" class="form-control form-control-sm text-end" ng-model="entry.credit" ng-disabled="entry.disabled" ng-change="updateCredit(entry,$index)" enter-key /></td>
+                                </tr>
+                                <tr>
+                                    
+                                    <td colspan="4" class="text-end">
+                                        <button type="button" class="btn btn-primary btn-sm px-4" ng-click="addRows()">+</button>
+                                    </td>
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -117,15 +123,13 @@
             { accName: '', description: '', debt: '', credit: '', disabled: true },
             { accName: '', description: '', debt: '', credit: '', disabled: true }
         ];
+        $scope.addRows = function () {
+            for (var i = 0; i < 1; i++) {
+                $scope.entries.push({ accName: '', description: '', debt: '', credit: '', disabled: false });
+            }
+        };
+
         $scope.jDate = new Date();
-        // $scope.jDate = new Date($scope.jDate);
-        // function formatDate(date) {
-        //     var month = date.getMonth() + 1;
-        //     var day = date.getDate();
-        //     var year = date.getFullYear();
-        //     return ('0' + month).slice(-2) + '/' + ('0' + day).slice(-2) + '/' + year;
-        // }
-        // $scope.formatedJDate = formatDate($scope.jDate);
 
         $scope.disabledTotalDebit = true;
         $scope.disabledTotalCredit = true;
@@ -154,24 +158,6 @@
             $scope.calculateTotalDebit();
             $scope.entries[index + 1].disabled = false;
         };
-
-        // $scope.enableNextRow = function (entry, index) {
-        //     if (index < $scope.entries.length - 1) {
-        //         $scope.currentEntry = $scope.entries[index];
-        //         if ($scope.currentEntry.debt > 0 || $scope.currentEntry.credit > 0) {
-        //             if ($scope.currentEntry.debt > 0) {
-        //                 $scope.currentEntry.credit = 0;
-        //             }
-        //             else if ($scope.currentEntry.credit > 0) {
-        //                 $scope.currentEntry.debt = 0;
-        //             }
-                    
-        //             $scope.entries[index + 1].disabled = false;
-        //         }
-        //     }
-        //     $scope.calculateTotalDebit();
-        //     $scope.calculateTotalCredit();
-        // };
 
         $scope.calculateTotalDebit = function () {
             $scope.totalDebit = $scope.entries.reduce(function (total, entry) {
