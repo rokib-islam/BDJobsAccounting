@@ -524,7 +524,7 @@
                             else if (shiftedProduct.sbName == "Online Job Posting (Premium Plus Listing)")
                                 serviceName = "Premium Plus Listing";
                             else if (shiftedProduct.sbName == "Online Job Posting-Basic (SME)")
-                                serviceName = "SME package";
+                                serviceName = "SME package"; 
 
                             comments =
                                 "Payment for Web Listing Services under '" +
@@ -536,16 +536,33 @@
                                 " for the following job position(s):\n\nDesignation Name: " +
                                 shiftedProduct.product;
                         }
-                        else if (ledgerId == 18) {
-                            comments =
-                                "Payment for 'Job Announcement Display' at the Home Page of Bdjobs.com from " +
+                        if (ledgerId == 18) {
+                            // var partssDate = shiftedProduct.sDate.split("/");
+                            // var formattedSDate = (partssDate[1].length === 1 ? '0' + partssDate[1] : partssDate[1]) + "-" + (partssDate[0].length === 1 ? '0' + partssDate[0] : partssDate[0]) + "-" + partssDate[2];
+
+                            // var partseDate = shiftedProduct.eDate.split("/");
+                            // var formattedeDate = (partseDate[1].length === 1 ? '0' + partseDate[1] : partseDate[1]) + "-" + (partseDate[0].length === 1 ? '0' + partseDate[0] : partseDate[0]) + "-" + partseDate[2];
+
+                            var endDate14 = new Date(partssDate[2], partssDate[0] - 1, parseInt(partssDate[1]) + 14);
+                            var formattedEndDate14 = (endDate14.getDate() < 10 ? '0' + endDate14.getDate() : endDate14.getDate()) + "-" +
+                                ((endDate14.getMonth() + 1) < 10 ? '0' + (endDate14.getMonth() + 1) : (endDate14.getMonth() + 1)) + "-" +
+                                endDate14.getFullYear();
+
+                            comments = "Hot Job Listing (Job duration " +
                                 formattedSDate +
                                 " to " +
+                                formattedEndDate14 +
+                                ")\n" +
+                                "Payment for Web Listing Services under \"" +
+                                "Hot Jobs Listing" +
+                                "\" at the homepage of www.bdjobs.com from " +
+                                formattedSDate +
+                                " to " +
+                                formattedEndDate14 +
+                                " and up to " +
                                 formattedeDate +
-                                " for the following position(s):\n\n" +
+                                " at the classified section for the following position(s):\n\n" +
                                 shiftedProduct.product;
-                        } if (shiftedProduct.product.trim() === "VAT (AP)") {
-                            comments = "Add: VAT@5% Under Service Code: S099.10 (IT Enabled Services)";
                         } else {
                             comments =
                                 "Payment for Web Listing (" +
@@ -556,6 +573,9 @@
                                 formattedeDate +
                                 " for the following position:\n\n" +
                                 shiftedProduct.product;
+                        }
+                        if (shiftedProduct.product.trim() === "VAT (AP)") {
+                            comments = "Add: VAT@5% Under Service Code: S099.10 (IT Enabled Services)";
                         }
                     } else {
                         comments = shiftedProduct.comments;
