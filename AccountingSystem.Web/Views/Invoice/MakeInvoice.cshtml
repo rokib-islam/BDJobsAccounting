@@ -547,20 +547,19 @@
                             var formattedEndDate14 = (endDate14.getDate() < 10 ? '0' + endDate14.getDate() : endDate14.getDate()) + "-" +
                                 ((endDate14.getMonth() + 1) < 10 ? '0' + (endDate14.getMonth() + 1) : (endDate14.getMonth() + 1)) + "-" +
                                 endDate14.getFullYear();
+                            var uptodate = '';
+                            if (formattedEndDate14 > formattedeDate)
+                                uptodate = formattedeDate;
+                            else
+                                uptodate = formattedEndDate14;
 
-                            comments = "Hot Job Listing (Job duration " +
-                                formattedSDate +
-                                " to " +
-                                formattedEndDate14 +
-                                ")\n" +
-                                "Payment for Web Listing Services under \"" +
+                            comments = "Payment for Web Listing Services under \"" +
                                 "Hot Jobs Listing" +
                                 "\" at the homepage of www.bdjobs.com from " +
                                 formattedSDate +
                                 " to " +
                                 formattedEndDate14 +
-                                " and up to " +
-                                formattedeDate +
+                                " and up to " + uptodate +
                                 " at the classified section for the following position(s):\n\n" +
                                 shiftedProduct.product;
                         } else {
