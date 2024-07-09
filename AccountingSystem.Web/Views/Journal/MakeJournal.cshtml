@@ -9,9 +9,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                <script type="text/javascript">
-                                    window.location.href = '@Url.Action("Index", "Home")';
-                                </script>
+                                                            <script type="text/javascript">
+                                                                window.location.href = '@Url.Action("Index", "Home")';
+                                                            </script>
     }
     else
     {
@@ -45,8 +45,10 @@
                             <tbody>
                                 <tr ng-repeat="entry in entries">
                                     <td>
-                                        <select ng-click="openLedger(entry)" class="form-select form-select-sm" ng-model="entry.accName" style="width:400px;overflow-y:auto" ng-disabled="entry.disabled" enter-key>
-                                            <option ng-repeat="data in ledgersWithBalanceList" value="{{data.id}}">{{data.groupName}}</option>
+                                        
+                                        <input class="form-select form-select-sm" style="background-color:lightcyan;" placeholder="Search Ledger Here" autocomplete="off" ng-model="entry.searchQuery" ng-keyup="searchLedger(entry)">
+                                        <select class="form-select form-select-sm" size="10" ng-model="entry.accName" style="position:absolute;z-index:999;width: 510px; overflow:auto; background:white none repeat scroll 0% 0%;" ng-show="entry.ledgerList && entry.ledgerList.length > 0">
+                                            <option ng-repeat="ledger in entry.ledgerList" value="{{ledger.id}}" ng-click="selectLedger(entry, ledger)">{{ledger.sbName}}</option>
                                         </select>
                                     </td>
                                     <td><input class="form-control form-control-sm" type="text" ng-model="entry.description" ng-disabled="entry.disabled" enter-key /></td>
@@ -56,7 +58,7 @@
                                 <tr>
                                     
                                     <td colspan="4" class="text-end">
-                                        <button type="button" class="btn btn-primary btn-sm px-4" ng-click="addRows()">+</button>
+                                        <button type="button" class="btn btn-primary btn-sm px-4" ng-click="addRows()" ng-disabled="btnPlusDisabled">+</button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -76,10 +78,19 @@
                 </div>
 
 
-                <div class="text-center">
-                    <button class="btn btn-success px-5" ng-click="saveJournal()">Save Journal
-                        &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showSpinner"></span>
-                    </button>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <button class="btn btn-warning px-5" ng-click="clear()">Clear</button>
+
+                    </div>
+                    <div class="col-sm-7">
+                        <button class="btn btn-success px-5" ng-click="saveJournal()">
+                            Save Journal
+                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showSpinner"></span>
+                        </button>
+                    </div>
+                    
+                    
                 </div>
             </div>
         </div>
@@ -115,18 +126,14 @@
             $scope.GetMaxJournalId();
         })
         $scope.showSpinner = false;
+        $scope.btnPlusDisabled = true;
         $scope.entries = [
-            { accName: '', description: '', debt: '', credit: '', disabled: false },
-            { accName: '', description: '', debt: '', credit: '', disabled: true },
-            { accName: '', description: '', debt: '', credit: '', disabled: true },
-            { accName: '', description: '', debt: '', credit: '', disabled: true },
-            { accName: '', description: '', debt: '', credit: '', disabled: true },
-            { accName: '', description: '', debt: '', credit: '', disabled: true }
+            { accName: '', description: '', debt: '', credit: '', searchQuery: '', ledgerList: [], disabled: false },
+            { accName: '', description: '', debt: '', credit: '', searchQuery: '', ledgerList: [], disabled: true }
         ];
+
         $scope.addRows = function () {
-            for (var i = 0; i < 1; i++) {
-                $scope.entries.push({ accName: '', description: '', debt: '', credit: '', disabled: false });
-            }
+            $scope.entries.push({ accName: '', description: '', debt: '', credit: '', searchQuery: '', ledgerList: [], disabled: false });
         };
 
         $scope.jDate = new Date();
@@ -134,6 +141,31 @@
         $scope.disabledTotalDebit = true;
         $scope.disabledTotalCredit = true;
         $scope.ledgersWithBalanceList = [];
+
+        $scope.searchLedger = function (entry) {
+            if (entry.searchQuery && entry.searchQuery.length > 1) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Ledger/GetLedgerListByKey';
+                else
+                    Url = '/Ledger/GetLedgerListByKey';
+
+                $http.get(Url, { params: { key: entry.searchQuery } })
+                    .then(function (response) {
+                        entry.ledgerList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                entry.ledgerList = [];
+            }
+        };
+
+        $scope.selectLedger = function (entry, ledger) {
+            entry.selectedLedger = ledger;
+            entry.searchQuery = ledger.sbName;
+            entry.ledgerList = [];
+        }
 
         $scope.openLedger = function (entry) {
             $scope.selectedRowIndex = entry;
@@ -144,9 +176,17 @@
             if (entry.debt > 0) {
                 entry.credit = 0;
             }
+          
             $scope.calculateTotalDebit();
             $scope.calculateTotalCredit();
-            $scope.entries[index + 1].disabled = false;
+            if (entry.debt == null && entry.credit == 0 || entry.debt == 0 && entry.credit == 0) {
+                $scope.entries[index + 1].disabled = true;
+                $scope.btnPlusDisabled = true;
+            } else {
+                $scope.entries[index + 1].disabled = false;
+                $scope.btnPlusDisabled = false;
+            }
+            
         };
 
         $scope.updateCredit = function (entry, index) {
@@ -156,7 +196,14 @@
             }
             $scope.calculateTotalCredit();
             $scope.calculateTotalDebit();
-            $scope.entries[index + 1].disabled = false;
+            if (entry.debt == 0 && entry.credit == null || entry.debt == 0 && entry.credit == 0) {
+                $scope.entries[index + 1].disabled = true;
+                $scope.btnPlusDisabled = true;
+            } else {
+                $scope.entries[index + 1].disabled = false;
+                $scope.btnPlusDisabled = false;
+            }
+            
         };
 
         $scope.calculateTotalDebit = function () {
@@ -229,7 +276,7 @@
                     alert("You can not add a journal on or before the closing date :" + $scope.closingDateData + ".");
                 }
                 else if ($scope.totalDebit != $scope.totalCredit) {
-                    alert("There is no record for make a journal.");
+                    alert("Tota debit amount and total credit amount should be equal.");
                 }
                 else {
                     var userConfirmed = confirm("Are you sure you want to save this Journal entry?");
@@ -246,7 +293,8 @@
 
                         var extendedJournals = journals.map(function (entry) {
                             return {
-                                sid: +entry.accName,
+                                //sid: +entry.accName,
+                                sid: +entry.selectedLedger.id,
                                 Description: entry.description,
                                 Debt: entry.debt,
                                 Credit: entry.credit,
@@ -285,6 +333,10 @@
 
         }
 
+        $scope.clear = function () {
+            location.reload();
+        }
+
         $scope.downloadReportChallan = function () {
             const format = 'pdf'; // Use default format if not selected
             const jId = $scope.jId;
@@ -309,7 +361,7 @@
                         try {
                             const pdfData = URL.createObjectURL(blob);
                             window.open(pdfData, '_blank');
-                            location.reload();
+                            //location.reload();
                         } catch (err) {
                             console.error('Error opening PDF:', err);
                             alert('An error occurred while opening the PDF. Please check your browser settings and try again.');

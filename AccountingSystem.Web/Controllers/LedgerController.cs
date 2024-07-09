@@ -60,6 +60,12 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(data);
         }
+        public async Task<IActionResult> GetLedgerListByKey(string key)
+        {
+            var data = await _LedgerManager.GetLedgerListByKey(key);
+
+            return Json(data);
+        }
         public async Task<IActionResult> GetSubgroups(string mainGroup)
         {
             var data = await _LedgerManager.GetAllLedgers();

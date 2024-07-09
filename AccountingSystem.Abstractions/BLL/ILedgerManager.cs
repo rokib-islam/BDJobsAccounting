@@ -13,6 +13,7 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<LedgerViewModel>> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType);
         Task<List<LedgerViewModel>> GetLedgersWithBalance();
         Task<List<LedgerViewModel>> GetAllLedgers();
+        Task<List<LedgerViewModel>> GetLedgerListByKey(string key);
         Task SaveLedgerAsync(LedgerViewModel aLedger);
         Task<int> UpdateLedgerAsync(LedgerViewModel aLedger);
         Task<string> DeleteLedgerAsync(int ledgerId);
