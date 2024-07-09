@@ -1,0 +1,240 @@
+﻿@using Microsoft.AspNetCore.Http
+@{
+    ViewData["Title"] = "PaymentModule";
+
+    var userId = Context.Session.GetInt32("UserID");
+    var accessRight = Context.Session.GetString("AccessRight");
+
+    var accessRights = new string[0];
+
+    if (string.IsNullOrEmpty(accessRight))
+    {
+                                        <script type="text/javascript">
+                                            window.location.href = '@Url.Action("Index", "Home")';
+                                        </script>
+    }
+    else
+    {
+        accessRights = accessRight.Split(',');
+    }
+}
+
+
+<div class="card">
+    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
+        <div ng-app="myApp">
+            <div ng-controller="myController">
+                <h4 class="text-center" style="margin-top:-10px;">Payment Module</h4>
+                <div class="row mt-3">
+                    <div class="col-sm-6 row">
+                        <label class="col-sm-4">Date</label>
+                        <div class="col-sm-8">
+                            <input type="date" class="form-control form-control-sm" ng-model="date" />
+                        </div>
+                    </div>
+                    <div class="col-sm-6 row">
+                        <label class="col-sm-4">Posting Type</label>
+                        <div class="col-sm-8">
+                            <select class="form-select form-select-sm" ng-model="postingType">
+                                <option value="0">Select</option>
+                                <option value="1">Provision</option>
+                                <option value="2">Payment</option>
+                                <option value="3">Cash Purchage</option>
+                            </select>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-6 row">
+                        <label class="col-sm-4">Vendor Name</label>
+                        <div class="col-sm-8">
+                            <input class="form-select form-select-sm" style="background-color:lightcyan;" placeholder="Search Vendor Here" autocomplete="off" ng-model="searchQuery" ng-keyup="searchVendor(searchQuery)">
+                            <select class="form-select form-select-sm" size="10" ng-model="venList" style="position:absolute;z-index:999;width: 510px; overflow:auto ;background: white none repeat scroll 0% 0%;" ng-show="vendorList.length > 0">
+                                <option ng-repeat="vendor in vendorList" value="{{vendor.vendorId}}" ng-click="selectVendor(vendor)">{{vendor.vendorName}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-sm-6 row">
+                        <label class="col-sm-4">Item Ledger Name</label>
+                        <div class="col-sm-8">
+                            <select class="form-select form-select-sm" ng-model="itemLedgerId">
+                                <option value="0">Select</option>
+                                <option ng-repeat="data in ledgerList" value="{{data.id}}">{{data.sbName}}</option>
+                            </select>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="row mt-2">
+                    <div class="col-sm-6 row">
+                        <label class="col-sm-4">Reference NO</label>
+                        <div class="col-sm-8">
+                            <input class="form-control form-control-sm" ng-model="refNo" />
+                        </div>
+                    </div>
+                </div>
+                <h5 class="mt-3">Bill Info</h5>
+                <table class="table table-bordered table-sm">
+                    <tr class="text-center">
+                        <th>Bill Amount (TK)</th>
+                        <th>VAT Section</th>
+                        <th style="width:7%">VAT Rate</th>
+                        <th>Mushok 6.3 No.</th>
+                        <th>Mushok Date</th>
+                        <th>VAT Amount (Tk)</th>
+                        <th>Total Bill (Tk)</th>
+                    </tr>
+                    <tr>
+                        <td>
+                            <input class="form-control form-control-sm text-end" ng-model="billAmount" />
+                        </td>
+                        <td>
+                            <select class="form-select form-select-sm" ng-model="vatSection" ng-change="vatRatechange()">
+                                <option value="0" selected>Select</option>
+                                <option ng-repeat="data in vatSectionList" value="{{data.id}}">{{data.vatSectionName}}</option>
+                            </select>
+                        </td>
+                        <td>
+                            <input class="form-control form-control-sm text-center" ng-model="vatRate" ng-disabled="vatRateDisabled"/>
+                        </td>
+                        <td>
+                            <input class="form-control form-control-sm" ng-model="mushokNo" />
+                        </td>
+                        <td>
+                            <input type="date" class="form-control form-control-sm" ng-model="mushokDate" />
+                        </td>
+                        <td>
+                            <input class="form-control form-control-sm text-end" ng-model="vatAmount" />
+                        </td>
+                        <td>
+                            <input class="form-control form-control-sm text-end" ng-model="totalBill" />
+                        </td>
+                    </tr>
+                </table>
+
+                <div class="row">
+                    <div class="col-sm-7">
+                        <div class="row">
+                            <label class="col-sm-2 fw-bold">Narration</label>
+                            <div class="col-sm-10">
+                                <textarea class="form-control form-control-sm" ng-model="narration"></textarea>
+                            </div>
+                        </div>
+                        
+                    </div>
+                    <div class="col-sm-5">
+                        <button class="btn btn-success px-5 offset-4" ng-click="save()">Save</button>
+                    </div>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+
+<script>
+    var app = angular.module('myApp', []);
+    app.controller('myController', function ($scope, $http) {
+        angular.element(document).ready(function () {
+            $scope.GeVatSectionList();
+            $scope.GetLedgerList();
+            $scope.postingType = '0';
+            $scope.vatSection = '0';
+            $scope.itemLedgerId = '0';
+            $scope.vatRateDisabled = true;
+        })
+        $scope.date = new Date();
+        $scope.mushokDate = new Date();
+
+        $scope.vendorList = [];
+        $scope.selectedVendor = null;
+        $scope.searchVendor = function (startingKey) {
+            if (startingKey && startingKey.length > 1) {
+                let Url = '';
+                if (window.location.hostname == 'localhost')
+                    Url = '/Employee/GetVendorListByKey';
+                else
+                    Url = '/Employee/GetVendorListByKey';
+
+                $http.get(Url, { params: { startingKey: startingKey } })
+                    .then(function (response) {
+                        $scope.vendorList = response.data;
+                    }, function (error) {
+                        console.error(error);
+                    })
+            } else {
+                $scope.vendorList = [];
+            }
+        };
+
+        $scope.selectVendor = function (vendor) {
+            $scope.selectedVendor = vendor;
+            $scope.searchQuery = vendor.vendorName;
+            $scope.vendorList = [];
+
+        }
+
+        $scope.GeVatSectionList = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Payment/GetVatSection';
+            else
+                Url = '/Payment/GetVatSection';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.vatSectionList = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+        }
+
+        $scope.vatRatechange = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Payment/GetVatRate';
+            else
+                Url = '/Payment/GetVatRate';
+            var vatSection = ($scope.vatSection);
+            $http.get(Url, { params: { id: vatSection } })
+                .then(function (response) {
+                    $scope.vatRate = response.data[0].vatRate + '%';
+                }, function (error) {
+                    console.error(error);
+                })
+        }
+
+        $scope.GetLedgerList = function () {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Ledger/GetLedgerName';
+            else
+                Url = '/Ledger/GetLedgerName';
+
+            $http.get(Url)
+                .then(function (response) {
+                    $scope.ledgerList = response.data;
+                }, function (error) {
+                    console.error(error);
+                })
+        }
+
+        $scope.save = function () {
+            var date = $scope.date;
+            var postingType = $scope.postingType;
+            var searchQuery = $scope.searchQuery;
+            var itemLedgerId = $scope.itemLedgerId;
+            var refNo = $scope.refNo;
+            var billAmount = $scope.billAmount;
+            var vatSection = $scope.vatSection;
+
+            let requestModel = {
+
+            }
+        }
+    });
+</script>
+

@@ -571,7 +571,7 @@ namespace AccountingSystem.Repository
                     var invoices = await _db.QueryAsync<InvoiceViewModel>(
                         "USP_LIST_OF_INVOICE_V1_NEW",
                         dynamicParameters,
-                        commandType: CommandType.StoredProcedure);
+                commandType: CommandType.StoredProcedure, commandTimeout: 180);
 
                     return invoices.AsList();
                 }

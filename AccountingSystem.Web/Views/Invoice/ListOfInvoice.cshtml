@@ -5,6 +5,15 @@
 
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        .disabled-section {
+            pointer-events: none;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+    </style>
 </head>
 
 <div class="container-fluid" ng-app="myApp">
@@ -17,7 +26,7 @@
                     <option ng-repeat="product in productList" value="{{product.id}}">{{product.ladgerName}}</option>
                 </select>
 
-                <button type="button" class="btn btn-primary btn-sm" ng-click="processSelectedInvoices()">Show invoice list</button>
+                <button type="button" class="btn btn-primary btn-sm mt-3" ng-click="processSelectedInvoices()">Show invoice list</button>
 
                 <div>
                     <p>Invoice List: ( 321437 invoices found )</p>
@@ -28,47 +37,48 @@
                 <div class="row ">
                     <div class="col-md-8">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1">
-                            <label class="form-check-label" for="flexRadioDefault1">
+                            <input class="form-check-input" type="radio" name="validity" id="validInvoice" value="0" ng-model="validity" checked>
+                            <label class="form-check-label" for="validInvoice">
                                 Show All Valid Invoices
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" checked>
-                            <label class="form-check-label" for="flexRadioDefault2">
+                            <input class="form-check-input" type="radio" name="validity" id="deletedInvoices" value="1" ng-model="validity">
+                            <label class="form-check-label" for="deletedInvoices">
                                 Show Deleted Invoices
                             </label>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="diplayOrder" id="asc">
-                            <label class="form-check-label" for="asc">
+                            <input class="form-check-input" type="radio" name="order" id="ASC" ng-model="order" value="ASC">
+                            <label class="form-check-label" for="ASC">
                                 Ascending
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="diplayOrder" id="dec" checked>
-                            <label class="form-check-label" for="dec">
+                            <input class="form-check-input" type="radio" name="order" id="DESC" ng-model="order" value="DESC">
+                            <label class="form-check-label" for="DESC">
                                 Descending
                             </label>
                         </div>
                     </div>
+
 
                 </div>
                 <hr />
                 <div class="row mb-2">
                     <div class="col-md-8">
                         <div class="form-check">
-                            <input class="form-check-input" type="checkbox" value="" id="invduration" checked>
-                            <label class="form-check-label" for="invduration">
+                            <input class="form-check-input" type="checkbox" id="invoiceDuration" ng-model="invoiceDuration">
+                            <label class="form-check-label" for="invoiceDuration">
                                 Invoice Duration
                             </label>
                         </div>
 
-                        <div class=" d-inline-flex">
+                        <div class=" d-inline-flex" ng-class="{'disabled-section': !invoiceDuration}">
 
-                            <select id="operator" class="form-select form-select-s" aria-label=".form-select-sm example">
+                            <select id="operator" class="form-select form-select-s" aria-label=".form-select-sm" ng-model="Operator">
                                 <option value=""></option>
                                 <option value="<">&lt;</option>
                                 <option value="<=">&lt;=</option>
@@ -78,32 +88,32 @@
                                 <option value="range">range</option>
                             </select>
 
-                            <div class="d-flex gap-3 align-items-center ms-5">
+                            <div class="d-flex align-items-center ms-2">
                                 <div>
-                                    <input type="text" class="form-control input-sm" id="rangeFrom">
+                                    <input type="text" class="form-control input-sm px-1" id="rangeFrom" ng-model="fDuration">
                                 </div>
-                                <span>to</span>
-                                <input type="text" class="form-control input-sm" id="rangeTo">
-                                <span>days</span>
+                                <span class="mx-1">to</span>
+                                <input type="text" class="form-control input-sm px-1" id="rangeTo" ng-class="{'disabled-section': Operator != 'range'}" ng-model="tDuration">
+                                <span class="ms-1">days</span>
                             </div>
                         </div>
                     </div>
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="invstats" id="allinv">
+                            <input class="form-check-input" type="radio" name="invstats" id="allinv" value="0" ng-model="invstats" >
                             <label class="form-check-label" for="allinv">
                                 All invoices
                             </label>
                         </div>
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="invstats" id="dueinv" checked>
+                            <input class="form-check-input" type="radio" name="invstats" id="dueinv" value="1" ng-model="invstats">
                             <label class="form-check-label" for="dueinv">
                                 Due invoices
                             </label>
                         </div>
 
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="invstats" id="paidinv" checked>
+                            <input class="form-check-input" type="radio" name="invstats" id="paidinv" value="2" ng-model="invstats">
                             <label class="form-check-label" for="paidinv">
                                 Paid invoices
                             </label>
@@ -115,7 +125,7 @@
 
                     <div class="col-md-12">
 
-                        <div class=" d-flex flex-column gap-1">
+                        <div class=" d-flex flex-column gap-1" ng-class="{'disabled-section': invstats != 2}">
                             <label class=" form-label">
                                 Payment Duration
                             </label>
@@ -162,7 +172,7 @@
                         <div class="col-md-4">
                             <div>
                                 <lable class=" form-label">Search by Zone</lable>
-                                <select name="Zone" id="searchByZone" class=" form-select">
+                                <select name="Zone" id="searchByZone" class=" form-select" ng-model="Zone">
                                     <option value="">Select</option>
                                     <option value="Gulshan">Gulshan</option>
                                     <option value="Banani">Banani</option>
@@ -334,6 +344,28 @@
         $scope.salesPersonInput = '';
         $scope.salesPersonList = [];
         $scope.selectedSalesPerson = [];
+        $scope.selectedSalesPersonId = ''
+
+        // ui states
+        $scope.invoiceDuration = false;
+        $scope.invstats = '0';
+
+        // invoice list
+        $scope.pageNo = 1;
+        $scope.pageSize = "10";
+        $scope.productId = '';
+        $scope.validity = "0";
+        $scope.Operator = "";
+        $scope.fDuration = 0;
+        $scope.tDuration = 0;
+        $scope.fullPayment = "2";
+        $scope.blacklisted = "0";
+        $scope.order = "ASC";
+        $scope.location = "";
+        $scope.salesperson = "0";
+        $scope.fromRange = "03/01/2024";
+        $scope.toRange = "03/25/2024";
+        $scope.Zone = "";
 
         // Fetch products and populate the product list
         $scope.getProducts = function () {
@@ -385,14 +417,18 @@
 
 
         $scope.selectSalesPerson = function (person) {
+            console.log("Person ", person.salesPersonID)
+
             $scope.selectedSalesPerson = person;
             $scope.salesPersonInput = person.salesPersonName;
+            $scope.selectedSalesPersonId = person.salesPersonID;
             $scope.salesPersonList = [];
 
+
+
             // Add selected person to the array if not already added
-            if (!$scope.selectedSalesPersons.find(p => p.salesPersonID === person.salesPersonID)) {
-                $scope.selectedSalesPersons.push(person);
-            }
+            
+           
         };
 
         $scope.params = {
@@ -412,7 +448,7 @@
             toRange: "",
             Zone: ""
         };
-
+        /*
         $scope.loadInvoices = function () {
             var url = '';
             if (window.location.hostname == 'localhost')
@@ -470,32 +506,8 @@
                 });
         };
 
-        // another try
+        */
 
-        $scope.disableExcelButton = true;
-        $scope.showTable = false;
-        $scope.status = 'Success';
-        $scope.paymentMode = 'All';
-        $scope.serviceName = 'All';
-        $scope.fromDate = new Date();
-        $scope.toDate = new Date();
-
-
-        $scope.pageNo = 1;
-        $scope.pageSize = "10";
-        $scope.productId = '0';
-        $scope.validity = "0";
-        $scope.Operator = "";
-        $scope.fDuration = 0;
-        $scope.tDuration = 0;
-        $scope.fullPayment = "0";
-        $scope.blacklisted = 0;
-        $scope.order = "ASC";
-        $scope.location = "";
-        $scope.salesperson = "0";
-        $scope.fromRange = "";
-        $scope.toRange = "";
-        $scope.Zone = "";
 
 
         
@@ -513,11 +525,13 @@
                 Blacklisted: $scope.blacklisted,
                 Order: $scope.order,
                 Location: $scope.location,
-                Salesperson: $scope.salesperson,
+                Salesperson: $scope.selectedSalesPersonId,
                 FromRange: $scope.fromRange,
                 ToRange: $scope.toRange,
                 Zone: $scope.Zone
             };
+
+            console.log("before sending current state: ", requestBodyModel)
 
             let Url = '';
             if (window.location.hostname == 'localhost')
