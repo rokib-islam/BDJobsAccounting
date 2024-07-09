@@ -3,6 +3,7 @@
     ViewData["Title"] = "Company";
     var userId = Context.Session.GetInt32("UserID");
     var accessRight = Context.Session.GetString("AccessRight");
+    var IsAccDept = Context.Session.GetInt32("AccountDep");
 
     var accessRights = new string[0];
 
@@ -250,32 +251,38 @@
                                             <input class="form-control form-control-sm" ng-model="billingPhone" />
                                         </div>
                                     </div>
-                                    <div class="row mt-3">
-                                        <div class="col-sm-4">
-                                            <button class="btn btn-info btn-sm px-3" ng-click="billingDelete()" ng-disabled="billingDeleteDisabled">Delete</button>
+                                    @if (IsAccDept == 1)
+                                    {
+                                        <div class="row mt-3">
+                                            <div class="col-sm-4">
+                                                <button class="btn btn-info btn-sm px-3" ng-click="billingDelete()" ng-disabled="billingDeleteDisabled">Delete</button>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button class="btn btn-info btn-sm px-3" ng-click="billingUpdate()" ng-disabled="billingUpdateDisabled">Update</button>
+                                            </div>
+                                            <div class="col-sm-4">
+                                                <button class="btn btn-info btn-sm px-4" ng-click="billingAdd()" ng-disabled="billingAddDisabled">Add</button>
+                                            </div>
                                         </div>
-                                        <div class="col-sm-4">
-                                            <button class="btn btn-info btn-sm px-3" ng-click="billingUpdate()" ng-disabled="billingUpdateDisabled">Update</button>
-                                        </div>
-                                        <div class="col-sm-4">
-                                            <button class="btn btn-info btn-sm px-4" ng-click="billingAdd()" ng-disabled="billingAddDisabled">Add</button>
-                                        </div>
-                                    </div>
+                                    }
                                 </fieldset>
                             </div>
                         </div>
                     </div>
 
                     <div class="row offset-1 mt-2">
-                        <div class="col-sm-4">
-                            <button class="btn btn-info btn-sm px-3" ng-click="delete()" ng-disabled="deleteDisabled">Delete</button>
-                        </div>
-                        <div class="col-sm-4">
-                            <button class="btn btn-info btn-sm px-3" ng-click="update()" ng-disabled="updateDisabled">Update</button>
-                        </div>
-                        <div class="col-sm-4">
-                            <button class="btn btn-info btn-sm px-4" ng-click="add()" ng-disabled="addDisabled">Add</button>
-                        </div>
+                         @if (IsAccDept == 1)
+                        {
+                            <div class="col-sm-4">
+                                <button class="btn btn-info btn-sm px-3" ng-click="delete()" ng-disabled="deleteDisabled">Delete</button>
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-info btn-sm px-3" ng-click="update()" ng-disabled="updateDisabled">Update</button>
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-info btn-sm px-4" ng-click="add()" ng-disabled="addDisabled">Add</button>
+                            </div>
+                        }
                     </div>
                 </div>
             </div>
