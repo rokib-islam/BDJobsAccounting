@@ -66,7 +66,7 @@ namespace AccountingSystem.BLL
         {
             return _repository.OnlineInvocie_For_Payment_Doc(parameters);
         }
-         public Task<OnlineInvoiceResponseModel> OnlineInvocie_For_Payment_Doc_test(OnlineInvoiceRequestModel parameters)
+        public Task<OnlineInvoiceResponseModel> OnlineInvocie_For_Payment_Doc_test(OnlineInvoiceRequestModel parameters)
         {
             return _repository.OnlineInvocie_For_Payment_Doc_test(parameters);
         }
@@ -119,7 +119,7 @@ namespace AccountingSystem.BLL
         {
             return await _repository.AutoCashCollection_For_Payment_Doc(parameters);
         }
-         public async Task<CashCollectionAutoReponse> AutoCashCollection_For_Payment_Doc_test(CashCollectionAutoViewModel parameters)
+        public async Task<CashCollectionAutoReponse> AutoCashCollection_For_Payment_Doc_test(CashCollectionAutoViewModel parameters)
         {
             return await _repository.AutoCashCollection_For_Payment_Doc_test(parameters);
         }
@@ -153,6 +153,15 @@ namespace AccountingSystem.BLL
         public async Task<List<LoadbBouncedCheckDataModel>> LoadbBouncedCheckData(string invoiceNo)
         {
             return await _repository.LoadbBouncedCheckData(invoiceNo);
+        }
+        public Task<OnlineInvoiceResponseModel> CreatePaybaleByJobPost(OnlineInvoiceRequestModel parameters)
+        {
+            return _repository.CreatePaybaleByJobPost(parameters);
+        }
+
+        public Task<CashCollectionAutoReponse> AutoCashCollection_Multiple_Invoice(CashCollectionAutoViewModel parameters)
+        {
+            return _repository.AutoCashCollection_Multiple_Invoice(parameters);
         }
     }
 }

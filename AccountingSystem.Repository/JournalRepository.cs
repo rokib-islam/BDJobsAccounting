@@ -170,5 +170,95 @@ namespace AccountingSystem.Repository
             }
         }
 
+        public async Task<int> GetMaxJournalId()
+        {
+            var jId = 0;
+
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    jId = await _db.QueryFirstOrDefaultAsync<int>("SELECT MAX(Jid) FROM Journal", commandTimeout:30);
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+
+            return jId;
+
+            
+        }
+
+        public async Task<string> SaveJournalsAsync(List<JouralView> journals)
+        {
+            string result = "";
+            try
+            {
+                
+                using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    foreach (JouralView journal in journals)
+                    {
+                        journal.Description = !string.IsNullOrEmpty(journal.Description) ? journal.Description.Replace("'", "`") : "";
+
+                        string sql = @"
+                        INSERT INTO journal (jid, sid, description, debt, credit, Jdate, PostDate, UserID)
+                        VALUES (@JId, @SId, @Description, @Debt, @Credit, @JDate, @PostDate, @UserId);";
+
+                        var parameters = new
+                        {
+                            journal.jid,
+                            journal.sid,
+                            Description = journal.Description,
+                            journal.Debt,
+                            journal.Credit,
+                            journal.jDate,
+                            journal.PostDate,
+                            journal.UserID
+                        };
+
+
+                        // Execute query asynchronously
+                        await connection.ExecuteAsync(sql, parameters);
+                        result = "Success";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+            return result;
+
+        }
+
+        public async Task<string> MakeJournalVoucherAsync(int jId, string postDate)
+        {
+            var result = "";
+            try
+            {
+                using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    var parameters = new { JId = jId, PostDate = postDate };
+                    string sql = "USP_MakeJournalVoucher @JId, @PostDate";
+
+                    await connection.ExecuteAsync(sql, parameters);
+                    result = "Success";
+                }
+            }
+            catch (Exception ex)
+            {
+
+                throw ex;
+            }
+            return result;
+
+        }
+
     }
 }

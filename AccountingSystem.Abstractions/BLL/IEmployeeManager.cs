@@ -7,6 +7,7 @@ namespace AccountingSystem.Abstractions.BLL
     {
         //Users GetUsers(string userName, string password);
         Task<List<EmployeeModel>> GetEmployeeListByKey(string key);
+        Task<List<VendorModel>> GetVendorListByKey(string key);
         Task<string> InsertProvidentFundPayment(InsertProvidentFundPaymentModel model);
         Task<List<Department_Function_Rank_Model>> LoadAllDepartment();
         Task<List<Department_Function_Rank_Model>> LoadAllFunction();

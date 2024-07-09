@@ -40,5 +40,18 @@ namespace AccountingSystem.BLL
         {
             return await _repository.GetJournalsForTrialBalance(pageNo, pageSize, tno, fromDate, endDate);
         }
+        public async Task<int> GetMaxJournalId()
+        {
+            return await _repository.GetMaxJournalId();
+        }
+
+        public async Task<string> SaveJournalsAsync(List<JouralView> journals)
+        {
+            return await _repository.SaveJournalsAsync(journals);
+        }
+        public async Task<string> MakeJournalVoucherAsync(int jId, string postDate)
+        {
+            return await _repository.MakeJournalVoucherAsync(jId, postDate);
+        }
     }
 }

@@ -123,5 +123,30 @@ namespace AccountingSystem.Repository
 
         }
 
+        public async Task<List<JournalVoucherReport>> GetVoucherReportAsync(int Jid)
+        {
+            var vouchers = new List<JournalVoucherReport>();
+
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+
+                    var sqlQuery = "USP_JOURNAL_VOUCHER_RPT";
+                    var parameters = new { JID = Jid };
+
+                    var result = await _db.QueryAsync<JournalVoucherReport>(sqlQuery, parameters, commandType: CommandType.StoredProcedure);
+
+                    vouchers = result.AsList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+
+            return vouchers;
+        }
+
     }
 }

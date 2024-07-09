@@ -21,5 +21,6 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<LedgerViewModel>> GetProductById(int pId);
         Task<List<LoadServiceListModel>> LoadServiceList(LoadServiceListModel model);
         Task<List<LedgerViewModel>> GetStaffPFIAccountList();
+        Task<List<LedgerViewModel>> GetLedgerName();
     }
 }

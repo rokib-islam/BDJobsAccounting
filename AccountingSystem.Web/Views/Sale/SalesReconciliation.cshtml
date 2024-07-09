@@ -175,13 +175,15 @@
                         $scope.totalPrice = response.data.reduce((a, b) => a + b.salesPrice, 0);
                         $scope.totalTax = response.data.reduce((a, b) => a + b.tax, 0);
 
-                        if ($scope.saleReconciliationData.paymentMethod == 5) {
-                            $scope.paymentMethod = 'Bkash'
-                        }
-                        else {
-                            $scope.paymentMethod = 'SSL'
-                        }
+                       
                         angular.forEach($scope.saleReconciliationData, function (item) {
+                            if (item.paymentMethod == 5) {
+                                $scope.paymentMethod = 'Bkash';
+                            }
+                            else {
+                                $scope.paymentMethod = 'SSL';
+                            }
+
                             if (item.addType === 1 && item.blueCollar === 1 && item.jType === 'H') {
                                 $scope.serviceName = 'Hot Jobs Listing (Blue Collar)';
                             } 

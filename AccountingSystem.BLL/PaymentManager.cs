@@ -41,6 +41,19 @@ namespace AccountingSystem.BLL
         {
             return await _repository.LoadPfPaymentData(model);
         }
+        public async Task<List<VatSectionModel>> GetVatSection()
+        {
+            return await _repository.GetVatSection();
+        }
+
+        public async Task<List<VatSectionModel>> GetVatRateAsync(int id)
+        {
+            return await _repository.GetVatRateAsync(id);
+        }
+        public async Task<string> InsertPaymentModule(PaymentModuleModel model)
+        {
+            return await _repository.InsertPaymentModule(model);
+        }
 
     }
 }

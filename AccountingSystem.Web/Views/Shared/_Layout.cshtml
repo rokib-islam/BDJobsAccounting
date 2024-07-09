@@ -2,6 +2,7 @@
 @{
     var username = Context.Session.GetString("Name");
     var userId = Context.Session.GetInt32("UserID");
+    var IsAccDept = Context.Session.GetInt32("AccountDep");
     // bool accountDep = user.AccountDep;
 
     
@@ -51,38 +52,52 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="AccountingHome">Privacy</a>
                         </li> *@
-                        <li class="nav-item dropdown">
-                            <!-- Add dropdown class to the list item -->
-                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Ledger
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Ledger" asp-action="ListOfServices">List of Service</a>
+                        @if (IsAccDept == 1)
+                        {
+                            <li class="nav-item dropdown">
+                                <!-- Add dropdown class to the list item -->
+                                <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Ledger
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Ledger" asp-action="ListOfServices">List of Service</a>
 
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <!-- Add dropdown class to the list item -->
-                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Journal
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Journal" asp-action="ViewJournal">View Journal</a>
-                                
-                            </div>
-                        </li>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <!-- Add dropdown class to the list item -->
+                                <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Journal
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Journal" asp-action="ViewJournal">View Journal</a>
+                                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Journal" asp-action="MakeJournal">Make Journal</a>
+                                </div>
+                            </li>
+                        }
                         <li class="nav-item dropdown">
                             <!-- Add dropdown class to the list item -->
                             <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Sale
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="OnlineJobs">Online Jobs</a>
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="NewSale">New Sale</a>
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="EditSale">Edit Sale</a>
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="CashCollection">Cash Collection</a>
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="AutoBilling">Auto SMS Alert Apply Limit</a>
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="SalesReconciliation">Sales Reconciliation</a>
+                                @if (IsAccDept == 1)
+                                {
+                                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="OnlineJobs">Online Jobs</a>
+                                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="NewSale">New Sale</a>
+                                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="EditSale">Edit Sale</a>
+                                    
+                                }
+                                @if (IsAccDept == 1 || IsAccDept == 0)
+                                {
+                                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="CashCollection">Cash Collection</a>
+                                }
+                                
+                                @if (IsAccDept == 1)
+                                {
+                                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="AutoBilling">Auto SMS Alert Apply Limit</a>
+                                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Sale" asp-action="SalesReconciliation">Sales Reconciliation</a>
+                                }
                             </div>
                         </li>
                         <li class="nav-item dropdown">
@@ -93,7 +108,7 @@
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="MakeInvoice">Make Invoice</a>
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="OnlineInvoice">Online Invoice</a>
-                                @if (userId == 28 || userId == 47 || userId == 120 || userId == 55 || userId == 1002)
+                                @if (userId == 28 || userId == 47 || userId == 120 || userId == 55 || userId == 1002 || userId == 9 || userId == 125 || IsAccDept == 0)
                                 {
                                     <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="OnlinePaymentVarification">Online Payment Varification</a>
                                 }
@@ -114,36 +129,50 @@
                                 Report
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Report" asp-action="TrailBalance">Trail Balance</a>
-                                <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Report" asp-action="VatTaxCollectionReport">Vat Tax Collection</a>
+                                @if (IsAccDept == 1)
+                                    {
+                                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Report" asp-action="TrailBalance">Trail Balance</a>
+                                    <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Report" asp-action="VatTaxCollectionReport">Vat Tax Collection</a>
+                                    }
                                 <a class="nav-link text-dark dropdown-item" asp-area="" asp-controller="Invoice" asp-action="BouncedCheckReport">Bounced Cheque Report</a>
                                 
                             </div>
                         </li>
-                        <li class="nav-item dropdown">
+                        @if (IsAccDept == 1)
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Misc
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">                               
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Sale" asp-action="GetVatAndTax">VAT & TAX</a>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    Payroll
+                                </a>
+                                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                    @if (userId == 28 || userId == 47 || userId == 9)
+                                    {
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="employeeInfo">Employee Info</a>
+                                    }
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPayment">Provident Fund</a>
+                                    @if (userId == 28 || userId == 9)
+                                    {
+                                        <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPaymentReport">Provident Fund Report</a>
+                                    }
+                                </div>
+                            </li>
+                        }
+                        @*  <li class="nav-item dropdown">
                             <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Misc
-                            </a>
-                            <div class="dropdown-menu" aria-labelledby="navbarDropdown">                               
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Sale" asp-action="GetVatAndTax">VAT & TAX</a>
-                            </div>
-                        </li>
-                        <li class="nav-item dropdown">
-                            <a class="nav-link text-dark dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Payroll
+                                Payment
                             </a>
                             <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                @if (userId == 28 || userId == 47 || userId == 9)
-                                {
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Employee" asp-action="employeeInfo">Employee Info</a>
-                                }
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPayment">Provident Fund</a>
-                                @if (userId == 28)
-                                {
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="ProvidentFundPaymentReport">Provident Fund Report</a>
-                                }
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Payment" asp-action="PaymentModule">Payment Module</a>
                             </div>
-                        </li>
+                        </li> *@
                     </ul>
 
                     <div class="navbar-text ml-auto me-2" style="font-size:13px">

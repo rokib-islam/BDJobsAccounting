@@ -713,6 +713,62 @@ namespace AccountingSystem.Web.Controllers
             }
         }
 
+        public async Task<IActionResult> ShowJournalVoucher(int Jid, string format)
+        {
+            try
+            {
+                double totalAmount = 0;
+
+
+                var reportData = await _ReportManager.GetVoucherReportAsync(Jid);
+
+                totalAmount = reportData.Sum(report => report.debt);
+                string wordamount = await ConvertToWords((int)Math.Round(totalAmount));
+
+                var datatable = Helpers.ListiToDataTable(reportData);
+
+                using var report = new LocalReport();
+                var parameters = new[]
+                {
+                new ReportParameter("SumAmount", totalAmount.ToString("N2")),
+                new ReportParameter("AmountInWord", wordamount),
+                };
+
+                using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream("AccountingSystem.Web.Reports.rptJournalVoucherReport.rdlc");
+                report.LoadReportDefinition(rs);
+                report.DataSources.Add(new ReportDataSource("JournalVoucher", datatable));
+                report.SetParameters(parameters);
+
+                byte[] fileContents;
+                string contentType;
+                string fileName;
+
+                if (format.ToLower() == "pdf")
+                {
+                    fileContents = report.Render("pdf");
+                    contentType = "application/pdf";
+                    fileName = "InvoiceReport.pdf";
+                }
+                else if (format.ToLower() == "excel")
+                {
+                    fileContents = report.Render("excel");
+                    contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
+                    fileName = "InvoiceReport.xlsx";
+                }
+                else
+                {
+                    // Handle unsupported format
+                    return BadRequest("Unsupported format. Please specify either 'pdf' or 'excel'.");
+                }
+
+                return File(fileContents, contentType, fileName);
+            }
+            catch
+            {
+                return StatusCode(500, "An error occurred while generating the report.");
+            }
+        }
+
 
 
 

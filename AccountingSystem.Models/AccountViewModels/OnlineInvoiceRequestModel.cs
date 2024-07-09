@@ -30,6 +30,8 @@
         public decimal TDS { get; set; }
         public decimal VDS { get; set; }
         public string jDate { get; set; }
+        public int Q_job { get; set; }
+        public int IsUpgrade { get; set; } = 0;
 
     }
 }

@@ -25,6 +25,12 @@ namespace AccountingSystem.Web.Controllers
             return Json(result);
         }
 
+        public async Task<IActionResult> GetVendorListByKey(string startingKey)
+        {
+            var result = await _EmployeeManager.GetVendorListByKey(startingKey);
+            return Json(result);
+        }
+
         public async Task<IActionResult> InsertProvidentFundPayment([FromBody] InsertProvidentFundPaymentModel model)
         {
             var resp = await _EmployeeManager.InsertProvidentFundPayment(model);
@@ -123,6 +129,16 @@ namespace AccountingSystem.Web.Controllers
         {
             var result = await _EmployeeManager.ImportACS();
             return Json(result);
+        }
+
+        public IActionResult EmployeeSalaryPosting()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
         }
 
     }

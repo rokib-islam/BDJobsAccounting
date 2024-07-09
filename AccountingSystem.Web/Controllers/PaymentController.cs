@@ -74,5 +74,32 @@ namespace AccountingSystem.Web.Controllers
             var result = await _PaymentManager.LoadPfPaymentData(model);
             return Json(result);
         }
+        public async Task<IActionResult> GetVatSection()
+        {
+            var result = await _PaymentManager.GetVatSection();
+            return Json(result);
+        }
+        
+        public async Task<IActionResult> GetVatRate(int id)
+        {
+            var result = await _PaymentManager.GetVatRateAsync(id);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> InsertPaymentModule([FromBody] PaymentModuleModel model)
+        {
+            var result = await _PaymentManager.InsertPaymentModule(model);
+            return Json(result);
+        }
+
+        public IActionResult PaymentModule()
+        {
+            ClaimsPrincipal claimusers = HttpContext.User;
+            if (claimusers.Identity.IsAuthenticated)
+                return View();
+
+            else
+                return RedirectToAction("Index", "Home");
+        }
     }
 }

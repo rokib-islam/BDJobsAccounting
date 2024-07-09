@@ -45,6 +45,19 @@ namespace AccountingSystem.Repository
 
         }
 
+        public async Task<List<VendorModel>> GetVendorListByKey(string key)
+        {
+            using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+            {
+                var query = "SELECT TOP 10 VendorId,VendorName FROM VendorInfo WHERE VendorName LIKE @Key ORDER BY VendorName";
+                var parameters = new { Key = "%" + key + "%" };
+
+                var result = await _db.QueryAsync<VendorModel>(query, parameters);
+                return result.ToList();
+            }
+
+        }
+
         public async Task<string> InsertProvidentFundPayment(InsertProvidentFundPaymentModel model)
         {
             var res = "";

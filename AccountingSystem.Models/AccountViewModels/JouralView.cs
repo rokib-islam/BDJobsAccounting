@@ -18,5 +18,6 @@
         public string UpdatedDate { get; set; }
         public string UpdatedBy { get; set; }
         public string TotalRecords { get; set; }
+        public string PostDate { get; set; }
     }
 }
