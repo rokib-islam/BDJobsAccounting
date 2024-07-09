@@ -142,7 +142,7 @@ namespace AccountingSystem.Repository
             using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
             {
                 var query = "SELECT Id, SBName FROM Ledger WHERE LedgerAcc = 1 and SBName like @Key ORDER BY SBName";
-                var parameters = new { Key = "%" + key + "%" };
+                var parameters = new { Key = key + "%" };
 
                 var result = await _db.QueryAsync<LedgerViewModel>(query, parameters);
                 return result.ToList();
