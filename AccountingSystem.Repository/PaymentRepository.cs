@@ -207,11 +207,11 @@ namespace AccountingSystem.Repository
                     parameters.Add("@VATAmount", model.VATAmount);
                     parameters.Add("@TotalBill", model.TotalBill);
                     parameters.Add("@Narration", model.Narration);
-                    parameters.Add("@PaymentStatus", model.PaymentStatus);
-                    parameters.Add("@VarifiedById", model.VarifiedById);
-                    parameters.Add("@VarifiedDate", model.VarifiedDate);
+                    //parameters.Add("@PaymentStatus", model.PaymentStatus);
+                    //parameters.Add("@VarifiedById", model.VarifiedById);
+                    //parameters.Add("@VarifiedDate", model.VarifiedDate);
                     parameters.Add("@EntryBy", model.EntryBy);
-                    parameters.Add("@EntryDate", model.EntryDate);
+                    //parameters.Add("@EntryDate", model.EntryDate);
                     
 
                     await _db.ExecuteAsync("USP_InsertPaymentModuleInfo", parameters, commandType: CommandType.StoredProcedure);

@@ -45,7 +45,7 @@ namespace AccountingSystem.BLL
             return await _repository.GetMaxJournalId();
         }
 
-        public async Task<string> SaveJournalsAsync(List<JouralView> journals)
+        public async Task<int> SaveJournalsAsync(List<JouralView> journals)
         {
             return await _repository.SaveJournalsAsync(journals);
         }

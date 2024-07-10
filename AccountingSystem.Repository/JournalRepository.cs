@@ -6,6 +6,7 @@ using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using System.Data;
+using System.Security.Cryptography;
 
 namespace AccountingSystem.Repository
 {
@@ -194,14 +195,16 @@ namespace AccountingSystem.Repository
             
         }
 
-        public async Task<string> SaveJournalsAsync(List<JouralView> journals)
+        public async Task<int> SaveJournalsAsync(List<JouralView> journals)
         {
-            string result = "";
+            int result = 0;
             try
             {
                 
                 using (var connection = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
                 {
+                    var jId = await connection.QueryFirstOrDefaultAsync<int>("SELECT MAX(Jid) + 1 FROM Journal", commandTimeout: 30);
+
                     foreach (JouralView journal in journals)
                     {
                         journal.Description = !string.IsNullOrEmpty(journal.Description) ? journal.Description.Replace("'", "`") : "";
@@ -212,7 +215,7 @@ namespace AccountingSystem.Repository
 
                         var parameters = new
                         {
-                            journal.jid,
+                            jId,
                             journal.sid,
                             Description = journal.Description,
                             journal.Debt,
@@ -225,7 +228,7 @@ namespace AccountingSystem.Repository
 
                         // Execute query asynchronously
                         await connection.ExecuteAsync(sql, parameters);
-                        result = "Success";
+                        result = jId;
                     }
                 }
             }
