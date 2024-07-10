@@ -79,7 +79,7 @@ namespace AccountingSystem.Web.Controllers
         public async Task<IActionResult> SaveJournalUpdateLedgerMakeVoucher([FromBody] List<JouralView> journals)
         {
             var result= await _journalManager.SaveJournalsAsync(journals);
-            await _journalManager.MakeJournalVoucherAsync(journals[0].jid, journals[0].PostDate.ToString());
+            await _journalManager.MakeJournalVoucherAsync(result, journals[0].PostDate.ToString());
 
             return Json(result);
         }
