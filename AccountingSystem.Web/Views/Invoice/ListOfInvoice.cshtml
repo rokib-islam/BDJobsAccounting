@@ -100,7 +100,7 @@
                     </div>
                     <div class="col-md-4">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="invstats" id="allinv" value="0" ng-model="invstats" >
+                            <input class="form-check-input" type="radio" name="invstats" id="allinv" value="0" ng-model="invstats" checked>
                             <label class="form-check-label" for="allinv">
                                 All invoices
                             </label>
@@ -133,12 +133,12 @@
 
                                 <div class="d-flex align-items-center gap-4">
                                     <label class=" form-label">From</label>
-                                    <input type="date" class="form-control form-control-sm ">
+                                    <input type="date" class="form-control form-control-sm " ng-model="fromRange">
                                 </div>
 
                                 <div class="d-flex align-items-center gap-4">
                                     <label class=" form-label">To</label>
-                                    <input type="date" class="form-control form-control-sm ">
+                                    <input type="date" class="form-control form-control-sm " ng-model="toRange">
                                 </div>
 
                             </div>
@@ -148,20 +148,21 @@
                 </div>
                 <hr />
                 <div style=" padding: 10px; background-color: #f8fafc; border: 1px solid #00000010; border-radius: 4px;">
-                    <div class="row">
-                        <div class="col-md-6">
+                    <div class="row mb-3">
+                        <div class="col-md-8">
                             <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="" checked="">
-                                <label class="form-check-label" for="">
+                                <input class="form-check-input" type="checkbox" id="blacklisted" ng-model="blacklisted" ng-true-value="1" ng-false-value="0">
+                                <label class="form-check-label" for="blacklisted">
                                     Show with black listed companies
                                 </label>
                             </div>
                         </div>
 
-                        <div class="col-md-6">
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" value="" id="" checked="">
-                                <label class="form-check-label" for="">
+
+                        <div class="col-md-4">
+                            <div class="form-check" ng-class="{'disabled-section': invstats != 2}">
+                                <input class="form-check-input" type="checkbox" id="salesReport" ng-model="salesReport" ng-true-value="1" ng-false-value="0">
+                                <label class="form-check-label" for="salesReport">
                                     Sales Report
                                 </label>
                             </div>
@@ -171,7 +172,7 @@
                     <div class="row">
                         <div class="col-md-4">
                             <div>
-                                <lable class=" form-label">Search by Zone</lable>
+                                <lable class=" form-label d-inline-block mb-2">Search by Zone</lable>
                                 <select name="Zone" id="searchByZone" class=" form-select" ng-model="Zone">
                                     <option value="">Select</option>
                                     <option value="Gulshan">Gulshan</option>
@@ -190,7 +191,7 @@
 
                         <div class="col-md-4">
                             <div>
-                                <lable class=" form-label mb-2">Search by Location</lable>
+                                <lable class=" form-label d-inline-block mb-2">Search by Location</lable>
                                 <input type="text" class="form-control input-sm" id="searchByLocation">
 
                             </div>
@@ -284,48 +285,24 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <th scope="row">1</th>
-                            <td>ABC Corp</td>
-                            <td>$1,000</td>
-                            <td>2024-07-01</td>
-                            <td>John Doe</td>
-                            <td>Product A</td>
-                            <td>Jane Smith</td>
-                            <td>(555) 123-4567</td>
-                            <td>Yes</td>
-                            <td>30</td>
-                            <td>1</td>
-                            <td>10 days</td>
+
+
+
+                        <tr ng-repeat="invoice in invoiceList">
+                            <th scope="row">{{ invoice.invoice_no}}</th>
+                            <td>{{invoice.companyName}}</td>
+                            <td>{{invoice.tamount}}</td>
+                            <td>{{invoice.invsendDt}}</td>
+                            <td>{{invoice.salesPersonName}}</td>
+                            <td>{{invoice.productName}}</td>
+                            <td>{{invoice.contactPerson}}</td>
+                            <td>{{invoice.contactPersonPhone}}</td>
+                            <td>{{invoice.fullPayment}}</td>
+                            <td>{{invoice.ageignDay}}</td>
+                            <td>{{invoice.productWiseSequence}}</td>
+                            <td>{{invoice.lastInvDiff}}</td>
                         </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>XYZ Inc</td>
-                            <td>$2,500</td>
-                            <td>2024-06-20</td>
-                            <td>Alice Johnson</td>
-                            <td>Product B</td>
-                            <td>Michael Brown</td>
-                            <td>(555) 987-6543</td>
-                            <td>No</td>
-                            <td>15</td>
-                            <td>2</td>
-                            <td>5 days</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>LMN LLC</td>
-                            <td>$3,750</td>
-                            <td>2024-06-25</td>
-                            <td>Bob White</td>
-                            <td>Product C</td>
-                            <td>Susan Green</td>
-                            <td>(555) 456-7890</td>
-                            <td>Yes</td>
-                            <td>7</td>
-                            <td>3</td>
-                            <td>20 days</td>
-                        </tr>
+                       
                     </tbody>
                 </table>
             </div>
@@ -348,24 +325,30 @@
 
         // ui states
         $scope.invoiceDuration = false;
-        $scope.invstats = '0';
+        
 
         // invoice list
         $scope.pageNo = 1;
-        $scope.pageSize = "10";
+        $scope.pageSize = 10;
         $scope.productId = '';
         $scope.validity = "0";
         $scope.Operator = "";
         $scope.fDuration = 0;
         $scope.tDuration = 0;
-        $scope.fullPayment = "2";
-        $scope.blacklisted = "0";
+        $scope.invstats = '0';
+        $scope.blacklisted = 0;
         $scope.order = "ASC";
         $scope.location = "";
         $scope.salesperson = "0";
-        $scope.fromRange = "03/01/2024";
-        $scope.toRange = "03/25/2024";
+        $scope.fromRange = "";
+        $scope.toRange = "";
         $scope.Zone = "";
+
+        // only for test
+
+
+
+
 
         // Fetch products and populate the product list
         $scope.getProducts = function () {
@@ -431,105 +414,63 @@
            
         };
 
-        $scope.params = {
-            pageNo: 1,
-            pageSize: "10",
-            productId: "'0'",
-            validity: "0",
-            Operator: "",
-            fDuration: 0,
-            tDuration: 0,
-            fullPayment: "0",
-            blacklisted: 0,
-            order: "ASC",
-            location: "",
-            salesperson: "0",
-            fromRange: "",
-            toRange: "",
-            Zone: ""
-        };
-        /*
-        $scope.loadInvoices = function () {
-            var url = '';
-            if (window.location.hostname == 'localhost')
-                url = '/Invoice/GetInvoiceList';
-            else
-                url = '/Invoice/GetInvoiceList';
+       
 
-            var requestData = {
-                pageNo: $scope.params.pageNo,
-                pageSize: $scope.params.pageSize,
-                productId: $scope.params.productId,
-                validity: $scope.params.validity,
-                Operator: $scope.params.Operator,
-                fDuration: $scope.params.fDuration,
-                tDuration: $scope.params.tDuration,
-                fullPayment: $scope.params.fullPayment,
-                blacklisted: $scope.params.blacklisted,
-                order: $scope.params.order,
-                location: $scope.params.location,
-                salesperson: $scope.params.salesperson,
-                fromRange: $scope.params.fromRange,
-                toRange: $scope.params.toRange,
-                Zone: $scope.params.Zone
-            };
-
-            $http.post('/Invoice/GetInvoiceList', { params: requestData })
-                .then(function (response) {
-                    console.log('Success:', response.data);
-                    $scope.responseData = response.data;
-
-                    var total = 0;
-                    var cnt = (($scope.params.pageNo - 1) * $scope.params.pageSize) + 1;
-                    angular.forEach(response.data, function (value) {
-                        // Your logic to handle response data goes here
-                        // For example:
-                        total = value.TotalInvoices;
-                        cnt++;
-                    });
-
-                    // Pagination logic
-                    var pager = Math.ceil(total / $scope.params.pageSize);
-                    pager = pager === 0 ? 1 : pager;
-
-                    $scope.totalPages = pager;
-                    $scope.currentPage = $scope.params.pageNo;
-
-                    // Enable/disable buttons based on response
-                    $scope.showList = response.data.length === 0 ? true : false;
-                    $scope.showInvList = false;
-
-                    // Your additional logic to handle the response
-                })
-                .catch(function (error) {
-                    console.error('Error:', error);
-                });
-        };
-
-        */
-
-
+        $scope.$watch('blacklisted', function (newValue, oldValue) {
+            if (newValue === true) {
+                $scope.blacklisted = 1;
+            } else if (newValue === false) {
+                $scope.blacklisted = 0;
+            }
+        });
 
         
-        $scope.onlineData = []
+        $scope.invoiceList = []
         $scope.load = function () {
+            
+            /*
+
             let requestBodyModel = {
-                PageNo: $scope.pageNo,
-                PageSize: $scope.pageSize,
+                PageNo: parseInt($scope.pageNo),
+                PageSize: parseInt($scope.pageSize),
                 ProductId: $scope.productId,
-                Validity: $scope.validity,
+                Validity: parseInt($scope.validity),
                 Operator: $scope.Operator,
-                FromDuration: $scope.fDuration,
-                ToDuration: $scope.tDuration,
-                FullPayment: $scope.fullPayment,
-                Blacklisted: $scope.blacklisted,
+                FromDuration: parseInt($scope.fDuration),
+                ToDuration: parseInt($scope.tDuration),
+                FullPayment: parseInt($scope.invstats),
+                Blacklisted: parseInt($scope.blacklisted),
                 Order: $scope.order,
                 Location: $scope.location,
-                Salesperson: $scope.selectedSalesPersonId,
+                Salesperson: parseInt($scope.selectedSalesPersonId),
                 FromRange: $scope.fromRange,
                 ToRange: $scope.toRange,
                 Zone: $scope.Zone
             };
+
+            
+            
+            */
+
+            let requestBodyModel = {
+                PageNo: parseInt($scope.pageNo) || 1,
+                PageSize: parseInt($scope.pageSize) || 10,
+                ProductId: $scope.productId || '',
+                Validity: parseInt($scope.validity) || 0,
+                Operator: $scope.Operator || '',
+                FromDuration: parseInt($scope.fDuration) || 0,
+                ToDuration: parseInt($scope.tDuration) || 0,
+                FullPayment: parseInt($scope.invstats) || 0,
+                Blacklisted: parseInt($scope.blacklisted) || 0,
+                Order: $scope.order || 'ASC',
+                Location: $scope.location || '',
+                Salesperson: parseInt($scope.selectedSalesPersonId) || 0,
+                FromRange: $scope.fromRange || '',
+                ToRange: $scope.toRange || '',
+                Zone: $scope.Zone || ''
+            };
+            
+
 
             console.log("before sending current state: ", requestBodyModel)
 
@@ -541,7 +482,7 @@
 
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
-                    $scope.onlineData = response.data;
+                    $scope.invoiceList = response.data;
                     console.log(response.data)
                 })
                 .catch(function (error) {
