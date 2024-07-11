@@ -16,5 +16,6 @@
         public int Salesperson { get; set; }
         public string FromRange { get; set; }
         public string ToRange { get; set; }
+        public string Zone { get; set; }
     }
 }

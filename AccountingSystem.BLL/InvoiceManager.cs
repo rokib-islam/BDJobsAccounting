@@ -8,9 +8,11 @@ namespace AccountingSystem.BLL
     public class InvoiceManager : IInvoiceManager
     {
         private readonly IInvoiceRepository _repository;
+ 
         public InvoiceManager(IInvoiceRepository repository) //: base(repository)
         {
             _repository = repository;
+
         }
 
         public Task<bool> CheckInvoiceNo(string invoiceNo)

@@ -565,6 +565,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@SalesPersonID", parameters.Salesperson);
                     dynamicParameters.Add("@FromRange", parameters.FromRange);
                     dynamicParameters.Add("@ToRange", parameters.ToRange);
+                    dynamicParameters.Add("@Zone",parameters.Zone);
 
 
                     var invoices = await _db.QueryAsync<InvoiceViewModel>(
