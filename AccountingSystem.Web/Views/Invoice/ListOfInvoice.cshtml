@@ -13,14 +13,28 @@
             opacity: 0.5;
         }
 
+        .title {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .table th {
+            font-size: 12px;
+            
+        }
+
+        .table td, .table th {
+            padding: .5rem;
+        }
+
     </style>
 </head>
 
 <div class="container-fluid" ng-app="myApp">
-    <div ng-controller="invoiceController">
+    <div ng-controller="invoiceController" class="py-3">
         <div class="row">
             <div class=" col-md-4">
-                <h2>Product List</h2>
+                <h2 class="title">Product List</h2>
 
                 <select class="form-select" multiple aria-label="multiple select example" ng-model="selectedInvoices">
                     <option ng-repeat="product in productList" value="{{product.id}}">{{product.ladgerName}}</option>
@@ -29,11 +43,11 @@
                 <button type="button" class="btn btn-primary btn-sm mt-3" ng-click="processSelectedInvoices()">Show invoice list</button>
 
                 <div>
-                    <p>Invoice List: ( 321437 invoices found )</p>
+                    <p>Invoice List: (  invoices found )</p>
                 </div>
             </div>
             <div class=" col-md-6">
-                <h2>Filters</h2>
+                <h2 class="title">Filters</h2>
                 <div class="row ">
                     <div class="col-md-8">
                         <div class="form-check">
@@ -134,11 +148,13 @@
                                 <div class="d-flex align-items-center gap-4">
                                     <label class=" form-label">From</label>
                                     <input type="date" class="form-control form-control-sm " ng-model="fromRange">
+
                                 </div>
 
                                 <div class="d-flex align-items-center gap-4">
                                     <label class=" form-label">To</label>
                                     <input type="date" class="form-control form-control-sm " ng-model="toRange">
+
                                 </div>
 
                             </div>
@@ -214,7 +230,7 @@
 
             </div>
             <div class=" col-md-2">
-                <h2>Product List</h2>
+                <h2 class="title">Product List</h>
             </div>
         </div>
 
@@ -228,7 +244,7 @@
             <div class="col-md-6">
                 <div class="col-sm-5" style="margin-left:-15px;">
                     Show
-                    <select id="pagesize" style="padding: 0px 15px 0px 2px; background: url(&quot;/images/down_arrow.png&quot;) right center no-repeat white; border: 1px solid gray;">
+                    <select id="pagesize" ng-model="pageSize" style="padding: 0px 15px 0px 2px; background: url('/images/down_arrow.png') right center no-repeat white; border: 1px solid gray;">
                         <option value="10">10</option>
                         <option value="20">20</option>
                         <option value="30">30</option>
@@ -240,29 +256,27 @@
             </div>
 
             <div class="col-md-6">
-                <div class=" d-flex align-items-center justify-content-end">
+                <div class="d-flex align-items-center justify-content-end">
                     <nav aria-label="Page navigation example">
                         <ul class="pagination">
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Previous">
-                                    <span aria-hidden="true">&laquo;</span>
+                            <li class="page-item" ng-class="{disabled: pageNo === 1}">
+                                <a class="page-link" href="#" aria-label="Previous" ng-click="changePage(pageNo - 1)">
+                                    <span aria-hidden="true">«</span>
                                 </a>
                             </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#" aria-label="Next">
-                                    <span aria-hidden="true">&raquo;</span>
+                            <li class="page-item" ng-repeat="n in [].constructor(getTotalPages()) track by $index" ng-class="{active: $index + 1 === pageNo}">
+                                <a class="page-link" href="#" ng-click="changePage($index + 1)">{{ $index + 1 }}</a>
+                            </li>
+                            <li class="page-item" ng-class="{disabled: pageNo === getTotalPages()}">
+                                <a class="page-link" href="#" aria-label="Next" ng-click="changePage(pageNo + 1)">
+                                    <span aria-hidden="true">»</span>
                                 </a>
                             </li>
                         </ul>
                     </nav>
                 </div>
             </div>
-
         </div>
-
         <!-- Table -->
 
         <div class="row">
@@ -325,7 +339,7 @@
 
         // ui states
         $scope.invoiceDuration = false;
-        
+        $scope.totalItems = 0;
 
         // invoice list
         $scope.pageNo = 1;
@@ -343,11 +357,6 @@
         $scope.fromRange = "";
         $scope.toRange = "";
         $scope.Zone = "";
-
-        // only for test
-
-
-
 
 
         // Fetch products and populate the product list
@@ -406,11 +415,6 @@
             $scope.salesPersonInput = person.salesPersonName;
             $scope.selectedSalesPersonId = person.salesPersonID;
             $scope.salesPersonList = [];
-
-
-
-            // Add selected person to the array if not already added
-            
            
         };
 
@@ -427,31 +431,6 @@
         
         $scope.invoiceList = []
         $scope.load = function () {
-            
-            /*
-
-            let requestBodyModel = {
-                PageNo: parseInt($scope.pageNo),
-                PageSize: parseInt($scope.pageSize),
-                ProductId: $scope.productId,
-                Validity: parseInt($scope.validity),
-                Operator: $scope.Operator,
-                FromDuration: parseInt($scope.fDuration),
-                ToDuration: parseInt($scope.tDuration),
-                FullPayment: parseInt($scope.invstats),
-                Blacklisted: parseInt($scope.blacklisted),
-                Order: $scope.order,
-                Location: $scope.location,
-                Salesperson: parseInt($scope.selectedSalesPersonId),
-                FromRange: $scope.fromRange,
-                ToRange: $scope.toRange,
-                Zone: $scope.Zone
-            };
-
-            
-            
-            */
-
             let requestBodyModel = {
                 PageNo: parseInt($scope.pageNo) || 1,
                 PageSize: parseInt($scope.pageSize) || 10,
@@ -483,12 +462,58 @@
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
                     $scope.invoiceList = response.data;
+                    $scope.totalItems = response.data.length;
                     console.log(response.data)
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
         }
+
+        // Function to change the page
+        $scope.changePage = function (pageNo) {
+            if (pageNo < 1 || pageNo > $scope.getTotalPages()) return;
+            $scope.pageNo = pageNo;
+            $scope.fetchData();
+        };
+
+        // Function to calculate total pages
+        $scope.getTotalPages = function () {
+            return Math.ceil($scope.totalItems / $scope.pageSize);
+        };
+
+        // Watcher for page size change
+        $scope.$watch('pageSize', function (newVal, oldVal) {
+            if (newVal !== oldVal) {
+                $scope.changePage(1); // Reset to first page on page size change
+            }
+        });
+
+        $scope.convertDate = function (isoDateString) {
+            if (!isoDateString) return '';
+            var date = new Date(isoDateString);
+            var day = ('0' + date.getDate()).slice(-2);
+            var month = ('0' + (date.getMonth() + 1)).slice(-2);
+            var year = date.getFullYear();
+            return month + '/' + day + '/' + year;
+        };
+
+        // Watchers to convert the dates when they change
+        $scope.$watch('fromRange', function (newVal) {
+            $scope.fromRange = $scope.convertDate(newVal);
+        });
+
+        $scope.$watch('toRange', function (newVal) {
+            $scope.toRange = $scope.convertDate(newVal);
+        });
+
+        $scope.$watch('invstats', function () { 
+            if ($scope.invstats != 2) {
+                $scope.fromRange = '';
+                $scope.toRange = ''
+            }
+        })
+
         // Initial fetch of products
         $scope.getProducts();
     });
