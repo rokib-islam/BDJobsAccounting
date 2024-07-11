@@ -111,5 +111,13 @@ namespace AccountingSystem.Web.Controllers
 
             return await Task.FromResult(Ok(responseList));
         }
+        [HttpPost]
+        [Route("api/CMPackagebulkSubscription")]
+        public async Task<IActionResult> CMPackage([FromBody] CmPackageViewModel CmReq)
+        {
+            var responseList = await _InvoiceManager.CMPackageAutoBill(CmReq);
+
+            return await Task.FromResult(Ok(responseList));
+        }
     }
 }

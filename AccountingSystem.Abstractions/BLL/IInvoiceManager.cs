@@ -36,6 +36,7 @@ namespace AccountingSystem.Abstractions.BLL
         Task<List<LoadbBouncedCheckDataModel>> LoadbBouncedCheckData(string invoiceNo);
         Task<OnlineInvoiceResponseModel> CreatePaybaleByJobPost(OnlineInvoiceRequestModel parameters);
         Task<CashCollectionAutoReponse> AutoCashCollection_Multiple_Invoice(CashCollectionAutoViewModel parameters);
+        Task<OnlineInvoiceResponseModel> CMPackageAutoBill(CmPackageViewModel parameters);
 
     }
 }

@@ -163,5 +163,10 @@ namespace AccountingSystem.BLL
         {
             return _repository.AutoCashCollection_Multiple_Invoice(parameters);
         }
+
+        public Task<OnlineInvoiceResponseModel> CMPackageAutoBill(CmPackageViewModel parameters)
+        {
+            return _repository.CMPackageAutoBill(parameters);
+        }
     }
 }
