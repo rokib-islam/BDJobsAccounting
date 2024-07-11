@@ -27,6 +27,18 @@
             padding: .5rem;
         }
 
+        .table td {
+            font-size: 12px;
+        }
+
+        .form-check-label {
+            font-size: 14px;
+        }
+
+        hr {
+            margin-top: .5rem;
+            margin-bottom: .5rem;
+        }
     </style>
 </head>
 
@@ -39,11 +51,10 @@
                 <select class="form-select" multiple aria-label="multiple select example" ng-model="selectedInvoices">
                     <option ng-repeat="product in productList" value="{{product.id}}">{{product.ladgerName}}</option>
                 </select>
-
-                <button type="button" class="btn btn-primary btn-sm mt-3" ng-click="processSelectedInvoices()">Show invoice list</button>
+                <button type="button" class="btn btn-primary btn-sm mt-3" ng-click="load()">Show invoice list</button>
 
                 <div>
-                    <p>Invoice List: (  invoices found )</p>
+                    <p>Invoice List: ( {{totalItems}} invoices found )</p>
                 </div>
             </div>
             <div class=" col-md-6">
@@ -92,7 +103,7 @@
 
                         <div class=" d-inline-flex" ng-class="{'disabled-section': !invoiceDuration}">
 
-                            <select id="operator" class="form-select form-select-s" aria-label=".form-select-sm" ng-model="Operator">
+                            <select id="operator" class="form-select form-select-sm" aria-label=".form-select-sm" ng-model="Operator">
                                 <option value=""></option>
                                 <option value="<">&lt;</option>
                                 <option value="<=">&lt;=</option>
@@ -104,10 +115,10 @@
 
                             <div class="d-flex align-items-center ms-2">
                                 <div>
-                                    <input type="text" class="form-control input-sm px-1" id="rangeFrom" ng-model="fDuration">
+                                    <input type="text" class="form-control form-control-sm input-sm px-1" id="rangeFrom" ng-model="fDuration">
                                 </div>
                                 <span class="mx-1">to</span>
-                                <input type="text" class="form-control input-sm px-1" id="rangeTo" ng-class="{'disabled-section': Operator != 'range'}" ng-model="tDuration">
+                                <input type="text" class="form-control form-control-sm input-sm px-1" id="rangeTo" ng-class="{'disabled-section': Operator != 'range'}" ng-model="tDuration">
                                 <span class="ms-1">days</span>
                             </div>
                         </div>
@@ -153,7 +164,7 @@
 
                                 <div class="d-flex align-items-center gap-4">
                                     <label class=" form-label">To</label>
-                                    <input type="date" class="form-control form-control-sm " ng-model="toRange">
+                                    <input type="date" class="form-control form-control-sm  " ng-model="toRange">
 
                                 </div>
 
@@ -189,7 +200,7 @@
                         <div class="col-md-4">
                             <div>
                                 <lable class=" form-label d-inline-block mb-2">Search by Zone</lable>
-                                <select name="Zone" id="searchByZone" class=" form-select" ng-model="Zone">
+                                <select name="Zone" id="searchByZone" class=" form-select form-control form-control-sm ng-model="Zone">
                                     <option value="">Select</option>
                                     <option value="Gulshan">Gulshan</option>
                                     <option value="Banani">Banani</option>
@@ -208,7 +219,7 @@
                         <div class="col-md-4">
                             <div>
                                 <lable class=" form-label d-inline-block mb-2">Search by Location</lable>
-                                <input type="text" class="form-control input-sm" id="searchByLocation">
+                                <input type="text" class="form-control form-control-sm input-sm" id="searchByLocation" ng-model="location">
 
                             </div>
                         </div>
@@ -216,8 +227,8 @@
                         <div class="col-sm-4">
                            <div>
                                 <label class=" form-label mb-2">Sales Person</label>
-                                <input class="form-control input-sm" id="salesPerson" placeholder="Search Sales Person Here" autocomplete="off" ng-model="salesPersonInput" ng-keyup="getSalesPersonsByKey($event)">
-                                <select class="form-select input-sm" size="10" id="salesPersonList" ng-model="selectedSalesPerson" style="position:absolute;z-index:999;width: 360px; overflow:auto; background: white none repeat scroll 0% 0%;" ng-show="salesPersonList.length > 0">
+                                <input class="form-control form-control-sm input-sm" id="salesPerson" placeholder="Search Sales Person Here" autocomplete="off" ng-model="salesPersonInput" ng-keyup="getSalesPersonsByKey($event)">
+                                <select class="form-select form-control-sm input-sm" size="10" id="salesPersonList" ng-model="selectedSalesPerson" style="position:absolute;z-index:999;width: 360px; overflow:auto; background: white none repeat scroll 0% 0%;" ng-show="salesPersonList.length > 0">
                                     <option ng-repeat="person in salesPersonList" value="{{person.salesPersonID}}" ng-click="selectSalesPerson(person)">{{person.salesPersonName}}</option>
                                 </select>
                            </div>
@@ -234,56 +245,63 @@
             </div>
         </div>
 
-        <div class="row mt-5">
+        <div class="row mt-3">
             <div class=" d-flex align-items-center justify-content-center">
-                <button class="btn btn-primary px-4" type="button" ng-click="load()">Load</button>
+                <button class="btn btn-primary px-4" type="button" ng-click="load()">Load &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span></button>
             </div>
         </div>
 
-        <div class="row mt-5">
-            <div class="col-md-6">
-                <div class="col-sm-5" style="margin-left:-15px;">
-                    Show
-                    <select id="pagesize" ng-model="pageSize" style="padding: 0px 15px 0px 2px; background: url('/images/down_arrow.png') right center no-repeat white; border: 1px solid gray;">
-                        <option value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="30">30</option>
-                        <option value="40">40</option>
-                        <option value="50">50</option>
-                    </select>
-                    entries per page
-                </div>
-            </div>
-
-            <div class="col-md-6">
-                <div class="d-flex align-items-center justify-content-end">
-                    <nav aria-label="Page navigation example">
-                        <ul class="pagination">
-                            <li class="page-item" ng-class="{disabled: pageNo === 1}">
-                                <a class="page-link" href="#" aria-label="Previous" ng-click="changePage(pageNo - 1)">
-                                    <span aria-hidden="true">«</span>
-                                </a>
-                            </li>
-                            <li class="page-item" ng-repeat="n in [].constructor(getTotalPages()) track by $index" ng-class="{active: $index + 1 === pageNo}">
-                                <a class="page-link" href="#" ng-click="changePage($index + 1)">{{ $index + 1 }}</a>
-                            </li>
-                            <li class="page-item" ng-class="{disabled: pageNo === getTotalPages()}">
-                                <a class="page-link" href="#" aria-label="Next" ng-click="changePage(pageNo + 1)">
-                                    <span aria-hidden="true">»</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+      
         <!-- Table -->
 
-        <div class="row">
-            <div class="col-md-12">
-                <table class="table">
+        <div class="row" ng-if="isVisible">
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="col-sm-5" style="margin-left:-15px;">
+                        Show
+                        <select id="pagesize" ng-model="pageSize" style="padding: 0px 15px 0px 2px; background: url('/images/down_arrow.png') right center no-repeat white; border: 1px solid gray;">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
+                        </select>
+                        entries per page
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                    <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+
+                                <!-- The ng-repeat code you provided -->
+                                <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                    <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                </li>
+
+                                <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                    <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12" >
+
+                <table class="table  table-bordered table-hovar table-sm" >
                     <thead class="table-light">
-                        <tr>
+                        <tr class="text-center">
                             <th scope="col">Invoice No</th>
                             <th scope="col">Company Name</th>
                             <th scope="col">Total Amount</th>
@@ -303,22 +321,24 @@
 
 
                         <tr ng-repeat="invoice in invoiceList">
-                            <th scope="row">{{ invoice.invoice_no}}</th>
-                            <td>{{invoice.companyName}}</td>
-                            <td>{{invoice.tamount}}</td>
-                            <td>{{invoice.invsendDt}}</td>
-                            <td>{{invoice.salesPersonName}}</td>
-                            <td>{{invoice.productName}}</td>
-                            <td>{{invoice.contactPerson}}</td>
-                            <td>{{invoice.contactPersonPhone}}</td>
-                            <td>{{invoice.fullPayment}}</td>
-                            <td>{{invoice.ageignDay}}</td>
-                            <td>{{invoice.productWiseSequence}}</td>
-                            <td>{{invoice.lastInvDiff}}</td>
+                            <td scope="row" class="">{{ invoice.invoice_no}}</td>
+                            <td class="text-center">{{invoice.companyName}}</td>
+                            <td class="text-center">{{invoice.tamount}}</td>
+                            <td class="text-center">{{invoice.invsendDt}}</td>
+                            <td class="text-center">{{invoice.salesPersonName}}</td>
+                            <td class="text-center">{{invoice.productName}}</td>
+                            <td class="text-center">{{invoice.contactPerson}}</td>
+                            <td class="text-center">{{invoice.contactPersonPhone}}</td>
+                            <td class="text-center">{{invoice.fullPayment}}</td>
+                            <td class="text-center">{{invoice.ageignDay}}</td>
+                            <td class="text-center">{{invoice.productWiseSequence}}</td>
+                            <td class="text-center">{{invoice.lastInvDiff}}</td>
                         </tr>
-                       
+
                     </tbody>
                 </table>
+
+
             </div>
         </div>
 
@@ -340,10 +360,15 @@
         // ui states
         $scope.invoiceDuration = false;
         $scope.totalItems = 0;
+        $scope.spinner = false;
+        $scope.isVisible = false;
+        $scope.pages = []
+        $scope.maxPageLength = 5;
+        $scope.currentPage = 1;
 
         // invoice list
         $scope.pageNo = 1;
-        $scope.pageSize = 10;
+        $scope.pageSize = '10';
         $scope.productId = '';
         $scope.validity = "0";
         $scope.Operator = "";
@@ -431,6 +456,9 @@
         
         $scope.invoiceList = []
         $scope.load = function () {
+            $scope.invoiceList = [];
+            $scope.isVisible = false;
+
             let requestBodyModel = {
                 PageNo: parseInt($scope.pageNo) || 1,
                 PageSize: parseInt($scope.pageSize) || 10,
@@ -458,37 +486,21 @@
                 Url = '/Invoice/GetInvoiceList';
             else
                 Url = '/Invoice/GetInvoiceList';
-
+            $scope.spinner = true;
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
                     $scope.invoiceList = response.data;
-                    $scope.totalItems = response.data.length;
-                    console.log(response.data)
+                    $scope.totalItems = response.data[0].totalInvoice;
+
+                    $scope.spinner = false;
+                    $scope.isVisible = true;
                 })
                 .catch(function (error) {
                     console.log(error);
                 })
         }
 
-        // Function to change the page
-        $scope.changePage = function (pageNo) {
-            if (pageNo < 1 || pageNo > $scope.getTotalPages()) return;
-            $scope.pageNo = pageNo;
-            $scope.fetchData();
-        };
-
-        // Function to calculate total pages
-        $scope.getTotalPages = function () {
-            return Math.ceil($scope.totalItems / $scope.pageSize);
-        };
-
-        // Watcher for page size change
-        $scope.$watch('pageSize', function (newVal, oldVal) {
-            if (newVal !== oldVal) {
-                $scope.changePage(1); // Reset to first page on page size change
-            }
-        });
-
+    
         $scope.convertDate = function (isoDateString) {
             if (!isoDateString) return '';
             var date = new Date(isoDateString);
@@ -497,6 +509,7 @@
             var year = date.getFullYear();
             return month + '/' + day + '/' + year;
         };
+
 
         // Watchers to convert the dates when they change
         $scope.$watch('fromRange', function (newVal) {
@@ -513,7 +526,53 @@
                 $scope.toRange = ''
             }
         })
+       
+        $scope.$watch('selectedInvoices', function () {
+            $scope.productId = $scope.selectedInvoices.join(', ');
+            
+        })
 
+
+        // paginations
+        $scope.$watch('totalItems', function () {
+            $scope.calculatePages();
+        });
+
+        $scope.$watch('pageSize', function () {
+            $scope.calculatePages();
+        });
+
+        $scope.$watch('currentPage', function () {
+            if ($scope.currentPage > 1) {
+                $scope.calculatePages();
+                $scope.load();
+            }
+            else {
+                $scope.calculatePages();
+            }
+
+        });
+        $scope.calculatePages = function () {
+            $scope.totalPages = Math.ceil($scope.totalItems / $scope.pageSize);
+            $scope.pages = [];
+
+            var startPage = Math.max(1, $scope.currentPage - Math.floor($scope.maxPageLength / 2));
+            var endPage = Math.min($scope.totalPages, startPage + $scope.maxPageLength - 1);
+
+            for (var i = startPage; i <= endPage; i++) {
+                $scope.pages.push(i);
+            }
+        };
+        $scope.getPages = function () {
+            return $scope.pages || [];
+        };
+        $scope.setCurrentPage = function (page) {
+            if (page >= 1 && page <= $scope.totalPages) {
+                $scope.currentPage = page;
+            }
+        };
+
+     
         // Initial fetch of products
         $scope.getProducts();
     });
