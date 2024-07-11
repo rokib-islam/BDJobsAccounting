@@ -46,7 +46,7 @@
                                 <tr ng-repeat="entry in entries">
                                     <td>
                                         
-                                        <input class="form-select form-select-sm" style="background-color:lightcyan;" placeholder="Search Ledger Here" autocomplete="off" ng-model="entry.searchQuery" ng-keyup="searchLedger(entry)">
+                                        <input class="form-select form-select-sm" placeholder="Search Ledger Here" autocomplete="off" ng-model="entry.searchQuery" ng-keyup="searchLedger(entry)">
                                         <select class="form-select form-select-sm" size="10" ng-model="entry.accName" style="position:absolute;z-index:999;width: 510px; overflow:auto; background:white none repeat scroll 0% 0%;" ng-show="entry.ledgerList && entry.ledgerList.length > 0">
                                             <option ng-repeat="ledger in entry.ledgerList" value="{{ledger.id}}" ng-click="selectLedger(entry, ledger)">{{ledger.sbName}}</option>
                                         </select>
