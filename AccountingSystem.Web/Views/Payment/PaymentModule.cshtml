@@ -87,7 +87,7 @@
                     </tr>
                     <tr>
                         <td>
-                            <input class="form-control form-control-sm text-end" ng-model="billAmount" />
+                            <input type="number" class="form-control form-control-sm text-end" ng-model="billAmount" />
                         </td>
                         <td>
                             <select class="form-select form-select-sm" ng-model="vatSection" ng-change="vatRatechange()">
@@ -105,10 +105,10 @@
                             <input type="date" class="form-control form-control-sm" ng-model="mushokDate" />
                         </td>
                         <td>
-                            <input class="form-control form-control-sm text-end" ng-model="vatAmount" />
+                            <input class="form-control form-control-sm text-end" ng-model="calculateVatAmount" ng-disabled="vatAmountDisabled" />
                         </td>
                         <td>
-                            <input class="form-control form-control-sm text-end" ng-model="totalBill" />
+                            <input class="form-control form-control-sm text-end" ng-model="calculateTotalBill" ng-disabled="totalBillDisabled"/>
                         </td>
                     </tr>
                 </table>
@@ -145,6 +145,8 @@
             $scope.vatSection = '0';
             $scope.itemLedgerId = '0';
             $scope.vatRateDisabled = true;
+            $scope.vatAmountDisabled = true;
+            $scope.totalBillDisabled = true;
         })
         $scope.date = new Date();
         $scope.mushokDate = new Date();
@@ -202,6 +204,9 @@
             $http.get(Url, { params: { id: vatSection } })
                 .then(function (response) {
                     $scope.vatRate = response.data[0].vatRate + '%';
+                    $scope.vatRateFromRes = response.data[0].vatRate;
+                    $scope.calculateVatAmount = $scope.billAmount * $scope.vatRateFromRes * 1 / 100;
+                    $scope.calculateTotalBill = parseFloat($scope.billAmount) + parseFloat($scope.calculateVatAmount);
                 }, function (error) {
                     console.error(error);
                 })
@@ -225,13 +230,31 @@
         $scope.save = function () {
             var date = $scope.date;
             var postingType = $scope.postingType;
-            var searchQuery = $scope.searchQuery;
+            var vendorId = $scope.selectedVendor.vendorId;
             var itemLedgerId = $scope.itemLedgerId;
             var refNo = $scope.refNo;
             var billAmount = $scope.billAmount;
             var vatSection = $scope.vatSection;
+            var mushokNo = $scope.mushokNo;
+            var mushokDate = $scope.mushokDate;
+            var vatAmount = $scope.CalculateVatAmount;
+            var totalBill = $scope.calculateTotalBill;
+            var narration = $scope.narration;
 
             let requestModel = {
+                Date : date,
+                PostingType : postingType,
+                VendorId: vendorId,
+                ItemLedgerId : itemLedgerId,
+                BillReferenceNo : refNo,
+                BillAmount : billAmount,
+                VATSectionId : vatSection,
+                MushokNo : mushokNo,
+                MushokDate : mushokDate,
+                VATAmount : vatAmount,
+                TotalBill : totalBill,
+                Narration : narration,
+                EntryBy: @userId
 
             }
         }

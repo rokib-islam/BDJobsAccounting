@@ -46,7 +46,7 @@
                                 <tr ng-repeat="entry in entries">
                                     <td>
                                         
-                                        <input class="form-select form-select-sm" style="background-color:lightcyan;" placeholder="Search Ledger Here" autocomplete="off" ng-model="entry.searchQuery" ng-keyup="searchLedger(entry)">
+                                        <input class="form-select form-select-sm" placeholder="Search Ledger Here" autocomplete="off" ng-model="entry.searchQuery" ng-keyup="searchLedger(entry)">
                                         <select class="form-select form-select-sm" size="10" ng-model="entry.accName" style="position:absolute;z-index:999;width: 510px; overflow:auto; background:white none repeat scroll 0% 0%;" ng-show="entry.ledgerList && entry.ledgerList.length > 0">
                                             <option ng-repeat="ledger in entry.ledgerList" value="{{ledger.id}}" ng-click="selectLedger(entry, ledger)">{{ledger.sbName}}</option>
                                         </select>
@@ -123,7 +123,6 @@
         angular.element(document).ready(function () {
             $scope.GetLedgersWithBalance();
             $scope.loadClosingDate();
-            $scope.GetMaxJournalId();
         })
         $scope.showSpinner = false;
         $scope.btnPlusDisabled = true;
@@ -247,22 +246,9 @@
                 })
         };
 
-        $scope.GetMaxJournalId = function () {
-            let Url = '';
-            if (window.location.hostname == 'localhost')
-                Url = '/Journal/GetMaxJournalId';
-            else
-                Url = '/Journal/GetMaxJournalId';
+        
 
-            $http.get(Url)
-                .then(function (response) {
-                    $scope.maxJournalId = response.data;
-                }, function (error) {
-                    console.error(error);
-                })
-        };
-
-        $scope.saveJournal = function () {
+        $scope.saveJournal = function () {              
             var access = '@accessRights.Contains("1")';
             if (access == 'False') {
                 alert("Sorry, You have no permission to save a journal.");
@@ -281,8 +267,7 @@
                 else {
                     var userConfirmed = confirm("Are you sure you want to save this Journal entry?");
                     if (userConfirmed) {
-                        //$scope.GetMaxJournalId();
-                        $scope.jId = $scope.maxJournalId + 1;
+                        
                         var journals = $scope.entries.filter(function (entry) {
                             return entry.accName || entry.description || entry.debt || entry.credit;
                         });
@@ -290,7 +275,7 @@
                         var today = new Date();
                         var toDate = (today.getMonth() + 1).toString().padStart(2, '0') + "/" + today.getDate().toString().padStart(2, '0') + "/" + today.getFullYear();
                         $scope.postDate = toDate;
-
+                        
                         var extendedJournals = journals.map(function (entry) {
                             return {
                                 //sid: +entry.accName,
@@ -298,7 +283,7 @@
                                 Description: entry.description,
                                 Debt: entry.debt,
                                 Credit: entry.credit,
-                                jid: $scope.jId,
+                                //jid: $scope.jId,
                                 jDate: $scope.jDate.toISOString().split('T')[0],
                                 PostDate: $scope.postDate,
                                 UserID: @userId,
@@ -314,17 +299,20 @@
 
                             $http.post(Url, JSON.stringify(extendedJournals), { headers: { 'Content-Type': 'application/json' } })
                                 .then(function (response) {
-                                    if (response.data == true) {
+                                    if (response.data > 0) {
+                                        $scope.jId = response.data;
                                         var userConfirmed2 = confirm('Journals have been saved successfully. Do you want to view this journal voucher?');
                                         if (userConfirmed2) {
                                             $scope.showSpinner = false;
                                             $scope.downloadReportChallan();
 
                                         }
+                                        $scope.showSpinner = false;
                                     }
                                 })
                                 .catch(function (error) {
                                     console.log(error);
+                                    $scope.showSpinner = false;
                                 })
                         }
                     }

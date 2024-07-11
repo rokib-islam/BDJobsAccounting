@@ -278,7 +278,7 @@
               <Paragraph>
                 <TextRuns>
                   <TextRun>
-                    <Value>BIN Number of purchaser: </Value>
+                    <Value>BIN Number of purchaser(if applicable): </Value>
                     <Style>
                       <FontSize>8pt</FontSize>
                     </Style>
@@ -292,7 +292,7 @@
             <rd:DefaultName>Textbox7</rd:DefaultName>
             <Top>1.10765in</Top>
             <Left>0.19097in</Left>
-            <Height>0.1875in</Height>
+            <Height>0.32639in</Height>
             <Width>1.64458in</Width>
             <ZIndex>4</ZIndex>
             <Style>
@@ -324,7 +324,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>1.32293in</Top>
+            <Top>1.44793in</Top>
             <Left>0.19098in</Left>
             <Height>0.20834in</Height>
             <Width>1.64458in</Width>
@@ -358,7 +358,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>1.69447in</Top>
+            <Top>1.81947in</Top>
             <Left>0.17708in</Left>
             <Height>0.1875in</Height>
             <Width>1.64458in</Width>
@@ -392,7 +392,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>0.84723in</Top>
+            <Top>0.97223in</Top>
             <Left>5.4132in</Left>
             <Height>0.1875in</Height>
             <Width>1.01611in</Width>
@@ -426,7 +426,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>1.06251in</Top>
+            <Top>1.18751in</Top>
             <Left>5.4132in</Left>
             <Height>0.1875in</Height>
             <Width>1.01611in</Width>
@@ -460,7 +460,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>1.27779in</Top>
+            <Top>1.40279in</Top>
             <Left>5.4132in</Left>
             <Height>0.1875in</Height>
             <Width>1.01611in</Width>
@@ -494,7 +494,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>1.49308in</Top>
+            <Top>1.61808in</Top>
             <Left>5.4132in</Left>
             <Height>0.1875in</Height>
             <Width>1.01611in</Width>
@@ -698,7 +698,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>1.32293in</Top>
+            <Top>1.44793in</Top>
             <Left>1.86333in</Left>
             <Height>0.35765in</Height>
             <Width>3.15847in</Width>
@@ -732,7 +732,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>1.69447in</Top>
+            <Top>1.81947in</Top>
             <Left>1.86333in</Left>
             <Height>0.1875in</Height>
             <Width>1.86333in</Width>
@@ -766,7 +766,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>1.90975in</Top>
+            <Top>2.03475in</Top>
             <Left>0.17708in</Left>
             <Height>0.17709in</Height>
             <Width>1.64458in</Width>
@@ -800,7 +800,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>0.84724in</Top>
+            <Top>0.97224in</Top>
             <Left>6.45709in</Left>
             <Height>0.1875in</Height>
             <Width>1.4375in</Width>
@@ -834,7 +834,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>1.06252in</Top>
+            <Top>1.18752in</Top>
             <Left>6.45709in</Left>
             <Height>0.1875in</Height>
             <Width>1.4375in</Width>
@@ -868,7 +868,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>1.27779in</Top>
+            <Top>1.40279in</Top>
             <Left>6.45709in</Left>
             <Height>0.1875in</Height>
             <Width>1.4375in</Width>
@@ -902,7 +902,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>1.47918in</Top>
+            <Top>1.60418in</Top>
             <Left>6.45709in</Left>
             <Height>0.2014in</Height>
             <Width>1.4375in</Width>
@@ -1343,7 +1343,7 @@
                             <Paragraph>
                               <TextRuns>
                                 <TextRun>
-                                  <Value>VAT Rate/ Specific Tax rate</Value>
+                                  <Value>VAT Rate/ Specific Tax</Value>
                                   <Style>
                                     <FontSize>9pt</FontSize>
                                   </Style>
@@ -2556,7 +2556,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>ShowChallan</DataSetName>
-            <Top>2.14583in</Top>
+            <Top>2.27083in</Top>
             <Left>0.20139in</Left>
             <Height>1.35417in</Height>
             <Width>7.7036in</Width>
@@ -2849,7 +2849,7 @@
               </TablixMembers>
             </TablixRowHierarchy>
             <DataSetName>ShowChallan</DataSetName>
-            <Top>3.51389in</Top>
+            <Top>3.63889in</Top>
             <Left>0.20139in</Left>
             <Height>0.25in</Height>
             <Width>7.70361in</Width>
@@ -2879,7 +2879,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>3.81945in</Top>
+            <Top>3.94445in</Top>
             <Left>0.20139in</Left>
             <Height>0.20834in</Height>
             <Width>1.83208in</Width>
@@ -2913,7 +2913,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>4.05556in</Top>
+            <Top>4.18056in</Top>
             <Left>0.20139in</Left>
             <Height>0.22223in</Height>
             <Width>1.83208in</Width>
@@ -2947,7 +2947,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>4.76041in</Top>
+            <Top>4.88541in</Top>
             <Left>0.20139in</Left>
             <Height>0.20834in</Height>
             <Width>0.69666in</Width>
@@ -2987,7 +2987,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>5.21528in</Top>
+            <Top>5.34028in</Top>
             <Left>0.20139in</Left>
             <Height>0.17709in</Height>
             <Width>4.07146in</Width>
@@ -3021,7 +3021,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>3.81945in</Top>
+            <Top>3.94445in</Top>
             <Left>2.06125in</Left>
             <Height>0.20834in</Height>
             <Width>2.94666in</Width>
@@ -3055,7 +3055,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>4.05556in</Top>
+            <Top>4.18056in</Top>
             <Left>2.06125in</Left>
             <Height>0.22223in</Height>
             <Width>2.94666in</Width>
@@ -3089,7 +3089,7 @@
               </Paragraph>
             </Paragraphs>
             <rd:DefaultName>Textbox7</rd:DefaultName>
-            <Top>5.19445in</Top>
+            <Top>5.31945in</Top>
             <Left>5.22918in</Left>
             <Height>0.19792in</Height>
             <Width>0.69666in</Width>
@@ -3108,7 +3108,7 @@
             <Source>Embedded</Source>
             <Value>sign</Value>
             <Sizing>FitProportional</Sizing>
-            <Top>10.30112cm</Top>
+            <Top>10.61862cm</Top>
             <Left>14.55176cm</Left>
             <Height>2.02917cm</Height>
             <Width>2.24083cm</Width>
@@ -3123,7 +3123,7 @@
             <Source>External</Source>
             <Value>=Parameters!ImagePath.Value</Value>
             <Sizing>FitProportional</Sizing>
-            <Top>11.13897cm</Top>
+            <Top>11.45647cm</Top>
             <Left>2.58974cm</Left>
             <Height>1.42062cm</Height>
             <Width>4.48979cm</Width>
@@ -3220,7 +3220,7 @@
                 <Paragraph>
                   <TextRuns>
                     <TextRun>
-                      <Value>VAT Challan</Value>
+                      <Value>Tax Invoice</Value>
                       <Style>
                         <FontSize>12pt</FontSize>
                         <FontWeight>Bold</FontWeight>
