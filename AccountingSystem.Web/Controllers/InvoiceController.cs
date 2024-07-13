@@ -1,4 +1,5 @@
 ﻿using AccountingSystem.Abstractions.BLL;
+using AccountingSystem.BLL;
 using AccountingSystem.Models.AccountViewModels;
 using AccountingSystem.Web.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -10,12 +11,16 @@ namespace AccountingSystem.Web.Controllers
     public class InvoiceController : Controller
     {
         private readonly IInvoiceManager _InvoiceManager;
+        private readonly ISaleManager _saleManager;
+        private readonly ILedgerManager _ledgerManager;
         private readonly HttpClient _httpClient;
 
 
-        public InvoiceController(IInvoiceManager InvoiceManagerManager, HttpClient httpClient)
+        public InvoiceController(IInvoiceManager InvoiceManagerManager, ISaleManager salesManager, HttpClient httpClient, ILedgerManager ledgerManager)
         {
             _InvoiceManager = InvoiceManagerManager;
+            _saleManager = salesManager;
+            _ledgerManager = ledgerManager;
             _httpClient = httpClient;
         }
         public IActionResult Index()
@@ -128,12 +133,12 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(results);
         }
-        public async Task<IActionResult> GetInvoiceList(GetInvoiceListParam parameters)
-        {
-            var results = await _InvoiceManager.GetInvoicesAsync(parameters);
+        //public async Task<IActionResult> GetInvoiceList(GetInvoiceListParam parameters)
+        //{
+        //    var results = await _InvoiceManager.GetInvoicesAsync(parameters);
 
-            return Json(results);
-        }
+        //    return Json(results);
+        //}
 
 
 
@@ -344,6 +349,30 @@ namespace AccountingSystem.Web.Controllers
                 return View();
             else
                 return RedirectToAction("Index", "Home");
+        }
+        public async Task<IActionResult> GetSalesPersonsByProductID(int productID)
+        {
+            var returnValue = await _saleManager.GetSalesPersons(2);
+            return Json(returnValue);
+        }
+        public async Task<IActionResult> GetProducts(int admin, int account, string groupname, string isAll, string isI, int isVatType)
+        {
+            var data = await _ledgerManager.GetProducts(0, 0, "Revenue", "All", "I", 0);
+
+            return Json(data);
+        }
+
+        public async Task<IActionResult> GetSalesPersonListByKey(string startingKey)
+        {
+            var result = await _saleManager.GetSalesPersonListByKey(startingKey);
+            return Json(result);
+        }
+
+        public async Task<IActionResult> GetInvoiceList([FromBody] GetInvoiceListParam parameters)
+        {
+            var results = await _InvoiceManager.GetInvoicesAsync(parameters);
+
+            return Json(results);
         }
     }
 }
