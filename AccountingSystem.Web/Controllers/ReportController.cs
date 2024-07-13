@@ -775,7 +775,7 @@ namespace AccountingSystem.Web.Controllers
                 double totalAmount = 0;
                 var reportData = await _InvoiceManager.GetInvoicesAsync(param);
                 var fullPayment = reportData.FirstOrDefault().FullPayment;
-                totalAmount = reportData.Sum(report => (int)report.TAmount);
+                totalAmount = reportData.Sum(report => (int)report.tamount);
 
                 string wordamount = await ConvertToWords((int)Math.Round(totalAmount));
                 var datatable = Helpers.ListiToDataTable(reportData);
@@ -783,11 +783,11 @@ namespace AccountingSystem.Web.Controllers
                 using var report = new LocalReport();
                 var parameters = new[]
                 {
-                    new ReportParameter("SumAmount", totalAmount.ToString("N2")),
-                    new ReportParameter("AmountInWord", wordamount),
-                    new ReportParameter("isColorPad", isColorPad.ToString()),
-                    new ReportParameter("FullPayment", fullPayment.ToString())
-                };
+                new ReportParameter("SumAmount", totalAmount.ToString("N2")),
+                new ReportParameter("AmountInWord", wordamount),
+                new ReportParameter("isColorPad", isColorPad.ToString()),
+                new ReportParameter("FullPayment", fullPayment.ToString())
+            };
 
                 using var rs = Assembly.GetExecutingAssembly().GetManifestResourceStream("AccountingSystem.Web.Reports.rptShowInvoiceList.rdlc");
                 report.LoadReportDefinition(rs);
