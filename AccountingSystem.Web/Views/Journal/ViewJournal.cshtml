@@ -318,7 +318,8 @@
             $scope.companyList = [];
         }
 
-        $scope.loadData = function () {           
+        $scope.loadData = function () {   
+            $scope.check = false;
             var requestData = {
                 PageNo: $scope.currentPage,
                 PageSize: $scope.itemsPerPage,
@@ -345,6 +346,7 @@
             } else {
                 $scope.checkboxShow = true;
             }
+
             $scope.spinner = true;
             $http.post(Url, requestData)
                 .then(function (response) {
@@ -352,6 +354,7 @@
                         alert('There is no data to shown.')
                         $scope.spinner = false;
                         $scope.showTable = false;
+                        $scope.checkboxShow = false;
                     }
                     $scope.journalData = response.data;
                     $scope.totalDebit = $scope.journalData.reduce((a, b) => a + b.debt, 0);
