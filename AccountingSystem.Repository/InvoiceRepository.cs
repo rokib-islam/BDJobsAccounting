@@ -548,7 +548,7 @@ namespace AccountingSystem.Repository
         {
             try
             {
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
                 {
                     var dynamicParameters = new DynamicParameters();
                     dynamicParameters.Add("@PageNo", parameters.PageNo);
@@ -568,9 +568,9 @@ namespace AccountingSystem.Repository
 
 
                     var invoices = await _db.QueryAsync<InvoiceViewModel>(
-                        "USP_LIST_OF_INVOICE_V1",
+                        "USP_LIST_OF_INVOICE_V1_NEW",
                         dynamicParameters,
-                        commandType: CommandType.StoredProcedure);
+                        commandType: CommandType.StoredProcedure, commandTimeout: 180);
 
                     return invoices.AsList();
                 }
@@ -719,6 +719,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@VDS", parameters.VDS);
                     dynamicParameters.Add("@JDate", parameters.jDate);
                     dynamicParameters.Add("@Q_job", parameters.Q_job);
+                    dynamicParameters.Add("@IsUpgrade", parameters.IsUpgrade);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
@@ -771,6 +772,7 @@ namespace AccountingSystem.Repository
                     dynamicParameters.Add("@VDS", parameters.VDS);
                     dynamicParameters.Add("@JDate", parameters.jDate);
                     dynamicParameters.Add("@Q_job", parameters.Q_job);
+                    dynamicParameters.Add("@IsUpgrade", parameters.IsUpgrade);
 
 
                     var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
@@ -1142,6 +1144,52 @@ namespace AccountingSystem.Repository
 
                     var invoices = await _db.QueryAsync<CashCollectionAutoReponse>(
                         "USP_Auto_CashCollection_Multiple_Invoice",
+                        dynamicParameters,
+                        commandType: CommandType.StoredProcedure);
+
+                    return invoices.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions accordingly
+                throw new Exception("Error retrieving invoices.", ex);
+            }
+        }
+        public async Task<OnlineInvoiceResponseModel> CMPackageAutoBill(CmPackageViewModel parameters)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {
+                    var dynamicParameters = new DynamicParameters();
+                    dynamicParameters.Add("@BulkService_ID", parameters.BulkService_ID);
+                    dynamicParameters.Add("@CP_ID", parameters.CP_ID);
+                    dynamicParameters.Add("@Acc_Id", parameters.Acc_Id);
+                    dynamicParameters.Add("@Price", parameters.Price);
+                    dynamicParameters.Add("@Vat", parameters.Vat);
+                    dynamicParameters.Add("@ServiceType", parameters.ServiceType);
+                    dynamicParameters.Add("@Quantity", parameters.Quantity);
+                    dynamicParameters.Add("@Duration", parameters.Duration);
+                    dynamicParameters.Add("@SDate", parameters.SDate);
+                    dynamicParameters.Add("@EDate", parameters.EDate);
+                    dynamicParameters.Add("@SalesPersonName", parameters.SalesPersonName);
+                    dynamicParameters.Add("@BillingContact", parameters.BillingContact);
+                    dynamicParameters.Add("@Designation", parameters.Designation);
+                    dynamicParameters.Add("@Title", parameters.Title);
+                    dynamicParameters.Add("@CompanyName", parameters.CompanyName);
+                    dynamicParameters.Add("@Address", parameters.Address);
+                    dynamicParameters.Add("@City", parameters.City);
+                    dynamicParameters.Add("@Phone", parameters.Phone);
+                    dynamicParameters.Add("@Email", parameters.Email);
+                    dynamicParameters.Add("@OnlineDistrictId", parameters.OnlineDistrictId);
+                    dynamicParameters.Add("@BINNo", parameters.BINNo);
+                    dynamicParameters.Add("@TransactionNo", parameters.TransactionNo);
+                    dynamicParameters.Add("@PaymentMode", parameters.PaymentMode);
+
+
+                    var invoices = await _db.QueryAsync<OnlineInvoiceResponseModel>(
+                        "CMPackageBulkBill",
                         dynamicParameters,
                         commandType: CommandType.StoredProcedure);
 

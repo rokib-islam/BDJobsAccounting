@@ -3,14 +3,15 @@
     ViewData["Title"] = "CashCollection";
     var userId = Context.Session.GetInt32("UserID");
     var accessRight = Context.Session.GetString("AccessRight");
+    var IsAccDept = Context.Session.GetInt32("AccountDep");
 
     var accessRights = new string[0];
 
     if (string.IsNullOrEmpty(accessRight))
     {
-        <script type="text/javascript">
-            window.location.href = '@Url.Action("Index", "Home")';
-        </script>
+                        <script type="text/javascript">
+                            window.location.href = '@Url.Action("Index", "Home")';
+                        </script>
     }
     else
     {
@@ -85,22 +86,31 @@
                                 </tbody>
                             </table>
                         </div>
-
+                        
                         <div class="row mt-3">
                             <div class="col-sm-4">
-                                <button class="btn btn-primary btn-sm px-4" ng-click="performAction('UPDATE')" ng-disabled="showBtnUpdate"><strong>Update</strong></button>
+                                @if (IsAccDept == 1)
+                                {
+                                    <button class="btn btn-primary btn-sm px-4" ng-click="performAction('UPDATE')" ng-disabled="showBtnUpdate"><strong>Update</strong></button>
+                                }
                             </div>
                             <div class="col-sm-4">
-                                <button class="btn btn-success btn-sm px-4" ng-click="performAction('INSERT')" ng-disabled="showBtnInsert">
-                                    <strong>Insert</strong>
-                                    &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
-                                </button>
+                                @if (IsAccDept == 1)
+                                {
+                                    <button class="btn btn-success btn-sm px-4" ng-click="performAction('INSERT')" ng-disabled="showBtnInsert">
+                                        <strong>Insert</strong>
+                                        &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span>
+                                    </button>
+                                }
                             </div>
                             <div class="col-sm-4">
-                                <button class="btn btn-info btn-sm" ng-click="postToOnlineBtn()"><strong>Post to Online</strong></></button>
+                                @if (IsAccDept == 1)
+                                {
+                                    <button class="btn btn-info btn-sm" ng-click="postToOnlineBtn()"><strong>Post to Online</strong></button>
+                                }
                             </div>
                         </div>
-
+                        
                         <div class="row">
                             <div class="col-sm-12">
                                 <fieldset class="border p-2">
@@ -772,6 +782,8 @@
                 $http.get(Url, { params: { query: str } })
                     .then(function (response) {
                         $scope.invoiceData = response.data;
+                        $scope.paymentListData = [];
+
                     })
                     .catch(function (error) {
                         console.log(error);
@@ -790,6 +802,7 @@
                 $scope.selectedRow = null;
             } else {
                 $scope.selectedRow = row;
+                $scope.paymentListData = [];
                 $scope.getSalesList();
                 $scope.showFieldset = 'bKashAgentCollection';
                 $scope.paymentId = 31259;
@@ -989,6 +1002,7 @@
             $http.get(Url, { params: { InvoiceNo: no } })
                 .then(function (response) {
                     $scope.salesListData = response.data;
+                    $scope.countSalesList = $scope.salesListData.length;
                     //$scope.getPaymentList($scope.salesListData[0].id);
                 }, function (error) {
                     console.error(error);
@@ -1182,10 +1196,15 @@
                             .then(function (response) {
                                 if (response.data == "Success") {
                                     alert("Success.");
+                                    $scope.getPaymentList($scope.selectedRowForSalesList.id);
                                     $scope.spinner = false;
-                                    $scope.getInvoices();
+                                    $scope.countSalesList = $scope.countSalesList - 1;
+                                    if ($scope.countSalesList == 0) {
+                                        $scope.getInvoices();
+                                    }
+
                                     $scope.paymentListData = [];
-                                    $scope.salesListData = [];
+                                    //$scope.salesListData = [];
                                     
 
                                     var userConfirmed = confirm('Do you want to upload this cash information to online?');

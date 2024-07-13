@@ -5,6 +5,7 @@
     var userId = Context.Session.GetInt32("UserID");
     var accessRight = Context.Session.GetString("AccessRight");
     var onlineCompanyId = ViewBag.OnlineCompanyId;
+    var IsAccDept = Context.Session.GetInt32("AccountDep");
 
     var accessRights = new string[0];
 
@@ -55,7 +56,10 @@
                 <div class="col-sm-12">
                     <div class="row">
                         <div class="col-sm-4">
-                            <label><input type="radio" ng-model="invoiceType" value="0" ng-checked="invoiceType==0" ng-change="blankForNew()" />&nbsp; Make New Invoice</label><br />
+                            @if (IsAccDept == 1)
+                            {
+                              <label><input type="radio" ng-model="invoiceType" value="0" ng-checked="invoiceType==0" ng-change="blankForNew()" />&nbsp; Make New Invoice</label><br />                                 
+                            }                            
                             <label class="mt-2"><input type="radio" ng-model="invoiceType" value="1" ng-change="blankForOld()" />&nbsp; View Existing Invoice</label>
                         </div>
                         <div class="col-sm-4 text-center">
@@ -166,10 +170,13 @@
                                 </div>
                                 <div class="row mt-2">
                                     <div class="col-sm-6">
-                                        <button type="button" class="btn btn-block btn-success btn-sm" ng-click="save()" ng-disabled="saveDisabled">
-                                            Save
-                                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="saveSpinner"></span>
-                                        </button>
+                                        @if (IsAccDept == 1)
+                                        {
+                                            <button type="button" class="btn btn-block btn-success btn-sm" ng-click="save()" ng-disabled="saveDisabled">
+                                                Save
+                                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="saveSpinner"></span>
+                                            </button>
+                                        }
                                     </div>
 
                                     <div class="col-sm-6">
@@ -219,9 +226,12 @@
                                         <label>Comments of invoice item</label>
                                     </div>
                                     <div class="col-sm-6 d-flex justify-content-end mb-2">
+                                         @if (IsAccDept == 1)
+                                         {
                                         <button class="btn btn-primary btn-sm" ng-click="updateComment()">Update Comment</button>
+                                         }
                                     </div>
-                                </div>
+                                </div>mail
                                 <div style="height: 200px; overflow-y: auto;border:1px solid lightgray" ng-hide="disabledCommentsTable">
                                     <table class="table table-bordered table-hover table-sm">
                                         <thead class="thead-light">
@@ -241,20 +251,23 @@
                                 <div class="row" style="height:200px;border:1px solid lightgray" ng-hide="disabledComments">
                                     <textarea ng-model="comments"></textarea>
                                 </div>
-                                <div class="row mt-2">
-                                    <div class="col-sm-4">
-                                        <input type="checkbox" ng-model="sMail" /><label>&nbsp; Send Invoice</label>
+                                @if (IsAccDept == 1)
+                                {
+                                    <div class="row mt-2">
+                                        <div class="col-sm-4">
+                                            <input type="checkbox" ng-model="sMail" /><label>&nbsp; Send Invoice</label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <input type="checkbox" ng-model="sChallan" /><label>&nbsp; Send Challan</label>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <button class="btn btn-primary btn-sm" ng-click="SendMail(sMail,sChallan)">
+                                                Send Mail
+                                                &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showMailpinner"></span>
+                                            </button>
+                                        </div>
                                     </div>
-                                    <div class="col-sm-4">
-                                        <input type="checkbox" ng-model="sChallan" /><label>&nbsp; Send Challan</label>
-                                    </div>
-                                    <div class="col-sm-4">
-                                        <button class="btn btn-primary btn-sm" ng-click="SendMail(sMail,sChallan)">
-                                            Send Mail
-                                            &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="showMailpinner"></span>
-                                        </button>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
                     </div>
@@ -511,7 +524,7 @@
                             else if (shiftedProduct.sbName == "Online Job Posting (Premium Plus Listing)")
                                 serviceName = "Premium Plus Listing";
                             else if (shiftedProduct.sbName == "Online Job Posting-Basic (SME)")
-                                serviceName = "SME package";
+                                serviceName = "SME package"; 
 
                             comments =
                                 "Payment for Web Listing Services under '" +
@@ -523,16 +536,32 @@
                                 " for the following job position(s):\n\nDesignation Name: " +
                                 shiftedProduct.product;
                         }
-                        else if (ledgerId == 18) {
-                            comments =
-                                "Payment for 'Job Announcement Display' at the Home Page of Bdjobs.com from " +
+                        if (ledgerId == 18) {
+                            // var partssDate = shiftedProduct.sDate.split("/");
+                            // var formattedSDate = (partssDate[1].length === 1 ? '0' + partssDate[1] : partssDate[1]) + "-" + (partssDate[0].length === 1 ? '0' + partssDate[0] : partssDate[0]) + "-" + partssDate[2];
+
+                            // var partseDate = shiftedProduct.eDate.split("/");
+                            // var formattedeDate = (partseDate[1].length === 1 ? '0' + partseDate[1] : partseDate[1]) + "-" + (partseDate[0].length === 1 ? '0' + partseDate[0] : partseDate[0]) + "-" + partseDate[2];
+
+                            var endDate14 = new Date(partssDate[2], partssDate[0] - 1, parseInt(partssDate[1]) + 14);
+                            var formattedEndDate14 = (endDate14.getDate() < 10 ? '0' + endDate14.getDate() : endDate14.getDate()) + "-" +
+                                ((endDate14.getMonth() + 1) < 10 ? '0' + (endDate14.getMonth() + 1) : (endDate14.getMonth() + 1)) + "-" +
+                                endDate14.getFullYear();
+                            var uptodate = '';
+                            if (formattedEndDate14 > formattedeDate)
+                                uptodate = formattedeDate;
+                            else
+                                uptodate = formattedEndDate14;
+
+                            comments = "Payment for Web Listing Services under \"" +
+                                "Hot Jobs Listing" +
+                                "\" at the homepage of www.bdjobs.com from " +
                                 formattedSDate +
                                 " to " +
-                                formattedeDate +
-                                " for the following position(s):\n\n" +
+                                formattedEndDate14 +
+                                " and up to " + uptodate +
+                                " at the classified section for the following position(s):\n\n" +
                                 shiftedProduct.product;
-                        } if (shiftedProduct.product.trim() === "VAT (AP)") {
-                            comments = "Add: VAT@5% Under Service Code: S099.10 (IT Enabled Services)";
                         } else {
                             comments =
                                 "Payment for Web Listing (" +
@@ -543,6 +572,9 @@
                                 formattedeDate +
                                 " for the following position:\n\n" +
                                 shiftedProduct.product;
+                        }
+                        if (shiftedProduct.product.trim() === "VAT (AP)") {
+                            comments = "Add: VAT@5% Under Service Code: S099.10 (IT Enabled Services)";
                         }
                     } else {
                         comments = shiftedProduct.comments;

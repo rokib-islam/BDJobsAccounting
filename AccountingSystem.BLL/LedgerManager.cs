@@ -44,6 +44,11 @@ namespace AccountingSystem.BLL
             return _repository.GetAllLedgers();
         }
 
+        public Task<List<LedgerViewModel>> GetLedgerListByKey(string key)
+        {
+            return _repository.GetLedgerListByKey(key);
+        }
+
         public Task SaveLedgerAsync(LedgerViewModel aLedger)
         {
             return _repository.SaveLedgerAsync(aLedger);
