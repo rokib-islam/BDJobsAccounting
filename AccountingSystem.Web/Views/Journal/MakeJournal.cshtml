@@ -26,10 +26,20 @@
             <div ng-controller="myController">
                 <h4 class="text-center" style="margin-top:-10px;">Make Journal</h4>
                 <div class="row mt-3">
-                    <label class="col-sm-2">Journal Date</label>
-                    <div class="col-sm-3">
-                        <input type="date" class="form-control form-control-sm" ng-model="jDate" />
+                    <div class="row col-sm-6">
+                        <label class="col-sm-3">Journal Date</label>
+                        <div class="col-sm-5">
+                            <input type="date" class="form-control form-control-sm" ng-model="jDate" />
+                        </div>
                     </div>
+                    <div class="row col-sm-6 d-flex justify-content-end">
+                        <label class="col-sm-2">Balance</label>
+                        <div class="col-sm-4">
+                            <input type="text" class="form-control form-control-sm text-end" ng-model="balanceDisplay" ng-disabled="balanceDisabled"
+                                   ng-model-options="{ getterSetter: true, allowInvalid: true }" />
+
+                        </div>
+                    </div>                   
                 </div>
                 <div class="row mt-3">
                     <div class="col-sm-12 table-responsive">
@@ -59,7 +69,10 @@
                                     
                                     <td colspan="4" class="text-end">
                                         <button type="button" class="btn btn-primary btn-sm px-4" ng-click="addRows()" ng-disabled="btnPlusDisabled">+</button>
+                                        <button type="button" class="btn btn-danger btn-sm px-4" ng-click="removeRow()" ng-disabled="btnMinusDisabled">-</button>
+
                                     </td>
+                                    
                                 </tr>
                             </tbody>
                             <tfoot>
@@ -126,6 +139,8 @@
         })
         $scope.showSpinner = false;
         $scope.btnPlusDisabled = true;
+        $scope.btnMinusDisabled = true;
+        $scope.balanceDisabled = true;
         $scope.entries = [
             { accName: '', description: '', debt: '', credit: '', searchQuery: '', ledgerList: [], disabled: false },
             { accName: '', description: '', debt: '', credit: '', searchQuery: '', ledgerList: [], disabled: true }
@@ -133,6 +148,15 @@
 
         $scope.addRows = function () {
             $scope.entries.push({ accName: '', description: '', debt: '', credit: '', searchQuery: '', ledgerList: [], disabled: false });
+        };
+
+        
+        $scope.removeRow = function () {
+            if ($scope.entries.length > 2) {
+                $scope.entries.pop();
+            }
+            $scope.calculateTotalCredit();
+            $scope.calculateTotalDebit();
         };
 
         $scope.jDate = new Date();
@@ -181,9 +205,11 @@
             if (entry.debt == null && entry.credit == 0 || entry.debt == 0 && entry.credit == 0) {
                 $scope.entries[index + 1].disabled = true;
                 $scope.btnPlusDisabled = true;
+                $scope.btnMinusDisabled = true;
             } else {
                 $scope.entries[index + 1].disabled = false;
                 $scope.btnPlusDisabled = false;
+                $scope.btnMinusDisabled = false;
             }
             
         };
@@ -208,13 +234,31 @@
         $scope.calculateTotalDebit = function () {
             $scope.totalDebit = $scope.entries.reduce(function (total, entry) {
                 return total + (parseFloat(entry.debt) || 0);
-            }, 0);
+            }, 0).toFixed(2);
+            $scope.updateBalanceDisplay();
         };
+
         $scope.calculateTotalCredit = function () {
             $scope.totalCredit = $scope.entries.reduce(function (total, entry) {
                 return total + (parseFloat(entry.credit) || 0);
-            }, 0)
-        }
+            }, 0).toFixed(2);
+            $scope.updateBalanceDisplay();
+        };
+
+
+        $scope.updateBalanceDisplay = function () {
+            if ($scope.totalDebit > $scope.totalCredit) {
+                $scope.balance = parseFloat($scope.totalDebit) - parseFloat($scope.totalCredit);
+                $scope.balanceDisplay = Math.abs($scope.balance).toFixed(2) + ' dr';
+            } else if ($scope.totalCredit > $scope.totalDebit) {
+                $scope.balance = parseFloat($scope.totalDebit) - parseFloat($scope.totalCredit);
+                $scope.balanceDisplay = Math.abs($scope.balance).toFixed(2) + ' cr';
+            } else {
+                $scope.balanceDisplay = Math.abs($scope.balance);
+            }
+        };
+
+
 
         $scope.GetLedgersWithBalance = function () {
             let Url = '';
