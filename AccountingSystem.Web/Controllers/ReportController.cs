@@ -157,7 +157,7 @@ namespace AccountingSystem.Web.Controllers
                 double totalAmount = 0;
                 var reportData = await _InvoiceManager.GetInvoicesAsync(param);
                 var fullPayment = reportData.FirstOrDefault().FullPayment;
-                totalAmount = reportData.Sum(report => (int)report.tamount);
+                totalAmount = reportData.Sum(report => (int)report.TAmount);
 
                 string wordamount = await ConvertToWords((int)Math.Round(totalAmount));
                 var datatable = Helpers.ListiToDataTable(reportData);
