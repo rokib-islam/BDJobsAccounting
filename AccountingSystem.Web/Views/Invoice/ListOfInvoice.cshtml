@@ -1,55 +1,578 @@
 ﻿@{
     ViewData["Title"] = "ListOfInvoice";
 }
+<head>
 
-<div class="card">
-    <div class="card-body" style="background-color:whitesmoke;font-size:14px">
-        <div ng-app="myApp">
-            <div ng-controller="myController">
-                <h3 class="text-center" style="margin-top:-10px">List of Invoice</h3>
-                <div class="row">
-                    <div class="col-sm-4">
-                        <div>Product List</div>
-                        <select class="form-control form-control-sm" size="15" ng-model="proList" style="height:225px;border:1px solid lightgray">
-                            @*                             <option ng-repeat="company in companyList" value="{{company.id}}" ng-click="selectCompany(company)">{{company.name}}</option>
-                            *@
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        .disabled-section {
+            pointer-events: none;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .title {
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .table th {
+            font-size: 12px;
+        }
+
+        .table td, .table th {
+            padding: .5rem;
+        }
+
+        .table td {
+            font-size: 12px;
+        }
+
+        .form-check-label {
+            font-size: 14px;
+        }
+
+        hr {
+            margin-top: .5rem;
+            margin-bottom: .5rem;
+        }
+    </style>
+</head>
+
+<div class="container-fluid" ng-app="myApp">
+    <div ng-controller="invoiceController" class="py-3">
+        <div class="row">
+            <div class=" col-md-4">
+                <h2 class="title">Product List</h2>
+
+                <select class="form-select" multiple aria-label="multiple select example" ng-model="selectedInvoices">
+                    <option ng-repeat="product in productList" value="{{product.id}}">{{product.ladgerName}}</option>
+                </select>
+                <button type="button" class="btn btn-primary btn-sm mt-3" ng-click="load()">Show invoice list</button>
+
+                <div>
+                    <p>Invoice List: ( {{totalItems}} invoices found )</p>
+                </div>
+            </div>
+            <div class=" col-md-6">
+                <h2 class="title">Filters</h2>
+                <div class="row ">
+                    <div class="col-md-8">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="validity" id="validInvoice" value="0" ng-model="validity" checked>
+                            <label class="form-check-label" for="validInvoice">
+                                Show All Valid Invoices
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="validity" id="deletedInvoices" value="1" ng-model="validity">
+                            <label class="form-check-label" for="deletedInvoices">
+                                Show Deleted Invoices
+                            </label>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="order" id="ASC" ng-model="order" value="ASC">
+                            <label class="form-check-label" for="ASC">
+                                Ascending
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="order" id="DESC" ng-model="order" value="DESC">
+                            <label class="form-check-label" for="DESC">
+                                Descending
+                            </label>
+                        </div>
+                    </div>
+
+
+                </div>
+                <hr />
+                <div class="row mb-2">
+                    <div class="col-md-8">
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="invoiceDuration" ng-model="invoiceDuration">
+                            <label class="form-check-label" for="invoiceDuration">
+                                Invoice Duration
+                            </label>
+                        </div>
+
+                        <div class=" d-inline-flex" ng-class="{'disabled-section': !invoiceDuration}">
+
+                            <select id="operator" class="form-select form-select-sm" aria-label=".form-select-sm" ng-model="Operator">
+                                <option value=""></option>
+                                <option value="<">&lt;</option>
+                                <option value="<=">&lt;=</option>
+                                <option value="=">=</option>
+                                <option value=">=">&gt;=</option>
+                                <option value=">">&gt;</option>
+                                <option value="range">range</option>
+                            </select>
+
+                            <div class="d-flex align-items-center ms-2">
+                                <div>
+                                    <input type="text" class="form-control form-control-sm input-sm px-1" id="rangeFrom" ng-model="fDuration">
+                                </div>
+                                <span class="mx-1">to</span>
+                                <input type="text" class="form-control form-control-sm input-sm px-1" id="rangeTo" ng-class="{'disabled-section': Operator != 'range'}" ng-model="tDuration">
+                                <span class="ms-1">days</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="invstats" id="allinv" value="0" ng-model="invstats" checked>
+                            <label class="form-check-label" for="allinv">
+                                All invoices
+                            </label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="invstats" id="dueinv" value="1" ng-model="invstats">
+                            <label class="form-check-label" for="dueinv">
+                                Due invoices
+                            </label>
+                        </div>
+
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="invstats" id="paidinv" value="2" ng-model="invstats">
+                            <label class="form-check-label" for="paidinv">
+                                Paid invoices
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row mb-4">
+
+                    <div class="col-md-12">
+
+                        <div class=" d-flex flex-column gap-1" ng-class="{'disabled-section': invstats != 2}">
+                            <label class=" form-label">
+                                Payment Duration
+                            </label>
+                            <div class=" d-inline-flex gap-5">
+
+                                <div class="d-flex align-items-center gap-4">
+                                    <label class=" form-label">From</label>
+                                    <input type="date" class="form-control form-control-sm " ng-model="fromRange">
+
+                                </div>
+
+                                <div class="d-flex align-items-center gap-4">
+                                    <label class=" form-label">To</label>
+                                    <input type="date" class="form-control form-control-sm  " ng-model="toRange">
+
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+                <hr />
+                <div style=" padding: 10px; background-color: #f8fafc; border: 1px solid #00000010; border-radius: 4px;">
+                    <div class="row mb-3">
+                        <div class="col-md-8">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="blacklisted" ng-model="blacklisted" ng-true-value="1" ng-false-value="0">
+                                <label class="form-check-label" for="blacklisted">
+                                    Show with black listed companies
+                                </label>
+                            </div>
+                        </div>
+
+
+                        <div class="col-md-4">
+                            <div class="form-check" ng-class="{'disabled-section': invstats != 2}">
+                                <input class="form-check-input" type="checkbox" id="salesReport" ng-model="salesReport" ng-true-value="1" ng-false-value="0">
+                                <label class="form-check-label" for="salesReport">
+                                    Sales Report
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div>
+                                <lable class=" form-label d-inline-block mb-2">Search by Zone</lable>
+                                <select name="Zone" id="searchByZone" class=" form-select form-control form-control-sm ng-model="Zone">
+                                    <option value="">Select</option>
+                                    <option value="Gulshan">Gulshan</option>
+                                    <option value="Banani">Banani</option>
+                                    <option value="Uttara">Uttara</option>
+                                    <option value="Motijheel">Motijheel</option>
+                                    <option value="Dhanmondi">Dhanmondi</option>
+                                    <option value="Chittagong">Chittagong</option>
+                                    <option value="Western Districts">Western Districts</option>
+                                    <option value="Eastern Districts">Eastern Districts</option>
+                                    <option value="Customer Success">Customer Success</option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div>
+                                <lable class=" form-label d-inline-block mb-2">Search by Location</lable>
+                                <input type="text" class="form-control form-control-sm input-sm" id="searchByLocation" ng-model="location">
+
+                            </div>
+                        </div>
+
+                        <div class="col-sm-4">
+                            <div>
+                                <label class=" form-label mb-2">Sales Person</label>
+                                <input class="form-control form-control-sm input-sm" id="salesPerson" placeholder="Search Sales Person Here" autocomplete="off" ng-model="salesPersonInput" ng-keyup="getSalesPersonsByKey($event)">
+                                <select class="form-select form-control-sm input-sm" size="10" id="salesPersonList" ng-model="selectedSalesPerson" style="position:absolute;z-index:999;width: 360px; overflow:auto; background: white none repeat scroll 0% 0%;" ng-show="salesPersonList.length > 0">
+                                    <option ng-repeat="person in salesPersonList" value="{{person.salesPersonID}}" ng-click="selectSalesPerson(person)">{{person.salesPersonName}}</option>
+                                </select>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class=" col-md-2">
+                <h2 class="title">Product List</h>
+            </div>
+        </div>
+
+        <div class="row mt-3">
+            <div class=" d-flex align-items-center justify-content-center">
+                <button class="btn btn-primary px-4" type="button" ng-click="load()">Load &nbsp;<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="spinner"></span></button>
+            </div>
+        </div>
+
+
+        <!-- Table -->
+
+        <div class="row" ng-if="isVisible">
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="col-sm-5" style="margin-left:-15px;">
+                        Show
+                        <select id="pagesize" ng-model="pageSize" style="padding: 0px 15px 0px 2px; background: url('/images/down_arrow.png') right center no-repeat white; border: 1px solid gray;">
+                            <option value="10">10</option>
+                            <option value="20">20</option>
+                            <option value="30">30</option>
+                            <option value="40">40</option>
+                            <option value="50">50</option>
                         </select>
+                        entries per page
                     </div>
-                    <div class="col-sm-5">
-                        <table class="table table-bordered">
-                            <tr>
-                                <td>
-                                    <input type="radio" ng-model="invoiceRadio" value="1" />&nbsp;<label>Show all valid invoices</label><br />
-                                    <input type="radio" ng-model="invoiceRadio" value="2" />&nbsp;<label>Show deleted invoices</label>
-                                </td>
-                                <td>
-                                    <input type="radio" ng-model="ascDsc" value="1" />&nbsp;<label>Ascending</label><br />
-                                    <input type="radio" ng-model="ascDsc" value="2" />&nbsp;<label>Descending</label>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>
-                                    <input type="checkbox" ng-model="invoiceDuration" />&nbsp;<label>Invoice Duration</label>
-                                </td>
-                                <td>
-                                    
-                                </td>
-                            </tr>
-                        </table>                        
-                    </div>
-                    <div class="col-sm-3">
+                </div>
+
+                <div class="col-md-6">
+                    <div class="d-flex align-items-center justify-content-end">
+                        <nav aria-label="...">
+                            <ul class="pagination">
+                                <li class="page-item" ng-class="{ disabled: currentPage === 1 }">
+                                    <a class="page-link" href="#" ng-click="setCurrentPage(currentPage - 1)" aria-label="Previous">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+
+                                <!-- The ng-repeat code you provided -->
+                                <li class="page-item" ng-repeat="page in getPages()" ng-class="{ active: currentPage === page }">
+                                    <a class="page-link" href="#" ng-click="setCurrentPage(page)">{{ page }}</a>
+                                </li>
+
+                                <li class="page-item" ng-class="{ disabled: currentPage === totalPages }">
+                                    <a class="page-link" href="#" ng-click="setCurrentPage(currentPage + 1)" aria-label="Next">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
                     </div>
                 </div>
             </div>
+
+            <div class="col-md-12">
+
+                <table class="table  table-bordered table-hovar table-sm">
+                    <thead class="table-light">
+                        <tr class="text-center">
+                            <th scope="col">Invoice No</th>
+                            <th scope="col">Company Name</th>
+                            <th scope="col">Total Amount</th>
+                            <th scope="col">Invoice Send Date</th>
+                            <th scope="col">Sales Person Name</th>
+                            <th scope="col">Product Name</th>
+                            <th scope="col">Contact Person</th>
+                            <th scope="col">Contact Person Phone</th>
+                            <th scope="col">Full Payment</th>
+                            <th scope="col">Ageing Day</th>
+                            <th scope="col">Product Wise Sequence</th>
+                            <th scope="col">Last Invoice Difference</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+
+
+                        <tr ng-repeat="invoice in invoiceList">
+                            <td scope="row" class="">{{ invoice.invoice_no}}</td>
+                            <td class="text-center">{{invoice.companyName}}</td>
+                            <td class="text-center">{{invoice.tamount}}</td>
+                            <td class="text-center">{{invoice.invsendDt}}</td>
+                            <td class="text-center">{{invoice.salesPersonName}}</td>
+                            <td class="text-center">{{invoice.productName}}</td>
+                            <td class="text-center">{{invoice.contactPerson}}</td>
+                            <td class="text-center">{{invoice.contactPersonPhone}}</td>
+                            <td class="text-center">{{invoice.fullPayment}}</td>
+                            <td class="text-center">{{invoice.ageignDay}}</td>
+                            <td class="text-center">{{invoice.productWiseSequence}}</td>
+                            <td class="text-center">{{invoice.lastInvDiff}}</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+            </div>
         </div>
+
     </div>
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
 <script>
     var app = angular.module('myApp', []);
-    app.controller('myController', function ($scope, $http) {
+    app.controller('invoiceController', function ($scope, $http) {
+
+        $scope.productList = [];
+        $scope.selectedInvoices = [];
+        $scope.salesPersonInput = '';
+        $scope.salesPersonList = [];
+        $scope.selectedSalesPerson = [];
+        $scope.selectedSalesPersonId = ''
+
+        // ui states
+        $scope.invoiceDuration = false;
+        $scope.totalItems = 0;
+        $scope.spinner = false;
+        $scope.isVisible = false;
+        $scope.pages = []
+        $scope.maxPageLength = 5;
+        $scope.currentPage = 1;
+
+        // invoice list
+        $scope.pageNo = 1;
+        $scope.pageSize = '10';
+        $scope.productId = '';
+        $scope.validity = "0";
+        $scope.Operator = "";
+        $scope.fDuration = 0;
+        $scope.tDuration = 0;
+        $scope.invstats = '0';
+        $scope.blacklisted = 0;
+        $scope.order = "ASC";
+        $scope.location = "";
+        $scope.salesperson = "0";
+        $scope.fromRange = "";
+        $scope.toRange = "";
+        $scope.Zone = "";
 
 
+        // Fetch products and populate the product list
+        $scope.getProducts = function () {
+            $http.get('/Invoice/GetProducts')
+                .then(function (response) {
+                    $scope.productList = response.data;
+                }, function (error) {
+                    console.error(error);
+                });
+        };
+
+        // Fetch salesperson list based on the input key
+        $scope.getSalesPersonsByKey = function (event) {
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/GetSalesPersonListByKey';
+            else
+                Url = '/Invoice/GetSalesPersonListByKey';
+
+            if (event.keyCode != 13 && event.keyCode != 27) {
+                var str = $scope.salesPersonInput.trim();
+                if (str !== "") {
+                    console.log(str);
+                    $http.get(Url, { params: { startingKey: str } })
+                        .then(function (response) {
+                            if (response.data == 0) {
+                                $scope.salesPersonList = []
+                                return false;
+                            } else {
+                                $scope.salesPersonList = response.data;
+                                console.log(response.data);
+                                return true;
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            $scope.salesPersonList = [];
+
+                        });
+                } else {
+                    $scope.salesPersonList = [];
+                }
+            } else if (event.keyCode == 27) {
+                // Clear search input and results if 'Esc' key is pressed
+                $scope.salesPersonInput = '';
+                $scope.salesPersonList = [];
+            }
+        };
+
+
+        $scope.selectSalesPerson = function (person) {
+            console.log("Person ", person.salesPersonID)
+
+            $scope.selectedSalesPerson = person;
+            $scope.salesPersonInput = person.salesPersonName;
+            $scope.selectedSalesPersonId = person.salesPersonID;
+            $scope.salesPersonList = [];
+
+        };
+
+
+
+        $scope.$watch('blacklisted', function (newValue, oldValue) {
+            if (newValue === true) {
+                $scope.blacklisted = 1;
+            } else if (newValue === false) {
+                $scope.blacklisted = 0;
+            }
+        });
+
+
+        $scope.invoiceList = []
+        $scope.load = function () {
+            $scope.invoiceList = [];
+            $scope.isVisible = false;
+
+            let requestBodyModel = {
+                PageNo: parseInt($scope.pageNo) || 1,
+                PageSize: parseInt($scope.pageSize) || 10,
+                ProductId: $scope.productId || '',
+                Validity: parseInt($scope.validity) || 0,
+                Operator: $scope.Operator || '',
+                FromDuration: parseInt($scope.fDuration) || 0,
+                ToDuration: parseInt($scope.tDuration) || 0,
+                FullPayment: parseInt($scope.invstats) || 0,
+                Blacklisted: parseInt($scope.blacklisted) || 0,
+                Order: $scope.order || 'ASC',
+                Location: $scope.location || '',
+                Salesperson: parseInt($scope.selectedSalesPersonId) || 0,
+                FromRange: $scope.fromRange || '',
+                ToRange: $scope.toRange || '',
+                Zone: $scope.Zone || ''
+            };
+
+
+
+            console.log("before sending current state: ", requestBodyModel)
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/GetInvoiceList';
+            else
+                Url = '/Invoice/GetInvoiceList';
+            $scope.spinner = true;
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    $scope.invoiceList = response.data;
+                    $scope.totalItems = response.data[0].totalInvoice;
+
+                    $scope.spinner = false;
+                    $scope.isVisible = true;
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+        }
+
+
+        $scope.convertDate = function (isoDateString) {
+            if (!isoDateString) return '';
+            var date = new Date(isoDateString);
+            var day = ('0' + date.getDate()).slice(-2);
+            var month = ('0' + (date.getMonth() + 1)).slice(-2);
+            var year = date.getFullYear();
+            return month + '/' + day + '/' + year;
+        };
+
+
+        // Watchers to convert the dates when they change
+        $scope.$watch('fromRange', function (newVal) {
+            $scope.fromRange = $scope.convertDate(newVal);
+        });
+
+        $scope.$watch('toRange', function (newVal) {
+            $scope.toRange = $scope.convertDate(newVal);
+        });
+
+        $scope.$watch('invstats', function () {
+            if ($scope.invstats != 2) {
+                $scope.fromRange = '';
+                $scope.toRange = ''
+            }
+        })
+
+        $scope.$watch('selectedInvoices', function () {
+            $scope.productId = $scope.selectedInvoices.join(', ');
+
+        })
+
+
+        // paginations
+        $scope.$watch('totalItems', function () {
+            $scope.calculatePages();
+        });
+
+        $scope.$watch('pageSize', function () {
+            $scope.calculatePages();
+        });
+
+        $scope.$watch('currentPage', function () {
+            if ($scope.currentPage > 1) {
+                $scope.calculatePages();
+                $scope.load();
+            }
+            else {
+                $scope.calculatePages();
+            }
+
+        });
+        $scope.calculatePages = function () {
+            $scope.totalPages = Math.ceil($scope.totalItems / $scope.pageSize);
+            $scope.pages = [];
+
+            var startPage = Math.max(1, $scope.currentPage - Math.floor($scope.maxPageLength / 2));
+            var endPage = Math.min($scope.totalPages, startPage + $scope.maxPageLength - 1);
+
+            for (var i = startPage; i <= endPage; i++) {
+                $scope.pages.push(i);
+            }
+        };
+        $scope.getPages = function () {
+            return $scope.pages || [];
+        };
+        $scope.setCurrentPage = function (page) {
+            if (page >= 1 && page <= $scope.totalPages) {
+                $scope.currentPage = page;
+            }
+        };
+
+
+        // Initial fetch of products
+        $scope.getProducts();
     });
 </script>

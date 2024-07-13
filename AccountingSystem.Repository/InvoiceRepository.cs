@@ -544,43 +544,43 @@ namespace AccountingSystem.Repository
                 return $"Error updating amount: {ex.Message}";
             }
         }
-        public async Task<List<InvoiceViewModel>> GetInvoicesAsync(GetInvoiceListParam parameters)
-        {
-            try
-            {
-                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
-                {
-                    var dynamicParameters = new DynamicParameters();
-                    dynamicParameters.Add("@PageNo", parameters.PageNo);
-                    dynamicParameters.Add("@PageSize", parameters.PageSize);
-                    dynamicParameters.Add("@ProductID", parameters.ProductId);
-                    dynamicParameters.Add("@Validity", parameters.Validity);
-                    dynamicParameters.Add("@Operator", parameters.Operator);
-                    dynamicParameters.Add("@FDuration", parameters.FromDuration);
-                    dynamicParameters.Add("@TDuration", parameters.ToDuration);
-                    dynamicParameters.Add("@FullPayment", parameters.FullPayment);
-                    dynamicParameters.Add("@BlackListed", parameters.Blacklisted);
-                    dynamicParameters.Add("@Order", parameters.Order);
-                    dynamicParameters.Add("@Location", parameters.Location);
-                    dynamicParameters.Add("@SalesPersonID", parameters.Salesperson);
-                    dynamicParameters.Add("@FromRange", parameters.FromRange);
-                    dynamicParameters.Add("@ToRange", parameters.ToRange);
+        //public async Task<List<InvoiceViewModel>> GetInvoicesAsync(GetInvoiceListParam parameters)
+        //{
+        //    try
+        //    {
+        //        using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+        //        {
+        //            var dynamicParameters = new DynamicParameters();
+        //            dynamicParameters.Add("@PageNo", parameters.PageNo);
+        //            dynamicParameters.Add("@PageSize", parameters.PageSize);
+        //            dynamicParameters.Add("@ProductID", parameters.ProductId);
+        //            dynamicParameters.Add("@Validity", parameters.Validity);
+        //            dynamicParameters.Add("@Operator", parameters.Operator);
+        //            dynamicParameters.Add("@FDuration", parameters.FromDuration);
+        //            dynamicParameters.Add("@TDuration", parameters.ToDuration);
+        //            dynamicParameters.Add("@FullPayment", parameters.FullPayment);
+        //            dynamicParameters.Add("@BlackListed", parameters.Blacklisted);
+        //            dynamicParameters.Add("@Order", parameters.Order);
+        //            dynamicParameters.Add("@Location", parameters.Location);
+        //            dynamicParameters.Add("@SalesPersonID", parameters.Salesperson);
+        //            dynamicParameters.Add("@FromRange", parameters.FromRange);
+        //            dynamicParameters.Add("@ToRange", parameters.ToRange);
 
 
-                    var invoices = await _db.QueryAsync<InvoiceViewModel>(
-                        "USP_LIST_OF_INVOICE_V1_NEW",
-                        dynamicParameters,
-                        commandType: CommandType.StoredProcedure, commandTimeout: 180);
+        //            var invoices = await _db.QueryAsync<InvoiceViewModel>(
+        //                "USP_LIST_OF_INVOICE_V1_NEW",
+        //                dynamicParameters,
+        //                commandType: CommandType.StoredProcedure, commandTimeout: 180);
 
-                    return invoices.AsList();
-                }
-            }
-            catch (Exception ex)
-            {
-                // Handle exceptions accordingly
-                throw new Exception("Error retrieving invoices.", ex);
-            }
-        }
+        //            return invoices.AsList();
+        //        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        // Handle exceptions accordingly
+        //        throw new Exception("Error retrieving invoices.", ex);
+        //    }
+        //}
 
         public async Task<OnlineInvoiceResponseModel> OnlineInvocie_For_Payment_Doc(OnlineInvoiceRequestModel parameters)
         {
@@ -1194,6 +1194,44 @@ namespace AccountingSystem.Repository
                         commandType: CommandType.StoredProcedure);
 
                     return invoices.FirstOrDefault();
+                }
+            }
+            catch (Exception ex)
+            {
+                // Handle exceptions accordingly
+                throw new Exception("Error retrieving invoices.", ex);
+            }
+        }
+        public async Task<List<InvoiceViewModel>> GetInvoicesAsync(GetInvoiceListParam parameters)
+        {
+            try
+            {
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {
+                    var dynamicParameters = new DynamicParameters();
+                    dynamicParameters.Add("@PageNo", parameters.PageNo);
+                    dynamicParameters.Add("@PageSize", parameters.PageSize);
+                    dynamicParameters.Add("@ProductID", parameters.ProductId);
+                    dynamicParameters.Add("@Validity", parameters.Validity);
+                    dynamicParameters.Add("@Operator", parameters.Operator);
+                    dynamicParameters.Add("@FDuration", parameters.FromDuration);
+                    dynamicParameters.Add("@TDuration", parameters.ToDuration);
+                    dynamicParameters.Add("@FullPayment", parameters.FullPayment);
+                    dynamicParameters.Add("@BlackListed", parameters.Blacklisted);
+                    dynamicParameters.Add("@Order", parameters.Order);
+                    dynamicParameters.Add("@Location", parameters.Location);
+                    dynamicParameters.Add("@SalesPersonID", parameters.Salesperson);
+                    dynamicParameters.Add("@FromRange", parameters.FromRange);
+                    dynamicParameters.Add("@ToRange", parameters.ToRange);
+                    dynamicParameters.Add("@Zone", parameters.Zone);
+
+
+                    var invoices = await _db.QueryAsync<InvoiceViewModel>(
+                        "USP_LIST_OF_INVOICE_V1_NEW",
+                        dynamicParameters,
+                commandType: CommandType.StoredProcedure, commandTimeout: 180);
+
+                    return invoices.AsList();
                 }
             }
             catch (Exception ex)
