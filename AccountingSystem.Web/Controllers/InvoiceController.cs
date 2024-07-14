@@ -374,5 +374,13 @@ namespace AccountingSystem.Web.Controllers
 
             return Json(results);
         }
+
+        public async Task<IActionResult> UpdateAssignZone([FromBody] string zone, int salesPersonId)
+        {
+            var results = await _saleManager.AssignZone(zone, salesPersonId);
+
+            return Json(results);
+        }
+
     }
 }

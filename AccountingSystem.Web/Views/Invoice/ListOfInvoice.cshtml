@@ -51,8 +51,11 @@
                     <option ng-repeat="product in productList" value="{{product.id}}">{{product.ladgerName}}</option>
                 </select>
                 <button type="button" class="btn btn-primary btn-sm mt-3" ng-click="load()">Show invoice list</button>
+                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true" ng-show="productListLoader"></span>
+
 
                 <div>
+                   
                     <p>Invoice List: ( {{totalItems}} invoices found )</p>
                 </div>
             </div>
@@ -199,7 +202,7 @@
                         <div class="col-md-4">
                             <div>
                                 <lable class=" form-label d-inline-block mb-2">Search by Zone</lable>
-                                <select name="Zone" id="searchByZone" class=" form-select form-control form-control-sm ng-model="Zone">
+                                <select name="Zone" id="searchByZone" class="form-select form-control form-control-sm" ng-model="Zone">
                                     <option value="">Select</option>
                                     <option value="Gulshan">Gulshan</option>
                                     <option value="Banani">Banani</option>
@@ -226,8 +229,8 @@
                         <div class="col-sm-4">
                             <div>
                                 <label class=" form-label mb-2">Sales Person</label>
-                                <input class="form-control form-control-sm input-sm" id="salesPerson" placeholder="Search Sales Person Here" autocomplete="off" ng-model="salesPersonInput" ng-keyup="getSalesPersonsByKey($event)">
-                                <select class="form-select form-control-sm input-sm" size="10" id="salesPersonList" ng-model="selectedSalesPerson" style="position:absolute;z-index:999;width: 360px; overflow:auto; background: white none repeat scroll 0% 0%;" ng-show="salesPersonList.length > 0">
+                                <input class="form-control form-control-sm input-sm" id="assignSalesPerson" placeholder="Search Sales Person Here" autocomplete="off" ng-model="salesPersonInput" ng-keyup="getSalesPersonsByKey($event)">
+                                <select class="form-select form-control-sm input-sm" size="10" id="salesPersonList" ng-model="selectedSalesPerson" style="position:absolute;z-index:999;width:360px;height: 200px; overflow:auto; background: white none repeat scroll 0% 0%;" ng-show="salesPersonList.length > 0">
                                     <option ng-repeat="person in salesPersonList" value="{{person.salesPersonID}}" ng-click="selectSalesPerson(person)">{{person.salesPersonName}}</option>
                                 </select>
                             </div>
@@ -240,7 +243,10 @@
 
             </div>
             <div class=" col-md-2">
-                <h2 class="title">Product List</h>
+                <h2 class="title">Product List</h2>
+                <button type="button" class="btn btn-primary my-3" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                        Assign Zone
+                </button>
             </div>
         </div>
 
@@ -253,13 +259,14 @@
 
         <!-- Table -->
 
-        <div class="row" ng-if="isVisible">
+
+        <div class="row" >
 
             <div class="row mt-4">
                 <div class="col-md-6">
-                    <div class="col-sm-5" style="margin-left:-15px;">
+                    <div class="" style="margin-left:-15px;">
                         Show
-                        <select id="pagesize" ng-model="pageSize" style="padding: 0px 15px 0px 2px; background: url('/images/down_arrow.png') right center no-repeat white; border: 1px solid gray;">
+                        <select ng-model="pageSize" class="form-select form-select-sm" style="max-width:100px; display: inline-block" >
                             <option value="10">10</option>
                             <option value="20">20</option>
                             <option value="30">30</option>
@@ -268,9 +275,11 @@
                         </select>
                         entries per page
                     </div>
+
+                  
                 </div>
 
-                <div class="col-md-6">
+                <div class="col-md-6" >
                     <div class="d-flex align-items-center justify-content-end">
                         <nav aria-label="...">
                             <ul class="pagination">
@@ -296,7 +305,7 @@
                 </div>
             </div>
 
-            <div class="col-md-12">
+            <div class="col-md-12" ng-if="isVisible">
 
                 <table class="table  table-bordered table-hovar table-sm">
                     <thead class="table-light">
@@ -341,22 +350,92 @@
             </div>
         </div>
 
+
+        <!-- Modal HTML for Assign Sales Person -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h1 class="modal-title fs-5" id="exampleModalLabel">Assign Sales Person</h1>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div>
+                                    <label class="form-label mb-2">Sales Person</label>
+                                    <input class="form-control form-control-sm input-sm" id="assignSalesPerson" placeholder="Search Sales Person Here" autocomplete="off" ng-model="assignSalesPersonInput" ng-keyup="getAssignSalesPersonsByKey($event)">
+                                    <select class="form-select form-control-sm input-sm" size="10" id="assignSalesPersonList" ng-model="assignSelectedSalesPerson" style="position:absolute;z-index:999;width: 360px; height: 200px; overflow:auto; background: white none repeat scroll 0% 0%;" ng-show="assignSalesPersonList.length > 0">
+                                        <option ng-repeat="person in assignSalesPersonList" value="{{person.salesPersonID}}" ng-click="assignSelectSalesPerson(person)">{{person.salesPersonName}}</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div>
+                                    <label class="form-label d-inline-block mb-2">Search by Zone</label>
+                                    <select name="Zone" id="searchByZone" class="form-select form-control form-control-sm" ng-model="assignZone">
+                                        <option value="">Select</option>
+                                        <option value="Gulshan">Gulshan</option>
+                                        <option value="Banani">Banani</option>
+                                        <option value="Uttara">Uttara</option>
+                                        <option value="Motijheel">Motijheel</option>
+                                        <option value="Dhanmondi">Dhanmondi</option>
+                                        <option value="Chittagong">Chittagong</option>
+                                        <option value="Western Districts">Western Districts</option>
+                                        <option value="Eastern Districts">Eastern Districts</option>
+                                        <option value="Customer Success">Customer Success</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4 d-flex align-items-end">
+                                <button type="button" class="btn btn-primary btn-sm px-4" ng-click="assignSalesPerson()">Save</button>
+                            </div>
+                        </div>
+
+                        <div class="row">
+
+                          @*   <div class="" role="alert" ng-if="alrtMsg" style="color: #16a34a">
+                                {{alrtMsg}}
+                            </div> *@
+                        </div>
+                        
+                    </div>
+                    <div class="modal-footer"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </div>
+
+
+<!-- Modal -->
 
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.7.9/angular.min.js"></script>
 <script>
     var app = angular.module('myApp', []);
     app.controller('invoiceController', function ($scope, $http) {
 
+
+
         $scope.productList = [];
+
         $scope.selectedInvoices = [];
         $scope.salesPersonInput = '';
         $scope.salesPersonList = [];
         $scope.selectedSalesPerson = [];
-        $scope.selectedSalesPersonId = ''
+        $scope.selectedSalesPersonId = '';
+
+        $scope.assignSalesPersonInput = '';
+        $scope.assignSalesPersonList = [];
+        $scope.assignSelectedSalesPerson = {};
+        $scope.assignSelectedSalesPersonId = '';
+        $scope.assignZone = '';
 
         // ui states
+        $scope.productListLoader = false;
         $scope.invoiceDuration = false;
         $scope.totalItems = 0;
         $scope.spinner = false;
@@ -364,6 +443,7 @@
         $scope.pages = []
         $scope.maxPageLength = 5;
         $scope.currentPage = 1;
+        $scope.alrtMsg = ""
 
         // invoice list
         $scope.pageNo = 1;
@@ -378,16 +458,18 @@
         $scope.order = "ASC";
         $scope.location = "";
         $scope.salesperson = "0";
-        $scope.fromRange = "";
-        $scope.toRange = "";
+        $scope.fromRange = '';
+        $scope.toRange = '';
         $scope.Zone = "";
 
 
         // Fetch products and populate the product list
         $scope.getProducts = function () {
+            $scope.productListLoader = true;
             $http.get('/Invoice/GetProducts')
                 .then(function (response) {
                     $scope.productList = response.data;
+                    $scope.productListLoader = false;
                 }, function (error) {
                     console.error(error);
                 });
@@ -443,6 +525,72 @@
         };
 
 
+        // assign sales person
+
+        $scope.getAssignSalesPersonsByKey = function (event) {
+            console.log("assign event",event);
+            let Url = '/Invoice/GetSalesPersonListByKey';
+
+            if (event.keyCode != 13 && event.keyCode != 27) {
+                var str = $scope.assignSalesPersonInput.trim();
+                if (str !== "") {
+                    $http.get(Url, { params: { startingKey: str } })
+                        .then(function (response) {
+                            if (response.data == 0) {
+                                $scope.assignSalesPersonList = [];
+                            } else {
+                                $scope.assignSalesPersonList = response.data;
+                            }
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                            $scope.assignSalesPersonList = [];
+                        });
+                } else {
+                    $scope.assignSalesPersonList = [];
+                }
+            } else if (event.keyCode == 27) {
+                // Clear search input and results if 'Esc' key is pressed
+                $scope.assignSalesPersonInput = '';
+                $scope.assignSalesPersonList = [];
+            }
+        };
+
+        // Select assign salesperson
+        $scope.assignSelectSalesPerson = function (person) {
+            console.log("person slect from modal",person);
+            $scope.assignSelectedSalesPerson = person;
+            $scope.assignSalesPersonInput = person.salesPersonName;
+            $scope.assignSelectedSalesPersonId = person.salesPersonID;
+            $scope.assignSalesPersonList = [];
+
+            console.log("person id", $scope.assignSelectedSalesPersonId);
+        };
+
+        // Assign selected salesperson
+        $scope.assignSalesPerson = function () {
+            let requestBody = {
+                zone: $scope.assignZone || '',
+                salesPersonId: parseInt($scope.assignSelectedSalesPersonId) || 0
+            }
+            console.log("requestBody: " + JSON.stringify(requestBody));
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Invoice/UpdateAssignZone';
+            else
+                Url = '/Invoice/UpdateAssignZone';
+
+            $http.post(Url, JSON.stringify(requestBody), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    $scope.alrtMsg = response.data;
+                    alert(response.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+
+        };
+
 
         $scope.$watch('blacklisted', function (newValue, oldValue) {
             if (newValue === true) {
@@ -452,6 +600,16 @@
             }
         });
 
+        $scope.convertDate = function (isoDateString) {
+            console.log(isoDateString);
+            if (!isoDateString) return '';
+            var date = new Date(isoDateString);
+            if (isNaN(date.getTime())) return '';
+            var day = ('0' + date.getDate()).slice(-2);
+            var month = ('0' + (date.getMonth() + 1)).slice(-2);
+            var year = date.getFullYear();
+            return month + '/' + day + '/' + year;
+        };
 
         $scope.invoiceList = []
         $scope.load = function () {
@@ -471,8 +629,8 @@
                 Order: $scope.order || 'ASC',
                 Location: $scope.location || '',
                 Salesperson: parseInt($scope.selectedSalesPersonId) || 0,
-                FromRange: $scope.fromRange || '',
-                ToRange: $scope.toRange || '',
+                FromRange: $scope.convertDate($scope.fromRange) || '',
+                ToRange: $scope.convertDate($scope.toRange) || '',
                 Zone: $scope.Zone || ''
             };
 
@@ -499,26 +657,6 @@
                 })
         }
 
-
-        $scope.convertDate = function (isoDateString) {
-            if (!isoDateString) return '';
-            var date = new Date(isoDateString);
-            var day = ('0' + date.getDate()).slice(-2);
-            var month = ('0' + (date.getMonth() + 1)).slice(-2);
-            var year = date.getFullYear();
-            return month + '/' + day + '/' + year;
-        };
-
-
-        // Watchers to convert the dates when they change
-        $scope.$watch('fromRange', function (newVal) {
-            $scope.fromRange = $scope.convertDate(newVal);
-        });
-
-        $scope.$watch('toRange', function (newVal) {
-            $scope.toRange = $scope.convertDate(newVal);
-        });
-
         $scope.$watch('invstats', function () {
             if ($scope.invstats != 2) {
                 $scope.fromRange = '';
@@ -531,13 +669,14 @@
 
         })
 
-
         // paginations
         $scope.$watch('totalItems', function () {
             $scope.calculatePages();
         });
 
         $scope.$watch('pageSize', function () {
+            console.log("page size", $scope.pageSize);
+            $scope.load();
             $scope.calculatePages();
         });
 
@@ -571,6 +710,20 @@
             }
         };
 
+        $scope.paginationChange = function () {
+            console.log($scope.pageSize);
+            $scope.load();
+        }
+
+        $scope.onPageSizeChange = function () {
+            console.log("Page size changed to:", $scope.pageSize);
+            $scope.calculatePages();
+            $scope.load();
+        };
+
+        $scope.$watch('assignZone', function () {
+            console.log('value changed', $scope.assignZone);
+        })
 
         // Initial fetch of products
         $scope.getProducts();

@@ -175,5 +175,9 @@ namespace AccountingSystem.BLL
         {
             return _repository.GetSalesReconciliation(model);
         }
+        public Task<string> AssignZone(string zone, int salesPersonId)
+        {
+            return _repository.AssignZone(zone, salesPersonId);
+        }
     }
 }
