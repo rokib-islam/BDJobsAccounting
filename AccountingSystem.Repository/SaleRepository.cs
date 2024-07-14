@@ -4,6 +4,7 @@ using AccountingSystem.Models.AccountDbModels;
 using AccountingSystem.Models.AccountViewModels;
 using Dapper;
 using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.Configuration;
 using System.Data;
 
@@ -885,7 +886,6 @@ namespace AccountingSystem.Repository
             }
 
         }
-
         public async Task<List<AutoBillingModel_Response>> AutoBillingData(AutoBillingModel model)
         {
             try
@@ -1005,6 +1005,24 @@ namespace AccountingSystem.Repository
                 throw ex;
             }
 
+        }
+
+        public async Task<string> AssignZone(string zone, int salesPersonId)
+        {
+        try
+            {
+                var result = "Update SalesPerson set Zone = @zone where SalesPersonID = @salesPersonId";
+                var parameters = new { Zone=zone, SalesPersonID = salesPersonId };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("TestConnection")))
+                {                
+                    await _db.ExecuteAsync (result,parameters);
+                    return "Successfully Updated";
+                }
+           }
+        catch(Exception ex)
+            {
+                throw ex;
+            }
         }
 
     }
