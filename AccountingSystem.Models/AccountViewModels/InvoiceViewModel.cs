@@ -19,6 +19,7 @@
         public int AgeignDay { get; set; }
         public int ProductWiseSequence { get; set; }
         public int LastInvDiff { get; set; }
+        public string UploadedPaymentStatus { get; set; }
 
     }
 }
