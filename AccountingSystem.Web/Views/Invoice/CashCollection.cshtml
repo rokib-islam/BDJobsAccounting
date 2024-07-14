@@ -200,8 +200,8 @@
                                 <tbody>
                                     <tr ng-repeat="o in invoiceData" ng-click="selectRow(o)" ng-class="{ 'selected-row': o === selectedRow }">
                                         <td class="border text-center">{{$index + 1}}</td>
-                                        <td class="border text-center">{{o.invoice_No}}</td>
-                                        <td class="border text-end">{{o.tAmount}}</td>
+                                        <td class="border text-center">{{o.invoice_no}}</td>
+                                        <td class="border text-end">{{o.tamount}}</td>
                                         <td class="border text-center">{{o.uploadedPaymentStatus}}</td>
 
                                     </tr>
@@ -808,7 +808,7 @@
                 $scope.paymentId = 31259;
                 $scope.payment = 16;
                 if (!$scope.due && $scope.paid) {
-                    $scope.getBouncedData($scope.selectedRow.invoice_No);
+                    $scope.getBouncedData($scope.selectedRow.invoice_no);
                 }
             }
         };
@@ -838,7 +838,8 @@
                 var salesTax = parseFloat($scope.selectedRowForpaymentList.salesTax);
                 $scope.amount = (cash + salesTax).toFixed(2);
                 $scope.receivedDate = new Date($scope.selectedRowForpaymentList.receivedDate);
-
+                // Add 6 hour
+                $scope.receivedDate.setHours($scope.receivedDate.getHours() + 6);
                 var vattype = "";
                 var cheque = "";
                 var bankId = 0;
@@ -991,8 +992,8 @@
         };
 
         $scope.getSalesList = function () {
-            $scope.invoiceNo = $scope.selectedRow.invoice_No;
-            var no = $scope.selectedRow.invoice_No;
+            $scope.invoiceNo = $scope.selectedRow.invoice_no;
+            var no = $scope.selectedRow.invoice_no;
             let Url = '';
             if (window.location.hostname == 'localhost')
                 Url = '/Sale/GetSalesInfo';
@@ -1210,7 +1211,7 @@
                                     var userConfirmed = confirm('Do you want to upload this cash information to online?');
 
                                     if (userConfirmed) {
-                                        $scope.postToOnline("", $scope.selectedRow.invoice_No, $scope.selectedRow.id.toString());
+                                        $scope.postToOnline("", $scope.selectedRow.invoice_no, $scope.selectedRow.id.toString());
                                     }
 
                                 }
@@ -1263,7 +1264,7 @@
             var bouncedDate = $scope.bouncedDate.toISOString().split('T')[0];
             var bouncedAmount = $scope.bouncedAmount;
             var bouncedNote = $scope.bouncedNote;
-            var invoiceNo = $scope.selectedRow.invoice_No;;
+            var invoiceNo = $scope.selectedRow.invoice_no;;
 
             if (invoiceNo == "" || invoiceNo == undefined || invoiceNo == null) {
                 alert("Please select paid invoice number.");
