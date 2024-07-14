@@ -35,7 +35,7 @@
                                     <select class="form-control form-control-sm" ng-model="PStatus">
                                         <option value="0">All</option>
                                         <option value="1">Paid</option>
-                                        <option value="2">Un-Paid</option>
+                                        <option value="2">Un-billed</option>
                                         
                                         <!-- Add more options as needed -->
                                     </select>
@@ -205,6 +205,9 @@
                         angular.forEach($scope.saleReconciliationData, function (item) {
                             if (item.paymentMethod == 5) {
                                 $scope.paymentMethod = 'Bkash';
+                            }
+                            else if (item.paymentMethod == 0) {
+                                $scope.paymentMethod = '';
                             }
                             else {
                                 $scope.paymentMethod = 'SSL';
