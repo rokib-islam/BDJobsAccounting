@@ -17,7 +17,7 @@
                             <div class="row">
                                 <div class="col-sm-6">
                                     <label class="col-form-label">Ledger</label>
-                                    <select class="form-control form-control-sm" ng-model="ledger">
+                                    <select class="form-control form-control-sm" ng-model="ledger" ng-change="updateSelectedLedger()">
                                         <option value="0" selected>Select</option>
                                         <option ng-repeat="o in ledgers" value="{{o.id}}">{{o.ladgerName}}</option>
                                     </select>
@@ -156,7 +156,12 @@
 
                 </div>
                 <div>
-                    <table ng-show="showTable" class="table table-bordered table-sm">
+                    <div ng-show="checkboxShow">
+                        show only <span class="fw-bold">{{selectedLedgerName}}</span> Ledger data
+                        <input type="checkbox" ng-model="check" ng-change="filterByLedger()" />
+                    </div>
+
+                    <table ng-show="showTable" class="table table-bordered table-sm mt-2">
                         <tr style="background-color:skyblue ; text-align: center">
                             <td>Sl#</td>
                             <td>Id</td>
@@ -212,10 +217,11 @@
             $scope.maxPageLength = 5;
             $scope.currentPage = 1;
             $scope.totalItems = 0;
+            $scope.checkboxShow = false;
         });
         $scope.from = new Date();
         $scope.to = new Date();
-
+       
 
         $scope.getLedger = function () {
             let Url = '';
@@ -229,7 +235,25 @@
                 }, function (error) {
                     console.error(error);
                 });
+        }; 
+
+        $scope.updateSelectedLedger = function () {
+            const selectedLedger = $scope.ledgers.find(ledger => ledger.id == $scope.ledger);
+            if (selectedLedger) {
+                $scope.selectedLedgerName = selectedLedger.ladgerName;
+            } else {
+                $scope.selectedLedgerName = '';
+            }
         };
+
+        $scope.filterByLedger = function () {
+            if ($scope.check && $scope.ledger !== '0') {
+                $scope.journalData = $scope.journalData.filter(data => data.sid == $scope.ledger);
+            } else {
+                $scope.loadData();
+            }
+        };
+
         $scope.numberToAmount = (num) => {
             let amountConvertar = new Intl.NumberFormat('en-In', {
             }).format(num);
@@ -294,7 +318,8 @@
             $scope.companyList = [];
         }
 
-        $scope.loadData = function () {
+        $scope.loadData = function () {   
+            $scope.check = false;
             var requestData = {
                 PageNo: $scope.currentPage,
                 PageSize: $scope.itemsPerPage,
@@ -316,6 +341,12 @@
             else
                 Url = '/Journal/GetJournals';
 
+            if ($scope.ledger == "0"){
+                $scope.checkboxShow = false;
+            } else {
+                $scope.checkboxShow = true;
+            }
+
             $scope.spinner = true;
             $http.post(Url, requestData)
                 .then(function (response) {
@@ -323,6 +354,7 @@
                         alert('There is no data to shown.')
                         $scope.spinner = false;
                         $scope.showTable = false;
+                        $scope.checkboxShow = false;
                     }
                     $scope.journalData = response.data;
                     $scope.totalDebit = $scope.journalData.reduce((a, b) => a + b.debt, 0);

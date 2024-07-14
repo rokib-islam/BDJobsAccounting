@@ -9,9 +9,9 @@
 
     if (string.IsNullOrEmpty(accessRight))
     {
-                                        <script type="text/javascript">
-                                            window.location.href = '@Url.Action("Index", "Home")';
-                                        </script>
+                                                    <script type="text/javascript">
+                                                        window.location.href = '@Url.Action("Index", "Home")';
+                                                    </script>
     }
     else
     {
@@ -257,6 +257,22 @@
                 EntryBy: @userId
 
             }
+
+            let Url = '';
+            if (window.location.hostname == 'localhost')
+                Url = '/Payment/InsertPaymentModule';
+            else
+                Url = '/Payment/InsertPaymentModule';
+
+            $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
+                .then(function (response) {
+                    if (response.data == "Success") {
+                        alert("Data saved successfully.");
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
         }
     });
 </script>
