@@ -25,7 +25,7 @@
                         <label>Status:</label>
                         <select class="form-control form-control-sm" ng-model="verified">
                             <option value="">All</option>
-                            <option value="0">Unerified</option>
+                            <option value="0">Unverified</option>
                             <option value="1">Verified</option>
                             <option value="2">Rejected</option>
                         </select>
@@ -223,6 +223,9 @@
             $scope.totalItems = 0;
 
         })
+        $scope.fromDate = new Date();
+        $scope.toDate = new Date();
+
         $scope.JDate = new Date();
         $scope.updateVDS = function (data) {
             var balance = data.totalCost - data.paidAmount;
