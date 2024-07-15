@@ -6,6 +6,7 @@
         public string invoice_no { get; set; }
         public string CompanyName { get; set; }
         public decimal tamount { get; set; }
+        public decimal TotalAmount { get; set; }
         public DateTime invsendDt { get; set; }
         public string Sent { get; set; }
         public string SendMode { get; set; }
@@ -20,6 +21,9 @@
         public int ProductWiseSequence { get; set; }
         public int LastInvDiff { get; set; }
         public string UploadedPaymentStatus { get; set; }
+        public string Label { get; set; }
+        public string Comments { get; set; }
+        public decimal SchAmount { get; set; }
 
     }
 }

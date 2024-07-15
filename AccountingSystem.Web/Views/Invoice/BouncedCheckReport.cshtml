@@ -52,6 +52,13 @@
                         <td>{{data.bouncedNote}}</td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr>
+                        <th colspan="5" class="text-end">TOTAL</th>
+                        <th class="text-end">{{totalBouncedAmount | number}}</th>
+                        <th></th>
+                    </tr>
+                </tfoot>
             </table>
         </div>
     </div>
@@ -122,6 +129,7 @@
             $http.post(Url, JSON.stringify(requestBodyModel), { headers: { 'Content-Type': 'application/json' } })
                 .then(function (response) {
                     $scope.bouncedCheckData = response.data;
+                    $scope.totalBouncedAmount = $scope.bouncedCheckData.reduce((a, b) => a + b.bouncedAmount, 0)
                     $scope.showTable = true;
                 })
                 .catch(function (error) {

@@ -79,7 +79,7 @@
                             <div class="form-group row">
                                 <label class="col-sm-4">Invoice Price</label>
                                 <div class="col-sm-8">
-                                    <input type="number" class="form-control form-control-sm" ng-model="invoicePrice" />
+                                    <input type="number" class="form-control form-control-sm text-end" ng-model="invoicePrice" />
                                 </div>
                             </div>
                         </div>
@@ -608,8 +608,10 @@
                         $scope.invoicePrice = response.data[0].totalAmount;
                         $scope.totalPrice = response.data[0].totalAmount;
                         $scope.label = response.data[0].label;
-                        $scope.issueDate = response.data[0].invSendDt;
-                        $scope.invoiceNo = response.data[0].invoice_No;
+                        // $scope.issueDate = response.data[0].invSendDt;
+                        // $scope.invoiceNo = response.data[0].invoice_No;
+                        $scope.issueDate = new Date(response.data[0].invsendDt);
+                        $scope.invoiceNo = response.data[0].invoice_no;
                     }, function (error) {
                         console.error(error);
                         alert('Error fetching job data');
