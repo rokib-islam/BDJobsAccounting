@@ -412,5 +412,7 @@ namespace AccountingSystem.Web.Controllers
             var result = await _SaleManager.GetSalesReconciliation(model);
             return Json(result);
         }
+
+
     }
 }

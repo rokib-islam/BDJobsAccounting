@@ -1030,5 +1030,23 @@ namespace AccountingSystem.Repository
 
         }
 
+        public async Task<string> AssignZone(string zone, int salesPersonId)
+        {
+            try
+            {
+                var result = "Update SalesPerson set Zone = @zone where SalesPersonID = @salesPersonId";
+                var parameters = new { Zone = zone, SalesPersonID = salesPersonId };
+                using (var _db = new SqlConnection(_DBCon.GetConnectionString("DefaultConnection")))
+                {
+                    await _db.ExecuteAsync(result, parameters);
+                    return "Successfully Updated";
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
     }
 }

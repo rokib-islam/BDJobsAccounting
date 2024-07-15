@@ -40,5 +40,6 @@ namespace AccountingSystem.Abstractions.BLL
         Task<dynamic> PostSMSAlertApplyLimitSalePostingEmployeer(CVAndSMSPurchesModel data);
         Task<List<VatAndTaxModel_Response>> GetCompanyVatAndTax(VatAndTaxModel_Request model);
         Task<List<SalesReconciliationModel_Response>> GetSalesReconciliation(SalesReconciliationModel_Request model);
+        Task<string> AssignZone(string zone, int salesPersonId);
     }
 }
